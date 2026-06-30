@@ -1,0 +1,442 @@
+.oui-text-field,
+.oui-text-area
+    display: inline-flex
+    align-items: center
+    gap: 8px
+    width: auto
+    min-width: 0
+    color: var(--oui-text)
+    background: var(--oui-control-bg, transparent)
+    border: 1px solid var(--oui-border)
+    border-radius: var(--oui-radius-sm)
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 3%)
+    transition: border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease
+
+.oui-text-field-full
+    width: 100%
+
+.oui-text-field[data-size="1"]
+    min-height: 24px
+    padding: 0 7px
+    font-size: 12px
+
+.oui-text-field[data-size="2"]
+    min-height: 28px
+    padding: 0 8px
+    font-size: 13px
+
+.oui-text-field[data-size="3"]
+    min-height: 32px
+    padding: 0 10px
+    font-size: 14px
+
+.oui-text-field[data-size="4"]
+    min-height: 40px
+    padding: 0 12px
+    font-size: 15px
+
+.oui-text-field[data-invalid="true"],
+.oui-text-area[data-invalid="true"]
+    border-color: var(--oui-danger)
+
+.oui-text-field[data-disabled="true"]
+    opacity: 0.62
+    background: var(--oui-control-bg, transparent)
+
+.oui-text-field-input,
+.oui-text-area textarea,
+.oui-text-area-input
+    width: 100%
+    min-width: 0
+    border: 0
+    outline: 0
+    color: inherit
+    background: transparent
+    font: inherit
+
+.oui-text-field-input::placeholder,
+.oui-text-area textarea::placeholder,
+.oui-text-area-input::placeholder
+    color: var(--oui-muted)
+
+.oui-text-field-slot,
+.oui-text-field-clear
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    color: var(--oui-muted)
+
+.oui-text-field-clear
+    width: 24px
+    height: 24px
+    border: 0
+    border-radius: 5px
+    background: transparent
+    cursor: pointer
+
+.oui-text-field-clear:hover
+    color: var(--oui-text)
+    background: var(--oui-control-hover-bg, var(--oui-soft))
+
+.oui-text-area
+    display: block
+    width: 100%
+    min-height: 90px
+    padding: 9px 10px
+    resize: vertical
+
+.oui-field
+    display: flex
+    flex-direction: column
+    gap: var(--oui-field-gap, 6px)
+    min-width: 0
+
+.oui-field-label
+    display: inline-flex
+    gap: 4px
+    align-items: center
+    color: var(--oui-text)
+    font-size: 13px
+    font-weight: 650
+
+.oui-field-required,
+.oui-field-error
+    color: var(--oui-danger)
+
+.oui-field-helper
+    color: var(--oui-muted)
+    font-size: 12px
+
+/* Orcestr control refinements */
+
+.oui-combobox-search-wrap .oui-text-field
+    background: transparent
+    border-color: transparent
+    box-shadow: none
+
+.oui-combobox-search-wrap .oui-text-field:hover,
+.oui-combobox-search-wrap .oui-text-field:focus-within
+    border-color: transparent
+    box-shadow: none
+
+/* Orcestr controls: no fat ring, only border color changes. */
+.oui-text-field,
+.oui-text-area
+    background-clip: border-box
+    background-color: var(--oui-control-bg, transparent)
+    border: 1px solid color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border-radius: 6px
+    box-shadow: none
+    outline: none
+    transition: border-color 280ms ease, background-color 180ms ease
+
+.oui-text-field:hover,
+.oui-text-area:hover
+    border-color: var(--oui-gray-a8)
+
+.oui-text-field:focus-within,
+.oui-text-field:has(.oui-text-field-input:focus),
+.oui-text-area:focus,
+.oui-text-area:focus-within
+    border-color: var(--oui-brand)
+    box-shadow: none
+    outline: none
+
+.oui-text-field-input,
+.oui-text-field-input:focus,
+.oui-text-area,
+.oui-text-area:focus
+    outline: none
+    box-shadow: none
+
+.oui-text-field-input[type="date"]
+    color: inherit
+    color-scheme: light
+    min-width: 0
+
+.oui-root[data-oui-theme="dark"] .oui-text-field-input[type="date"]
+    color-scheme: dark
+
+.oui-text-field-input[type="date"]::-webkit-datetime-edit
+    color: inherit
+
+.oui-text-field-input[type="date"]::-webkit-calendar-picker-indicator
+    display: none
+    width: 0
+    height: 0
+    margin: 0
+    padding: 0
+    cursor: pointer
+    opacity: 0
+
+.oui-text-field[data-size="1"]
+    min-height: 24px
+    padding: 0 7px
+    font-size: 12px
+
+.oui-text-field[data-size="2"]
+    min-height: 28px
+    padding: 0 8px
+    font-size: 13px
+
+.oui-text-field[data-size="3"]
+    min-height: 32px
+    padding: 0 10px
+    font-size: 14px
+
+.oui-text-field[data-size="4"]
+    min-height: 40px
+    padding: 0 12px
+    font-size: 15px
+
+.oui-text-area
+    min-height: 88px
+    padding: 8px 10px
+    color: var(--oui-text)
+
+.oui-text-field[data-invalid="true"],
+.oui-text-area[data-invalid="true"]
+    border-color: var(--oui-danger)
+
+.oui-text-field[data-disabled="true"],
+.oui-text-area:disabled
+    cursor: not-allowed
+    opacity: 0.62
+
+.oui-combobox-search-wrap .oui-text-field
+    background-color: transparent
+    border-color: transparent
+
+.oui-combobox-search-wrap .oui-text-field:hover,
+.oui-combobox-search-wrap .oui-text-field:focus-within
+    border-color: transparent
+
+.oui-date-picker-trigger
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    width: 24px
+    height: 24px
+    flex: 0 0 auto
+    border: 0
+    border-radius: 5px
+    padding: 0
+    color: var(--oui-muted)
+    background: transparent
+    cursor: pointer
+    transition: background-color 140ms ease, color 140ms ease
+
+.oui-date-picker-trigger:hover,
+.oui-date-picker-trigger:focus-visible
+    color: var(--oui-text)
+    background: var(--oui-control-hover-bg, var(--oui-gray-a4))
+    outline: none
+
+.oui-date-picker-popover
+    width: 292px
+    padding: 0
+
+.oui-date-picker-panel
+    display: flex
+    flex-direction: column
+    gap: 10px
+    padding: 10px
+
+.oui-date-picker-head
+    display: grid
+    grid-template-columns: 28px 1fr 28px
+    align-items: center
+    gap: 6px
+
+.oui-date-picker-head strong
+    min-width: 0
+    text-align: center
+    font-size: 13px
+    font-weight: 760
+    color: var(--oui-text)
+    text-transform: capitalize
+
+.oui-date-picker-weekdays,
+.oui-date-picker-grid
+    display: grid
+    grid-template-columns: repeat(7, minmax(0, 1fr))
+    gap: 4px
+
+.oui-date-picker-weekdays span
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    min-height: 22px
+    color: var(--oui-muted)
+    font-size: 11px
+    font-weight: 700
+    text-transform: uppercase
+
+.oui-date-picker-day
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    min-width: 0
+    height: 30px
+    border: 1px solid transparent
+    border-radius: 7px
+    padding: 0
+    color: var(--oui-text)
+    background: transparent
+    font: inherit
+    font-size: 13px
+    cursor: pointer
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease
+
+.oui-date-picker-day:hover:not(:disabled),
+.oui-date-picker-day:focus-visible
+    background: var(--oui-control-hover-bg, var(--oui-gray-a4))
+    outline: none
+
+.oui-date-picker-day[data-outside="true"]
+    color: color-mix(in srgb, var(--oui-muted) 64%, transparent)
+
+.oui-date-picker-day[data-today="true"]
+    border-color: var(--oui-border-strong)
+
+.oui-date-picker-day[data-selected="true"]
+    border-color: var(--oui-brand)
+    color: var(--oui-brand-text)
+    background: var(--oui-brand-soft)
+    font-weight: 760
+
+.oui-date-picker-day:disabled
+    color: color-mix(in srgb, var(--oui-muted) 42%, transparent)
+    cursor: not-allowed
+    text-decoration: line-through
+
+.oui-date-picker-foot
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: 8px
+    border-top: 1px solid var(--oui-border)
+    padding-top: 10px
+
+.oui-stepper
+    display: inline-flex
+    align-items: stretch
+    gap: 0
+    width: fit-content
+
+.oui-stepper .oui-stepper-button,
+.oui-stepper .oui-stepper-field
+    min-height: 30px
+    box-shadow: none
+
+.oui-stepper .oui-stepper-button
+    width: 32px
+    min-width: 32px
+    background-color: var(--oui-control-bg, transparent)
+    border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    color: var(--oui-muted)
+
+.oui-stepper .oui-stepper-button:hover:not(:disabled)
+    border-color: var(--oui-gray-a8)
+    color: var(--oui-text)
+
+.oui-stepper .oui-stepper-decrease
+    border-top-right-radius: 0
+    border-bottom-right-radius: 0
+
+.oui-stepper .oui-stepper-increase
+    border-top-left-radius: 0
+    border-bottom-left-radius: 0
+
+.oui-stepper .oui-stepper-field
+    width: 86px !important
+    border-radius: 0
+    border-left: 0
+    border-right: 0
+
+.oui-stepper .oui-stepper-field:hover,
+.oui-stepper .oui-stepper-field:focus-within
+    border-left: 0
+    border-right: 0
+
+.oui-stepper .oui-stepper-field .oui-text-field-input
+    text-align: center
+
+.oui-stepper .oui-stepper-button,
+.oui-stepper .oui-stepper-field
+    position: relative
+
+.oui-stepper .oui-stepper-button
+    z-index: 1
+
+.oui-stepper .oui-stepper-field
+    z-index: 2
+    margin-right: -1px
+    margin-left: -1px
+    border-right: 1px solid color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border-left: 1px solid color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+
+.oui-stepper .oui-stepper-field:hover
+    border-right-color: var(--oui-gray-a8)
+    border-left-color: var(--oui-gray-a8)
+
+.oui-stepper .oui-stepper-field:focus-within
+    z-index: 3
+    border-right-color: var(--oui-brand)
+    border-left-color: var(--oui-brand)
+
+/* Quantity is a connected control: focus belongs to the whole group. */
+.oui-stepper
+    --oui-stepper-border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+
+.oui-stepper:hover
+    --oui-stepper-border-color: var(--oui-gray-a8)
+
+.oui-stepper:focus-within
+    --oui-stepper-border-color: var(--oui-brand)
+
+.oui-stepper .oui-stepper-button,
+.oui-stepper .oui-stepper-field
+    border-color: var(--oui-stepper-border-color)
+
+.oui-stepper .oui-stepper-button:hover:not(:disabled),
+.oui-stepper:focus-within .oui-stepper-button:hover:not(:disabled)
+    border-color: var(--oui-stepper-border-color)
+
+.oui-stepper .oui-stepper-field,
+.oui-stepper .oui-stepper-field:hover,
+.oui-stepper .oui-stepper-field:focus-within
+    z-index: auto
+    margin-right: 0
+    margin-left: 0
+    border-right: 0
+    border-left: 0
+
+.oui-stepper:focus-within .oui-stepper-button,
+.oui-stepper:focus-within .oui-stepper-field
+    border-color: var(--oui-brand)
+
+.oui-field-addon
+    display: inline-flex
+    align-items: center
+    color: var(--oui-muted)
+    font-size: 12px
+    font-weight: 650
+
+.oui-range-field
+    display: grid
+    min-width: 0
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr)
+    align-items: center
+    gap: 8px
+
+.oui-range-field-separator
+    color: var(--oui-muted)
+    font-size: 12px
+
+@media (max-width: 560px)
+    .oui-range-field
+        grid-template-columns: 1fr
+
+    .oui-range-field-separator
+        display: none

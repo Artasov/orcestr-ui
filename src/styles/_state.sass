@@ -1,0 +1,68 @@
+.oui-state-card
+    display: grid
+    grid-template-columns: minmax(0, 1fr) auto
+    container-type: inline-size
+    min-width: 0
+    min-height: 0
+    align-items: start
+    gap: 10px
+    border: 1px solid transparent
+    border-radius: var(--oui-radius)
+    background: var(--oui-section-surface-bg)
+    font-size: 14px
+    padding: 12px
+
+.oui-state-card[data-compact="true"]
+    gap: 8px
+    padding: 9px
+
+.oui-state-card[data-tone="brand"]
+    background: var(--oui-brand-soft)
+
+.oui-state-card[data-tone="success"]
+    background: var(--oui-success-soft)
+
+.oui-state-card[data-tone="warning"]
+    background: var(--oui-warning-soft)
+
+.oui-state-card[data-tone="danger"]
+    background: var(--oui-danger-soft)
+
+.oui-state-card[data-tone="info"]
+    background: var(--oui-info-soft)
+
+.oui-state-card-main
+    display: flex
+    min-width: 0
+    flex-direction: column
+    gap: 5px
+    grid-column: 1
+    grid-row: 1
+
+.oui-state-card-body
+    display: flex
+    min-width: 0
+    flex-direction: column
+    gap: 4px
+
+.oui-state-card-description
+    display: block
+    overflow-wrap: anywhere
+    color: var(--oui-text)
+
+.oui-state-card-action
+    display: inline-flex
+    align-items: center
+    justify-content: flex-end
+    grid-column: 2
+    grid-row: 1
+
+@container (max-width: 260px)
+    .oui-state-card
+        grid-template-columns: minmax(0, 1fr)
+
+    .oui-state-card-action
+        width: 100%
+        justify-content: flex-start
+        grid-column: 1
+        grid-row: 2

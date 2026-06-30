@@ -1,0 +1,139 @@
+@keyframes ouiOverlayIn
+    from
+        opacity: 0
+        transform: scale(.98) translateY(-4px)
+    to
+        opacity: 1
+        transform: scale(1) translateY(0)
+
+@keyframes ouiOverlayOut
+    from
+        opacity: 1
+        transform: scale(1) translateY(0)
+    to
+        opacity: 0
+        transform: scale(.98) translateY(-4px)
+
+@keyframes ouiToastIn
+    from
+        opacity: 0
+        filter: blur(6px)
+        transform: translate3d(var(--oui-toast-enter-x, 0), var(--oui-toast-enter-y, 0), 0) scale(.985)
+    to
+        opacity: 1
+        filter: blur(0)
+        transform: translate3d(0, 0, 0) scale(1)
+
+@keyframes ouiToastOut
+    from
+        opacity: 1
+        filter: blur(0)
+        transform: translate3d(0, 0, 0) scale(1)
+    to
+        opacity: 1
+        filter: blur(0)
+        transform: translate3d(var(--oui-toast-exit-x, 0), var(--oui-toast-exit-y, 0), 0) scale(1)
+
+@keyframes ouiToastProgress
+    from
+        transform: scaleX(1)
+    to
+        transform: scaleX(0)
+
+@keyframes ouiSubmenuIn
+    from
+        opacity: 0
+        transform: translateX(-4px) scale(.98)
+    to
+        opacity: 1
+        transform: translateX(0) scale(1)
+
+@keyframes ouiSubmenuOut
+    from
+        opacity: 1
+        transform: translateX(0) scale(1)
+    to
+        opacity: 0
+        transform: translateX(-3px) scale(.985)
+
+@keyframes ouiModalZoomBlurIn
+    from
+        filter: blur(14px)
+        opacity: 0
+        transform: scale(.82)
+    to
+        filter: blur(0)
+        opacity: 1
+        transform: scale(1)
+
+@keyframes ouiModalZoomBlurOut
+    from
+        filter: blur(0)
+        opacity: 1
+        transform: scale(1)
+    to
+        filter: blur(14px)
+        opacity: 0
+        transform: scale(.82)
+
+@keyframes ouiModalRiseIn
+    from
+        filter: blur(0)
+        opacity: 0
+        transform: scale(.92) translateY(14px)
+    to
+        filter: blur(0)
+        opacity: 1
+        transform: scale(1) translateY(0)
+
+@keyframes ouiModalRiseOut
+    from
+        filter: blur(0)
+        opacity: 1
+        transform: scale(1) translateY(0)
+    to
+        filter: blur(0)
+        opacity: 0
+        transform: scale(.94) translateY(10px)
+
+@keyframes ouiModalFadeIn
+    from
+        filter: blur(0)
+        opacity: 0
+        transform: scale(1)
+    to
+        filter: blur(0)
+        opacity: 1
+        transform: scale(1)
+
+@keyframes ouiModalFadeOut
+    from
+        filter: blur(0)
+        opacity: 1
+        transform: scale(1)
+    to
+        filter: blur(0)
+        opacity: 0
+        transform: scale(1)
+
+@keyframes ouiFadeIn
+    from
+        opacity: 0
+    to
+        opacity: var(--oui-overlay-opacity, 1)
+
+@keyframes ouiFadeOut
+    from
+        opacity: var(--oui-overlay-opacity, 1)
+    to
+        opacity: 0
+
+@keyframes ouiSpin
+    to
+        transform: rotate(360deg)
+
+@keyframes ouiSkeleton
+    0%
+        transform: translateX(-100%)
+    100%
+        transform: translateX(100%)

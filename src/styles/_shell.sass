@@ -1,0 +1,359 @@
+.oui-app-shell
+    height: 100vh
+    min-height: 100vh
+    overflow: hidden
+    padding: var(--oui-app-shell-inset, 28px)
+    color: var(--oui-text)
+    background: var(--oui-bg)
+
+.oui-app-shell-frame
+    display: grid
+    grid-template-columns: minmax(220px, var(--oui-app-shell-sidebar-width, 260px)) minmax(0, 1fr)
+    gap: 0
+    height: calc(100vh - (var(--oui-app-shell-inset, 28px) * 2))
+    min-height: 0
+    max-width: var(--oui-app-shell-max-width, 1440px)
+    margin: 0 auto
+
+.oui-app-shell-main
+    display: flex
+    min-width: 0
+    height: 100%
+    min-height: 0
+    flex-direction: column
+    overflow: hidden
+
+.oui-app-shell-sidebar-desktop
+    min-width: 0
+    min-height: 0
+
+.oui-app-shell-header
+    position: relative
+    z-index: 65
+    display: flex
+    min-height: 56px
+    align-items: center
+    justify-content: space-between
+    gap: 10px
+    border-bottom: 1px solid var(--oui-border)
+    background: var(--oui-bg)
+    padding: 8px 10px
+
+.oui-app-shell-header[data-visibility="mobile"]
+    display: none
+
+.oui-app-shell-header-title
+    min-width: 0
+    flex: 1 1 auto
+    overflow: hidden
+    font-size: 14px
+    font-weight: 760
+    line-height: 1.1
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-app-shell-header-actions
+    display: inline-flex
+    flex: 0 0 auto
+    align-items: center
+    gap: 8px
+
+.oui-app-shell-sidebar
+    position: relative
+    display: flex
+    height: 100%
+    min-height: 0
+    flex-direction: column
+    gap: 0
+    overflow: hidden
+    --oui-app-shell-sidebar-bg: var(--oui-section-surface-bg, var(--oui-panel))
+    --oui-app-shell-sidebar-highlight-bg: var(--oui-section-solid-bg, var(--oui-panel))
+    --oui-app-shell-sidebar-head-pad: 18px 18px 12px
+    --oui-app-shell-sidebar-body-pad: 12px 8px 18px 18px
+    --oui-app-shell-sidebar-footer-pad: 12px 18px 18px
+    border: 0
+    border-radius: var(--oui-radius)
+    background: var(--oui-app-shell-sidebar-bg)
+    box-shadow: var(--oui-section-shadow, none)
+    padding: 0
+
+.oui-app-shell-sidebar::before
+    content: ''
+    display: none
+
+.oui-app-shell-sidebar > *
+    position: relative
+    z-index: 1
+
+.oui-app-shell-sidebar-head
+    display: flex
+    width: 100%
+    min-width: 0
+    align-items: flex-start
+    justify-content: space-between
+    gap: 12px
+    padding: var(--oui-app-shell-sidebar-head-pad)
+
+.oui-app-shell-sidebar-head-main
+    display: flex
+    min-width: 0
+    flex: 1 1 auto
+    flex-direction: column
+    gap: 4px
+
+.oui-app-shell-sidebar-title
+    min-width: 0
+    overflow: hidden
+    font-size: 18px
+    font-weight: 760
+    line-height: 1.15
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-app-shell-sidebar-description
+    margin: 0
+
+.oui-app-shell-sidebar .oui-app-shell-sidebar-close
+    display: none
+
+.oui-app-shell-sidebar-separator
+    margin: 0 18px
+
+.oui-app-shell-sidebar-scroll
+    display: flex
+    width: 100%
+    min-height: 0
+    flex: 1 1 auto
+
+.oui-app-shell-sidebar-scroll > .oui-scroll-area-viewport
+    min-height: 0
+    flex: 1 1 auto
+
+.oui-app-shell-sidebar-body
+    min-width: 0
+    padding: var(--oui-app-shell-sidebar-body-pad)
+
+.oui-app-shell-sidebar-footer
+    flex: 0 0 auto
+    margin-top: auto
+    padding: var(--oui-app-shell-sidebar-footer-pad)
+
+.oui-app-shell-content-scroll
+    flex: 1 1 auto
+    width: 100%
+    height: 100%
+    min-width: 0
+    min-height: 0
+    padding: 0
+
+.oui-app-shell-content-scroll > .oui-scroll-area-viewport
+    height: 100%
+    scroll-padding: 8px 28px 24px 22px
+
+.oui-app-shell-content
+    display: flex
+    box-sizing: border-box
+    min-width: 0
+    min-height: 100%
+    flex-direction: column
+    gap: 18px
+    padding: 0 28px 24px 22px
+
+.oui-app-shell-nav
+    display: flex
+    flex-direction: column
+    gap: 4px
+
+.oui-app-shell-nav-item
+    display: flex
+    width: 100%
+    min-width: 0
+    min-height: 34px
+    align-items: center
+    gap: 9px
+    border: 1px solid transparent
+    border-radius: var(--oui-radius-sm)
+    padding: 7px 9px
+    color: var(--oui-text)
+    background: transparent
+    font: inherit
+    text-align: left
+    text-decoration: none
+    cursor: pointer
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease
+
+.oui-app-shell-nav-item:hover,
+.oui-app-shell-nav-item:focus-visible
+    background: var(--oui-control-hover-bg, var(--oui-soft))
+    outline: none
+
+.oui-app-shell-nav-item:focus-visible
+    box-shadow: var(--oui-ring)
+
+.oui-app-shell-nav-item[data-active="true"]
+    border-color: transparent
+    color: var(--oui-brand-strong)
+    background: var(--oui-brand-soft)
+
+.oui-app-shell-nav-item:disabled
+    cursor: not-allowed
+    opacity: .5
+
+.oui-app-shell-nav-icon
+    display: inline-flex
+    flex: 0 0 auto
+    color: currentColor
+
+.oui-app-shell-nav-text
+    display: flex
+    min-width: 0
+    flex: 1 1 auto
+    flex-direction: column
+    gap: 2px
+
+.oui-app-shell-nav-label
+    overflow: hidden
+    font-size: 13px
+    font-weight: 650
+    line-height: 1rem
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-app-shell-nav-caption
+    overflow: hidden
+    color: var(--oui-muted)
+    font-size: 11px
+    line-height: .95rem
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-app-shell-nav-badge
+    display: inline-flex
+    flex: 0 0 auto
+    align-items: center
+    justify-content: center
+    min-width: 20px
+    min-height: 18px
+    border-radius: 999px
+    padding: 0 6px
+    color: var(--oui-brand-strong)
+    background: var(--oui-brand-soft)
+    font-size: 11px
+    font-weight: 700
+    line-height: 1
+
+.oui-page-title-block
+    display: flex
+    min-width: 0
+    align-items: flex-start
+    justify-content: space-between
+    gap: 16px
+
+.oui-page-title-main
+    min-width: 0
+
+.oui-page-title-row
+    display: flex
+    min-width: 0
+    align-items: center
+    gap: 10px
+
+.oui-page-title
+    margin: 0
+    overflow-wrap: anywhere
+    font-size: 22px
+    font-weight: 780
+    letter-spacing: 0
+    line-height: 1.15
+
+.oui-page-title-caption
+    max-width: 760px
+    margin: 5px 0 0
+    color: var(--oui-muted)
+    font-size: 13px
+    line-height: 1.5
+
+.oui-page-title-actions
+    display: flex
+    flex: 0 0 auto
+    align-items: center
+    justify-content: flex-end
+    gap: 8px
+
+@media (max-width: 860px)
+    .oui-app-shell
+        padding: 0
+
+    .oui-app-shell-frame
+        width: 100%
+        height: calc(100vh - 56px)
+        grid-template-columns: 1fr
+        grid-template-rows: minmax(0, 1fr)
+        max-width: none
+        margin: 0
+
+    .oui-app-shell-header[data-visibility="mobile"]
+        display: flex
+
+    .oui-app-shell-sidebar-desktop
+        display: none
+
+    .oui-app-shell-main
+        grid-column: 1
+        grid-row: 1
+
+    .oui-app-shell-sidebar-drawer-panel
+        background: transparent
+        border: 0
+        box-shadow: 18px 0 48px rgb(0 0 0 / 28%)
+        backdrop-filter: blur(24px)
+        -webkit-backdrop-filter: blur(24px)
+
+    .oui-app-shell-sidebar-drawer-body
+        display: flex
+        min-height: 0
+        padding: 0
+
+    .oui-app-shell-sidebar-drawer-body > .oui-app-shell-sidebar
+        width: 100%
+
+    .oui-app-shell-sidebar
+        width: 100%
+        height: 100vh
+        max-height: none
+        --oui-app-shell-sidebar-head-pad: 18px 16px 12px
+        --oui-app-shell-sidebar-body-pad: 12px 16px 18px
+        --oui-app-shell-sidebar-footer-pad: 12px 16px 18px
+        border-radius: 0 12px 12px 0
+        background: transparent
+        backdrop-filter: blur(24px)
+        -webkit-backdrop-filter: blur(24px)
+        box-shadow: none
+
+    .oui-app-shell-sidebar-separator
+        margin: 0 16px
+
+    .oui-app-shell-sidebar::before
+        position: absolute
+        inset: 0
+        z-index: 0
+        display: block
+        background: color-mix(in srgb, var(--oui-panel) 20%, transparent)
+        backdrop-filter: blur(48px)
+        pointer-events: none
+
+    .oui-app-shell-sidebar .oui-app-shell-sidebar-close
+        display: inline-flex
+
+    .oui-app-shell-content-scroll > .oui-scroll-area-viewport
+        scroll-padding: 12px 10px 18px
+
+    .oui-app-shell-content
+        padding: 12px 10px 18px
+
+    .oui-page-title-block
+        flex-direction: column
+        gap: 10px
+
+    .oui-page-title-actions
+        justify-content: flex-start

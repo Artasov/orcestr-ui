@@ -1,0 +1,15 @@
+.oui-skeleton
+    display: block
+    min-height: 12px
+    border-radius: var(--oui-radius-sm)
+    background: color-mix(in srgb, var(--oui-pad-bg, var(--oui-section-bg)) var(--oui-pad-opacity, var(--oui-section-opacity)), transparent)
+    overflow: hidden
+    position: relative
+
+.oui-skeleton::after
+    animation: ouiSkeleton 1500ms linear infinite
+    background: linear-gradient(90deg, transparent 0%, var(--oui-skeleton-shimmer, rgb(255 255 255 / 10%)) 50%, transparent 100%)
+    content: ""
+    inset: 0
+    position: absolute
+    transform: translateX(-100%)

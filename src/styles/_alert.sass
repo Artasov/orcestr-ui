@@ -1,0 +1,40 @@
+.oui-alert
+    display: flex
+    min-width: 0
+    align-items: flex-start
+    gap: 10px
+    border: 1px solid var(--oui-border)
+    border-radius: var(--oui-radius-sm)
+    background: var(--oui-pad-bg)
+    padding: 10px 12px
+    color: var(--oui-text)
+
+.oui-alert[data-tone="success"]
+    border-color: color-mix(in srgb, var(--oui-success) 42%, var(--oui-border))
+    background: var(--oui-success-soft)
+
+.oui-alert[data-tone="warning"]
+    border-color: color-mix(in srgb, var(--oui-warning) 42%, var(--oui-border))
+    background: var(--oui-warning-soft)
+
+.oui-alert[data-tone="danger"]
+    border-color: color-mix(in srgb, var(--oui-danger) 42%, var(--oui-border))
+    background: var(--oui-danger-soft)
+
+.oui-alert[data-tone="info"]
+    border-color: color-mix(in srgb, var(--oui-info) 42%, var(--oui-border))
+    background: var(--oui-info-soft)
+
+.oui-alert-icon,
+.oui-alert-action
+    display: inline-flex
+    flex: 0 0 auto
+
+.oui-alert-main
+    display: flex
+    min-width: 0
+    flex: 1 1 auto
+    flex-direction: column
+    gap: 3px
+    font-size: 13px
+    line-height: 1.4

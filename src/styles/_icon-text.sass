@@ -1,0 +1,40 @@
+.oui-icon-text
+    display: inline
+    min-width: 0
+    overflow-wrap: anywhere
+
+.oui-icon-text-icon
+    display: inline-flex
+    width: 1em
+    height: 1em
+    align-items: center
+    justify-content: center
+    margin: 0.12em .4em 0 0
+    color: var(--oui-icon-text-icon-color, currentColor)
+    vertical-align: top
+
+.oui-icon-text-icon svg
+    display: block
+    width: 100%
+    height: 100%
+
+.oui-icon-text-icon[data-tone="muted"]
+    --oui-icon-text-icon-color: var(--oui-muted)
+
+.oui-icon-text-icon[data-tone="brand"]
+    --oui-icon-text-icon-color: var(--oui-brand-strong)
+
+.oui-icon-text-icon[data-tone="success"]
+    --oui-icon-text-icon-color: var(--oui-success)
+
+.oui-icon-text-icon[data-tone="warning"]
+    --oui-icon-text-icon-color: var(--oui-warning)
+
+.oui-icon-text-icon[data-tone="danger"]
+    --oui-icon-text-icon-color: var(--oui-danger)
+
+.oui-icon-text-icon[data-tone="info"]
+    --oui-icon-text-icon-color: var(--oui-info)
+
+.oui-icon-text-icon[data-spin="true"] svg
+    animation: ouiSpin 900ms linear infinite

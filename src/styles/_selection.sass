@@ -1,0 +1,697 @@
+.oui-checkbox,
+.oui-radio,
+.oui-switch
+    display: inline-flex
+    align-items: center
+    gap: 9px
+    color: var(--oui-text)
+    font-size: 14px
+    cursor: pointer
+    user-select: none
+
+.oui-checkbox input,
+.oui-radio input,
+.oui-switch input
+    position: absolute
+    opacity: 0
+    pointer-events: none
+
+.oui-checkbox-box,
+.oui-radio-dot
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    width: 18px
+    height: 18px
+    flex: 0 0 auto
+    border: 1px solid var(--oui-border-strong)
+    background: var(--oui-control-bg, transparent)
+    color: #ffffff
+    transition: background-color 140ms ease, border-color 140ms ease, box-shadow 140ms ease
+
+.oui-checkbox-box
+    border-radius: 5px
+
+.oui-radio-dot
+    border-radius: 999px
+
+.oui-radio-dot::after
+    width: 8px
+    height: 8px
+    border-radius: 999px
+    background: currentColor
+    content: ""
+    transform: scale(0)
+    transition: transform 140ms ease
+
+.oui-checkbox[data-checked="true"] .oui-checkbox-box,
+.oui-radio[data-checked="true"] .oui-radio-dot
+    border-color: var(--oui-brand)
+    background: var(--oui-brand)
+
+.oui-radio[data-checked="true"] .oui-radio-dot::after
+    transform: scale(1)
+
+.oui-checkbox:focus-within .oui-checkbox-box,
+.oui-radio:focus-within .oui-radio-dot,
+.oui-switch:focus-within .oui-switch-track
+    box-shadow: var(--oui-ring)
+
+.oui-checkbox[data-disabled="true"],
+.oui-radio[data-disabled="true"],
+.oui-switch[data-disabled="true"]
+    cursor: not-allowed
+    opacity: 0.56
+
+.oui-radio-group
+    display: flex
+    flex-wrap: wrap
+    gap: 12px
+
+.oui-switch-track
+    position: relative
+    width: 40px
+    height: 22px
+    border-radius: 999px
+    background: var(--oui-control-bg, transparent)
+    transition: background-color 140ms ease, box-shadow 140ms ease
+
+.oui-switch-thumb
+    position: absolute
+    top: 3px
+    left: 3px
+    width: 16px
+    height: 16px
+    border-radius: 999px
+    background: #ffffff
+    box-shadow: 0 1px 3px rgb(0 0 0 / 24%)
+    transition: transform 160ms ease
+
+.oui-switch[data-checked="true"] .oui-switch-track
+    background: var(--oui-brand)
+
+.oui-switch[data-checked="true"] .oui-switch-thumb
+    transform: translateX(18px)
+
+.oui-segmented,
+.oui-tabs-list
+    display: inline-flex
+    align-items: center
+    gap: 3px
+    width: fit-content
+    border: 1px solid var(--oui-border)
+    border-radius: var(--oui-radius)
+    background: var(--oui-control-bg, transparent)
+    padding: 3px
+
+.oui-segmented-item,
+.oui-tabs-trigger
+    border: 0
+    border-radius: var(--oui-radius-sm)
+    padding: 7px 11px
+    color: var(--oui-muted)
+    background: transparent
+    font: inherit
+    font-size: 13px
+    font-weight: 650
+    cursor: pointer
+    transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease
+
+.oui-segmented-item[data-active="true"],
+.oui-tabs-trigger[data-active="true"]
+    color: var(--oui-text)
+    background: var(--oui-control-hover-bg, var(--oui-gray-a4, var(--oui-soft)))
+    box-shadow: var(--oui-shadow-sm)
+
+.oui-tabs
+    display: flex
+    flex-direction: column
+    gap: 12px
+
+.oui-tabs-content
+    min-width: 0
+
+
+
+/* Orcestr selection refinements */
+
+.oui-button[data-variant="surface"],
+.oui-icon-button[data-variant="surface"],
+.oui-combobox-trigger
+    background-color: var(--oui-control-bg, transparent)
+    border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    box-shadow: none
+    font-weight: 400
+
+.oui-button[data-variant="surface"]:not(:disabled):hover,
+.oui-icon-button[data-variant="surface"]:not(:disabled):hover,
+.oui-combobox-trigger:not(:disabled):hover
+    border-color: var(--oui-gray-a8)
+    background-color: var(--oui-control-hover-bg, var(--oui-gray-a4))
+
+.oui-combobox-trigger[data-state="open"],
+.oui-combobox-trigger[data-state="open"]:hover
+    border-color: var(--oui-brand)
+    box-shadow: none
+
+.oui-combobox-trigger .oui-button-label
+    flex: 1 1 auto
+    min-width: 0
+    text-align: left
+
+.oui-combobox-trigger-label,
+.oui-combobox-placeholder
+    display: block
+    min-width: 0
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    line-height: 1rem
+
+.oui-combobox-placeholder
+    color: var(--oui-muted)
+
+.oui-combobox-trigger-actions
+    display: inline-flex
+    align-items: center
+    gap: 8px
+    flex: 0 0 auto
+    color: var(--oui-muted)
+
+.oui-combobox-clear
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    color: var(--oui-muted)
+    transition: color 160ms ease
+
+.oui-combobox-clear:hover,
+.oui-combobox-clear:focus-visible
+    color: var(--oui-text)
+    outline: none
+
+.oui-combobox-content,
+.oui-select-content
+    min-width: 280px
+    max-width: min(420px, calc(100vw - 24px))
+    padding: 0
+    overflow: hidden
+    color: var(--oui-text)
+    background: var(--oui-bg)
+
+.oui-combobox-search-wrap
+    display: flex
+    align-items: center
+    gap: 6px
+    min-height: 42px
+    padding: 0 6px 4px
+    border-bottom: 1px solid var(--oui-border)
+
+.oui-combobox-scroll
+    overflow-x: hidden
+    overflow-y: auto
+    overscroll-behavior: contain
+    scrollbar-width: thin
+    scrollbar-color: var(--oui-gray-a8) transparent
+
+.oui-combobox-options,
+.oui-listbox.oui-combobox-options
+    display: flex
+    flex-direction: column
+    gap: 4px
+    padding: 4px
+
+.oui-combobox-option,
+.oui-listbox.oui-combobox-options .oui-listbox-item
+    display: flex
+    align-items: center
+    gap: 8px
+    width: 100%
+    min-height: 32px
+    border: 0
+    border-radius: 6px
+    padding: 0
+    color: var(--oui-text)
+    background: transparent
+    font: inherit
+    font-size: 14px
+    line-height: 20px
+    font-weight: 400
+    text-align: left
+    cursor: pointer
+    transition: background-color 180ms ease, color 180ms ease
+
+.oui-listbox.oui-combobox-options .oui-listbox-item
+    padding: 6px 10px
+
+.oui-combobox-option-main
+    display: flex
+    align-items: center
+    flex: 1 1 auto
+    min-width: 0
+    align-self: stretch
+    padding: 6px 10px
+    border: 0
+    background: transparent
+    color: inherit
+    font: inherit
+    text-align: left
+    cursor: pointer
+
+.oui-combobox-option[data-selected="true"],
+.oui-listbox.oui-combobox-options .oui-listbox-item[data-selected="true"]
+    background: transparent
+
+.oui-combobox-option[data-selected="false"]:hover,
+.oui-combobox-option[data-highlighted="true"],
+.oui-listbox.oui-combobox-options .oui-listbox-item:hover,
+.oui-listbox.oui-combobox-options .oui-listbox-item[data-highlighted="true"]
+    background: var(--oui-control-hover-bg, var(--oui-gray-a3))
+
+.oui-combobox-option[data-selected="true"]:hover,
+.oui-combobox-option[data-selected="true"][data-highlighted="true"],
+.oui-listbox.oui-combobox-options .oui-listbox-item[data-selected="true"]:hover,
+.oui-listbox.oui-combobox-options .oui-listbox-item[data-selected="true"][data-highlighted="true"]
+    background: var(--oui-control-hover-bg, var(--oui-gray-a3))
+
+.oui-combobox-option[data-selected="true"],
+.oui-listbox.oui-combobox-options .oui-listbox-item[data-selected="true"]
+    color: var(--oui-text)
+    background: color-mix(in srgb, var(--oui-text) 7%, transparent)
+
+.oui-combobox-option[data-selected="true"]:hover,
+.oui-combobox-option[data-selected="true"][data-highlighted="true"],
+.oui-listbox.oui-combobox-options .oui-listbox-item[data-selected="true"]:hover,
+.oui-listbox.oui-combobox-options .oui-listbox-item[data-selected="true"][data-highlighted="true"]
+    background: var(--oui-control-hover-bg, var(--oui-gray-a3))
+
+.oui-combobox-check
+    flex: 0 0 auto
+    margin-right: 10px
+    color: var(--oui-brand-strong)
+
+.oui-combobox-option-action
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    flex: 0 0 auto
+    width: 26px
+    height: 26px
+    margin-right: 4px
+    border: 0
+    border-radius: 999px
+    background: transparent
+    color: var(--oui-muted)
+    cursor: pointer
+    opacity: 0
+    transition: opacity 140ms ease, background-color 140ms ease, color 140ms ease
+
+.oui-combobox-option:hover .oui-combobox-option-action,
+.oui-combobox-option:focus-within .oui-combobox-option-action
+    opacity: 1
+
+.oui-combobox-option-action:hover,
+.oui-combobox-option-action:focus-visible
+    background: var(--oui-gray-a4)
+    color: var(--oui-text)
+    outline: none
+
+.oui-entity-picker-option
+    display: flex
+    min-width: 0
+    width: 100%
+    align-items: center
+    gap: 10px
+
+.oui-entity-picker-value
+    display: block
+    min-width: 0
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-entity-option-main
+    display: flex
+    min-width: 0
+    flex: 1 1 auto
+    flex-direction: column
+    gap: 2px
+
+.oui-entity-option-code
+    display: block
+    min-width: 0
+    overflow: hidden
+    color: var(--oui-text)
+    font-size: 13px
+    font-weight: 720
+    line-height: 1.25
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-entity-option-meta
+    display: block
+    min-width: 0
+    overflow: hidden
+    color: var(--oui-muted)
+    font-size: 12px
+    line-height: 1.25
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-entity-option-badge
+    display: inline-flex
+    min-width: 32px
+    flex: 0 0 auto
+    justify-content: center
+    border: 1px solid var(--oui-border)
+    border-radius: var(--oui-radius-sm)
+    background: var(--oui-pad-bg)
+    color: var(--oui-muted)
+    font-size: 12px
+    font-weight: 700
+    padding: 2px 6px
+
+.oui-combobox-empty,
+.oui-combobox-state,
+.oui-combobox-next-loader
+    display: flex
+    align-items: center
+    justify-content: center
+    min-height: 48px
+    padding: 12px
+    color: var(--oui-muted)
+    font-size: 14px
+
+.oui-combobox-sentinel
+    width: 100%
+    height: 1px
+
+.oui-combobox-search-wrap .oui-icon-button.oui-combobox-search-action
+    width: 24px
+    min-width: 24px
+    height: 24px
+    min-height: 24px
+    flex: 0 0 24px
+    padding: 0
+    line-height: 1
+
+.oui-multi-select-trigger .oui-button-label
+    min-width: 0
+
+.oui-multi-select-option
+    min-height: 34px
+    justify-content: flex-start
+    gap: 10px
+    padding: 6px 8px
+
+.oui-multi-select-option .oui-combobox-option-main
+    align-self: auto
+    padding: 0
+    line-height: 20px
+
+.oui-multi-select-check
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    width: 16px
+    height: 16px
+    flex: 0 0 16px
+    border: 1px solid color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border-radius: 4px
+    color: #ffffff
+    background: var(--oui-control-bg, transparent)
+
+.oui-multi-select-check svg
+    width: 13px
+    height: 13px
+
+.oui-multi-select-option[data-selected="true"] .oui-multi-select-check
+    border-color: var(--oui-brand)
+    background: var(--oui-brand)
+
+/* Select/combobox triggers must be the same visual control as TextField. */
+.oui-button.oui-combobox-trigger[data-variant="surface"],
+.oui-button.oui-combobox-trigger
+    background-color: var(--oui-control-bg, transparent)
+    border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border-radius: 6px
+    box-shadow: none
+    outline: none
+    transition: border-color 280ms ease, background-color 180ms ease
+
+.oui-button.oui-combobox-trigger[data-variant="surface"]:not(:disabled):hover,
+.oui-button.oui-combobox-trigger:not(:disabled):hover
+    background-color: var(--oui-control-hover-bg, var(--oui-gray-a4))
+    border-color: var(--oui-gray-a8)
+    box-shadow: none
+
+.oui-button.oui-combobox-trigger[data-state="open"],
+.oui-button.oui-combobox-trigger[data-state="open"]:focus,
+.oui-button.oui-combobox-trigger[data-state="open"]:focus-visible,
+.oui-button.oui-combobox-trigger[data-state="open"]:not(:disabled):hover
+    background-color: var(--oui-control-bg, transparent)
+    border-color: var(--oui-brand)
+    box-shadow: none
+    outline: none
+
+/* Orcestr selection controls, tabs and collapse */
+.oui-checkbox,
+.oui-radio,
+.oui-switch
+    position: relative
+    align-items: center
+    gap: 8px
+    width: fit-content
+    color: var(--oui-text)
+    font-size: 14px
+    line-height: 20px
+
+.oui-checkbox input,
+.oui-switch input,
+.oui-radio input
+    position: absolute
+    width: 1px
+    height: 1px
+    margin: -1px
+    overflow: hidden
+    border: 0
+    clip: rect(0 0 0 0)
+    clip-path: inset(50%)
+    outline: none
+    pointer-events: none
+    white-space: nowrap
+    appearance: none
+
+.oui-checkbox-box,
+.oui-radio-dot
+    width: 16px
+    height: 16px
+    min-width: 16px
+    min-height: 16px
+    border: 1px solid color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    background: var(--oui-control-bg, transparent)
+    color: #ffffff
+    box-shadow: none
+    transition: background-color 180ms ease, border-color 220ms ease, color 180ms ease
+
+.oui-checkbox-box
+    border-radius: 4px
+    overflow: hidden
+
+.oui-radio-dot
+    border-radius: 999px
+
+.oui-checkbox-box svg
+    opacity: 0
+    transform: scale(.72)
+    transition: opacity 140ms ease, transform 160ms ease
+
+.oui-checkbox:hover .oui-checkbox-box,
+.oui-radio:hover .oui-radio-dot
+    border-color: var(--oui-gray-a8)
+
+.oui-checkbox[data-checked="true"] .oui-checkbox-box
+    border-color: var(--oui-brand)
+    background: var(--oui-brand)
+
+.oui-radio[data-checked="true"] .oui-radio-dot
+    border-color: var(--oui-brand)
+    background: var(--oui-brand)
+
+.oui-checkbox[data-checked="true"] .oui-checkbox-box svg
+    opacity: 1
+    transform: scale(1)
+
+.oui-checkbox:focus-within .oui-checkbox-box,
+.oui-radio:focus-within .oui-radio-dot,
+.oui-switch:focus-within .oui-switch-track
+    border-color: var(--oui-brand)
+    box-shadow: none
+
+.oui-switch-track
+    position: relative
+    width: 36px
+    height: 20px
+    border: 1px solid color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border-radius: 999px
+    background: var(--oui-control-bg, transparent)
+    box-shadow: none
+    transition: background-color 180ms ease, border-color 220ms ease
+
+.oui-switch:hover .oui-switch-track
+    border-color: var(--oui-gray-a8)
+
+.oui-switch-thumb
+    position: absolute
+    top: 1px
+    left: 1px
+    width: 16px
+    height: 16px
+    border-radius: 999px
+    background: var(--oui-text)
+    box-shadow: 0 1px 2px rgb(15 23 42 / 22%)
+    transition: background-color 180ms ease, transform 180ms cubic-bezier(.22, 1, .36, 1)
+
+.oui-switch[data-checked="true"] .oui-switch-track
+    border-color: var(--oui-brand)
+    background: var(--oui-brand)
+
+.oui-switch[data-checked="true"] .oui-switch-thumb
+    transform: translateX(16px)
+
+:root[data-oui-theme="light"] .oui-switch[data-checked="true"] .oui-switch-thumb,
+.oui-root[data-oui-theme="light"] .oui-switch[data-checked="true"] .oui-switch-thumb
+    background: #ffffff
+
+.oui-checkbox[data-disabled="true"],
+.oui-switch[data-disabled="true"]
+    cursor: not-allowed
+    opacity: .56
+
+.oui-collapse
+    overflow: hidden
+    min-width: 0
+    min-height: 0
+
+.oui-collapse-content
+    overflow: hidden
+    min-width: 0
+    min-height: 0
+    opacity: 0
+    transform: translateY(-4px)
+    transition: opacity 160ms ease, transform 220ms cubic-bezier(.22, 1, .36, 1)
+
+.oui-collapse[data-state="open"] .oui-collapse-content
+    opacity: 1
+    transform: translateY(0)
+
+.oui-tabs
+    gap: 12px
+
+.oui-tabs-shell
+    position: relative
+    min-width: 0
+    margin-inline: -8px
+    padding-inline: 8px
+    overflow: visible
+
+.oui-tabs-list
+    position: relative
+    display: flex
+    width: 100%
+    max-width: 100%
+    gap: 4px
+    overflow-x: auto
+    overflow-y: hidden
+    border: 0
+    border-radius: 0
+    background: transparent
+    padding: 2px
+    scrollbar-width: none
+
+.oui-tabs-list::-webkit-scrollbar
+    display: none
+
+.oui-tabs-active-indicator,
+.oui-tabs-hover-indicator
+    position: absolute
+    border-radius: 6px
+    pointer-events: none
+    transition: left 380ms cubic-bezier(.22, 1, .36, 1), top 220ms cubic-bezier(.22, 1, .36, 1), width 380ms cubic-bezier(.22, 1, .36, 1), height 220ms cubic-bezier(.22, 1, .36, 1), opacity 220ms ease
+
+.oui-tabs-active-indicator
+    z-index: 0
+    background: var(--oui-gray-a4)
+
+.oui-tabs-hover-indicator
+    z-index: 0
+    background: var(--oui-gray-a3)
+    opacity: 0
+
+.oui-tabs-hover-indicator[data-visible="true"]
+    opacity: 1
+
+.oui-tabs-trigger
+    position: relative
+    z-index: 1
+    display: inline-flex
+    align-items: center
+    gap: 8px
+    flex: 0 0 auto
+    min-height: 34px
+    border: 0
+    border-radius: 6px
+    padding: 8px 14px
+    color: var(--oui-muted)
+    background: transparent
+    box-shadow: none
+    font: inherit
+    font-size: 14px
+    font-weight: 400
+    line-height: 1.4
+    cursor: pointer
+    white-space: nowrap
+    transition: color 240ms ease
+
+.oui-tabs-trigger:hover,
+.oui-tabs-trigger:focus-visible,
+.oui-tabs-trigger[data-active="true"]
+    color: var(--oui-text)
+    background: transparent
+    box-shadow: none
+    outline: none
+
+.oui-tabs-trigger[data-active="true"]
+    font-weight: 500
+
+.oui-tabs-trigger-icon
+    display: inline-flex
+    align-items: center
+    color: var(--oui-muted)
+    transition: color 240ms ease
+
+.oui-tabs-trigger[data-active="true"] .oui-tabs-trigger-icon
+    color: var(--oui-brand)
+
+.oui-tabs-trigger-label
+    line-height: 1rem
+
+.oui-tabs-trigger-badge
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    min-width: 20px
+    height: 20px
+    border-radius: 999px
+    padding: 0 6px
+    color: var(--oui-muted)
+    background: var(--oui-gray-a4)
+    font-size: 12px
+    line-height: 1
+
+.oui-tabs-content
+    min-width: 0
+
+.oui-tabs-panel
+    min-width: 0
+    padding-top: 2px

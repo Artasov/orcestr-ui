@@ -1,0 +1,393 @@
+.oui-data-table-shell
+    display: flex
+    min-width: 0
+    min-height: 0
+    flex-direction: column
+    gap: 8px
+
+.oui-data-table-toolbar
+    display: flex
+    min-width: 0
+    align-items: stretch
+    justify-content: flex-end
+    gap: 8px
+
+.oui-data-table-toolbar-content
+    display: flex
+    min-width: 0
+    flex: 1 1 auto
+    align-items: stretch
+    gap: 8px
+
+.oui-data-table-toolbar-content > .oui-text-field
+    flex: 1 1 240px
+
+.oui-data-table-toolbar-content > .oui-button
+    flex: 0 0 auto
+
+.oui-data-table-wrap
+    --oui-data-table-row-base-bg: var(--oui-data-table-bg, var(--oui-section-solid-bg, var(--oui-bg)))
+    width: 100%
+    overflow: auto
+    border: 1px solid var(--oui-border)
+    border-radius: var(--oui-radius)
+    background: var(--oui-data-table-row-base-bg)
+    min-height: 0
+    scrollbar-width: thin
+    scrollbar-color: var(--oui-gray-a8, var(--oui-border-strong)) transparent
+
+.oui-data-table-wrap:focus,
+.oui-data-table-wrap:focus-visible
+    outline: none
+
+.oui-data-table
+    width: 100%
+    border-collapse: separate
+    border-spacing: 0
+    font-size: 13px
+    table-layout: fixed
+
+.oui-data-table th,
+.oui-data-table td
+    padding: var(--oui-table-cell-padding-y, 10px) 12px
+    border-bottom: 1px solid var(--oui-border)
+    vertical-align: middle
+
+.oui-data-table th
+    position: sticky
+    top: 0
+    height: var(--oui-table-header-height, 42px)
+    z-index: var(--oui-z-sticky, 20)
+    color: var(--oui-muted)
+    background: color-mix(in srgb, var(--oui-panel) 94%, var(--oui-bg))
+    font-weight: 700
+    text-align: left
+    white-space: nowrap
+    overflow: visible
+
+.oui-data-table-header-cell
+    display: flex
+    min-width: 0
+    align-items: center
+    justify-content: space-between
+    gap: 8px
+
+.oui-data-table-header-content
+    display: flex
+    min-width: 0
+    align-items: center
+    justify-content: space-between
+    gap: 6px
+
+.oui-data-table-resize
+    position: absolute
+    top: 0
+    right: -6px
+    bottom: 0
+    z-index: 2
+    width: 12px
+    border: 0
+    padding: 0
+    background: transparent
+    cursor: col-resize
+    touch-action: none
+
+.oui-data-table-resize::after
+    position: absolute
+    top: 8px
+    right: 5px
+    bottom: 8px
+    width: 2px
+    border-radius: 999px
+    background: transparent
+    transition: background-color 140ms ease
+    content: ""
+
+.oui-data-table th:hover .oui-data-table-resize::after,
+.oui-data-table-resize:hover::after,
+.oui-data-table-resize:focus-visible::after,
+.oui-data-table th[data-resizing="true"] .oui-data-table-resize::after
+    background: color-mix(in srgb, var(--oui-brand) 70%, transparent)
+
+.oui-data-table td
+    color: var(--oui-text)
+    background: linear-gradient(var(--oui-data-table-row-bg), var(--oui-data-table-row-bg)), var(--oui-data-table-row-base-bg)
+
+.oui-data-table th[data-pinned="left"],
+.oui-data-table td[data-pinned="left"]
+    position: sticky
+    left: var(--oui-data-table-pinned-left-offset, 0px)
+    z-index: calc(var(--oui-z-sticky, 20) + 1)
+
+.oui-data-table th[data-pinned="right"],
+.oui-data-table td[data-pinned="right"]
+    position: sticky
+    right: 0
+    z-index: calc(var(--oui-z-sticky, 20) + 1)
+
+.oui-data-table th[data-pinned="left"],
+.oui-data-table th[data-pinned="right"]
+    background: color-mix(in srgb, var(--oui-panel) 94%, var(--oui-bg))
+
+.oui-data-table td[data-pinned="left"],
+.oui-data-table td[data-pinned="right"]
+    background: linear-gradient(var(--oui-data-table-row-bg), var(--oui-data-table-row-bg)), var(--oui-data-table-row-base-bg)
+
+.oui-data-table tbody tr
+    --oui-data-table-row-bg: var(--oui-data-table-row-base-bg)
+
+.oui-data-table tr[data-clickable="true"]
+    cursor: pointer
+
+.oui-data-table tbody tr[data-clickable="true"]:hover
+    --oui-data-table-row-bg: var(--oui-pad-hover-bg)
+    background: linear-gradient(var(--oui-data-table-row-bg), var(--oui-data-table-row-bg)), var(--oui-data-table-row-base-bg)
+
+.oui-data-table tbody tr[data-selected="true"]
+    --oui-data-table-row-bg: var(--oui-selected-bg)
+    background: linear-gradient(var(--oui-data-table-row-bg), var(--oui-data-table-row-bg)), var(--oui-data-table-row-base-bg)
+
+.oui-data-table tbody tr[data-selected="true"]:hover
+    --oui-data-table-row-bg: color-mix(in srgb, var(--oui-selected-bg) 82%, var(--oui-pad-hover-bg))
+    background: linear-gradient(var(--oui-data-table-row-bg), var(--oui-data-table-row-bg)), var(--oui-data-table-row-base-bg)
+
+.oui-data-table tbody tr[data-active="true"]
+    outline: 2px solid color-mix(in srgb, var(--oui-brand) 42%, transparent)
+    outline-offset: -2px
+
+.oui-data-table tr:last-child td
+    border-bottom: 0
+
+.oui-data-table-expand-cell
+    width: 34px
+    min-width: 34px
+    max-width: 34px
+    padding-inline: 0 !important
+    text-align: center
+
+.oui-data-table-select-cell
+    width: 42px
+    min-width: 42px
+    max-width: 42px
+    padding-inline: 0 !important
+    text-align: center
+
+.oui-data-table th.oui-data-table-expand-cell,
+.oui-data-table td.oui-data-table-expand-cell
+    position: sticky
+    left: 0
+    z-index: calc(var(--oui-z-sticky, 20) + 2)
+
+.oui-data-table th.oui-data-table-select-cell,
+.oui-data-table td.oui-data-table-select-cell
+    position: sticky
+    left: var(--oui-data-table-select-left-offset, 0px)
+    z-index: calc(var(--oui-z-sticky, 20) + 2)
+
+.oui-data-table th.oui-data-table-expand-cell,
+.oui-data-table th.oui-data-table-select-cell
+    background: color-mix(in srgb, var(--oui-panel) 94%, var(--oui-bg))
+
+.oui-data-table td.oui-data-table-expand-cell,
+.oui-data-table td.oui-data-table-select-cell
+    background: linear-gradient(var(--oui-data-table-row-bg), var(--oui-data-table-row-bg)), var(--oui-data-table-row-base-bg)
+
+.oui-data-table-select-control
+    display: inline-flex
+    width: 100%
+    align-items: center
+    justify-content: center
+
+.oui-data-table-select-cell .oui-checkbox
+    justify-content: center
+
+.oui-data-table-sort
+    display: inline-flex
+    max-width: 100%
+    align-items: center
+    gap: 6px
+    border: 0
+    border-radius: var(--oui-radius-sm)
+    background: transparent
+    color: inherit
+    cursor: pointer
+    font: inherit
+    font-weight: 700
+    padding: 0
+    text-align: inherit
+    transition: color 180ms ease
+
+.oui-data-table-sort-label
+    display: inline-flex
+    min-width: 0
+    min-height: 24px
+    align-items: center
+    border-radius: var(--oui-radius-sm)
+    padding: 0 4px
+    transition: background-color 180ms ease, color 180ms ease, box-shadow 180ms ease
+
+.oui-data-table-sort:hover .oui-data-table-sort-label
+    background: color-mix(in srgb, var(--oui-pad-hover-bg) 72%, transparent)
+    color: var(--oui-text)
+
+.oui-data-table-sort:focus-visible
+    outline: none
+
+.oui-data-table-sort:focus-visible .oui-data-table-sort-label
+    background: color-mix(in srgb, var(--oui-pad-hover-bg) 72%, transparent)
+    box-shadow: var(--oui-ring)
+
+.oui-data-table-sort[data-active="true"]
+    color: var(--oui-brand-strong)
+
+.oui-data-table-sort-placeholder
+    width: 13px
+    height: 13px
+
+.oui-data-table-expand
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    width: 22px
+    height: 22px
+    border: 0
+    border-radius: var(--oui-radius-sm)
+    background: transparent
+    color: var(--oui-muted)
+    cursor: pointer
+
+.oui-data-table-expand:hover
+    background: var(--oui-control-hover-bg)
+    color: var(--oui-text)
+
+.oui-data-table-wrap::-webkit-scrollbar
+    width: 10px
+    height: 10px
+
+.oui-data-table-wrap::-webkit-scrollbar-track
+    background: transparent
+
+.oui-data-table-wrap::-webkit-scrollbar-thumb
+    min-height: 28px
+    border: 3px solid transparent
+    border-radius: 999px
+    background-color: var(--oui-gray-a8, var(--oui-border-strong))
+    background-clip: content-box
+
+.oui-data-table-wrap::-webkit-scrollbar-thumb:hover
+    background-color: var(--oui-border-strong)
+
+.oui-data-table-group-row td
+    background: var(--oui-pad-bg)
+    color: var(--oui-muted)
+    font-size: 12px
+    font-weight: 760
+    text-transform: uppercase
+
+.oui-data-table-expanded-row td
+    background: var(--oui-section-nested-surface-bg)
+
+.oui-data-table-message
+    display: flex
+    min-height: 112px
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    gap: 8px
+    color: var(--oui-muted)
+    text-align: center
+
+.oui-data-table-next-loader
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 8px
+    min-height: 44px
+    color: var(--oui-muted)
+    font-size: 12px
+
+.oui-data-table-column-settings
+    width: min(320px, calc(100vw - 24px))
+
+.oui-data-table-column-settings-head
+    display: flex
+    min-width: 0
+    align-items: center
+    justify-content: space-between
+    gap: 10px
+    padding: 4px 4px 8px
+
+.oui-data-table-settings-reset
+    flex: 0 0 auto
+
+.oui-data-table-column-settings-list
+    display: flex
+    max-height: min(42vh, 360px)
+    flex-direction: column
+    gap: 3px
+    overflow: auto
+    padding-right: 2px
+
+.oui-data-table-column-settings-row
+    display: flex
+    min-width: 0
+    align-items: center
+    justify-content: space-between
+    gap: 8px
+    border-radius: var(--oui-radius-sm)
+    padding: 6px 8px
+
+.oui-data-table-column-settings-row:hover
+    background: var(--oui-control-hover-bg)
+
+.oui-data-table-column-toggle
+    display: inline-flex
+    min-width: 0
+    flex: 1 1 auto
+    align-items: center
+    gap: 8px
+    color: var(--oui-text)
+    cursor: pointer
+    font-size: 13px
+
+.oui-data-table-column-toggle > span
+    min-width: 0
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-data-table-column-settings-order
+    display: inline-flex
+    flex: 0 0 auto
+    align-items: center
+    gap: 2px
+
+.oui-data-table-column-settings-order button
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    width: 24px
+    height: 24px
+    border: 0
+    border-radius: var(--oui-radius-sm)
+    background: transparent
+    color: var(--oui-muted)
+    cursor: pointer
+
+.oui-data-table-column-settings-order button:hover,
+.oui-data-table-column-settings-order button:focus-visible
+    background: var(--oui-pad-hover-bg)
+    color: var(--oui-text)
+    outline: none
+
+.oui-data-table-column-settings-order button:disabled
+    cursor: not-allowed
+    opacity: .35
+
+.oui-data-table-virtual-spacer td
+    padding: 0
+    border-bottom: 0
+
+.oui-data-table-sentinel td
+    padding: 0
+    border-bottom: 0

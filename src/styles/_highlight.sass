@@ -1,0 +1,17 @@
+.oui-highlight
+    position: absolute
+    left: 0
+    z-index: 2
+    width: 100%
+    height: var(--oui-highlight-height, 32px)
+    opacity: 1
+    pointer-events: none
+    transition: opacity 120ms linear
+
+.oui-highlight-top
+    top: 0
+    background: linear-gradient(to bottom, var(--oui-highlight-color, var(--oui-bg)) 0%, transparent 100%)
+
+.oui-highlight-bottom
+    bottom: 0
+    background: linear-gradient(to top, var(--oui-highlight-color, var(--oui-bg)) 0%, transparent 100%)

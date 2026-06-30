@@ -1,0 +1,243 @@
+.oui-status-badge
+    display: inline-flex
+    width: fit-content
+    align-items: center
+    gap: 6px
+    border-radius: 999px
+    background: var(--oui-soft)
+    color: var(--oui-text)
+    font-size: 12px
+    font-weight: 700
+    line-height: 1
+    padding: 5px 8px
+
+.oui-status-badge[data-tone="success"]
+    color: var(--oui-success)
+    background: var(--oui-success-soft)
+
+.oui-status-badge[data-tone="warning"]
+    color: var(--oui-warning)
+    background: var(--oui-warning-soft)
+
+.oui-status-badge[data-tone="danger"]
+    color: var(--oui-danger)
+    background: var(--oui-danger-soft)
+
+.oui-status-badge[data-tone="info"]
+    color: var(--oui-info)
+    background: var(--oui-info-soft)
+
+.oui-workflow-summary
+    display: flex
+    min-width: 0
+    flex-wrap: wrap
+    align-items: center
+    gap: 8px
+
+.oui-workflow-summary .oui-badge strong
+    font-weight: 800
+
+.oui-timeline
+    display: flex
+    min-width: 0
+    flex-direction: column
+    gap: 12px
+
+.oui-timeline-item
+    display: grid
+    min-width: 0
+    grid-template-columns: 18px minmax(0, 1fr)
+    gap: 10px
+
+.oui-timeline-marker
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    width: 10px
+    height: 10px
+    margin-top: 5px
+    border-radius: 999px
+    background: var(--oui-brand)
+    box-shadow: 0 0 0 4px var(--oui-brand-soft)
+    color: var(--oui-brand-strong)
+    font-size: 10px
+
+.oui-timeline-item[data-tone="success"] .oui-timeline-marker
+    background: var(--oui-success)
+    box-shadow: 0 0 0 4px var(--oui-success-soft)
+
+.oui-timeline-item[data-tone="warning"] .oui-timeline-marker
+    background: var(--oui-warning)
+    box-shadow: 0 0 0 4px var(--oui-warning-soft)
+
+.oui-timeline-item[data-tone="danger"] .oui-timeline-marker
+    background: var(--oui-danger)
+    box-shadow: 0 0 0 4px var(--oui-danger-soft)
+
+.oui-timeline-item[data-tone="info"] .oui-timeline-marker
+    background: var(--oui-info)
+    box-shadow: 0 0 0 4px var(--oui-info-soft)
+
+.oui-timeline-content
+    display: flex
+    min-width: 0
+    flex-direction: column
+    gap: 3px
+
+.oui-timeline-time
+    color: var(--oui-muted)
+    font-size: 12px
+
+.oui-pipeline
+    display: flex
+    min-width: 0
+    flex-wrap: wrap
+    gap: 8px
+
+.oui-pipeline > .oui-tooltip-trigger
+    display: inline-flex
+    min-width: var(--oui-pipeline-step-min-width, 130px)
+    flex: 1 1 140px
+
+.oui-pipeline-step
+    appearance: none
+    display: flex
+    min-width: var(--oui-pipeline-step-min-width, 130px)
+    flex: 1 1 140px
+    align-items: flex-start
+    gap: 8px
+    border: 1px solid var(--oui-border)
+    border-radius: var(--oui-radius-sm)
+    background: var(--oui-pad-bg)
+    color: var(--oui-text)
+    cursor: default
+    font: inherit
+    padding: 9px 10px
+    text-align: left
+
+.oui-pipeline-step[data-clickable="true"]
+    cursor: pointer
+
+.oui-pipeline-step[data-clickable="true"]:hover
+    background: var(--oui-control-hover-bg)
+
+.oui-pipeline-step:focus-visible
+    outline: none
+    box-shadow: var(--oui-ring)
+
+.oui-pipeline-step:disabled
+    opacity: .68
+
+.oui-pipeline-step[data-loading="true"]
+    cursor: progress
+
+.oui-pipeline-step[data-active="true"]
+    border-color: color-mix(in srgb, var(--oui-brand) 48%, var(--oui-border))
+    background: var(--oui-brand-soft)
+
+.oui-pipeline-step[data-status="done"]
+    border-color: color-mix(in srgb, var(--oui-success) 42%, var(--oui-border))
+
+.oui-pipeline-step[data-status="blocked"]
+    border-color: color-mix(in srgb, var(--oui-warning) 42%, var(--oui-border))
+
+.oui-pipeline-step[data-status="error"]
+    border-color: color-mix(in srgb, var(--oui-danger) 42%, var(--oui-border))
+
+.oui-pipeline-step[data-status="processing"] .oui-pipeline-dot svg
+    animation: ouiSpin 900ms linear infinite
+
+.oui-pipeline-dot
+    display: inline-flex
+    flex: 0 0 auto
+    align-items: center
+    justify-content: center
+    width: 18px
+    height: 18px
+    border-radius: 999px
+    background: var(--oui-soft)
+    color: var(--oui-muted)
+
+.oui-pipeline-step[data-tone="success"] .oui-pipeline-dot
+    background: var(--oui-success-soft)
+    color: var(--oui-success)
+
+.oui-pipeline-step[data-tone="warning"] .oui-pipeline-dot
+    background: var(--oui-warning-soft)
+    color: var(--oui-warning)
+
+.oui-pipeline-step[data-tone="danger"] .oui-pipeline-dot
+    background: var(--oui-danger-soft)
+    color: var(--oui-danger)
+
+.oui-pipeline-step[data-tone="info"] .oui-pipeline-dot,
+.oui-pipeline-step[data-tone="brand"] .oui-pipeline-dot
+    background: var(--oui-brand-soft)
+    color: var(--oui-brand-strong)
+
+.oui-pipeline-step-main
+    display: flex
+    min-width: 0
+    flex: 1 1 auto
+    flex-direction: column
+    gap: 3px
+
+.oui-pipeline-label,
+.oui-pipeline-step-label
+    font-size: 13px
+    font-weight: 700
+
+.oui-pipeline-detail,
+.oui-pipeline-description,
+.oui-pipeline-step-description
+    color: var(--oui-muted)
+    font-size: 12px
+
+.oui-pipeline-meta
+    color: var(--oui-muted)
+    font-size: 12px
+
+.oui-pipeline-tooltip-wrap,
+.oui-lifecycle-action-tooltip-wrap
+    display: inline-flex
+    min-width: 0
+    flex: 1 1 140px
+
+.oui-pipeline > .oui-tooltip-trigger > .oui-pipeline-tooltip-wrap
+    flex: 1 1 auto
+
+.oui-pipeline-tooltip-wrap > .oui-pipeline-step
+    width: 100%
+    height: 100%
+
+.oui-lifecycle-panel
+    display: flex
+    min-width: 0
+    flex-direction: column
+    gap: 10px
+    border: 1px solid var(--oui-border)
+    border-radius: var(--oui-radius)
+    background: var(--oui-section-surface-bg)
+    padding: 12px
+
+.oui-lifecycle-panel-head,
+.oui-lifecycle-panel-actions
+    display: flex
+    min-width: 0
+    flex-wrap: wrap
+    align-items: center
+    justify-content: space-between
+    gap: 8px
+
+.oui-lifecycle-reasons
+    display: flex
+    min-width: 0
+    flex-direction: column
+    gap: 8px
+
+.oui-lifecycle-panel-actions
+    justify-content: flex-end
+
+.oui-lifecycle-panel-head > span
+    color: var(--oui-muted)
+    font-size: 12px

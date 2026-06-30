@@ -1,0 +1,148 @@
+.oui-drawer-layer
+    position: fixed
+    inset: 0
+    z-index: var(--oui-z-modal, 1000)
+    pointer-events: none
+
+.oui-drawer-backdrop
+    position: absolute
+    inset: 0
+    border: 0
+    padding: 0
+    background: var(--oui-overlay-bg)
+    opacity: 0
+    cursor: default
+    pointer-events: auto
+
+.oui-drawer-backdrop[data-state="opening"]
+    animation: ouiDrawerBackdropIn var(--oui-drawer-duration, 260ms) var(--oui-drawer-ease, ease) forwards
+
+.oui-drawer-backdrop[data-state="open"]
+    opacity: 1
+
+.oui-drawer-backdrop[data-state="closing"]
+    animation: ouiDrawerBackdropOut var(--oui-drawer-duration, 260ms) ease forwards
+
+.oui-drawer-panel
+    position: absolute
+    display: flex
+    min-width: 0
+    min-height: 0
+    flex-direction: column
+    overflow: hidden
+    color: var(--oui-text)
+    background: var(--oui-panel)
+    border: 1px solid var(--oui-border)
+    box-shadow: var(--oui-shadow-overlay)
+    pointer-events: auto
+    will-change: transform
+
+.oui-drawer-panel[data-side="left"],
+.oui-drawer-panel[data-side="right"]
+    top: 0
+    bottom: 0
+    width: var(--oui-drawer-size, min(86vw, 360px))
+    max-width: 100vw
+
+.oui-drawer-panel[data-side="left"]
+    left: 0
+    border-left: 0
+    border-radius: 0 var(--oui-radius-xl) var(--oui-radius-xl) 0
+    transform: translateX(-105%)
+
+.oui-drawer-panel[data-side="right"]
+    right: 0
+    border-right: 0
+    border-radius: var(--oui-radius-xl) 0 0 var(--oui-radius-xl)
+    transform: translateX(105%)
+
+.oui-drawer-panel[data-side="top"],
+.oui-drawer-panel[data-side="bottom"]
+    right: 0
+    left: 0
+    height: var(--oui-drawer-size, min(80vh, 420px))
+    max-height: 100vh
+
+.oui-drawer-panel[data-side="top"]
+    top: 0
+    border-top: 0
+    border-radius: 0 0 var(--oui-radius-xl) var(--oui-radius-xl)
+    transform: translateY(-105%)
+
+.oui-drawer-panel[data-side="bottom"]
+    bottom: 0
+    border-bottom: 0
+    border-radius: var(--oui-radius-xl) var(--oui-radius-xl) 0 0
+    transform: translateY(105%)
+
+.oui-drawer-panel[data-state="opening"],
+.oui-drawer-panel[data-state="open"]
+    transform: translate(0, 0)
+
+.oui-drawer-panel[data-state="opening"]
+    transition: transform var(--oui-drawer-duration, 260ms) var(--oui-drawer-ease, ease)
+
+.oui-drawer-panel[data-state="closing"]
+    transition: transform var(--oui-drawer-duration, 260ms) ease
+
+.oui-drawer-header,
+.oui-drawer-footer
+    display: flex
+    flex: 0 0 auto
+    align-items: flex-start
+    justify-content: space-between
+    gap: 14px
+    padding: 16px 18px
+
+.oui-drawer-header
+    border-bottom: 1px solid var(--oui-border)
+
+.oui-drawer-footer
+    align-items: center
+    border-top: 1px solid var(--oui-border)
+
+.oui-drawer-title-wrap
+    min-width: 0
+
+.oui-drawer-title
+    margin: 0
+    font-size: 18px
+    font-weight: 760
+    letter-spacing: 0
+    line-height: 1.18
+
+.oui-drawer-description
+    margin: 4px 0 0
+    color: var(--oui-muted)
+    font-size: 13px
+    line-height: 1.45
+
+.oui-drawer-body
+    min-width: 0
+    min-height: 0
+    flex: 1 1 auto
+    overflow: auto
+    padding: 18px
+
+@media (max-width: 560px)
+    .oui-drawer-panel[data-side="left"],
+    .oui-drawer-panel[data-side="right"]
+        width: min(92vw, var(--oui-drawer-size, 360px))
+        border-radius: 0
+
+    .oui-drawer-panel[data-side="top"],
+    .oui-drawer-panel[data-side="bottom"]
+        height: min(88vh, var(--oui-drawer-size, 420px))
+        border-radius: 0
+
+@keyframes ouiDrawerBackdropIn
+    from
+        opacity: 0
+    to
+        opacity: 1
+
+@keyframes ouiDrawerBackdropOut
+    from
+        opacity: 1
+    to
+        opacity: 0

@@ -1,0 +1,804 @@
+.oui-overlay-root
+    position: fixed
+    inset: 0
+    z-index: var(--oui-z-overlay, 1000)
+    pointer-events: none
+
+.oui-overlay-root > *
+    pointer-events: auto
+
+.oui-select
+    display: inline-flex
+    align-items: center
+    gap: 4px
+    min-width: 0
+
+.oui-select > .oui-popover-trigger
+    flex: 1 1 auto
+    min-width: 0
+
+.oui-select-content,
+.oui-combobox-content
+    min-width: 220px
+
+.oui-popover-trigger,
+.oui-tooltip-trigger
+    display: inline-flex
+    min-width: 0
+
+.oui-popover-content,
+.oui-tooltip-content
+    color: var(--oui-text)
+    background: var(--oui-floating-bg, var(--oui-bg))
+    border: 1px solid var(--oui-border)
+    border-radius: var(--oui-radius)
+    box-shadow: var(--oui-shadow-md)
+    transform-origin: top center
+    will-change: opacity, transform
+
+.oui-popover-content
+    min-width: 180px
+    padding: 6px
+
+.oui-popover-content[data-state="opening"],
+.oui-tooltip-content[data-state="opening"]
+    animation: ouiOverlayIn 180ms ease forwards
+
+.oui-popover-content[data-state="closing"],
+.oui-tooltip-content[data-state="closing"]
+    animation: ouiOverlayOut 180ms ease forwards
+
+.oui-tooltip-content
+    max-width: 260px
+    padding: 7px 9px
+    font-size: 12px
+    line-height: 1.35
+
+.oui-listbox,
+.oui-menu-list
+    display: flex
+    flex-direction: column
+    gap: 2px
+    min-width: 0
+
+.oui-listbox-item,
+.oui-menu-item
+    display: flex
+    align-items: center
+    gap: 9px
+    width: 100%
+    min-width: 0
+    min-height: 32px
+    border: 0
+    border-radius: var(--oui-radius-sm)
+    padding: 7px 9px
+    color: var(--oui-text)
+    background: transparent
+    font: inherit
+    font-size: 13px
+    text-align: left
+    cursor: pointer
+    transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease
+
+.oui-listbox-item:hover,
+.oui-listbox-item[data-highlighted="true"],
+.oui-menu-item:hover,
+.oui-menu-item[data-highlighted="true"]
+    background: var(--oui-control-hover-bg, var(--oui-soft))
+
+.oui-listbox-item[data-selected="true"]
+    color: var(--oui-text)
+    background: color-mix(in srgb, var(--oui-text) 7%, transparent)
+
+.oui-listbox-item[data-selected="true"]:hover,
+.oui-listbox-item[data-selected="true"][data-highlighted="true"]
+    background: var(--oui-control-hover-bg, var(--oui-soft))
+
+.oui-listbox-item:disabled,
+.oui-menu-item:disabled
+    cursor: not-allowed
+    opacity: 0.5
+
+.oui-menu-item[data-loading="true"]:disabled
+    cursor: progress
+    opacity: 1
+
+.oui-command-palette
+    display: flex
+    min-height: 0
+    flex-direction: column
+    gap: 12px
+
+.oui-command-palette-search
+    width: 100%
+
+.oui-command-palette-results
+    display: flex
+    max-height: min(48vh, 420px)
+    flex-direction: column
+    gap: 12px
+    overflow: auto
+    padding-right: 2px
+    scrollbar-width: thin
+    scrollbar-color: var(--oui-gray-a8, var(--oui-border-strong)) transparent
+
+.oui-command-palette-results::-webkit-scrollbar
+    width: 8px
+
+.oui-command-palette-results::-webkit-scrollbar-track
+    background: transparent
+
+.oui-command-palette-results::-webkit-scrollbar-thumb
+    border: 2px solid transparent
+    border-radius: 999px
+    background-color: var(--oui-gray-a8, var(--oui-border-strong))
+    background-clip: content-box
+
+.oui-command-palette-collapse
+    width: 100%
+
+.oui-command-palette-collapse > .oui-collapse-content
+    display: flex
+    flex-direction: column
+    gap: 12px
+
+.oui-command-palette-group
+    display: flex
+    flex-direction: column
+    gap: 6px
+
+.oui-command-palette-group-title
+    padding: 0 4px
+    color: var(--oui-muted)
+    font-size: 11px
+    font-weight: 700
+    letter-spacing: 0.04em
+    text-transform: uppercase
+
+.oui-command-palette-group-title[data-recent="true"]
+    color: var(--oui-brand-strong)
+
+.oui-command-palette-items
+    display: flex
+    flex-direction: column
+    gap: 5px
+
+.oui-command-palette-item
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: 12px
+    width: 100%
+    min-height: 46px
+    border: 1px solid transparent
+    border-radius: 6px
+    padding: 8px 10px
+    color: var(--oui-text)
+    background: transparent
+    font: inherit
+    text-align: left
+    cursor: pointer
+    transition: background-color 220ms ease, border-color 220ms ease, color 180ms ease
+
+.oui-command-palette-item:hover,
+.oui-command-palette-item:focus-visible,
+.oui-command-palette-item[data-selected="true"]
+    border-color: color-mix(in srgb, var(--oui-gray-a8) 42%, transparent)
+    background: var(--oui-control-hover-bg, var(--oui-gray-a4))
+    outline: none
+
+.oui-command-palette-item:disabled
+    cursor: not-allowed
+    opacity: .55
+
+.oui-command-palette-item-icon
+    display: inline-flex
+    flex: 0 0 auto
+    color: var(--oui-muted)
+
+.oui-command-palette-item[data-selected="true"] .oui-command-palette-item-icon
+    color: var(--oui-brand-strong)
+
+.oui-command-palette-item-main
+    display: flex
+    min-width: 0
+    flex-direction: column
+    gap: 3px
+
+.oui-command-palette-item-label
+    overflow: hidden
+    font-weight: 600
+    line-height: 1rem
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-command-palette-item-description
+    overflow: hidden
+    color: var(--oui-muted)
+    font-size: 12px
+    line-height: 1rem
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-command-palette-shortcut
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    min-width: 34px
+    min-height: 22px
+    flex: 0 0 auto
+    border: 1px solid color-mix(in srgb, var(--oui-gray-a8) 36%, transparent)
+    border-radius: 5px
+    padding: 0 6px
+    color: var(--oui-muted)
+    font-size: 11px
+    font-weight: 650
+    line-height: 1
+
+.oui-command-palette-empty
+    display: flex
+    min-height: 92px
+    align-items: center
+    justify-content: center
+    color: var(--oui-muted)
+    font-size: 14px
+
+.oui-menu
+    min-width: 220px
+
+.oui-menu-icon
+    display: inline-flex
+    color: var(--oui-muted)
+
+.oui-menu-label
+    flex: 1 1 auto
+    min-width: 0
+    overflow: hidden
+    text-overflow: ellipsis
+
+.oui-menu-description
+    display: block
+    overflow: hidden
+    color: var(--oui-muted)
+    font-size: 12px
+    line-height: 1.25
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-menu-shortcut
+    display: inline-flex
+    flex: 0 0 auto
+    align-items: center
+    justify-content: center
+    min-width: 28px
+    min-height: 20px
+    border: 1px solid var(--oui-border)
+    border-radius: 5px
+    color: var(--oui-muted)
+    font-size: 11px
+    font-weight: 650
+    padding: 0 5px
+
+.oui-menu-item[data-tone="danger"]
+    color: var(--oui-danger)
+
+.oui-menu-separator
+    height: 1px
+    margin: 5px 4px
+    background: var(--oui-border)
+
+.oui-menu-subitems
+    margin-left: 12px
+    padding-left: 8px
+    border-left: 1px solid var(--oui-border)
+
+.oui-context-menu-area
+    position: relative
+
+.oui-context-menu-trigger
+    position: fixed
+    width: 1px
+    height: 1px
+    pointer-events: none
+
+.oui-context-menu-dot
+    display: block
+    width: 1px
+    height: 1px
+
+.oui-modal-layer
+    position: fixed
+    inset: 0
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 24px
+    cursor: pointer
+    background-color: transparent
+
+.oui-modal-content
+    position: relative
+    display: flex
+    max-height: min(86vh, 860px)
+    flex-direction: column
+    overflow: hidden
+    color: var(--oui-text)
+    background: var(--oui-panel)
+    border: 1px solid var(--oui-modal-border-color, var(--oui-border))
+    border-radius: var(--oui-modal-radius, 12px)
+    box-shadow: var(--oui-modal-shadow, var(--oui-shadow-md))
+    opacity: 0
+    cursor: default
+    filter: blur(14px)
+    transform: scale(.82)
+    transform-origin: center
+    will-change: opacity, transform, filter
+
+.oui-modal-content[data-animation="rise"]
+    filter: blur(0)
+    transform: scale(.92) translateY(14px)
+
+.oui-modal-content[data-animation="fade"]
+    filter: blur(0)
+    transform: scale(1)
+
+.oui-modal-content[data-state="opening"][data-animation="zoom-blur"]
+    animation: ouiModalZoomBlurIn var(--oui-modal-animation-duration, 380ms) var(--oui-modal-animation-ease, cubic-bezier(.22, 1, .36, 1)) forwards
+
+.oui-modal-content[data-state="opening"][data-animation="rise"]
+    animation: ouiModalRiseIn var(--oui-modal-animation-duration, 380ms) var(--oui-modal-animation-ease, cubic-bezier(.22, 1, .36, 1)) forwards
+
+.oui-modal-content[data-state="opening"][data-animation="fade"]
+    animation: ouiModalFadeIn var(--oui-modal-animation-duration, 380ms) var(--oui-modal-animation-ease, cubic-bezier(.22, 1, .36, 1)) forwards
+
+.oui-modal-content[data-state="open"]
+    filter: blur(0)
+    opacity: 1
+    transform: scale(1) translateY(0)
+
+.oui-modal-content[data-state="closing"][data-animation="zoom-blur"]
+    animation: ouiModalZoomBlurOut var(--oui-modal-animation-duration, 380ms) var(--oui-modal-animation-ease, cubic-bezier(.22, 1, .36, 1)) forwards
+
+.oui-modal-content[data-state="closing"][data-animation="rise"]
+    animation: ouiModalRiseOut var(--oui-modal-animation-duration, 380ms) ease forwards
+
+.oui-modal-content[data-state="closing"][data-animation="fade"]
+    animation: ouiModalFadeOut var(--oui-modal-animation-duration, 380ms) ease forwards
+
+.oui-modal-header,
+.oui-modal-footer
+    display: flex
+    align-items: flex-start
+    justify-content: space-between
+    gap: 16px
+    padding: 16px 18px
+
+.oui-modal-header
+    border-bottom: 1px solid var(--oui-border)
+
+.oui-modal-footer
+    align-items: center
+    border-top: 1px solid var(--oui-border)
+
+.oui-modal-title-wrap
+    min-width: 0
+
+.oui-modal-title
+    margin: 0
+    font-size: 18px
+    font-weight: 760
+    letter-spacing: 0
+
+.oui-modal-description
+    margin: 4px 0 0
+    color: var(--oui-muted)
+    font-size: 13px
+    line-height: 1.45
+
+.oui-modal-body
+    min-height: 0
+    overflow: auto
+    padding: 18px
+
+.oui-toast-viewport
+    position: fixed
+    z-index: var(--oui-z-toast, 2147483000)
+    display: flex
+    width: min(420px, calc(100vw - 24px))
+    flex-direction: column
+    gap: 10px
+    pointer-events: none
+
+.oui-toast-viewport[data-position^="top"]
+    top: 20px
+
+.oui-toast-viewport[data-position^="bottom"]
+    bottom: 20px
+
+.oui-toast-viewport[data-position$="left"]
+    left: 20px
+    align-items: flex-start
+
+.oui-toast-viewport[data-position$="right"]
+    right: 20px
+    align-items: flex-end
+
+.oui-toast-viewport[data-position$="center"]
+    left: 50%
+    align-items: center
+    transform: translateX(-50%)
+
+.oui-toast-frame
+    position: relative
+    isolation: isolate
+    width: 100%
+    animation: ouiToastIn var(--oui-toast-animation-duration, 520ms) cubic-bezier(.16, 1, .3, 1) forwards
+    pointer-events: none
+    will-change: filter, opacity, transform
+
+.oui-toast-backdrop
+    position: absolute
+    inset: -10px
+    z-index: 0
+    border-radius: 14px
+    background: transparent
+    backdrop-filter: blur(var(--oui-toast-effective-blur, 0px))
+    -webkit-backdrop-filter: blur(var(--oui-toast-effective-blur, 0px))
+    pointer-events: none
+
+.oui-toast
+    position: relative
+    z-index: 1
+    display: flex
+    align-items: flex-start
+    justify-content: space-between
+    gap: 12px
+    border: 1px solid var(--oui-toast-custom-border-color, var(--oui-toast-border-color, var(--oui-border)))
+    border-radius: 8px
+    width: 100%
+    isolation: isolate
+    overflow: visible
+    padding: 11px 12px 12px
+    color: var(--oui-text)
+    background: var(--oui-toast-bg, var(--oui-floating-bg, var(--oui-bg)))
+    box-shadow: var(--oui-toast-shadow, 0 10px 26px rgb(0 0 0 / 18%))
+    backdrop-filter: blur(var(--oui-toast-effective-blur, 0px))
+    -webkit-backdrop-filter: blur(var(--oui-toast-effective-blur, 0px))
+    transform-origin: var(--oui-toast-origin, center)
+    pointer-events: auto
+
+.oui-toast::after
+    position: absolute
+    inset: 0
+    z-index: -1
+    border-radius: inherit
+    background: var(--oui-toast-tone-bg, transparent)
+    content: ""
+    pointer-events: none
+
+.oui-toast[data-clickable="true"]
+    cursor: pointer
+
+.oui-toast[data-clickable="true"]:hover
+    border-color: var(--oui-toast-custom-border-color, color-mix(in srgb, var(--oui-border) 78%, var(--oui-text)))
+    background: color-mix(in srgb, var(--oui-toast-bg, var(--oui-floating-bg, var(--oui-bg))) 92%, var(--oui-text) 8%)
+
+.oui-root[data-oui-theme="light"] .oui-toast,
+:root[data-oui-theme="light"] .oui-toast
+    box-shadow: var(--oui-toast-shadow, 0 10px 24px rgb(15 23 42 / 12%))
+
+.oui-toast-frame[data-position$="right"]
+    --oui-toast-enter-x: calc(100% + 32px)
+    --oui-toast-enter-y: 0
+    --oui-toast-exit-x: calc(100% + 32px)
+    --oui-toast-exit-y: 0
+    --oui-toast-origin: right center
+
+.oui-toast-frame[data-position$="left"]
+    --oui-toast-enter-x: calc(-100% - 32px)
+    --oui-toast-enter-y: 0
+    --oui-toast-exit-x: calc(-100% - 32px)
+    --oui-toast-exit-y: 0
+    --oui-toast-origin: left center
+
+.oui-toast-frame[data-position="top-center"]
+    --oui-toast-enter-x: 0
+    --oui-toast-enter-y: calc(-100% - 32px)
+    --oui-toast-exit-x: 0
+    --oui-toast-exit-y: calc(-100% - 32px)
+    --oui-toast-origin: top center
+
+.oui-toast-frame[data-position="bottom-center"]
+    --oui-toast-enter-x: 0
+    --oui-toast-enter-y: calc(100% + 32px)
+    --oui-toast-exit-x: 0
+    --oui-toast-exit-y: calc(100% + 32px)
+    --oui-toast-origin: bottom center
+
+.oui-toast-frame[data-state="closing"]
+    animation: ouiToastOut var(--oui-toast-exit-duration, 260ms) cubic-bezier(.4, 0, .2, 1) forwards
+
+.oui-toast-main
+    display: flex
+    min-width: 0
+    flex: 1 1 auto
+    flex-direction: column
+    gap: 6px
+
+.oui-toast-title
+    color: var(--oui-text)
+    font-size: 13px
+    font-weight: 560
+    line-height: 1.25
+
+.oui-toast-message
+    color: var(--oui-muted)
+    font-size: 12px
+    line-height: 1.4
+
+.oui-toast-action
+    align-self: flex-start
+
+.oui-toast-close
+    flex: 0 0 auto
+
+.oui-toast-progress
+    position: absolute
+    bottom: 0
+    left: 0
+    width: 100%
+    height: var(--oui-toast-progress-height, 1px)
+    background: var(--oui-toast-progress-color, var(--oui-brand-strong))
+    border-radius: 0 0 inherit inherit
+    transform-origin: left center
+    animation: ouiToastProgress var(--oui-toast-duration, 4200ms) linear forwards
+    pointer-events: none
+
+.oui-toast[data-tone="success"]
+    --oui-toast-tone-bg: color-mix(in srgb, var(--oui-success-soft) 34%, transparent)
+    border-color: var(--oui-toast-custom-border-color, color-mix(in srgb, var(--oui-success) 16%, var(--oui-border)))
+
+.oui-toast[data-tone="success"] .oui-toast-progress
+    background: var(--oui-toast-progress-color, var(--oui-success))
+
+.oui-toast[data-tone="warning"]
+    --oui-toast-tone-bg: color-mix(in srgb, var(--oui-warning-soft) 32%, transparent)
+    border-color: var(--oui-toast-custom-border-color, color-mix(in srgb, var(--oui-warning) 18%, var(--oui-border)))
+
+.oui-toast[data-tone="warning"] .oui-toast-progress
+    background: var(--oui-toast-progress-color, var(--oui-warning))
+
+.oui-toast[data-tone="danger"]
+    --oui-toast-tone-bg: color-mix(in srgb, var(--oui-danger-soft) 32%, transparent)
+    border-color: var(--oui-toast-custom-border-color, color-mix(in srgb, var(--oui-danger) 18%, var(--oui-border)))
+
+.oui-toast[data-tone="danger"] .oui-toast-progress
+    background: var(--oui-toast-progress-color, var(--oui-danger))
+
+.oui-toast[data-tone="info"]
+    --oui-toast-tone-bg: color-mix(in srgb, var(--oui-info-soft) 30%, transparent)
+    border-color: var(--oui-toast-custom-border-color, color-mix(in srgb, var(--oui-info) 16%, var(--oui-border)))
+
+.oui-toast[data-tone="info"] .oui-toast-progress
+    background: var(--oui-toast-progress-color, var(--oui-info))
+
+/* Orcestr overlay refinements */
+
+.oui-popover-content,
+.oui-tooltip-content
+    border-color: var(--oui-gray-a8)
+    background: var(--oui-floating-bg, var(--oui-bg))
+    box-shadow: var(--oui-shadow-md)
+
+.oui-menu.oui-action-menu-content
+    min-width: min(220px, calc(100vw - 24px))
+    max-width: min(360px, calc(100vw - 24px))
+    max-height: min(calc(100vh - 16px), 520px)
+    padding: 4px
+    overflow: visible
+    border-radius: 10px
+
+.oui-menu-list
+    display: flex
+    flex-direction: column
+    gap: 4px
+
+.oui-menu-row
+    position: relative
+
+.oui-menu-item
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: 8px
+    width: 100%
+    min-height: 30px
+    padding: 5px 8px
+    border-radius: 8px
+
+.oui-menu-item-main
+    display: flex
+    align-items: center
+    gap: 8px
+    flex: 1 1 auto
+    min-width: 0
+
+.oui-menu-icon
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    flex: 0 0 auto
+    width: 16px
+    color: var(--oui-muted)
+
+.oui-menu-label
+    flex: 1 1 auto
+    min-width: 0
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-menu-info
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    flex: 0 0 auto
+    width: 22px
+    height: 22px
+    border-radius: 999px
+    color: var(--oui-muted)
+    cursor: help
+
+.oui-menu-info:hover,
+.oui-menu-info:focus-visible
+    background: var(--oui-gray-a4)
+    color: var(--oui-text)
+    outline: none
+
+.oui-menu-separator
+    height: 1px
+    margin: 3px 2px
+    background: var(--oui-gray-a5)
+
+.oui-menu-sub-chevron
+    flex: 0 0 auto
+    color: var(--oui-muted)
+    transition: transform 140ms ease
+
+.oui-menu-item[data-submenu-state="open"] .oui-menu-sub-chevron
+    transform: rotate(90deg)
+
+.oui-menu-subcontent
+    position: absolute
+    top: -4px
+    left: calc(100% + 6px)
+    min-width: 220px
+    max-width: min(360px, calc(100vw - 24px))
+    padding: 4px
+    border-radius: 10px
+
+.oui-menu-row:not(:hover) > .oui-menu-subcontent
+    pointer-events: none
+
+.oui-menu-inline-subitems
+    display: none
+    padding-left: 18px
+
+.oui-menu-inline-subitems[data-state="open"]
+    display: flex
+    flex-direction: column
+    gap: 4px
+
+.oui-menu-item[data-tone="danger"]
+    color: var(--oui-danger)
+
+.oui-menu-item[data-tone="danger"] .oui-menu-icon
+    color: var(--oui-danger)
+
+.oui-menu-item[data-tone="danger"]:hover,
+.oui-menu-item[data-tone="danger"]:focus-visible
+    background: var(--oui-danger-soft)
+
+.oui-context-menu-content
+    position: fixed
+    min-width: 220px
+    padding: 4px
+    border-radius: 10px
+    z-index: 1000
+
+.oui-tooltip-content
+    border-radius: 6px
+    padding: 6px 8px
+    color: var(--oui-text)
+    font-size: 12px
+
+.oui-combobox-content,
+.oui-select-content,
+.oui-popover-content.oui-combobox-content,
+.oui-popover-content.oui-select-content
+    border-radius: 6px
+
+.oui-combobox-state
+    display: flex
+    min-height: 72px
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    gap: 8px
+    padding: 10px
+    color: var(--oui-muted)
+    font-size: 13px
+    text-align: center
+
+/* Final control refinements */
+.oui-button,
+.oui-icon-button,
+.oui-segmented-item,
+.oui-tabs-trigger,
+.oui-listbox-item,
+.oui-menu-item,
+.oui-combobox-option-main
+    line-height: 1rem
+
+.oui-button-label,
+.oui-menu-label,
+.oui-combobox-trigger-label,
+.oui-combobox-placeholder
+    min-height: 1rem
+    line-height: 1rem
+
+.oui-popover-content,
+.oui-tooltip-content,
+.oui-menu.oui-action-menu-content,
+.oui-context-menu-content,
+.oui-combobox-content,
+.oui-select-content
+    background: var(--oui-floating-bg, var(--oui-bg))
+    border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+
+.oui-combobox-content,
+.oui-select-content,
+.oui-popover-content.oui-combobox-content,
+.oui-popover-content.oui-select-content
+    background: var(--oui-bg)
+
+.oui-menu.oui-action-menu-content,
+.oui-context-menu-content,
+.oui-popover-content,
+.oui-tooltip-content
+    border-radius: 6px
+
+.oui-menu-row
+    position: relative
+
+.oui-menu-row:hover::after,
+.oui-menu-row:focus-within::after
+    position: absolute
+    top: -4px
+    right: -8px
+    width: 10px
+    height: calc(100% + 8px)
+    content: ""
+
+.oui-menu-subcontent
+    left: calc(100% + 4px)
+    border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border-radius: 6px
+    opacity: 0
+    pointer-events: none
+    transform: translateX(-4px) scale(.98)
+    transform-origin: left top
+    will-change: opacity, transform
+
+.oui-menu-subcontent[data-state="opening"]
+    animation: ouiSubmenuIn 180ms cubic-bezier(.22, 1, .36, 1) forwards
+    pointer-events: auto
+
+.oui-menu-subcontent[data-state="open"]
+    opacity: 1
+    transform: none
+    pointer-events: auto
+
+.oui-menu-subcontent[data-state="closing"]
+    animation: ouiSubmenuOut 150ms ease forwards
+    pointer-events: none

@@ -1,0 +1,287 @@
+.oui-button,
+.oui-icon-button
+    position: relative
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    gap: 8px
+    border: 1px solid transparent
+    border-radius: var(--oui-button-radius, var(--oui-radius-sm, 6px))
+    font: inherit
+    font-weight: var(--oui-button-font-weight, 650)
+    line-height: 1rem
+    color: var(--oui-text)
+    cursor: pointer
+    user-select: none
+    white-space: nowrap
+    text-decoration: none
+    appearance: none
+    transform-origin: center center
+    transition: background-color 240ms ease, border-color 240ms ease, color 220ms ease, box-shadow 240ms ease, transform 180ms ease, filter 180ms ease
+
+.oui-icon-button[data-round="true"]
+    border-radius: 999px
+
+.oui-button
+    flex-shrink: 0
+    min-width: max-content
+
+.oui-button[data-size="1"],
+.oui-icon-button[data-size="1"]
+    min-height: 24px
+    font-size: 12px
+
+.oui-button[data-size="1"]
+    padding: 0 8px
+
+.oui-button[data-size="2"],
+.oui-icon-button[data-size="2"]
+    min-height: 28px
+    font-size: 13px
+
+.oui-button[data-size="2"]
+    padding: 0 10px
+
+.oui-button[data-size="3"],
+.oui-icon-button[data-size="3"]
+    min-height: 36px
+    font-size: 14px
+
+.oui-button[data-size="3"]
+    padding: 0 13px
+
+.oui-button[data-size="4"],
+.oui-icon-button[data-size="4"]
+    min-height: 42px
+    font-size: 15px
+
+.oui-button[data-size="4"]
+    padding: 0 16px
+
+.oui-icon-button[data-size="1"]
+    width: 24px
+
+.oui-icon-button[data-size="2"]
+    width: 28px
+
+.oui-icon-button[data-size="3"]
+    width: 36px
+
+.oui-icon-button[data-size="4"]
+    width: 42px
+
+.oui-button-full
+    width: 100%
+    min-width: 0
+
+.oui-button-label
+    display: inline-flex
+    align-items: center
+    min-height: 1rem
+    line-height: 1rem
+
+.oui-button:focus-visible,
+.oui-icon-button:focus-visible,
+.oui-text-field:focus-within,
+.oui-text-area:focus-within,
+.oui-listbox-item:focus-visible,
+.oui-menu-item:focus-visible,
+.oui-tabs-trigger:focus-visible,
+.oui-segmented-item:focus-visible
+    outline: none
+    box-shadow: var(--oui-ring)
+
+.oui-button:disabled,
+.oui-icon-button:disabled
+    cursor: not-allowed
+    opacity: var(--oui-state-disabled-opacity, .56)
+
+.oui-button[data-loading="true"]:disabled,
+.oui-icon-button[data-loading="true"]:disabled
+    cursor: progress
+    opacity: var(--oui-state-loading-opacity, 1)
+
+.oui-button[data-variant="solid"],
+.oui-icon-button[data-variant="solid"]
+    color: #ffffff
+    background: var(--oui-brand-solid, var(--oui-brand))
+    border-color: var(--oui-brand-solid, var(--oui-brand))
+
+.oui-button[data-variant="solid"]:not(:disabled):hover,
+.oui-icon-button[data-variant="solid"]:not(:disabled):hover
+    background: var(--oui-brand-solid-hover, var(--oui-brand-strong))
+    border-color: var(--oui-brand-solid-hover, var(--oui-brand-strong))
+
+.oui-button[data-variant="soft"],
+.oui-icon-button[data-variant="soft"]
+    background: var(--oui-brand-soft)
+    border-color: transparent
+    color: var(--oui-brand-strong)
+
+.oui-button[data-variant="surface"],
+.oui-icon-button[data-variant="surface"]
+    background: var(--oui-control-bg, transparent)
+    border-color: var(--oui-border)
+    box-shadow: none
+
+.oui-button[data-variant="pad"],
+.oui-icon-button[data-variant="pad"]
+    background: color-mix(in srgb, var(--oui-pad-bg, var(--oui-section-bg)) var(--oui-pad-opacity, var(--oui-section-opacity)), transparent)
+    border-color: transparent
+    box-shadow: none
+
+.oui-button[data-variant="outline"],
+.oui-icon-button[data-variant="outline"]
+    background: transparent
+    border-color: color-mix(in srgb, var(--oui-border-strong) 42%, transparent)
+
+.oui-button[data-variant="ghost"],
+.oui-icon-button[data-variant="ghost"]
+    background: transparent
+    border-color: transparent
+    box-shadow: none
+
+.oui-button[data-variant="soft"]:not(:disabled):hover,
+.oui-button[data-variant="surface"]:not(:disabled):hover,
+.oui-button[data-variant="pad"]:not(:disabled):hover,
+.oui-button[data-variant="outline"]:not(:disabled):hover,
+.oui-button[data-variant="ghost"]:not(:disabled):hover,
+.oui-icon-button[data-variant="soft"]:not(:disabled):hover,
+.oui-icon-button[data-variant="surface"]:not(:disabled):hover,
+.oui-icon-button[data-variant="pad"]:not(:disabled):hover,
+.oui-icon-button[data-variant="outline"]:not(:disabled):hover,
+.oui-icon-button[data-variant="ghost"]:not(:disabled):hover
+    background: var(--oui-control-hover-bg, var(--oui-gray-a4, var(--oui-soft-hover)))
+
+.oui-button[data-variant="pad"]:not(:disabled):hover,
+.oui-icon-button[data-variant="pad"]:not(:disabled):hover
+    background: color-mix(in srgb, var(--oui-pad-bg, var(--oui-section-bg)) var(--oui-pad-hover-opacity, var(--oui-section-nested-opacity)), transparent)
+
+.oui-button[data-variant="outline"]:not(:disabled):hover,
+.oui-icon-button[data-variant="outline"]:not(:disabled):hover
+    border-color: color-mix(in srgb, var(--oui-border-strong) 62%, transparent)
+
+.oui-button[data-tone="success"],
+.oui-icon-button[data-tone="success"]
+    --oui-brand: var(--oui-success)
+    --oui-brand-strong: var(--oui-success)
+    --oui-brand-solid: var(--oui-success)
+    --oui-brand-solid-hover: var(--oui-success)
+    --oui-brand-soft: var(--oui-success-soft)
+
+.oui-button[data-tone="warning"],
+.oui-icon-button[data-tone="warning"]
+    --oui-brand: var(--oui-warning)
+    --oui-brand-strong: var(--oui-warning)
+    --oui-brand-solid: var(--oui-warning)
+    --oui-brand-solid-hover: var(--oui-warning)
+    --oui-brand-soft: var(--oui-warning-soft)
+
+.oui-button[data-tone="info"],
+.oui-icon-button[data-tone="info"]
+    --oui-brand: var(--oui-info)
+    --oui-brand-strong: var(--oui-info)
+    --oui-brand-solid: var(--oui-info)
+    --oui-brand-solid-hover: var(--oui-info)
+    --oui-brand-soft: var(--oui-info-soft)
+
+.oui-button[data-tone="danger"],
+.oui-icon-button[data-tone="danger"]
+    --oui-brand: var(--oui-danger)
+    --oui-brand-strong: var(--oui-danger)
+    --oui-brand-solid: var(--oui-danger)
+    --oui-brand-solid-hover: var(--oui-danger)
+    --oui-brand-soft: var(--oui-danger-soft)
+
+.oui-button[data-tone="success"][data-variant="solid"],
+.oui-icon-button[data-tone="success"][data-variant="solid"]
+    color: var(--oui-success)
+    background: var(--oui-success-soft)
+    border-color: transparent
+
+.oui-button[data-tone="success"][data-variant="solid"]:not(:disabled):hover,
+.oui-icon-button[data-tone="success"][data-variant="solid"]:not(:disabled):hover
+    color: var(--oui-success)
+    background: color-mix(in srgb, var(--oui-success-soft) 68%, var(--oui-success) 32%)
+    border-color: transparent
+
+.oui-button[data-tone="success"][data-variant="soft"]:not(:disabled):hover,
+.oui-button[data-tone="success"][data-variant="outline"]:not(:disabled):hover,
+.oui-button[data-tone="success"][data-variant="ghost"]:not(:disabled):hover,
+.oui-icon-button[data-tone="success"][data-variant="soft"]:not(:disabled):hover,
+.oui-icon-button[data-tone="success"][data-variant="outline"]:not(:disabled):hover,
+.oui-icon-button[data-tone="success"][data-variant="ghost"]:not(:disabled):hover
+    color: var(--oui-success)
+    background: color-mix(in srgb, var(--oui-success-soft) 74%, var(--oui-success) 26%)
+
+.oui-button[data-tone="danger"][data-variant="soft"]:not(:disabled):hover,
+.oui-button[data-tone="danger"][data-variant="outline"]:not(:disabled):hover,
+.oui-button[data-tone="danger"][data-variant="ghost"]:not(:disabled):hover,
+.oui-icon-button[data-tone="danger"][data-variant="soft"]:not(:disabled):hover,
+.oui-icon-button[data-tone="danger"][data-variant="outline"]:not(:disabled):hover,
+.oui-icon-button[data-tone="danger"][data-variant="ghost"]:not(:disabled):hover
+    color: var(--oui-danger)
+    background: color-mix(in srgb, var(--oui-danger-soft) 74%, var(--oui-danger) 26%)
+
+.oui-button[data-tone="warning"][data-variant="soft"]:not(:disabled):hover,
+.oui-button[data-tone="warning"][data-variant="outline"]:not(:disabled):hover,
+.oui-button[data-tone="warning"][data-variant="ghost"]:not(:disabled):hover,
+.oui-icon-button[data-tone="warning"][data-variant="soft"]:not(:disabled):hover,
+.oui-icon-button[data-tone="warning"][data-variant="outline"]:not(:disabled):hover,
+.oui-icon-button[data-tone="warning"][data-variant="ghost"]:not(:disabled):hover
+    color: var(--oui-warning)
+    background: color-mix(in srgb, var(--oui-warning-soft) 74%, var(--oui-warning) 26%)
+
+.oui-button[data-tone="info"][data-variant="soft"]:not(:disabled):hover,
+.oui-button[data-tone="info"][data-variant="outline"]:not(:disabled):hover,
+.oui-button[data-tone="info"][data-variant="ghost"]:not(:disabled):hover,
+.oui-icon-button[data-tone="info"][data-variant="soft"]:not(:disabled):hover,
+.oui-icon-button[data-tone="info"][data-variant="outline"]:not(:disabled):hover,
+.oui-icon-button[data-tone="info"][data-variant="ghost"]:not(:disabled):hover
+    color: var(--oui-info)
+    background: color-mix(in srgb, var(--oui-info-soft) 74%, var(--oui-info) 26%)
+
+.oui-root[data-oui-theme="dark"] .oui-button[data-tone="success"]:not(:disabled):hover,
+.oui-root[data-oui-theme="dark"] .oui-icon-button[data-tone="success"]:not(:disabled):hover
+    color: color-mix(in srgb, var(--oui-success) 72%, white 28%)
+
+.oui-root[data-oui-theme="dark"] .oui-button[data-tone="danger"]:not(:disabled):hover,
+.oui-root[data-oui-theme="dark"] .oui-icon-button[data-tone="danger"]:not(:disabled):hover
+    color: color-mix(in srgb, var(--oui-danger) 72%, white 28%)
+
+.oui-root[data-oui-theme="dark"] .oui-button[data-tone="warning"]:not(:disabled):hover,
+.oui-root[data-oui-theme="dark"] .oui-icon-button[data-tone="warning"]:not(:disabled):hover
+    color: color-mix(in srgb, var(--oui-warning) 72%, white 28%)
+
+.oui-root[data-oui-theme="dark"] .oui-button[data-tone="info"]:not(:disabled):hover,
+.oui-root[data-oui-theme="dark"] .oui-icon-button[data-tone="info"]:not(:disabled):hover
+    color: color-mix(in srgb, var(--oui-info) 72%, white 28%)
+
+
+
+/* Orcestr button refinements */
+
+.oui-button-label
+    display: inline-flex
+    align-items: center
+
+.oui-button[data-press-animation="none"]:not(:disabled):active,
+.oui-icon-button[data-press-animation="none"]:not(:disabled):active
+    transform: none
+    filter: none
+
+.oui-button[data-press-animation="translate"]:not(:disabled):active,
+.oui-icon-button[data-press-animation="translate"]:not(:disabled):active
+    transform: translateY(1px)
+    filter: none
+
+.oui-button[data-press-animation="scale"]:not(:disabled):active,
+.oui-icon-button[data-press-animation="scale"]:not(:disabled):active
+    transform: scale(.965)
+    filter: none
+
+.oui-button[data-press-animation="soft"]:not(:disabled):active,
+.oui-icon-button[data-press-animation="soft"]:not(:disabled):active
+    transform: none
+    filter: brightness(.92) saturate(1.04)
+    box-shadow: inset 0 0 0 999px rgb(255 255 255 / 6%)

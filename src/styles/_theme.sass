@@ -1,0 +1,184 @@
+:root[data-oui-theme="light"],
+.oui-root
+    --oui-bg: #f8fafc
+    --oui-panel: #ffffff
+    --oui-panel-2: #f3f6fa
+    --oui-control-bg: transparent
+    --oui-control-hover-bg: rgb(15 23 42 / 6%)
+    --oui-border: rgb(15 23 42 / 8%)
+    --oui-border-strong: rgb(15 23 42 / 16%)
+    --oui-text: #111827
+    --oui-muted: #6b7280
+    --oui-soft: #eef3f8
+    --oui-soft-hover: #e6edf5
+    --oui-brand: #2563eb
+    --oui-brand-strong: #1d4ed8
+    --oui-brand-solid: #2563eb
+    --oui-brand-solid-hover: #1d4ed8
+    --oui-brand-soft: rgb(37 99 235 / 12%)
+    --oui-success: #0f9f6e
+    --oui-success-soft: #e8f8f2
+    --oui-warning: #bd7a00
+    --oui-warning-soft: #fff6db
+    --oui-danger: #dc2626
+    --oui-danger-soft: rgb(220 38 38 / 12%)
+    --oui-info: #0876bd
+    --oui-info-soft: #e7f4ff
+    --oui-section-bg: #0f172a
+    --oui-section-opacity: 0%
+    --oui-section-nested-opacity: 0%
+    --oui-section-shadow: 0 8px 26px rgb(15 23 42 / 8%)
+    --oui-section-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-opacity), transparent)
+    --oui-section-nested-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-nested-opacity), transparent)
+    --oui-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-opacity), var(--oui-bg))
+    --oui-section-solid-bg: var(--oui-bg)
+    --oui-section-nested-solid-bg: var(--oui-bg)
+    --oui-floating-bg: var(--oui-surface-bg)
+    --oui-pad-bg: #0f172a
+    --oui-pad-opacity: 3.5%
+    --oui-pad-hover-opacity: 5.5%
+    --oui-skeleton-shimmer: rgb(255 255 255 / 18%)
+    --oui-shadow-sm: 0 2px 8px rgb(17 24 39 / 8%)
+    --oui-shadow-md: 0 16px 48px var(--oui-shadow-soft)
+    --oui-ring: 0 0 0 3px rgb(37 99 235 / 16%)
+    --oui-radius: 8px
+    --oui-radius-sm: 6px
+    --oui-radius-xl: 12px
+    --oui-space-px: 1px
+    --oui-space-xs: 4px
+    --oui-space-sm: 8px
+    --oui-space-md: 12px
+    --oui-space-lg: 16px
+    --oui-space-xl: 24px
+    --oui-space-xxl: 32px
+    --oui-space-section: 18px
+    --oui-space-page: 28px
+    --oui-breakpoint-compact: 560px
+    --oui-breakpoint-tablet: 720px
+    --oui-breakpoint-desktop: 1024px
+    --oui-breakpoint-wide: 1440px
+    --oui-state-hover-opacity: .065
+    --oui-state-active-opacity: .1
+    --oui-state-disabled-opacity: .56
+    --oui-state-loading-opacity: .78
+    --oui-state-selected-opacity: .15
+    --oui-state-focus-ring-width: 3px
+    --oui-panel-solid: #ffffff
+    --oui-gray-3: #eef2f7
+    --oui-gray-a3: rgb(15 23 42 / 6%)
+    --oui-gray-a4: rgb(15 23 42 / 8%)
+    --oui-gray-a5: rgb(15 23 42 / 12%)
+    --oui-gray-a8: rgb(15 23 42 / 18%)
+    --oui-shadow-soft: rgb(15 23 42 / 18%)
+    color: var(--oui-text)
+    background: var(--oui-bg)
+    min-height: 100%
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
+
+:root[data-oui-theme="dark"],
+.oui-root[data-oui-theme="dark"]
+    --oui-bg: #111318
+    --oui-panel: #171a21
+    --oui-panel-2: #20242d
+    --oui-control-bg: transparent
+    --oui-control-hover-bg: rgb(255 255 255 / 6%)
+    --oui-border: rgb(255 255 255 / 8%)
+    --oui-border-strong: rgb(255 255 255 / 14%)
+    --oui-text: #f4f6f8
+    --oui-muted: #9aa4b2
+    --oui-soft: #223147
+    --oui-soft-hover: #2b3b54
+    --oui-brand: #6ea0ff
+    --oui-brand-strong: #93b8ff
+    --oui-brand-solid: #315fbe
+    --oui-brand-solid-hover: #3b70d8
+    --oui-brand-soft: rgb(110 160 255 / 16%)
+    --oui-success: #5fd3a1
+    --oui-success-soft: #173a31
+    --oui-warning: #f3c969
+    --oui-warning-soft: #443516
+    --oui-danger: #ff7b72
+    --oui-danger-soft: rgb(255 123 114 / 14%)
+    --oui-info: #71c7ff
+    --oui-info-soft: #173852
+    --oui-section-bg: #ffffff
+    --oui-section-opacity: 2%
+    --oui-section-nested-opacity: 2%
+    --oui-section-shadow: none
+    --oui-section-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-opacity), transparent)
+    --oui-section-nested-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-nested-opacity), transparent)
+    --oui-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-opacity), var(--oui-bg))
+    --oui-section-solid-bg: rgb(22 24 29)
+    --oui-section-nested-solid-bg: rgb(27 29 34)
+    --oui-floating-bg: var(--oui-surface-bg)
+    --oui-pad-bg: #ffffff
+    --oui-pad-opacity: 2%
+    --oui-pad-hover-opacity: 4.5%
+    --oui-skeleton-shimmer: rgb(255 255 255 / 8%)
+    --oui-shadow-sm: 0 2px 10px rgb(0 0 0 / 22%)
+    --oui-shadow-md: 0 16px 48px var(--oui-shadow-soft)
+    --oui-ring: 0 0 0 3px rgb(106 160 255 / 22%)
+    --oui-panel-solid: var(--oui-panel)
+    --oui-gray-3: #20242d
+    --oui-gray-a3: rgb(255 255 255 / 5%)
+    --oui-gray-a4: rgb(255 255 255 / 8%)
+    --oui-gray-a5: rgb(255 255 255 / 11%)
+    --oui-gray-a8: rgb(255 255 255 / 16%)
+    --oui-shadow-soft: rgb(0 0 0 / 42%)
+
+.oui-root *,
+.oui-root *::before,
+.oui-root *::after
+    box-sizing: border-box
+
+.oui-box
+    min-width: 0
+
+.oui-flex
+    display: flex
+    min-width: 0
+
+.oui-grid
+    display: grid
+    min-width: 0
+
+.oui-stack
+    display: flex
+    flex-direction: column
+    min-width: 0
+
+.oui-section
+    min-width: 0
+    border: 0
+    border-radius: var(--oui-radius)
+    background: var(--oui-section-surface-bg, var(--oui-surface-bg))
+    box-shadow: var(--oui-section-shadow, none)
+
+.oui-section .oui-section
+    background: var(--oui-section-nested-surface-bg, var(--oui-section-surface-bg, var(--oui-surface-bg)))
+
+.oui-text
+    margin: 0
+    color: var(--oui-text)
+
+.oui-text-neutral
+    color: var(--oui-text)
+
+.oui-text-brand
+    color: var(--oui-brand-strong)
+
+.oui-text-success
+    color: var(--oui-success)
+
+.oui-text-warning
+    color: var(--oui-warning)
+
+.oui-text-danger
+    color: var(--oui-danger)
+
+.oui-text-info
+    color: var(--oui-info)
+
+.oui-muted
+    color: var(--oui-muted)
+
