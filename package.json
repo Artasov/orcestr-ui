@@ -1,17 +1,30 @@
 {
   "name": "@orcestr/ui",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Shared React UI package for Orcestr products.",
   "license": "UNLICENSED",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Artasov/orcestr-ui.git"
+  },
+  "homepage": "https://github.com/Artasov/orcestr-ui#readme",
+  "bugs": {
+    "url": "https://github.com/Artasov/orcestr-ui/issues"
+  },
   "sideEffects": [
     "./dist/styles/*.css",
     "./dist/example/*.css"
   ],
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "README.ru.md",
+    "assets"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -32,6 +45,11 @@
     "clean": "node -e \"require('fs').rmSync('dist', {recursive: true, force: true})\"",
     "build": "npm run clean && tsc -p tsconfig.build.json && npm run build:styles",
     "build:styles": "sass src/styles/orcestr-ui.sass dist/styles/orcestr-ui.css --no-source-map && sass src/example/styles.sass dist/example/styles.css --no-source-map",
+    "check": "npm run typecheck",
+    "pack:dry-run": "npm pack --dry-run",
+    "release:patch": "node scripts/release.mjs patch",
+    "release:minor": "node scripts/release.mjs minor",
+    "release:major": "node scripts/release.mjs major",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "node --test \"src/**/*.test.mts\""
   },

@@ -30,7 +30,7 @@ test('Workflow pipeline supports loading, disabled reasons and action semantics'
     assert.match(source, /workflowStatusIcon/);
 });
 
-test('Workflow primitives reuse Orchestra UI action and state building blocks', () => {
+test('Workflow primitives reuse Orcestr UI action and state building blocks', () => {
     const source = read('components/Workflow/Workflow.tsx');
     assert.match(source, /type \{OrcestrActionItem\}/);
     assert.match(source, /<Alert/);

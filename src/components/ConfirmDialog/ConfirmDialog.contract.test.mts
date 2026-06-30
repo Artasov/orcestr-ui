@@ -9,12 +9,12 @@ function read(path: string): string {
     return readFileSync(`${root}/${path}`, 'utf8');
 }
 
-test('ConfirmDialog is exported through the public Orchestra UI barrel', () => {
+test('ConfirmDialog is exported through the public Orcestr UI barrel', () => {
     const barrel = read('index.ts');
     assert.match(barrel, /export \* from '\.\/components\/ConfirmDialog\/ConfirmDialog';/);
 });
 
-test('ConfirmDialog is built on Orchestra primitives only', () => {
+test('ConfirmDialog is built on Orcestr primitives only', () => {
     const source = read('components/ConfirmDialog/ConfirmDialog.tsx');
     assert.match(source, /from '\.\.\/Modal\/Modal'/);
     assert.match(source, /from '\.\.\/Button\/Button'/);
