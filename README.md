@@ -10,6 +10,10 @@
 
 # Orcestr UI
 
+## [Demo](https://orcestr.com/ui)
+
+Open the live example page to inspect Orcestr UI components and patterns in context.
+
 Shared React UI foundation for Orcestr products.
 
 Orcestr UI is a public component library extracted from real Orcestr product work. It collects the interface primitives we reuse across product surfaces: app shell patterns, dense operational controls, workflow states, overlays, form fields, data views, design tokens and theme infrastructure.

@@ -10,6 +10,10 @@
 
 # Orcestr UI
 
+## [Demo](https://orcestr.com/ui)
+
+Открой live example page, чтобы посмотреть компоненты и паттерны Orcestr UI в контексте.
+
 Общая React UI-основа для продуктов Orcestr.
 
 Orcestr UI - публичная библиотека компонентов, выделенная из реальной продуктовой разработки Orcestr. Здесь собираются интерфейсные примитивы, которые переиспользуются в product surfaces: application shell, плотные операционные контролы, workflow-состояния, overlays, поля, data views, design tokens и инфраструктура темы.
