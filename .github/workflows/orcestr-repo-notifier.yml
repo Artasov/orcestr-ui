@@ -30,6 +30,7 @@ jobs:
           telegram-bot-token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           telegram-chat-id: ${{ secrets.TELEGRAM_CHAT_ID }}
           telegram-message-thread-id: ${{ secrets.TELEGRAM_MESSAGE_THREAD_ID }}
+          telegram-parse-mode: HTML
           custom-task: ${{ github.event.inputs.task }}
           mode: product
           language: en
@@ -44,7 +45,7 @@ jobs:
             Do not skip meaningful CI/CD, workflow, repo notifier, docs, internal tooling, reliability, or maintenance changes. Mention them concretely as project progress when they matter.
             If many changes are one repeated type of work, group them into one concise bullet instead of spreading the same idea across multiple bullets.
             Use exactly this message structure:
-            First line: DEV UPDATE **Orcestr UI**: 
+            First line: DEV UPDATE <b>Orcestr UI</b>:
             For automatic push updates, second line: Stats: <commit_count> commits, +<added_lines>/-<deleted_lines> lines.
             Use the exact commit count, added line count, and deleted line count from the Change Stats section in context.
             For manual workflow tasks, include the Stats line only if the task asks for change stats.
@@ -57,6 +58,8 @@ jobs:
             Do not ask users to re-test, wait for a next fix, check release-readiness, or do follow-up work unless the manual task explicitly asks for it or the change context explicitly proves it is needed.
             Do not write filler bullets like "No visible app behavior changed". Either state the concrete project impact or skip only if it is formatting-only.
             Do not use Markdown headings, code fences, numbered lists, or plain paragraph lines for the update items.
+            Do not use any HTML tags except <b>Orcestr UI</b> in the first line.
+            Do not write raw angle-bracket placeholders in the final message.
             Do not include repository owner, repository name, branch name, author name, commit hashes, raw file lists, or compare links.
             Do not add a final "Compare:" line or any GitHub URL.
             Write a short Telegram update for subscribers.
