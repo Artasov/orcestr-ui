@@ -46,21 +46,24 @@ import {navGroups, navItems, type EntityOption} from './exampleData';
 
 const ORCESTR_LOGO_SRC = '/assets/orcestr/logo.png';
 const UI_EXAMPLE_SCROLL_LEAD = 50;
+const UI_EXAMPLE_ACTIVE_PROBE_OFFSET = UI_EXAMPLE_SCROLL_LEAD + 220;
+const UI_EXAMPLE_CLICK_TARGET_TOP_TOLERANCE = 180;
+const UI_EXAMPLE_SCROLL_LOCK_TIMEOUT_MS = 1600;
 
 
-function scrollUiExampleSection(id: string) {
+function scrollUiExampleSection(id: string, behavior: ScrollBehavior = 'auto') {
     const node = document.getElementById(id);
     const scrollRoot = document.querySelector<HTMLElement>(
         '.oui-app-shell-content-scroll .oui-scroll-area-viewport',
     );
     if (!node || !scrollRoot) {
-        node?.scrollIntoView({block: 'start', behavior: 'smooth'});
+        node?.scrollIntoView({block: 'start', behavior});
         return;
     }
 
     scrollRoot.scrollTo({
         top: uiExampleSectionScrollTop(node, scrollRoot),
-        behavior: 'smooth',
+        behavior,
     });
 }
 
@@ -68,7 +71,16 @@ function uiExampleSectionScrollTop(node: HTMLElement, scrollRoot?: HTMLElement) 
     const maxTop = scrollRoot
         ? Math.max(0, scrollRoot.scrollHeight - scrollRoot.clientHeight)
         : Number.POSITIVE_INFINITY;
-    return Math.min(maxTop, Math.max(0, node.offsetTop - UI_EXAMPLE_SCROLL_LEAD));
+    const targetTop = scrollRoot
+        ? uiExampleSectionAbsoluteTop(node, scrollRoot)
+        : node.offsetTop;
+    return Math.min(maxTop, Math.max(0, targetTop - UI_EXAMPLE_SCROLL_LEAD));
+}
+
+function uiExampleSectionAbsoluteTop(node: HTMLElement, scrollRoot: HTMLElement) {
+    const nodeTop = node.getBoundingClientRect().top;
+    const scrollRootTop = scrollRoot.getBoundingClientRect().top;
+    return scrollRoot.scrollTop + nodeTop - scrollRootTop;
 }
 
 function UiExampleContent({
@@ -119,19 +131,14 @@ function UiExampleContent({
         document.body.classList.add('oui-ui-document-lock');
 
         const hash = window.location.hash.replace('#', '');
-        let hashSettleTimer: number | null = null;
         const hashFrame = hash
             ? window.requestAnimationFrame(() => {
                 scrollUiExampleSection(hash);
-                hashSettleTimer = window.setTimeout(() => {
-                    scrollUiExampleSection(hash);
-                }, 450);
             })
             : null;
 
         return () => {
             if (hashFrame !== null) window.cancelAnimationFrame(hashFrame);
-            if (hashSettleTimer !== null) window.clearTimeout(hashSettleTimer);
             document.documentElement.classList.remove('oui-ui-document-lock');
             document.body.classList.remove('oui-ui-document-lock');
         };
@@ -441,7 +448,7 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
         }
         scrollNavigationReleaseTimerRef.current = window.setTimeout(() => {
             if (scrollNavigationTargetRef.current === id) scrollNavigationTargetRef.current = null;
-        }, 900);
+        }, UI_EXAMPLE_SCROLL_LOCK_TIMEOUT_MS);
     }, []);
 
     useEffect(() => {
@@ -469,7 +476,10 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
                 }
 
                 const targetTop = uiExampleSectionScrollTop(targetNode, scrollRoot);
-                if (Math.abs(scrollRoot.scrollTop - targetTop) <= 2) {
+                if (
+                    Math.abs(scrollRoot.scrollTop - targetTop) <=
+                    UI_EXAMPLE_CLICK_TARGET_TOP_TOLERANCE
+                ) {
                     scrollNavigationTargetRef.current = null;
                     setActiveSectionValue(lockedTarget);
                 }
@@ -479,10 +489,12 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
             const bottomDistance = scrollRoot.scrollHeight
                 - scrollRoot.clientHeight
                 - scrollRoot.scrollTop;
-            const top = scrollRoot.scrollTop + 24;
+            const top = scrollRoot.scrollTop + UI_EXAMPLE_ACTIVE_PROBE_OFFSET;
             const next = bottomDistance <= 2
                 ? nodes.at(-1)?.id
-                : nodes.filter((node) => node.offsetTop <= top).at(-1)?.id ?? nodes[0]?.id;
+                : nodes
+                    .filter((node) => uiExampleSectionAbsoluteTop(node, scrollRoot) <= top)
+                    .at(-1)?.id ?? nodes[0]?.id;
             if (next && next !== activeSectionRef.current) setActiveSectionValue(next);
         };
         const requestUpdateActiveSection = () => {
@@ -614,15 +626,26 @@ function UiExampleHeaderActions({
     );
 }
 
-export function UiExamplePage() {
+export type UiExamplePageProps = {
+    locale?: OrcestrUiLocale;
+    defaultLocale?: OrcestrUiLocale;
+    onLocaleChange?: (locale: OrcestrUiLocale) => void;
+};
+
+export function UiExamplePage({
+    locale: controlledLocale,
+    defaultLocale = 'ru',
+    onLocaleChange,
+}: UiExamplePageProps = {}) {
     const firstPreset = getThemePlaygroundPreset('orcestr-dark');
     const [activePresetId, setActivePresetId] = useState<ThemePresetId>(firstPreset.id as ThemePresetId);
     const [mode, setMode] = useState(firstPreset.mode);
     const [surface, setSurface] = useState(firstPreset.surface);
-    const [locale, setLocale] = useState<OrcestrUiLocale>('ru');
+    const [internalLocale, setInternalLocale] = useState<OrcestrUiLocale>(defaultLocale);
     const [themeOverrides, setThemeOverrides] = useState<OrcestrThemeOverrides>(
         firstPreset.overrides ?? {},
     );
+    const locale = controlledLocale ?? internalLocale;
 
     const handleThemePresetChange = useCallback((preset: ReturnType<typeof getThemePlaygroundPreset>) => {
         setActivePresetId(preset.id as ThemePresetId);
@@ -630,6 +653,16 @@ export function UiExamplePage() {
         setSurface(preset.surface);
         setThemeOverrides(preset.overrides ?? {});
     }, []);
+    const handleLocaleChange = useCallback(
+        (nextLocale: OrcestrUiLocale) => {
+            if (onLocaleChange) {
+                onLocaleChange(nextLocale);
+                return;
+            }
+            setInternalLocale(nextLocale);
+        },
+        [onLocaleChange],
+    );
 
     return (
         <OrcestrUiProvider
@@ -645,7 +678,7 @@ export function UiExamplePage() {
                 onThemePresetChange={handleThemePresetChange}
                 onThemeOverridesChange={setThemeOverrides}
                 locale={locale}
-                onLocaleChange={setLocale}
+                onLocaleChange={handleLocaleChange}
             />
         </OrcestrUiProvider>
     );

@@ -211,15 +211,24 @@ test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigat
     assert.match(page, /const \[activeSection, setActiveSection\] = useState\('theme'\)/);
     assert.match(page, /function scrollUiExampleSection/);
     assert.match(page, /const UI_EXAMPLE_SCROLL_LEAD = 50/);
+    assert.match(page, /const UI_EXAMPLE_ACTIVE_PROBE_OFFSET = UI_EXAMPLE_SCROLL_LEAD \+ 220/);
+    assert.match(page, /const UI_EXAMPLE_CLICK_TARGET_TOP_TOLERANCE = 180/);
+    assert.match(page, /const UI_EXAMPLE_SCROLL_LOCK_TIMEOUT_MS = 1600/);
     assert.match(page, /function uiExampleSectionScrollTop/);
-    assert.match(page, /behavior: 'smooth'/);
-    assert.match(page, /node\.offsetTop - UI_EXAMPLE_SCROLL_LEAD/);
+    assert.match(page, /behavior: ScrollBehavior = 'auto'/);
+    assert.match(page, /function uiExampleSectionAbsoluteTop/);
+    assert.match(page, /node\.getBoundingClientRect\(\)\.top/);
+    assert.match(page, /scrollRoot\.getBoundingClientRect\(\)\.top/);
+    assert.match(page, /targetTop - UI_EXAMPLE_SCROLL_LEAD/);
     assert.match(page, /top: uiExampleSectionScrollTop\(node, scrollRoot\)/);
     assert.match(page, /scrollNavigationTargetRef/);
     assert.match(page, /const setActiveSectionValue = useCallback/);
     assert.match(page, /if \(lockedTarget\)/);
     assert.match(page, /const targetTop = uiExampleSectionScrollTop\(targetNode, scrollRoot\)/);
+    assert.match(page, /UI_EXAMPLE_CLICK_TARGET_TOP_TOLERANCE/);
     assert.match(page, /const bottomDistance = scrollRoot\.scrollHeight[\s\S]*?- scrollRoot\.clientHeight[\s\S]*?- scrollRoot\.scrollTop/);
+    assert.match(page, /const top = scrollRoot\.scrollTop \+ UI_EXAMPLE_ACTIVE_PROBE_OFFSET/);
+    assert.match(page, /uiExampleSectionAbsoluteTop\(node, scrollRoot\) <= top/);
     assert.match(page, /bottomDistance <= 2[\s\S]*?nodes\.at\(-1\)\?\.id/);
     assert.match(page, /if \(next && next !== activeSectionRef\.current\) setActiveSectionValue\(next\)/);
     assert.match(page, /requestAnimationFrame\(updateActiveSection\)/);
@@ -242,6 +251,19 @@ test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigat
     assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-content\s+padding: 12px 10px 18px/);
     assert.match(drawerStyles, /\.oui-drawer-panel\[data-side="left"\]/);
     assert.doesNotMatch(shellStyles, /oui-app-shell-sidebar-backdrop/);
+});
+
+test('UI example can use host-controlled locale', () => {
+    const page = read('example/UiExamplePage.tsx');
+
+    assert.match(page, /export type UiExamplePageProps = \{/);
+    assert.match(page, /locale\?: OrcestrUiLocale/);
+    assert.match(page, /onLocaleChange\?: \(locale: OrcestrUiLocale\) => void/);
+    assert.match(page, /locale: controlledLocale/);
+    assert.match(page, /const locale = controlledLocale \?\? internalLocale/);
+    assert.match(page, /if \(onLocaleChange\) \{/);
+    assert.match(page, /onLocaleChange\(nextLocale\)/);
+    assert.match(page, /setInternalLocale\(nextLocale\)/);
 });
 
 test('UI example and state components use container-safe layouts', () => {
