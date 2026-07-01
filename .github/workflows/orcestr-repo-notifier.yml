@@ -54,12 +54,13 @@ jobs:
             After the closing line, always add exactly these two final link lines:
             NPM: https://www.npmjs.com/package/@orcestr/ui
             Open: https://orcestr.com/ui
+            If the push is a new @orcestr/ui package release or version bump, make the first bullet start with "• New release:" and include the exact version, for example <b>@orcestr/ui v0.0.3</b>.
             The closing line can be a thank-you, a light call to try something, or a useful note. Make it different and relevant each time. Do not use all closing styles at once.
             Do not ask users to re-test, wait for a next fix, check release-readiness, or do follow-up work unless the manual task explicitly asks for it or the change context explicitly proves it is needed.
             Do not write filler bullets like "No visible app behavior changed". Either state the concrete project impact or skip only if it is formatting-only.
             Do not use Markdown headings, code fences, numbered lists, or plain paragraph lines for the update items.
-            Do not use any HTML tags except <b>Orcestr UI</b> in the first line.
-            Do not write raw angle-bracket placeholders in the final message.
+            Telegram HTML parse mode is enabled. Use <b>...</b> sparingly for the first-line product name and 1-2 genuinely important accents, such as the UI package name, release version, changed component family, or public sandbox.
+            Do not use colors, spans, inline styles, unsupported HTML tags, decorative formatting, or raw angle-bracket placeholders in the final message.
             Do not include repository owner, repository name, branch name, author name, commit hashes, raw file lists, or compare links.
             Do not add a final "Compare:" line or any GitHub URL.
             Write a short Telegram update for subscribers.
