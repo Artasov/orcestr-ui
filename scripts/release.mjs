@@ -14,7 +14,6 @@ function runCommand(command, args, options = {}) {
     const result = spawnSync(command, args, {
         cwd: options.cwd ?? rootDir,
         encoding: "utf8",
-        shell: process.platform === "win32",
         stdio: options.captureOutput ? "pipe" : "inherit",
     });
 

@@ -1,6 +1,6 @@
 {
   "name": "@orcestr/ui",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Shared React UI package for Orcestr products.",
   "license": "UNLICENSED",
   "type": "module",
