@@ -1,5 +1,5 @@
 import {spawnSync} from "node:child_process";
-import {readFileSync, writeFileSync} from "node:fs";
+import {existsSync, readFileSync, writeFileSync} from "node:fs";
 import {dirname, resolve} from "node:path";
 import {fileURLToPath} from "node:url";
 
@@ -14,6 +14,7 @@ function runCommand(command, args, options = {}) {
     const result = spawnSync(command, args, {
         cwd: options.cwd ?? rootDir,
         encoding: "utf8",
+        shell: options.shell ?? false,
         stdio: options.captureOutput ? "pipe" : "inherit",
     });
 
@@ -33,7 +34,28 @@ function git(args, options = {}) {
 }
 
 function npm(args, options = {}) {
-    return runCommand(process.platform === "win32" ? "npm.cmd" : "npm", args, options);
+    const npmCliPath = npmCli();
+
+    if (npmCliPath) {
+        return runCommand(process.execPath, [npmCliPath, ...args], options);
+    }
+
+    return runCommand(
+        process.platform === "win32" ? "npm.cmd" : "npm",
+        args,
+        {...options, shell: process.platform === "win32"},
+    );
+}
+
+function npmCli() {
+    const candidates = [
+        process.env.npm_execpath,
+        process.platform === "win32"
+            ? resolve(dirname(process.execPath), "node_modules/npm/bin/npm-cli.js")
+            : resolve(dirname(process.execPath), "../lib/node_modules/npm/bin/npm-cli.js"),
+    ].filter(Boolean);
+
+    return candidates.find((path) => existsSync(path));
 }
 
 function readPackageJson() {
