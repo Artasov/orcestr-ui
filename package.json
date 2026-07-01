@@ -51,7 +51,7 @@
     "release:minor": "node scripts/release.mjs minor",
     "release:major": "node scripts/release.mjs major",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node --test \"src/**/*.test.mts\""
+    "test": "node scripts/run-tests.mjs"
   },
   "peerDependencies": {
     "@tanstack/react-query": "^5.99.0",
