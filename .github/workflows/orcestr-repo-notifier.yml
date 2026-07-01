@@ -50,30 +50,9 @@ jobs:
             For manual workflow tasks, include the Stats line only if the task asks for change stats.
             Then 3-5 bullet lines. Every bullet line must start with "• ".
             Then one short closing line after a blank line.
-            If a concrete product page is useful for the update, add one final line after the closing line in this exact format: Open: <url>
-            Add that Open line only when the changed files or commits clearly map to a page, module, sandbox, or public product surface. Do not add a generic homepage link for backend-only, invisible infrastructure, test-only, cleanup-only, or broad maintenance updates.
-            Use these known public and product links when they fit:
-            - Platform landing: https://orcestr.com
-            - Orcestr UI sandbox / design system: https://orcestr.com/ui
-            - Deliveries public landing: https://deliveries.orcestr.com or https://orcestr.com/deliveries
-            - Deliveries app surface: https://deliveries.orcestr.com
-            - Beauty public landing: https://beauty.orcestr.com
-            - Beauty chat: https://beauty.orcestr.com/chat
-            - Beauty gallery: https://beauty.orcestr.com/gallery
-            - Beauty looks: https://beauty.orcestr.com/looks
-            - Jewelry public page: https://orcestr.com/products/jewelry
-            - Login: https://orcestr.com/login
-            - Register: https://orcestr.com/register
-            - Legal pages: https://orcestr.com/legal/<slug>
-            For protected internal app pages, infer the route from frontend/app and changed module names when it is obvious:
-            - Platform console/shared pages use https://orcestr.com/<path>, for example /overview, /notifications, /audit-logs, /tenants, /profile, /admin.
-            - Deliveries pages use https://deliveries.orcestr.com/<canonical-path>. Drop the /deliveries prefix on the product domain, so frontend/app/(dashboard)/deliveries/products/page.tsx becomes https://deliveries.orcestr.com/products and frontend/app/(dashboard)/deliveries/settings/references/page.tsx becomes https://deliveries.orcestr.com/settings/references.
-            - Known Deliveries page families include /overview, /products, /product-groups, /brands, /suppliers, /supplier-product-conditions, /warehouses, /lots, /inventory/stock, /inventory/count, /requests, /procurement-plans, /purchase-orders, /approvals, /planning, /operations, /warehouse-operations, /in-transit, /reservations, /customer-orders, /pricing, /pricing/product-prices, /price-lists, /price-deviations, /sales-leads, /pipeline, /sales-offers, /customers, /finance, /calendar, /calendar/events, /calendar/payments, /calendar/shipments, /calendar/work, /tasks, /chats, /documents, /defects, /risks, /settings, /settings/references, /demo-data.
-            - Beauty dashboard pages use https://beauty.orcestr.com/<canonical-path>. Drop the /beauty prefix on the product domain, so frontend/app/(dashboard)/beauty/settings/page.tsx becomes https://beauty.orcestr.com/settings.
-            - Known Beauty page families include /overview, /chat, /gallery, /looks, /leads, /services, /appointments, /calendar, /analytics, /settings.
-            - Beauty public share pages may use https://beauty.orcestr.com/look/<shareUuid> or https://beauty.orcestr.com/<slug>/look/<shareUuid>, but do not invent IDs; link the parent page instead when an ID is required.
-            - Entity detail pages with dynamic segments such as [id], [chatUid], [shareUuid], or [model] should link to the nearest stable list or parent page unless the commit context includes a real identifier.
-            Prefer the most specific stable page over a module homepage. If several pages changed, choose the one most representative of the update; do not add multiple Open lines.
+            After the closing line, always add exactly these two final link lines:
+            NPM: https://www.npmjs.com/package/@orcestr/ui
+            Open: https://orcestr.com/ui
             The closing line can be a thank-you, a light call to try something, or a useful note. Make it different and relevant each time. Do not use all closing styles at once.
             Do not ask users to re-test, wait for a next fix, check release-readiness, or do follow-up work unless the manual task explicitly asks for it or the change context explicitly proves it is needed.
             Do not write filler bullets like "No visible app behavior changed". Either state the concrete project impact or skip only if it is formatting-only.
