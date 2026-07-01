@@ -44,7 +44,7 @@ jobs:
             Do not skip meaningful CI/CD, workflow, repo notifier, docs, internal tooling, reliability, or maintenance changes. Mention them concretely as project progress when they matter.
             If many changes are one repeated type of work, group them into one concise bullet instead of spreading the same idea across multiple bullets.
             Use exactly this message structure:
-            First line: DEV UPDATE: Orcestr UI
+            First line: DEV UPDATE **Orcestr UI**: 
             For automatic push updates, second line: Stats: <commit_count> commits, +<added_lines>/-<deleted_lines> lines.
             Use the exact commit count, added line count, and deleted line count from the Change Stats section in context.
             For manual workflow tasks, include the Stats line only if the task asks for change stats.
