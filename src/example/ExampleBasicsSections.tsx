@@ -165,15 +165,24 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
                         ].map(([image, title, description]) => (
                             <Flex
                                 key={title}
-                                className='oui-ui-stack-card'
                                 row
                                 g={2}
                                 a='c'
+                                w='min(100%, 360px)'
+                                p='8px 10px'
+                                r={2}
+                                style={{background: 'var(--oui-gray-a3)'}}
                             >
                                 <img
-                                    className='oui-ui-stack-image'
                                     src={image}
                                     alt=''
+                                    style={{
+                                        width: 34,
+                                        height: 34,
+                                        flex: '0 0 34px',
+                                        borderRadius: 999,
+                                        objectFit: 'cover',
+                                    }}
                                 />
                                 <Stack g={0}>
                                     <Text fs='13px' fw={700}>{title}</Text>

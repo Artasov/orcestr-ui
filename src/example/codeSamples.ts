@@ -33,9 +33,9 @@ export const codeSamples = {
         <Text tone='info' fw={700}>Info</Text>
     </Flex>
 
-    <Box w='100%' p={2} r={3}>
+    <Box w='100%' p={2} r={3} style={{background: 'var(--oui-gray-a3)'}}>
         <Text display='block' truncate>
-            This is a long single line value that truncates cleanly.
+            This is a long single line value that truncates cleanly inside a constrained row.
         </Text>
     </Box>
 
@@ -170,7 +170,15 @@ const groups = [
     </Flex>
     <Flex row g={2} wrap>
         {['Intake', 'Review', 'Complete'].map((item, index) => (
-            <Flex key={item} col g={1} p={2} r={3} flex='1 1 150px'>
+            <Flex
+                key={item}
+                col
+                g={1}
+                p={2}
+                r={3}
+                flex='1 1 150px'
+                style={{background: 'var(--oui-gray-a3)'}}
+            >
                 <Text fs='12px' tone='muted'>Step {index + 1}</Text>
                 <Text fw={700}>{item}</Text>
             </Flex>
@@ -185,8 +193,27 @@ const groups = [
         ['/gallery/hollywood-star.webp', 'Reserved', 'Capacity is reserved for review'],
         ['/gallery/ice-cave.webp', 'Scheduled', 'Review window is confirmed'],
     ].map(([image, title, description]) => (
-        <Flex key={title} className='stack-card' row g={2} a='c'>
-            <img className='stack-image' src={image} alt='' />
+        <Flex
+            key={title}
+            row
+            g={2}
+            a='c'
+            w='min(100%, 360px)'
+            p='8px 10px'
+            r={2}
+            style={{background: 'var(--oui-gray-a3)'}}
+        >
+            <img
+                src={image}
+                alt=''
+                style={{
+                    width: 34,
+                    height: 34,
+                    flex: '0 0 34px',
+                    borderRadius: 999,
+                    objectFit: 'cover',
+                }}
+            />
             <Stack g={0}>
                 <Text fs='13px' fw={700}>{title}</Text>
                 <Text fs='12px' tone='muted' lh={1.45}>{description}</Text>
@@ -207,7 +234,7 @@ const [detailsOpen, setDetailsOpen] = useState(true);
         </Button>
     </Flex>
     <Collapse open={detailsOpen}>
-        <Stack g={2} p={2} r={3}>
+        <Stack g={2} p={2} r={3} style={{background: 'var(--oui-gray-a3)'}}>
             <Flex row g={2} j='sb'>
                 <Text tone='muted'>Owner</Text>
                 <Text fw={700}>Core team</Text>
@@ -227,7 +254,7 @@ const [detailsOpen, setDetailsOpen] = useState(true);
 
 <Grid columns='repeat(3, minmax(0, 1fr))' g={2}>
     {['A', 'B', 'C', 'D', 'E', 'F'].map((item) => (
-        <Box key={item} p={2} r={3} ta='center'>
+        <Box key={item} p={2} r={3} ta='center' style={{background: 'var(--oui-gray-a3)'}}>
             <Text fs='13px' fw={700}>{item}</Text>
         </Box>
     ))}
@@ -253,11 +280,29 @@ const [detailsOpen, setDetailsOpen] = useState(true);
         position='absolute'
     />
 </div>`,
-    scrollArea: `import {Badge, Flex, ScrollArea, Stack, Text} from '@orcestr/ui';
+    scrollArea: `import {Badge, Box, Flex, ScrollArea, Stack, Text} from '@orcestr/ui';
+
+const scrollRows = Array.from({length: 10}, (_, index) => index + 1);
+const richRows = [
+    ['Queued', 'No top shade at the initial position.'],
+    ['Reserved', 'The top shade starts after 50px.'],
+    ['Packed', 'Opacity reaches maximum over 160px.'],
+    ['Labeled', 'Bottom shade fades near the end.'],
+    ['Reviewed', 'Each edge has its own configuration.'],
+    ['Delivered', 'The gradient uses the solid surface color.'],
+    ['Checked', 'Content remains readable under the fade.'],
+    ['Archived', 'The bottom edge disappears at the end.'],
+];
 
 <Stack g={2}>
     <ScrollArea h={116} pr={1}>
-        <Stack g={1}>{rows}</Stack>
+        <Stack g={1}>
+            {scrollRows.map((row) => (
+                <Box key={row} p={2} r={3} style={{background: 'var(--oui-gray-a3)'}}>
+                    <Text fs='13px'>Scroll row {row}</Text>
+                </Box>
+            ))}
+        </Stack>
     </ScrollArea>
 
     <ScrollArea
@@ -268,7 +313,13 @@ const [detailsOpen, setDetailsOpen] = useState(true);
         highlightTop={{h: 28, mode: 'static', maxOpacity: 0.96}}
         highlightBottom={{h: 28, mode: 'static', maxOpacity: 0.96}}
     >
-        <Stack g={1}>{rows}</Stack>
+        <Stack g={1}>
+            {scrollRows.slice(0, 8).map((row) => (
+                <Box key={row} p={2} r={3} style={{background: 'var(--oui-gray-a3)'}}>
+                    <Text fs='13px'>Both edges row {row}</Text>
+                </Box>
+            ))}
+        </Stack>
     </ScrollArea>
 
     <ScrollArea
@@ -292,14 +343,22 @@ const [detailsOpen, setDetailsOpen] = useState(true);
         }}
     >
         <Stack g={1}>
-            {rows.map((row, index) => (
-                <Flex key={row.id} row g={2} p={2} r={3} a='c'>
+            {richRows.map(([title, description], index) => (
+                <Flex
+                    key={title}
+                    row
+                    g={2}
+                    p={2}
+                    r={3}
+                    a='c'
+                    style={{background: 'var(--oui-gray-a3)'}}
+                >
                     <Badge tone={index < 3 ? 'primary' : 'info'}>
                         {index + 1}
                     </Badge>
                     <Stack g={0}>
-                        <Text fs='13px' fw={700}>{row.title}</Text>
-                        <Text fs='12px' tone='muted'>{row.description}</Text>
+                        <Text fs='13px' fw={700}>{title}</Text>
+                        <Text fs='12px' tone='muted'>{description}</Text>
                     </Stack>
                 </Flex>
             ))}
@@ -310,8 +369,16 @@ const [detailsOpen, setDetailsOpen] = useState(true);
 
 <Flex g={2} a='c' wrap>
     {[0, 2, 4, 6, 7].map((radius) => (
-        <Box key={radius} size={32} r={radius} display='flex' a='c' j='c'>
-            <Text fs='12px'>{radius}</Text>
+        <Box
+            key={radius}
+            size={32}
+            r={radius}
+            display='flex'
+            a='c'
+            j='c'
+            style={{background: 'var(--oui-gray-a3)'}}
+        >
+            <Text fs='12px' fw={700}>{radius}</Text>
         </Box>
     ))}
 </Flex>
@@ -332,6 +399,12 @@ const [detailsOpen, setDetailsOpen] = useState(true);
             <Stack g={1}>
                 <Text fw={760}>Soft card</Text>
                 <Text fs='12px' tone='muted'>Quiet grouped content.</Text>
+            </Stack>
+        </Card>
+        <Card v='classic'>
+            <Stack g={1}>
+                <Text fw={760}>Classic card</Text>
+                <Text fs='12px' tone='muted'>More explicit border and background.</Text>
             </Stack>
         </Card>
     </Grid>

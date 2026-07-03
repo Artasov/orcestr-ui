@@ -18,6 +18,8 @@ import {
     Button,
     EmptyState,
     ErrorState,
+    Flex,
+    Grid,
     IconText,
     LoadingState,
     Stack,
@@ -39,6 +41,7 @@ const stateCardSample: CodeExample = {
     Button,
     EmptyState,
     ErrorState,
+    Grid,
     LoadingState,
     Stack,
     StateCard,
@@ -56,7 +59,7 @@ const validationItems = [
         title='General state'
         description='One card for informational, empty, loading and error states.'
     />
-    <div className='oui-ui-state-grid'>
+    <Grid columns='repeat(auto-fit, minmax(min(100%, 260px), 1fr))' g={2}>
         <StateCard
             v='surface'
             tone='primary'
@@ -77,7 +80,7 @@ const validationItems = [
             title='Ghost'
             description='No extra background.'
         />
-    </div>
+    </Grid>
     <StateCard tone='danger' title='Validation failed'>
         <Stack g={1}>
             {validationItems.map((item) => (
@@ -88,11 +91,11 @@ const validationItems = [
             ))}
         </Stack>
     </StateCard>
-    <div className='oui-ui-state-grid'>
+    <Grid columns='repeat(auto-fit, minmax(min(100%, 260px), 1fr))' g={2}>
         <EmptyState compact description='No records yet.' />
         <LoadingState compact description='Loading the next page.' />
         <ErrorState compact description='Request failed.' onRetry={reload} />
-    </div>
+    </Grid>
     <StateCard
         tone='success'
         title='Saved'
@@ -128,16 +131,16 @@ const statusItems = [
 
 const iconTextSample: CodeExample = {
     title: 'IconText',
-    code: `import {IconText, Stack} from '@orcestr/ui';
+    code: `import {Flex, IconText} from '@orcestr/ui';
 import {LuCircleAlert, LuCircleCheck, LuCircleX, LuInfo, LuLoaderCircle} from 'react-icons/lu';
 
-<Stack g={1}>
+<Flex g={2} wrap>
     <IconText icon={<LuLoaderCircle />} iconTone='info' iconSpin>Saving changes</IconText>
     <IconText icon={<LuCircleCheck />} iconTone='success'>Saved</IconText>
     <IconText icon={<LuCircleX />} iconTone='danger'>Save failed</IconText>
     <IconText icon={<LuCircleAlert />} iconTone='warning' fw={760}>Review required</IconText>
     <IconText icon={<LuInfo />} iconTone='info' fs='13px'>Sync scheduled</IconText>
-</Stack>`,
+</Flex>`,
 };
 
 export function BadgeSection({
@@ -163,7 +166,7 @@ export function BadgeSection({
                 code={badgeSample.code}
                 onOpen={onOpenCode}
             >
-                <div className='oui-ui-badge-demo'>
+                <Flex g={2} wrap>
                     <Badge tone='neutral'>Requested <strong>43</strong></Badge>
                     <Badge tone='info' icon={<LuClock3 />}>Ordered <strong>12</strong></Badge>
                     <Badge tone='success' icon={<LuPackageCheck />}>Accepted <strong>8</strong></Badge>
@@ -176,7 +179,7 @@ export function BadgeSection({
                         onValueChange={setStatus}
                         tone='warning'
                     />
-                </div>
+                </Flex>
             </ExampleTile>
         </UiExampleSection>
     );
@@ -204,7 +207,7 @@ export function StateCardSection({
                         title='General state'
                         description='One card for informational, empty, loading and error states.'
                     />
-                    <div className='oui-ui-state-grid'>
+                    <Grid columns='repeat(auto-fit, minmax(min(100%, 260px), 1fr))' g={2}>
                         <StateCard
                             v='surface'
                             tone='primary'
@@ -225,7 +228,7 @@ export function StateCardSection({
                             title='Ghost'
                             description='No extra background.'
                         />
-                    </div>
+                    </Grid>
                     <StateCard tone='danger' title='Validation failed'>
                         <Stack g={1}>
                             {validationItems.map((item) => (
@@ -236,7 +239,7 @@ export function StateCardSection({
                             ))}
                         </Stack>
                     </StateCard>
-                    <div className='oui-ui-state-grid'>
+                    <Grid columns='repeat(auto-fit, minmax(min(100%, 260px), 1fr))' g={2}>
                         <EmptyState compact description='No records yet.' />
                         <LoadingState compact description='Loading the next page.' />
                         <ErrorState
@@ -244,7 +247,7 @@ export function StateCardSection({
                             description='Request failed.'
                             onRetry={() => undefined}
                         />
-                    </div>
+                    </Grid>
                     <StateCard
                         tone='success'
                         title='Saved'
@@ -274,7 +277,7 @@ export function IconTextSection({
                 code={iconTextSample.code}
                 onOpen={onOpenCode}
             >
-                <div className='oui-ui-icon-text-list'>
+                <Flex g={2} wrap>
                     <IconText icon={<LuLoaderCircle />} iconTone='info' iconSpin>
                         Saving changes
                     </IconText>
@@ -290,7 +293,7 @@ export function IconTextSection({
                     <IconText icon={<LuInfo />} iconTone='info' fs='13px'>
                         Sync scheduled
                     </IconText>
-                </div>
+                </Flex>
             </ExampleTile>
         </UiExampleSection>
     );
