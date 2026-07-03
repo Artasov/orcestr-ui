@@ -13,3 +13,8 @@ test('AppSidebar active icons use text accent active icon token by default', () 
         /\.oui-app-sidebar-item\[data-sidebar-active="true"\] \.oui-app-sidebar-item-icon\s+color: var\(--oui-primary-text\)/,
     );
 });
+
+test('AppSidebar defaults are scoped to Orcestr UI theme tokens', () => {
+    assert.doesNotMatch(appSidebarStyles, /--color-background/);
+    assert.doesNotMatch(appSidebarStyles, /var\(--gray-/);
+});

@@ -334,11 +334,11 @@ test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigat
     assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-header > \.oui-icon-button\s+width: 32px[\s\S]*?height: 32px[\s\S]*?min-height: 32px/);
     assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?height: calc\(100vh - 48px\)/);
     assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-backdrop\.oui-app-shell-sidebar-drawer-overlay\s+background: transparent/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="left"\]\s+width: min\(88vw, max\(var\(--oui-drawer-size, 300px\), 300px\)\)[\s\S]*?background: var\(--color-background, var\(--oui-bg\)\)[\s\S]*?border: 0[\s\S]*?border-radius: 0 14px 14px 0/);
+    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="left"\]\s+width: min\(88vw, max\(var\(--oui-drawer-size, 300px\), 300px\)\)[\s\S]*?background: var\(--oui-bg\)[\s\S]*?border: 0[\s\S]*?border-radius: 0 14px 14px 0/);
     assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar-drawer-body > \.oui-app-sidebar\s+width: 100%[\s\S]*?height: 100%[\s\S]*?border-radius: 0 14px 14px 0/);
     assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar-drawer-body \.oui-app-sidebar-head\s+flex: 0 0 48px[\s\S]*?min-height: 48px[\s\S]*?border-bottom: 0[\s\S]*?padding: 0 8px/);
     assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar-drawer-body \.oui-app-sidebar-content\s+padding: 6px 8px 12px/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?--oui-app-shell-sidebar-body-pad: 6px 8px 12px[\s\S]*?background: var\(--color-background, var\(--oui-bg\)\)/);
+    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?--oui-app-shell-sidebar-body-pad: 6px 8px 12px[\s\S]*?background: var\(--oui-bg\)/);
     assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar::before\s+display: none/);
     assert.doesNotMatch(shellStyles, /@media \(max-width: 860px\)[\s\S]*?backdrop-filter: blur\(24px\)/);
     assert.match(shellStyles, /\.oui-app-shell-content-scroll\s+flex: 1 1 auto[\s\S]*?padding: 0/);
