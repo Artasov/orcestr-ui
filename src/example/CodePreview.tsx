@@ -7,7 +7,7 @@ import {
 } from 'react';
 import {LuInfo, LuX} from 'react-icons/lu';
 
-import {Flex, IconButton, Modal, ScrollArea} from '..';
+import {CopyIconButton, Flex, IconButton, Modal, ScrollArea} from '..';
 import {cn} from '../utils/cn';
 import {type CodeExample} from './codeSamples';
 
@@ -109,7 +109,7 @@ export function InlineCodeBlock({code}: {code: string}) {
             data-collapsible={collapsible ? 'true' : 'false'}
         >
             <div className='oui-code-inline-content'>
-                <CodeBlock code={code} />
+                <CodeBlock code={code} mode='inline' />
             </div>
             {collapsible && !expanded ? <div className='oui-code-inline-fade' aria-hidden /> : null}
             {collapsible ? (
@@ -126,14 +126,46 @@ export function InlineCodeBlock({code}: {code: string}) {
     );
 }
 
-export function CodeBlock({code}: {code: string}) {
+export function CodeBlock({code, mode = 'scroll'}: {code: string; mode?: 'scroll' | 'inline'}) {
     const content = useMemo(() => highlightedCode(code), [code]);
+    const codeNode = (
+        <pre className='oui-code-preview'>
+            <code>{content}</code>
+        </pre>
+    );
+
+    if (mode === 'inline') {
+        return (
+            <div className='oui-code-preview-wrap'>
+                <CopyIconButton
+                    className='oui-code-preview-copy'
+                    text={code}
+                    label='Copy code'
+                    successMessage='Code copied'
+                    size={1}
+                    v='soft'
+                />
+                <div className='oui-code-preview-scroll oui-code-preview-scroll-inline'>
+                    {codeNode}
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <ScrollArea className='oui-code-preview-scroll'>
-            <pre className='oui-code-preview'>
-                <code>{content}</code>
-            </pre>
-        </ScrollArea>
+        <div className='oui-code-preview-wrap'>
+            <CopyIconButton
+                className='oui-code-preview-copy'
+                text={code}
+                label='Copy code'
+                successMessage='Code copied'
+                size={1}
+                v='soft'
+            />
+            <ScrollArea className='oui-code-preview-scroll'>
+                {codeNode}
+            </ScrollArea>
+        </div>
     );
 }
 

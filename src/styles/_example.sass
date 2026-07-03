@@ -870,6 +870,21 @@ body.oui-ui-document-lock
     align-items: center
     gap: 10px 16px
 
+.oui-ui-stack-card
+    width: min(100%, 360px)
+    border-radius: var(--oui-radius-sm)
+    background: var(--oui-gray-a3)
+    padding: 8px 10px
+
+.oui-ui-stack-image
+    display: block
+    width: 34px
+    height: 34px
+    flex: 0 0 34px
+    border-radius: 999px
+    object-fit: cover
+    box-shadow: inset 0 0 0 1px var(--oui-border)
+
 :root[data-oui-theme="dark"] .oui-ui-light-only,
 .oui-root[data-oui-theme="dark"] .oui-ui-light-only
     display: none
@@ -896,20 +911,9 @@ body.oui-ui-document-lock
 .oui-code-inline-panel .oui-code-preview-scroll
     max-height: none
 
-.oui-code-inline-panel .oui-code-preview-scroll .oui-scroll-area-viewport
-    max-height: none
-    overflow-x: auto
-    overflow-y: hidden
-
-.oui-code-inline-panel[data-expanded="false"][data-collapsible="true"] .oui-code-preview-scroll .oui-scroll-area-viewport
-    overflow: hidden
-
 .oui-code-inline-panel[data-expanded="true"]
-    max-height: min(70vh, 720px)
+    max-height: none
     padding-bottom: 38px
-
-.oui-code-inline-panel[data-expanded="true"] .oui-code-preview-scroll .oui-scroll-area-viewport
-    overflow-y: auto
 
 .oui-code-inline-panel[data-collapsible="false"]
     max-height: none
@@ -958,6 +962,28 @@ body.oui-ui-document-lock
     border-radius: var(--oui-radius)
     background: var(--oui-bg)
     overflow: hidden
+
+.oui-code-preview-wrap
+    position: relative
+    min-width: 0
+
+.oui-code-preview-copy
+    position: absolute
+    top: 8px
+    right: 8px
+    z-index: 4
+    opacity: 0
+    transform: translateY(-2px)
+    transition: opacity 140ms ease, transform 140ms ease
+
+.oui-code-preview-wrap:hover .oui-code-preview-copy,
+.oui-code-preview-wrap:focus-within .oui-code-preview-copy
+    opacity: 1
+    transform: translateY(0)
+
+.oui-code-preview-scroll-inline
+    overflow-x: auto
+    overflow-y: visible
 
 .oui-code-preview-scroll .oui-scroll-area-viewport
     max-height: min(62vh, 620px)

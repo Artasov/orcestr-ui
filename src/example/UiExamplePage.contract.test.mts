@@ -249,12 +249,12 @@ test('UI example cards show one title and keep imports only in code preview', ()
     assert.doesNotMatch(preview, /ResizeObserver|useLayoutEffect|scrollHeight/);
     assert.match(preview, /Show code/);
     assert.match(preview, /Hide code/);
-    assert.match(preview, /<CodeBlock code=\{code\} \/>/);
     assert.match(styles, /\.oui-ui-tile-head\s+display: none[\s\S]*?min-width: 0[\s\S]*?flex-wrap: wrap/);
     assert.match(styles, /\.oui-code-inline-panel\s+position: relative[\s\S]*?align-self: flex-start[\s\S]*?max-height: 180px[\s\S]*?transition: max-height 180ms/);
     assert.match(styles, /\.oui-code-inline-fade\s+position: absolute[\s\S]*?height: 92px/);
-    assert.match(styles, /\.oui-code-inline-panel\[data-expanded="false"\]\[data-collapsible="true"\] \.oui-code-preview-scroll \.oui-scroll-area-viewport\s+overflow: hidden/);
-    assert.doesNotMatch(styles, /\.oui-code-inline-panel\[data-expanded="false"\]\[data-collapsible="true"\] \.oui-code-preview-scroll \.oui-scroll-area-viewport\s+\n    overflow: hidden\n    pointer-events: none/);
+    assert.match(preview, /<CodeBlock code=\{code\} mode='inline' \/>/);
+    assert.match(styles, /\.oui-code-preview-scroll-inline\s+overflow-x: auto[\s\S]*?overflow-y: visible/);
+    assert.doesNotMatch(styles, /\.oui-code-inline-panel[\s\S]*?\.oui-scroll-area-viewport\s+overflow-y: auto/);
     assert.match(styles, /@media \(max-width: 860px\)[\s\S]*?\.oui-ui-tile-head\s+display: flex/);
     assert.doesNotMatch(styles, /\.oui-ui-import-line|\.oui-ui-tile-title-block|\.oui-ui-tile-title/);
 });

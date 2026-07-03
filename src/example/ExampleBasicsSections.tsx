@@ -159,20 +159,22 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
                     >
                     <Stack g={2}>
                         {[
-                            ['Created', 'Draft created from intake'],
-                            ['Reserved', 'Capacity is reserved for review'],
-                            ['Scheduled', 'Review window is confirmed'],
-                        ].map(([title, description]) => (
+                            ['/gallery/cyberpunk-rain.webp', 'Created', 'Draft created from intake'],
+                            ['/gallery/hollywood-star.webp', 'Reserved', 'Capacity is reserved for review'],
+                            ['/gallery/ice-cave.webp', 'Scheduled', 'Review window is confirmed'],
+                        ].map(([image, title, description]) => (
                             <Flex
                                 key={title}
+                                className='oui-ui-stack-card'
                                 row
                                 g={2}
-                                p={2}
-                                r={3}
-                                a='s'
-                                style={{background: 'var(--oui-gray-a3)'}}
+                                a='c'
                             >
-                                <Box size={8} r={7} mt={1} style={{background: 'var(--oui-primary-base)'}} />
+                                <img
+                                    className='oui-ui-stack-image'
+                                    src={image}
+                                    alt=''
+                                />
                                 <Stack g={0}>
                                     <Text fs='13px' fw={700}>{title}</Text>
                                     <Text fs='12px' tone='muted' lh={1.45}>{description}</Text>

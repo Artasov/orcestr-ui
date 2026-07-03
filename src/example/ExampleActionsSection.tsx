@@ -23,6 +23,8 @@ import {
 import {
     Button,
     ContextMenu,
+    CopyButton,
+    CopyIconButton,
     Flex,
     IconButton,
     IconTextButton,
@@ -96,6 +98,20 @@ export function ActionsSection({
                         <Button v='surface' pressAnimation='scale'>Press scale</Button>
                         <Button v='surface' pressAnimation='soft'>Press soft</Button>
                         <Button v='surface' pressAnimation='none'>Press none</Button>
+                    </div>
+                    <div className='oui-ui-row'>
+                        <CopyButton
+                            text='https://orcestr.dev/requests/PR-2026-0900'
+                            label='Copy link'
+                            successMessage='Link copied'
+                            v='surface'
+                        />
+                        <CopyIconButton
+                            text='PR-2026-0900'
+                            label='Copy request number'
+                            successMessage='Request number copied'
+                            v='surface'
+                        />
                     </div>
                 </ExampleTile>
         </UiExampleSection>

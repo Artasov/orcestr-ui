@@ -177,16 +177,16 @@ const groups = [
         ))}
     </Flex>
 </Flex>`,
-    layoutStack: `import {Box, Flex, Stack, Text} from '@orcestr/ui';
+    layoutStack: `import {Flex, Stack, Text} from '@orcestr/ui';
 
 <Stack g={2}>
     {[
-        ['Created', 'Draft created from intake'],
-        ['Reserved', 'Capacity is reserved for review'],
-        ['Scheduled', 'Review window is confirmed'],
-    ].map(([title, description]) => (
-        <Flex key={title} row g={2} p={2} r={3} a='s'>
-            <Box size={8} r={7} mt={1} />
+        ['/gallery/cyberpunk-rain.webp', 'Created', 'Draft created from intake'],
+        ['/gallery/hollywood-star.webp', 'Reserved', 'Capacity is reserved for review'],
+        ['/gallery/ice-cave.webp', 'Scheduled', 'Review window is confirmed'],
+    ].map(([image, title, description]) => (
+        <Flex key={title} className='stack-card' row g={2} a='c'>
+            <img className='stack-image' src={image} alt='' />
             <Stack g={0}>
                 <Text fs='13px' fw={700}>{title}</Text>
                 <Text fs='12px' tone='muted' lh={1.45}>{description}</Text>
@@ -340,7 +340,7 @@ const [detailsOpen, setDetailsOpen] = useState(true);
         Check this status before creating the next shipment.
     </Alert>
 </Section>`,
-    buttons: `import {Button, Spinner} from '@orcestr/ui';
+    buttons: `import {Button, CopyButton, CopyIconButton, Spinner} from '@orcestr/ui';
 import {LuCheck, LuInfo, LuTrash2, LuTriangleAlert} from 'react-icons/lu';
 
 <Button size={3}>Solid</Button>
@@ -371,6 +371,19 @@ import {LuCheck, LuInfo, LuTrash2, LuTriangleAlert} from 'react-icons/lu';
 <Button v='surface' pressAnimation='scale'>Press scale</Button>
 <Button v='surface' pressAnimation='soft'>Press soft</Button>
 <Button v='surface' pressAnimation='none'>Press none</Button>
+
+<CopyButton
+    text='https://orcestr.dev/requests/PR-2026-0900'
+    label='Copy link'
+    successMessage='Link copied'
+    v='surface'
+/>
+<CopyIconButton
+    text='PR-2026-0900'
+    label='Copy request number'
+    successMessage='Request number copied'
+    v='surface'
+/>
 
 <Button size={3} loading>Loading</Button>
 <Button size={3} v='surface' loading leftIcon={<LuCheck size={16} />}>Save</Button>

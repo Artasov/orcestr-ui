@@ -16,6 +16,7 @@ export * from './components/Combobox/Combobox';
 export * from './components/CommandPalette/CommandPalette';
 export * from './components/ConfirmDialog/ConfirmDialog';
 export * from './components/ContextMenu/ContextMenu';
+export * from './components/CopyButton/CopyButton';
 export * from './components/DataTable/DataTable';
 export * from './components/DataTable/DataTableStateAdapters';
 export * from './components/DatePicker/DatePicker';
