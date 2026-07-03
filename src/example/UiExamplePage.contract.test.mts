@@ -245,13 +245,13 @@ test('UI example cards show one title and keep imports only in code preview', ()
     assert.doesNotMatch(preview, /oui-ui-component-list|oui-ui-component-name|oui-ui-tile-title-block|oui-ui-tile-title/);
     assert.match(preview, /export function InlineCodeBlock/);
     assert.match(preview, /data-collapsible=\{collapsible \? 'true' : 'false'\}/);
-    assert.match(preview, /onWheelCapture=\{handleWheelCapture\}/);
-    assert.match(preview, /scrollRoot\.scrollTop \+= normalizedWheelDeltaY\(event\)/);
+    assert.doesNotMatch(preview, /onWheelCapture|handleWheelCapture|normalizedWheelDeltaY|scrollRoot\.scrollTop/);
+    assert.doesNotMatch(preview, /ResizeObserver|useLayoutEffect|scrollHeight/);
     assert.match(preview, /Show code/);
     assert.match(preview, /Hide code/);
     assert.match(preview, /<CodeBlock code=\{code\} \/>/);
     assert.match(styles, /\.oui-ui-tile-head\s+display: none[\s\S]*?min-width: 0[\s\S]*?flex-wrap: wrap/);
-    assert.match(styles, /\.oui-code-inline-panel\s+position: relative[\s\S]*?align-self: flex-start[\s\S]*?transition: height 260ms/);
+    assert.match(styles, /\.oui-code-inline-panel\s+position: relative[\s\S]*?align-self: flex-start[\s\S]*?max-height: 180px[\s\S]*?transition: max-height 180ms/);
     assert.match(styles, /\.oui-code-inline-fade\s+position: absolute[\s\S]*?height: 92px/);
     assert.match(styles, /\.oui-code-inline-panel\[data-expanded="false"\]\[data-collapsible="true"\] \.oui-code-preview-scroll \.oui-scroll-area-viewport\s+overflow: hidden/);
     assert.doesNotMatch(styles, /\.oui-code-inline-panel\[data-expanded="false"\]\[data-collapsible="true"\] \.oui-code-preview-scroll \.oui-scroll-area-viewport\s+\n    overflow: hidden\n    pointer-events: none/);
@@ -375,8 +375,7 @@ test('UI example and state components use container-safe layouts', () => {
     const stateSection = read('example/ExampleStateSection.tsx');
 
     assert.match(styles, /\.oui-ui-section\s+container-type: inline-size/);
-    assert.match(styles, /\.oui-ui-workspace-main > \.oui-app-shell-content-scroll > \.oui-scroll-area-viewport\s+scroll-behavior: smooth/);
-    assert.match(styles, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.oui-ui-workspace-main > \.oui-app-shell-content-scroll > \.oui-scroll-area-viewport\s+scroll-behavior: auto/);
+    assert.doesNotMatch(styles, /scroll-behavior: smooth/);
     assert.match(styles, /@container \(max-width: 980px\)[\s\S]*?\.oui-ui-tile-body\s+flex-basis: auto/);
     assert.match(styles, /@media \(max-width: 860px\)[\s\S]*?\.oui-ui-tile-body\s+flex-basis: auto/);
     assert.match(styles, /\.oui-theme-preview\s+display: flex[\s\S]*?overflow: hidden/);

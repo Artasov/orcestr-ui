@@ -1,12 +1,9 @@
 'use client';
 
 import {
-    useCallback,
-    useLayoutEffect,
-    useRef,
+    useMemo,
     useState,
     type ReactNode,
-    type WheelEvent as ReactWheelEvent,
 } from 'react';
 import {LuInfo, LuX} from 'react-icons/lu';
 
@@ -103,52 +100,15 @@ export function ExampleTile({
 
 export function InlineCodeBlock({code}: {code: string}) {
     const [expanded, setExpanded] = useState(false);
-    const [contentHeight, setContentHeight] = useState(0);
-    const contentRef = useRef<HTMLDivElement | null>(null);
-    const collapsedHeight = 180;
-    const collapsible = contentHeight > collapsedHeight;
-    const panelHeight = collapsible
-        ? expanded ? contentHeight + 38 : collapsedHeight
-        : contentHeight;
-    const measure = useCallback(() => {
-        const element = contentRef.current;
-        if (!element) return;
-        const nextHeight = element.scrollHeight;
-        setContentHeight((current) => current === nextHeight ? current : nextHeight);
-    }, []);
-
-    useLayoutEffect(() => {
-        measure();
-    }, [code, measure]);
-
-    useLayoutEffect(() => {
-        const element = contentRef.current;
-        if (!element || typeof ResizeObserver === 'undefined') return;
-        const observer = new ResizeObserver(() => measure());
-        observer.observe(element);
-        return () => observer.disconnect();
-    }, [measure]);
-    const handleWheelCapture = useCallback((event: ReactWheelEvent<HTMLDivElement>) => {
-        if (event.ctrlKey || event.shiftKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-        const scrollRoot = document.querySelector<HTMLElement>(
-            '.oui-app-shell-content-scroll .oui-scroll-area-viewport',
-        );
-        if (!scrollRoot) return;
-
-        event.preventDefault();
-        event.stopPropagation();
-        scrollRoot.scrollTop += normalizedWheelDeltaY(event);
-    }, []);
+    const collapsible = code.split('\n').length > 9;
 
     return (
         <div
             className='oui-code-inline-panel'
             data-expanded={expanded ? 'true' : 'false'}
             data-collapsible={collapsible ? 'true' : 'false'}
-            style={{height: panelHeight || undefined}}
-            onWheelCapture={handleWheelCapture}
         >
-            <div ref={contentRef} className='oui-code-inline-content'>
+            <div className='oui-code-inline-content'>
                 <CodeBlock code={code} />
             </div>
             {collapsible && !expanded ? <div className='oui-code-inline-fade' aria-hidden /> : null}
@@ -166,17 +126,12 @@ export function InlineCodeBlock({code}: {code: string}) {
     );
 }
 
-function normalizedWheelDeltaY(event: ReactWheelEvent) {
-    if (event.deltaMode === 1) return event.deltaY * 16;
-    if (event.deltaMode === 2) return event.deltaY * window.innerHeight;
-    return event.deltaY;
-}
-
 export function CodeBlock({code}: {code: string}) {
+    const content = useMemo(() => highlightedCode(code), [code]);
     return (
         <ScrollArea className='oui-code-preview-scroll'>
             <pre className='oui-code-preview'>
-                <code>{highlightedCode(code)}</code>
+                <code>{content}</code>
             </pre>
         </ScrollArea>
     );

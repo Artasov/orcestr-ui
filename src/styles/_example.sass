@@ -44,13 +44,6 @@ body.oui-ui-document-lock
     min-width: 0
     min-height: 0
 
-.oui-ui-workspace-main > .oui-app-shell-content-scroll > .oui-scroll-area-viewport
-    scroll-behavior: smooth
-
-@media (prefers-reduced-motion: reduce)
-    .oui-ui-workspace-main > .oui-app-shell-content-scroll > .oui-scroll-area-viewport
-        scroll-behavior: auto
-
 .oui-ui-brand
     display: inline-flex
     min-width: 0
@@ -892,9 +885,10 @@ body.oui-ui-document-lock
     min-width: 0
     flex: 1 1 420px
     align-self: flex-start
+    max-height: 180px
     overflow: hidden
     border-radius: var(--oui-radius)
-    transition: height 260ms cubic-bezier(.22, 1, .36, 1)
+    transition: max-height 180ms cubic-bezier(.22, 1, .36, 1), padding-bottom 180ms ease
 
 .oui-code-inline-content
     min-width: 0
@@ -911,7 +905,18 @@ body.oui-ui-document-lock
     overflow: hidden
 
 .oui-code-inline-panel[data-expanded="true"]
+    max-height: min(70vh, 720px)
     padding-bottom: 38px
+
+.oui-code-inline-panel[data-expanded="true"] .oui-code-preview-scroll .oui-scroll-area-viewport
+    overflow-y: auto
+
+.oui-code-inline-panel[data-collapsible="false"]
+    max-height: none
+
+.oui-code-inline-panel[data-collapsible="false"] .oui-code-inline-toggle,
+.oui-code-inline-panel[data-collapsible="false"] .oui-code-inline-fade
+    display: none
 
 .oui-code-inline-fade
     position: absolute
