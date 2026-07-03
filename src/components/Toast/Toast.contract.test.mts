@@ -19,6 +19,9 @@ test('Toast dismisses from the card and keeps close button optional', () => {
     assert.match(source, /backdropFilter: `blur\(\$\{effectiveBlur\}\)`/);
     assert.match(source, /event\.animationName === 'ouiToastOut'/);
     assert.match(source, /data-clickable=\{item\.dismissible === false \? undefined : 'true'\}/);
+    assert.match(source, /onMouseEnter=\{\(\) => onPause\(item\.id\)\}/);
+    assert.match(source, /onMouseLeave=\{\(\) => onResume\(item\.id\)\}/);
+    assert.match(source, /remaining: Math\.max\(0, timer\.remaining - \(Date\.now\(\) - timer\.startedAt\)\)/);
     assert.match(source, /onClick=\{\(\) => \{/);
     assert.match(source, /\{item\.closeButton \? \(/);
     assert.doesNotMatch(source, /item\.dismissible === false \? null : \(\s*<IconButton/);
@@ -28,13 +31,15 @@ test('Toast visuals use backdrop blur and smooth non-bouncy motion', () => {
     const overlays = read('styles/_overlays.sass');
     const animations = read('styles/_animations.sass');
     assert.match(overlays, /\.oui-toast-backdrop[\s\S]*backdrop-filter: blur/);
-    assert.match(overlays, /\.oui-toast::before[\s\S]*backdrop-filter: blur/);
-    assert.match(overlays, /\.oui-toast\s+position: relative[\s\S]*?background: transparent/);
+    assert.match(overlays, /\.oui-toast\s+position: relative[\s\S]*?border: 0/);
+    assert.match(overlays, /\.oui-toast\s+position: relative[\s\S]*?background: var\(--oui-toast-bg/);
+    assert.match(overlays, /\.oui-toast\s+position: relative[\s\S]*?backdrop-filter: blur\(var\(--oui-toast-effective-blur/);
+    assert.match(overlays, /\.oui-toast:hover \.oui-toast-progress\s+animation-play-state: paused/);
     assert.match(overlays, /\.oui-toast-frame[\s\S]*animation: ouiToastIn/);
     assert.match(overlays, /\.oui-toast-frame\[data-state="closing"\][\s\S]*animation: ouiToastOut/);
     assert.match(overlays, /--oui-toast-exit-x: calc\(100% \+ 32px\)/);
     assert.match(overlays, /--oui-toast-exit-y: calc\(100% \+ 32px\)/);
     assert.match(overlays, /cubic-bezier\(\.22, 1, \.36, 1\)/);
-    assert.match(overlays, /color-mix\(in srgb, var\(--oui-success-base\) 16%, var\(--oui-border\)\)/);
+    assert.doesNotMatch(overlays, /--oui-toast-tone-bg|border-color: var\(--oui-toast-custom-border-color|\.oui-toast\[data-clickable="true"\]:hover[\s\S]*?--oui-toast-bg:/);
     assert.doesNotMatch(animations, /oui-toast-overshoot|scale\(1\.018\)|cubic-bezier\(\.18, 1\.34|opacity: 0\s+filter: blur\(3px\)/);
 });

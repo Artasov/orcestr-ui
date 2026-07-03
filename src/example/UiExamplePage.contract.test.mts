@@ -252,7 +252,7 @@ test('UI example cards show one title and keep imports only in code preview', ()
     assert.match(preview, /Hide code/);
     assert.match(styles, /\.oui-ui-tile-head\s+display: none[\s\S]*?min-width: 0[\s\S]*?flex-wrap: wrap/);
     assert.match(styles, /\.oui-code-inline-panel\s+position: relative[\s\S]*?--oui-code-collapsed-height: 180px[\s\S]*?--oui-code-expanded-height: calc/);
-    assert.match(styles, /\.oui-code-inline-panel\s+position: relative[\s\S]*?align-self: flex-start[\s\S]*?height: var\(--oui-code-collapsed-height\)[\s\S]*?transition: height 360ms/);
+    assert.match(styles, /\.oui-code-inline-panel\s+position: relative[\s\S]*?align-self: flex-start[\s\S]*?height: var\(--oui-code-collapsed-height\)[\s\S]*?transition: height 460ms/);
     assert.match(styles, /\.oui-code-inline-panel\[data-expanded="true"\]\s+height: var\(--oui-code-expanded-height\)/);
     assert.match(styles, /\.oui-code-inline-fade\s+position: absolute[\s\S]*?height: 92px[\s\S]*?transition: opacity 180ms/);
     assert.match(preview, /<CodeBlock code=\{code\} mode='inline' \/>/);

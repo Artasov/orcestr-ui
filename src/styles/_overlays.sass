@@ -441,12 +441,12 @@
 
 .oui-toast-backdrop
     position: absolute
-    inset: -10px
+    inset: -14px
     z-index: 0
-    border-radius: 14px
-    background: color-mix(in srgb, var(--oui-toast-bg, var(--oui-floating-bg, var(--oui-bg))) 44%, transparent)
-    backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(190%)
-    -webkit-backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(190%)
+    border-radius: 18px
+    background: transparent
+    backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(160%)
+    -webkit-backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(160%)
     pointer-events: none
 
 .oui-toast
@@ -456,44 +456,25 @@
     align-items: flex-start
     justify-content: space-between
     gap: 12px
-    border: 1px solid var(--oui-toast-custom-border-color, var(--oui-toast-border-color, var(--oui-border)))
+    border: 0
     border-radius: var(--oui-radius-xl, 12px)
     width: 100%
     isolation: isolate
     overflow: hidden
     padding: 16px
     color: var(--oui-text)
-    background: transparent
+    background: var(--oui-toast-bg, var(--oui-floating-bg, var(--oui-bg)))
     box-shadow: var(--oui-toast-shadow, 0 10px 26px rgb(0 0 0 / 18%))
+    backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(160%)
+    -webkit-backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(160%)
     transform-origin: var(--oui-toast-origin, center)
     pointer-events: auto
-
-.oui-toast::before
-    position: absolute
-    inset: 0
-    z-index: -2
-    border-radius: inherit
-    background: var(--oui-toast-bg, var(--oui-floating-bg, var(--oui-bg)))
-    backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(190%)
-    -webkit-backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(190%)
-    content: ""
-    pointer-events: none
-
-.oui-toast::after
-    position: absolute
-    inset: 0
-    z-index: -1
-    border-radius: inherit
-    background: var(--oui-toast-tone-bg, transparent)
-    content: ""
-    pointer-events: none
 
 .oui-toast[data-clickable="true"]
     cursor: pointer
 
 .oui-toast[data-clickable="true"]:hover
-    border-color: var(--oui-toast-custom-border-color, color-mix(in srgb, var(--oui-border) 78%, var(--oui-text)))
-    --oui-toast-bg: color-mix(in srgb, var(--oui-floating-bg, var(--oui-bg)) 86%, var(--oui-text) 14%)
+    background: var(--oui-toast-bg, var(--oui-floating-bg, var(--oui-bg)))
 
 .oui-root[data-oui-theme="light"] .oui-toast,
 :root[data-oui-theme="light"] .oui-toast
@@ -591,30 +572,17 @@
     animation: ouiToastProgress var(--oui-toast-duration, 4200ms) linear forwards
     pointer-events: none
 
-.oui-toast[data-tone="success"]
-    --oui-toast-tone-bg: color-mix(in srgb, var(--oui-success-surface) 34%, transparent)
-    border-color: var(--oui-toast-custom-border-color, color-mix(in srgb, var(--oui-success-base) 16%, var(--oui-border)))
+.oui-toast:hover .oui-toast-progress
+    animation-play-state: paused
 
 .oui-toast[data-tone="success"] .oui-toast-progress
     background: var(--oui-toast-progress-color, var(--oui-success-base))
 
-.oui-toast[data-tone="warning"]
-    --oui-toast-tone-bg: color-mix(in srgb, var(--oui-warning-surface) 32%, transparent)
-    border-color: var(--oui-toast-custom-border-color, color-mix(in srgb, var(--oui-warning-base) 18%, var(--oui-border)))
-
 .oui-toast[data-tone="warning"] .oui-toast-progress
     background: var(--oui-toast-progress-color, var(--oui-warning-base))
 
-.oui-toast[data-tone="danger"]
-    --oui-toast-tone-bg: color-mix(in srgb, var(--oui-danger-surface) 32%, transparent)
-    border-color: var(--oui-toast-custom-border-color, color-mix(in srgb, var(--oui-danger-base) 18%, var(--oui-border)))
-
 .oui-toast[data-tone="danger"] .oui-toast-progress
     background: var(--oui-toast-progress-color, var(--oui-danger-base))
-
-.oui-toast[data-tone="info"]
-    --oui-toast-tone-bg: color-mix(in srgb, var(--oui-info-surface) 30%, transparent)
-    border-color: var(--oui-toast-custom-border-color, color-mix(in srgb, var(--oui-info-base) 16%, var(--oui-border)))
 
 .oui-toast[data-tone="info"] .oui-toast-progress
     background: var(--oui-toast-progress-color, var(--oui-info-base))

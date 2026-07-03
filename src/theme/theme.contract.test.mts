@@ -104,16 +104,18 @@ test('default toast theme matches compact glass notification defaults', () => {
     const animations = read('styles/_animations.sass');
     const toast = read('components/Toast/Toast.tsx');
 
-    assert.match(source, /background: 'rgb\(12 12 15 \/ 88%\)'/);
-    assert.match(source, /background: 'rgb\(255 255 255 \/ 92%\)'/);
-    assert.match(source, /blur: 24/);
+    assert.match(source, /background: 'rgb\(12 12 15 \/ 20%\)'/);
+    assert.match(source, /background: 'rgb\(255 255 255 \/ 20%\)'/);
+    assert.match(source, /blur: 40/);
+    assert.match(source, /borderColor: 'transparent'/);
     assert.match(source, /animationDuration: '420ms'/);
     assert.match(source, /exitDuration: '320ms'/);
     assert.match(source, /progressHeight: '2px'/);
     assert.match(overlays, /width: min\(380px, calc\(100vw - 32px\)\)/);
     assert.match(overlays, /padding: 16px/);
-    assert.match(overlays, /background: color-mix\(in srgb, var\(--oui-toast-bg/);
-    assert.match(overlays, /saturate\(190%\)/);
+    assert.match(overlays, /border: 0/);
+    assert.match(overlays, /background: var\(--oui-toast-bg/);
+    assert.match(overlays, /saturate\(160%\)/);
     assert.match(overlays, /\.oui-toast-icon/);
     assert.match(animations, /@keyframes ouiToastIn/);
     assert.match(animations, /opacity: 0[\s\S]*transform: translate3d\(var\(--oui-toast-enter-x/);

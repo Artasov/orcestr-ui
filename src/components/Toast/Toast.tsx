@@ -62,6 +62,11 @@ type ToastItem = ToastOptions & {
     state: 'open' | 'closing';
 };
 
+type ToastTimer = {
+    startedAt: number;
+    remaining: number;
+};
+
 type ToastContextValue = {
     push: (input: ToastInput, tone?: ToastTone) => number;
     success: (input: ToastInput) => number;
@@ -122,6 +127,7 @@ export function ToastProvider({
     const nextId = useRef(1);
     const timeoutIds = useRef(new Map<number, number>());
     const removalIds = useRef(new Map<number, number>());
+    const timers = useRef(new Map<number, ToastTimer>());
 
     const setToastItems = useCallback((update: (current: ToastItem[]) => ToastItem[]) => {
         setItems((current) => {
@@ -132,6 +138,15 @@ export function ToastProvider({
     }, []);
 
     const clearTimer = useCallback((id: number) => {
+        const timeoutId = timeoutIds.current.get(id);
+        if (timeoutId !== undefined) {
+            window.clearTimeout(timeoutId);
+            timeoutIds.current.delete(id);
+        }
+        timers.current.delete(id);
+    }, []);
+
+    const stopTimer = useCallback((id: number) => {
         const timeoutId = timeoutIds.current.get(id);
         if (timeoutId !== undefined) {
             window.clearTimeout(timeoutId);
@@ -148,9 +163,10 @@ export function ToastProvider({
     }, []);
 
     const removeToast = useCallback((id: number) => {
+        clearTimer(id);
         clearRemovalTimer(id);
         setToastItems((current) => current.filter((item) => item.id !== id));
-    }, [clearRemovalTimer, setToastItems]);
+    }, [clearRemovalTimer, clearTimer, setToastItems]);
 
     const dismiss = useCallback((id: number) => {
         clearTimer(id);
@@ -169,19 +185,48 @@ export function ToastProvider({
     const clear = useCallback(() => {
         timeoutIds.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
         timeoutIds.current.clear();
+        timers.current.clear();
         removalIds.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
         removalIds.current.clear();
         setToastItems(() => []);
     }, [setToastItems]);
 
-    const scheduleDismiss = useCallback((item: ToastItem) => {
-        clearTimer(item.id);
-        if (item.duration === null) return;
-        const duration = item.duration ?? DEFAULT_TOAST_DURATION;
-        if (duration <= 0) return;
+    const scheduleDismiss = useCallback((item: ToastItem, remainingMs?: number) => {
+        stopTimer(item.id);
+        if (item.duration === null) {
+            timers.current.delete(item.id);
+            return;
+        }
+        const duration = remainingMs ?? item.duration ?? DEFAULT_TOAST_DURATION;
+        if (duration <= 0) {
+            dismiss(item.id);
+            return;
+        }
+        timers.current.set(item.id, {
+            startedAt: Date.now(),
+            remaining: duration,
+        });
         const timeoutId = window.setTimeout(() => dismiss(item.id), duration);
         timeoutIds.current.set(item.id, timeoutId);
-    }, [clearTimer, dismiss]);
+    }, [dismiss, stopTimer]);
+
+    const pauseDismiss = useCallback((id: number) => {
+        const timer = timers.current.get(id);
+        if (!timer || !timeoutIds.current.has(id)) return;
+        stopTimer(id);
+        timers.current.set(id, {
+            startedAt: timer.startedAt,
+            remaining: Math.max(0, timer.remaining - (Date.now() - timer.startedAt)),
+        });
+    }, [stopTimer]);
+
+    const resumeDismiss = useCallback((id: number) => {
+        if (timeoutIds.current.has(id)) return;
+        const item = itemsRef.current.find((currentItem) => currentItem.id === id);
+        const timer = timers.current.get(id);
+        if (!item || !timer || item.state === 'closing') return;
+        scheduleDismiss(item, timer.remaining);
+    }, [scheduleDismiss]);
 
     const push = useCallback((input: ToastInput, tone?: ToastTone) => {
         const normalized = normalizeToast(input, tone, defaultPosition);
@@ -253,6 +298,8 @@ export function ToastProvider({
                                     key={item.id}
                                     item={item}
                                     onDismiss={dismiss}
+                                    onPause={pauseDismiss}
+                                    onResume={resumeDismiss}
                                     onExited={removeToast}
                                     testId={testId ? `${testId}-${item.id}` : undefined}
                                 />
@@ -276,11 +323,15 @@ export function useToast() {
 function ToastCard({
     item,
     onDismiss,
+    onPause,
+    onResume,
     onExited,
     testId,
 }: {
     item: ToastItem;
     onDismiss: (id: number) => void;
+    onPause: (id: number) => void;
+    onResume: (id: number) => void;
     onExited: (id: number) => void;
     testId?: string;
 }) {
@@ -324,6 +375,8 @@ function ToastCard({
                 data-testid={testId}
                 role={item.tone === 'danger' ? 'alert' : 'status'}
                 style={blurStyle}
+                onMouseEnter={() => onPause(item.id)}
+                onMouseLeave={() => onResume(item.id)}
                 onClick={() => {
                     if (item.dismissible !== false) onDismiss(item.id);
                 }}

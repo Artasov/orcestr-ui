@@ -266,10 +266,10 @@ const darkBase: ThemeSeed = {
         },
     }),
     toast: {
-        background: 'rgb(12 12 15 / 88%)',
-        blur: 24,
-        borderColor: 'rgb(255 255 255 / 14%)',
-        shadow: '0 14px 34px rgb(0 0 0 / 28%)',
+        background: 'rgb(12 12 15 / 20%)',
+        blur: 40,
+        borderColor: 'transparent',
+        shadow: '0 16px 40px rgb(0 0 0 / 30%)',
         animationDuration: '420ms',
         exitDuration: '320ms',
         progressHeight: '2px',
@@ -400,10 +400,10 @@ const lightBase: ThemeSeed = {
         },
     }),
     toast: {
-        background: 'rgb(255 255 255 / 92%)',
-        blur: 24,
-        borderColor: 'rgb(15 23 42 / 14%)',
-        shadow: '0 14px 34px rgb(15 23 42 / 14%)',
+        background: 'rgb(255 255 255 / 20%)',
+        blur: 40,
+        borderColor: 'transparent',
+        shadow: '0 16px 40px rgb(15 23 42 / 16%)',
         animationDuration: '420ms',
         exitDuration: '320ms',
         progressHeight: '2px',
@@ -428,7 +428,7 @@ const surfaceOverrides: Record<
                 floating: '#0c0c0f',
             },
             toast: {
-                background: 'rgb(12 12 15 / 88%)',
+                background: 'rgb(12 12 15 / 20%)',
             },
             components: {
                 buttonFontWeight: 500,
@@ -444,7 +444,7 @@ const surfaceOverrides: Record<
                 floating: '#ffffff',
             },
             toast: {
-                background: 'rgb(255 255 255 / 88%)',
+                background: 'rgb(255 255 255 / 20%)',
             },
             components: {
                 buttonFontWeight: 500,
@@ -485,7 +485,7 @@ const surfaceOverrides: Record<
                 },
             },
             toast: {
-                background: 'rgb(29 24 32 / 88%)',
+                background: 'rgb(29 24 32 / 20%)',
                 borderColor: 'rgb(255 193 231 / 16%)',
                 shadow: '0 12px 32px rgb(0 0 0 / 22%)',
             },
@@ -524,7 +524,7 @@ const surfaceOverrides: Record<
                 },
             },
             toast: {
-                background: 'rgb(255 255 255 / 88%)',
+                background: 'rgb(255 255 255 / 20%)',
                 borderColor: 'rgb(192 38 127 / 13%)',
             },
             radii: {
@@ -565,7 +565,7 @@ const surfaceOverrides: Record<
                 },
             },
             toast: {
-                background: 'rgb(25 23 18 / 88%)',
+                background: 'rgb(25 23 18 / 20%)',
                 borderColor: 'rgb(241 217 144 / 15%)',
             },
             radii: {
@@ -603,7 +603,7 @@ const surfaceOverrides: Record<
                 },
             },
             toast: {
-                background: 'rgb(255 255 255 / 88%)',
+                background: 'rgb(255 255 255 / 20%)',
                 borderColor: 'rgb(155 111 18 / 13%)',
             },
         },
