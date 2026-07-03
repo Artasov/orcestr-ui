@@ -867,10 +867,11 @@ body.oui-ui-document-lock
     min-width: 0
     flex: 1 1 420px
     align-self: flex-start
-    max-height: var(--oui-code-collapsed-height)
+    height: var(--oui-code-collapsed-height)
     overflow: hidden
     border-radius: var(--oui-radius)
-    transition: max-height 260ms cubic-bezier(.22, 1, .36, 1), padding-bottom 220ms ease
+    transition: height 360ms cubic-bezier(.22, 1, .36, 1), padding-bottom 260ms ease
+    will-change: height
 
 .oui-code-inline-content
     min-width: 0
@@ -879,11 +880,11 @@ body.oui-ui-document-lock
     max-height: none
 
 .oui-code-inline-panel[data-expanded="true"]
-    max-height: var(--oui-code-expanded-height)
+    height: var(--oui-code-expanded-height)
     padding-bottom: 38px
 
 .oui-code-inline-panel[data-collapsible="false"]
-    max-height: var(--oui-code-expanded-height)
+    height: auto
 
 .oui-code-inline-panel[data-collapsible="false"] .oui-code-inline-toggle,
 .oui-code-inline-panel[data-collapsible="false"] .oui-code-inline-fade

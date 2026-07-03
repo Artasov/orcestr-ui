@@ -113,7 +113,7 @@ test('default toast theme matches compact glass notification defaults', () => {
     assert.match(overlays, /width: min\(380px, calc\(100vw - 32px\)\)/);
     assert.match(overlays, /padding: 16px/);
     assert.match(overlays, /background: color-mix\(in srgb, var\(--oui-toast-bg/);
-    assert.match(overlays, /saturate\(180%\)/);
+    assert.match(overlays, /saturate\(190%\)/);
     assert.match(overlays, /\.oui-toast-icon/);
     assert.match(animations, /@keyframes ouiToastIn/);
     assert.match(animations, /opacity: 0[\s\S]*transform: translate3d\(var\(--oui-toast-enter-x/);
