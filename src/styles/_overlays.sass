@@ -444,9 +444,9 @@
     inset: -10px
     z-index: 0
     border-radius: 14px
-    background: transparent
-    backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(180%)
-    -webkit-backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(180%)
+    background: color-mix(in srgb, var(--oui-toast-bg, var(--oui-floating-bg, var(--oui-bg))) 44%, transparent)
+    backdrop-filter: blur(calc(var(--oui-toast-effective-blur, 0px) * .7)) saturate(180%)
+    -webkit-backdrop-filter: blur(calc(var(--oui-toast-effective-blur, 0px) * .7)) saturate(180%)
     pointer-events: none
 
 .oui-toast

@@ -104,14 +104,15 @@ test('default toast theme matches compact glass notification defaults', () => {
     const animations = read('styles/_animations.sass');
     const toast = read('components/Toast/Toast.tsx');
 
-    assert.match(source, /background: 'rgb\(12 12 15 \/ 56%\)'/);
-    assert.match(source, /background: 'rgb\(255 255 255 \/ 72%\)'/);
-    assert.match(source, /blur: 18/);
+    assert.match(source, /background: 'rgb\(12 12 15 \/ 88%\)'/);
+    assert.match(source, /background: 'rgb\(255 255 255 \/ 92%\)'/);
+    assert.match(source, /blur: 24/);
     assert.match(source, /animationDuration: '420ms'/);
     assert.match(source, /exitDuration: '320ms'/);
     assert.match(source, /progressHeight: '2px'/);
     assert.match(overlays, /width: min\(380px, calc\(100vw - 32px\)\)/);
     assert.match(overlays, /padding: 16px/);
+    assert.match(overlays, /background: color-mix\(in srgb, var\(--oui-toast-bg/);
     assert.match(overlays, /saturate\(180%\)/);
     assert.match(overlays, /\.oui-toast-icon/);
     assert.match(animations, /@keyframes ouiToastIn/);
