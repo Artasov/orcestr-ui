@@ -348,11 +348,6 @@ function ToastCard({
         ...(item.shadow ? {'--oui-toast-shadow': item.shadow} : null),
         ...(item.progressColor ? {'--oui-toast-progress-color': item.progressColor} : null),
     } as CSSProperties;
-    const blurStyle = {
-        backdropFilter: `blur(${effectiveBlur})`,
-        WebkitBackdropFilter: `blur(${effectiveBlur})`,
-    } as CSSProperties;
-
     return (
         <div
             className='oui-toast-frame'
@@ -365,7 +360,6 @@ function ToastCard({
                 }
             }}
         >
-            <span className='oui-toast-backdrop' aria-hidden='true' style={blurStyle} />
             <div
                 className='oui-toast'
                 data-tone={item.tone}
@@ -374,7 +368,6 @@ function ToastCard({
                 data-clickable={item.dismissible === false ? undefined : 'true'}
                 data-testid={testId}
                 role={item.tone === 'danger' ? 'alert' : 'status'}
-                style={blurStyle}
                 onMouseEnter={() => onPause(item.id)}
                 onMouseLeave={() => onResume(item.id)}
                 onClick={() => {

@@ -12,11 +12,11 @@ function read(path: string): string {
 test('Toast dismisses from the card and keeps close button optional', () => {
     const source = read('components/Toast/Toast.tsx');
     assert.match(source, /closeButton\?: boolean/);
-    assert.match(source, /className='oui-toast-backdrop'/);
     assert.match(source, /className='oui-toast-frame'/);
     assert.match(source, /data-position=\{item\.position\}/);
     assert.match(source, /data-state=\{item\.state\}/);
-    assert.match(source, /backdropFilter: `blur\(\$\{effectiveBlur\}\)`/);
+    assert.match(source, /'--oui-toast-effective-blur': effectiveBlur/);
+    assert.doesNotMatch(source, /blurStyle|className='oui-toast-backdrop'/);
     assert.match(source, /event\.animationName === 'ouiToastOut'/);
     assert.match(source, /data-clickable=\{item\.dismissible === false \? undefined : 'true'\}/);
     assert.match(source, /onMouseEnter=\{\(\) => onPause\(item\.id\)\}/);
@@ -30,10 +30,11 @@ test('Toast dismisses from the card and keeps close button optional', () => {
 test('Toast visuals use backdrop blur and smooth non-bouncy motion', () => {
     const overlays = read('styles/_overlays.sass');
     const animations = read('styles/_animations.sass');
-    assert.match(overlays, /\.oui-toast-backdrop[\s\S]*backdrop-filter: blur/);
+    assert.match(overlays, /\.oui-toast-frame[\s\S]*background: var\(--oui-toast-bg/);
+    assert.match(overlays, /\.oui-toast-frame[\s\S]*backdrop-filter: blur\(var\(--oui-toast-effective-blur/);
     assert.match(overlays, /\.oui-toast\s+position: relative[\s\S]*?border: 0/);
-    assert.match(overlays, /\.oui-toast\s+position: relative[\s\S]*?background: var\(--oui-toast-bg/);
-    assert.match(overlays, /\.oui-toast\s+position: relative[\s\S]*?backdrop-filter: blur\(var\(--oui-toast-effective-blur/);
+    assert.match(overlays, /\.oui-toast\s+position: relative[\s\S]*?background: transparent/);
+    assert.match(overlays, /\.oui-toast\s+position: relative[\s\S]*?box-shadow: none/);
     assert.match(overlays, /\.oui-toast:hover \.oui-toast-progress\s+animation-play-state: paused/);
     assert.match(overlays, /\.oui-toast-frame[\s\S]*animation: ouiToastIn/);
     assert.match(overlays, /\.oui-toast-frame\[data-state="closing"\][\s\S]*animation: ouiToastOut/);

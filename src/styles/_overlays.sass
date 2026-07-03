@@ -433,21 +433,16 @@
 
 .oui-toast-frame
     position: relative
-    isolation: isolate
     width: 100%
+    overflow: hidden
+    border-radius: var(--oui-radius-xl, 12px)
+    background: var(--oui-toast-bg, var(--oui-floating-bg, var(--oui-bg)))
+    box-shadow: var(--oui-toast-shadow, 0 10px 26px rgb(0 0 0 / 18%))
+    backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(160%)
+    -webkit-backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(160%)
     animation: ouiToastIn var(--oui-toast-animation-duration, 420ms) cubic-bezier(.22, 1, .36, 1) both
     pointer-events: none
     will-change: opacity, transform
-
-.oui-toast-backdrop
-    position: absolute
-    inset: -14px
-    z-index: 0
-    border-radius: 18px
-    background: transparent
-    backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(160%)
-    -webkit-backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(160%)
-    pointer-events: none
 
 .oui-toast
     position: relative
@@ -463,10 +458,8 @@
     overflow: hidden
     padding: 16px
     color: var(--oui-text)
-    background: var(--oui-toast-bg, var(--oui-floating-bg, var(--oui-bg)))
-    box-shadow: var(--oui-toast-shadow, 0 10px 26px rgb(0 0 0 / 18%))
-    backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(160%)
-    -webkit-backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(160%)
+    background: transparent
+    box-shadow: none
     transform-origin: var(--oui-toast-origin, center)
     pointer-events: auto
 
@@ -474,10 +467,10 @@
     cursor: pointer
 
 .oui-toast[data-clickable="true"]:hover
-    background: var(--oui-toast-bg, var(--oui-floating-bg, var(--oui-bg)))
+    background: transparent
 
-.oui-root[data-oui-theme="light"] .oui-toast,
-:root[data-oui-theme="light"] .oui-toast
+.oui-root[data-oui-theme="light"] .oui-toast-frame,
+:root[data-oui-theme="light"] .oui-toast-frame
     box-shadow: var(--oui-toast-shadow, 0 10px 24px rgb(15 23 42 / 12%))
 
 .oui-toast-frame[data-position$="right"]
