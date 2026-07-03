@@ -28,17 +28,17 @@ type ExampleSectionProps = {
     onOpenCode: (example: CodeExample) => void;
 };
 
-export function TypographySection({onOpenCode}: ExampleSectionProps) {
+export function TextSection({onOpenCode}: ExampleSectionProps) {
     return (
         <>
         <UiExampleSection
-            id='typography'
-            title='Typography'
+            id='text'
+            title='Text'
             description='Text and shared system props.'
         >
                 <ExampleTile
-                        title='Typography'
-                        code={codeSamples.typography}
+                        title='Text'
+                        code={codeSamples.text}
                         onOpen={onOpenCode}
                     >
                     <Stack g={3}>

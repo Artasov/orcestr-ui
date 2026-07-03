@@ -43,7 +43,7 @@ export type OrcestrTheme = {
         padHover: string;
         skeletonShimmer: string;
     };
-    radii: {
+    radius: {
         sm: string;
         md: string;
         lg: string;
@@ -74,19 +74,19 @@ export type OrcestrTheme = {
         section: string;
         focus: string;
     };
-    typography: {
-        fontFamily: string;
-        monoFontFamily: string;
-        titleSize: string;
-        headingSize: string;
-        bodySize: string;
-        compactSize: string;
-        labelSize: string;
-        lineHeight: string;
-        headingLineHeight: string;
-        weightRegular: number;
-        weightMedium: number;
-        weightBold: number;
+    text: {
+        family: string;
+        mono: string;
+        title: string;
+        heading: string;
+        body: string;
+        compact: string;
+        label: string;
+        line: string;
+        headingLine: string;
+        regular: number;
+        medium: number;
+        bold: number;
         letterSpacing: string;
     };
     status: {
@@ -113,11 +113,15 @@ export type OrcestrTheme = {
     toast: {
         background: string;
         blur: number | string | false;
-        borderColor: string;
         shadow: string;
         animationDuration: string;
         exitDuration: string;
         progressHeight: string;
+    };
+    scrollbar: {
+        thumb: string;
+        thumbHover: string;
+        track: string;
     };
     states: {
         hoverOpacity: number;
@@ -154,22 +158,23 @@ export type OrcestrTheme = {
 export type OrcestrThemeOverrides = Partial<
     Omit<
         OrcestrTheme,
-        'colors' | 'mode' | 'surface' | 'motion' | 'radii' | 'spacing'
+        'colors' | 'mode' | 'surface' | 'motion' | 'radius' | 'spacing'
         | 'breakpoints' | 'shadows' | 'density' | 'zIndex' | 'toast'
-        | 'typography' | 'status' | 'states' | 'components'
+        | 'scrollbar' | 'text' | 'status' | 'states' | 'components'
     >
 > & {
     colors?: PartialColorOverrides;
-    radii?: Partial<OrcestrTheme['radii']>;
+    radius?: Partial<OrcestrTheme['radius']>;
     spacing?: Partial<OrcestrTheme['spacing']>;
     breakpoints?: Partial<OrcestrTheme['breakpoints']>;
     shadows?: Partial<OrcestrTheme['shadows']>;
-    typography?: Partial<OrcestrTheme['typography']>;
+    text?: Partial<OrcestrTheme['text']>;
     status?: PartialStatusOverrides;
     motion?: Partial<OrcestrTheme['motion']>;
     density?: Partial<OrcestrTheme['density']>;
     zIndex?: Partial<OrcestrTheme['zIndex']>;
     toast?: Partial<OrcestrTheme['toast']>;
+    scrollbar?: Partial<OrcestrTheme['scrollbar']>;
     states?: Partial<OrcestrTheme['states']>;
     components?: Partial<OrcestrTheme['components']>;
 };

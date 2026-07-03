@@ -47,7 +47,7 @@ export const orcestrThemeSurfaces: OrcestrThemeSurfaceDefinition[] = [
 ];
 
 const sharedStructure = {
-    radii: {
+    radius: {
         sm: '4px',
         md: '6px',
         lg: '8px',
@@ -71,21 +71,21 @@ const sharedStructure = {
         desktop: '1024px',
         wide: '1440px',
     },
-    typography: {
-        fontFamily:
+    text: {
+        family:
             'var(--font-manrope, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif)',
-        monoFontFamily:
+        mono:
             'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace',
-        titleSize: '22px',
-        headingSize: '18px',
-        bodySize: '14px',
-        compactSize: '13px',
-        labelSize: '12px',
-        lineHeight: '1.45',
-        headingLineHeight: '1.18',
-        weightRegular: 450,
-        weightMedium: 650,
-        weightBold: 760,
+        title: '22px',
+        heading: '18px',
+        body: '14px',
+        compact: '13px',
+        label: '12px',
+        line: '1.45',
+        headingLine: '1.18',
+        regular: 450,
+        medium: 650,
+        bold: 760,
         letterSpacing: '0',
     },
     motion: {
@@ -136,10 +136,10 @@ const sharedStructure = {
     | 'components'
     | 'density'
     | 'motion'
-    | 'radii'
+    | 'radius'
     | 'spacing'
     | 'states'
-    | 'typography'
+    | 'text'
     | 'zIndex'
 >;
 
@@ -266,13 +266,17 @@ const darkBase: ThemeSeed = {
         },
     }),
     toast: {
-        background: 'rgb(12 12 15 / 20%)',
-        blur: 40,
-        borderColor: 'transparent',
+        background: 'rgb(12 12 15 / 5%)',
+        blur: 6,
         shadow: '0 16px 40px rgb(0 0 0 / 30%)',
         animationDuration: '420ms',
         exitDuration: '320ms',
         progressHeight: '2px',
+    },
+    scrollbar: {
+        thumb: 'color-mix(in srgb, var(--oui-bg) 96%, var(--oui-text) 4%)',
+        thumbHover: 'color-mix(in srgb, var(--oui-bg) 93%, var(--oui-text) 7%)',
+        track: 'transparent',
     },
     ...sharedStructure,
 };
@@ -400,13 +404,17 @@ const lightBase: ThemeSeed = {
         },
     }),
     toast: {
-        background: 'rgb(255 255 255 / 20%)',
-        blur: 40,
-        borderColor: 'transparent',
+        background: 'rgb(255 255 255 / 5%)',
+        blur: 6,
         shadow: '0 16px 40px rgb(15 23 42 / 16%)',
         animationDuration: '420ms',
         exitDuration: '320ms',
         progressHeight: '2px',
+    },
+    scrollbar: {
+        thumb: 'color-mix(in srgb, var(--oui-bg) 95%, var(--oui-text) 5%)',
+        thumbHover: 'color-mix(in srgb, var(--oui-bg) 92%, var(--oui-text) 8%)',
+        track: 'transparent',
     },
     ...sharedStructure,
 };
@@ -428,7 +436,7 @@ const surfaceOverrides: Record<
                 floating: '#0c0c0f',
             },
             toast: {
-                background: 'rgb(12 12 15 / 20%)',
+                background: 'rgb(12 12 15 / 5%)',
             },
             components: {
                 buttonFontWeight: 500,
@@ -444,7 +452,7 @@ const surfaceOverrides: Record<
                 floating: '#ffffff',
             },
             toast: {
-                background: 'rgb(255 255 255 / 20%)',
+                background: 'rgb(255 255 255 / 5%)',
             },
             components: {
                 buttonFontWeight: 500,
@@ -485,11 +493,10 @@ const surfaceOverrides: Record<
                 },
             },
             toast: {
-                background: 'rgb(29 24 32 / 20%)',
-                borderColor: 'rgb(255 193 231 / 16%)',
+                background: 'rgb(29 24 32 / 5%)',
                 shadow: '0 12px 32px rgb(0 0 0 / 22%)',
             },
-            radii: {
+            radius: {
                 md: '8px',
                 lg: '10px',
             },
@@ -524,10 +531,9 @@ const surfaceOverrides: Record<
                 },
             },
             toast: {
-                background: 'rgb(255 255 255 / 20%)',
-                borderColor: 'rgb(192 38 127 / 13%)',
+                background: 'rgb(255 255 255 / 5%)',
             },
-            radii: {
+            radius: {
                 md: '8px',
                 lg: '10px',
             },
@@ -565,10 +571,9 @@ const surfaceOverrides: Record<
                 },
             },
             toast: {
-                background: 'rgb(25 23 18 / 20%)',
-                borderColor: 'rgb(241 217 144 / 15%)',
+                background: 'rgb(25 23 18 / 5%)',
             },
-            radii: {
+            radius: {
                 md: '6px',
                 lg: '8px',
             },
@@ -603,8 +608,7 @@ const surfaceOverrides: Record<
                 },
             },
             toast: {
-                background: 'rgb(255 255 255 / 20%)',
-                borderColor: 'rgb(155 111 18 / 13%)',
+                background: 'rgb(255 255 255 / 5%)',
             },
         },
     },
@@ -621,16 +625,17 @@ function mergeTheme(
         mode: baseTheme.mode,
         surface: baseTheme.surface,
         colors: mergeColors(baseTheme.colors, overrides.colors),
-        radii: {...baseTheme.radii, ...overrides.radii},
+        radius: {...baseTheme.radius, ...overrides.radius},
         spacing: {...baseTheme.spacing, ...overrides.spacing},
         breakpoints: {...baseTheme.breakpoints, ...overrides.breakpoints},
         shadows: {...baseTheme.shadows, ...overrides.shadows},
-        typography: {...baseTheme.typography, ...overrides.typography},
+        text: {...baseTheme.text, ...overrides.text},
         status: mergeStatus(baseTheme.status, overrides.status),
         motion: {...baseTheme.motion, ...overrides.motion},
         density: {...baseTheme.density, ...overrides.density},
         zIndex: {...baseTheme.zIndex, ...overrides.zIndex},
         toast: {...baseTheme.toast, ...overrides.toast},
+        scrollbar: {...baseTheme.scrollbar, ...overrides.scrollbar},
         states: {...baseTheme.states, ...overrides.states},
         components: {...baseTheme.components, ...overrides.components},
     };

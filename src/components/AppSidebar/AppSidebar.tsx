@@ -2,6 +2,7 @@
 
 import {
     forwardRef,
+    useCallback,
     useLayoutEffect,
     useRef,
     type ComponentPropsWithoutRef,
@@ -61,6 +62,8 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
 ) {
     const contentRef = useRef<HTMLDivElement | null>(null);
     const indicatorRef = useRef<HTMLDivElement | null>(null);
+    const indicatorPlacedRef = useRef(false);
+    const transitionFrameRef = useRef(0);
     const activeKey = groups
         .flatMap((group) => group.items)
         .find((item) => item.active)?.key;
@@ -71,7 +74,7 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
         ...style,
     } as CSSProperties;
 
-    useLayoutEffect(() => {
+    const updateActiveIndicator = useCallback((animate = true) => {
         const root = contentRef.current;
         const indicator = indicatorRef.current;
         const activeItem = root?.querySelector<HTMLElement>('[data-sidebar-active="true"]');
@@ -80,12 +83,71 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
             return;
         }
 
-        const rootRect = root.getBoundingClientRect();
-        const itemRect = activeItem.getBoundingClientRect();
-        indicator.style.height = `${itemRect.height}px`;
-        indicator.style.transform = `translateY(${itemRect.top - rootRect.top}px)`;
+        const itemHeight = activeItem.offsetHeight;
+        if (itemHeight <= 0) {
+            indicator.style.opacity = '0';
+            return;
+        }
+
+        const skipTransition = !indicatorPlacedRef.current || !animate;
+        if (skipTransition) {
+            cancelAnimationFrame(transitionFrameRef.current);
+            indicator.style.transition = 'none';
+        }
+
+        indicator.style.height = `${itemHeight}px`;
+        indicator.style.transform = `translateY(${sidebarItemOffsetTop(root, activeItem)}px)`;
         indicator.style.opacity = '1';
-    }, [activeKey, groups]);
+
+        if (skipTransition) {
+            indicatorPlacedRef.current = true;
+            indicator.getBoundingClientRect();
+            transitionFrameRef.current = requestAnimationFrame(() => {
+                indicator.style.transition = '';
+            });
+        }
+    }, []);
+
+    useLayoutEffect(() => {
+        const root = contentRef.current;
+        const indicator = indicatorRef.current;
+        if (!root || !indicator) {
+            if (indicator) indicator.style.opacity = '0';
+            return;
+        }
+
+        if (!indicatorPlacedRef.current) {
+            updateActiveIndicator(false);
+        }
+
+        let frame = 0;
+        let nextFrame = 0;
+        const scheduleUpdate = () => {
+            cancelAnimationFrame(frame);
+            cancelAnimationFrame(nextFrame);
+            frame = requestAnimationFrame(() => {
+                nextFrame = requestAnimationFrame(() => updateActiveIndicator());
+            });
+        };
+        scheduleUpdate();
+
+        let resizeObserver: ResizeObserver | null = null;
+        if (typeof ResizeObserver !== 'undefined') {
+            resizeObserver = new ResizeObserver(scheduleUpdate);
+            resizeObserver.observe(root);
+            const activeItem = root.querySelector<HTMLElement>('[data-sidebar-active="true"]');
+            if (activeItem) resizeObserver.observe(activeItem);
+        }
+        window.addEventListener('resize', scheduleUpdate);
+
+        return () => {
+            cancelAnimationFrame(frame);
+            cancelAnimationFrame(nextFrame);
+            cancelAnimationFrame(transitionFrameRef.current);
+            resizeObserver?.disconnect();
+            window.removeEventListener('resize', scheduleUpdate);
+        };
+    }, [activeKey, groups, updateActiveIndicator]);
 
     return (
         <aside
@@ -135,6 +197,18 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
         </aside>
     );
 });
+
+function sidebarItemOffsetTop(root: HTMLElement, item: HTMLElement) {
+    let top = 0;
+    let node: HTMLElement | null = item;
+
+    while (node && node !== root) {
+        top += node.offsetTop;
+        node = node.offsetParent as HTMLElement | null;
+    }
+
+    return node === root ? top : item.offsetTop;
+}
 
 function AppSidebarNavItem({
     item,

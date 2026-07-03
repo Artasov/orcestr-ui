@@ -8,6 +8,7 @@ import {
     LuBox,
     LuBraces,
     LuCalendar,
+    LuCheck,
     LuClipboardList,
     LuCog,
     LuEllipsis,
@@ -27,6 +28,7 @@ import {
     AppShell,
     AppShellContent,
     AppShellHeader,
+    type AppShellSide,
     AppSidebar,
     type AppSidebarGroup,
     type AppSidebarItem,
@@ -35,10 +37,13 @@ import {
     Flex,
     IconButton,
     IconTextButton,
+    Menu,
     PageTitleBlock,
     SpecialModal,
     Stack,
     Text,
+    Tooltip,
+    type MenuItem,
 } from '..';
 import {ExampleTile} from './CodePreview';
 import {codeSamples, type CodeExample} from './codeSamples';
@@ -54,6 +59,8 @@ export function ApplicationSection({onOpenCode}: ExampleSectionProps) {
     const [appShellOpen, setAppShellOpen] = useState(false);
     const [appShellPreviewMode, setAppShellPreviewMode] =
         useState<AppShellPreviewMode>('desktop');
+    const [appShellSidebarSide, setAppShellSidebarSide] =
+        useState<AppShellSide>('left');
     const [specialModalOpen, setSpecialModalOpen] = useState(false);
     const [shellMobileOpen, setShellMobileOpen] = useState(false);
     const [shellActiveKey, setShellActiveKey] = useState('requests');
@@ -106,9 +113,6 @@ export function ApplicationSection({onOpenCode}: ExampleSectionProps) {
                     <SpecialModal.Header className='oui-ui-app-shell-modal-header'>
                         <Flex a='c' g={2} minW={0}>
                             <Text fw={760}>AppShell preview</Text>
-                            <Badge tone='primary'>
-                                {appShellPreviewMode === 'desktop' ? 'Desktop' : 'Phone'}
-                            </Badge>
                         </Flex>
                         <Flex a='c' g={1}>
                             <Button
@@ -138,6 +142,12 @@ export function ApplicationSection({onOpenCode}: ExampleSectionProps) {
                                 mode={appShellPreviewMode}
                                 mobileOpen={shellMobileOpen}
                                 onMobileOpenChange={setShellMobileOpen}
+                                sidebarSide={appShellSidebarSide}
+                                onToggleSidebarSide={() =>
+                                    setAppShellSidebarSide((side) =>
+                                        side === 'left' ? 'right' : 'left',
+                                    )
+                                }
                                 groups={shellGroups}
                                 onNavigate={(item) => setShellActiveKey(item.key)}
                             />
@@ -289,64 +299,65 @@ function DemoAppShellPreview({
     mode,
     mobileOpen,
     onMobileOpenChange,
+    sidebarSide,
+    onToggleSidebarSide,
     groups,
     onNavigate,
 }: {
     mode: AppShellPreviewMode;
     mobileOpen: boolean;
     onMobileOpenChange: (open: boolean) => void;
+    sidebarSide: AppShellSide;
+    onToggleSidebarSide: () => void;
     groups: readonly AppSidebarGroup[];
     onNavigate: (item: AppSidebarItem) => void;
 }) {
     const isPhone = mode === 'phone';
+    const isRight = sidebarSide === 'right';
     return (
         <AppShell
             className='oui-ui-app-shell-preview'
             sidebarMode={isPhone ? 'mobile' : 'desktop'}
+            sidebarSide={sidebarSide}
             sidebarWidth={300}
             maxWidth='100%'
             contentInset={0}
             sidebarOpen={mobileOpen}
+            desktopSidebarOpen
             onSidebarOpenChange={onMobileOpenChange}
             header={(
                 <AppShellHeader
                     visibility='always'
                     sidebarOpen={mobileOpen}
-                    onSidebarOpenChange={isPhone ? onMobileOpenChange : undefined}
+                    onSidebarOpenChange={onMobileOpenChange}
+                    navigationVisibility='mobile'
                     actions={<DemoHeaderActions />}
-                >
-                    <Flex className='oui-ui-app-shell-header-main' a='c' g={2}>
-                        {!isPhone ? (
-                            <>
-                                <IconButton
-                                    size={2}
-                                    v='ghost'
-                                    icon={<LuArrowLeft size={17} />}
-                                    aria-label='Back'
-                                />
-                                <IconButton
-                                    size={2}
-                                    v='ghost'
-                                    icon={<LuArrowLeftRight size={17} />}
-                                    aria-label='Move sidebar'
-                                />
-                            </>
-                        ) : null}
-                        <Text fw={760}>Deliveries</Text>
-                    </Flex>
-                </AppShellHeader>
+                />
             )}
             sidebar={(
                 <AppSidebar
+                    side={sidebarSide}
                     header={(
                         <>
-                            <div className='oui-app-sidebar-brand'>
-                                <span className='oui-app-sidebar-logo'>
-                                    <span className='oui-ui-demo-logo'>O</span>
-                                </span>
-                                <span className='oui-app-sidebar-title'>Deliveries</span>
-                            </div>
+                            <DemoShellBrand />
                             <div className='oui-app-sidebar-actions'>
+                                <Tooltip content='Back'>
+                                    <IconButton
+                                        size={2}
+                                        v='ghost'
+                                        icon={<LuArrowLeft size={17} />}
+                                        aria-label='Back'
+                                    />
+                                </Tooltip>
+                                <Tooltip content={isRight ? 'Move sidebar left' : 'Move sidebar right'}>
+                                    <IconButton
+                                        size={2}
+                                        v='ghost'
+                                        icon={<LuArrowLeftRight size={17} />}
+                                        aria-label={isRight ? 'Move sidebar left' : 'Move sidebar right'}
+                                        onClick={onToggleSidebarSide}
+                                    />
+                                </Tooltip>
                                 <IconButton
                                     size={2}
                                     v='ghost'
@@ -367,7 +378,6 @@ function DemoAppShellPreview({
                 <PageTitleBlock
                     title='Requests'
                     caption='Module workspace with responsive header and AppSidebar navigation.'
-                    badge='shell'
                     action={(
                         <IconButton
                             size={2}
@@ -383,7 +393,34 @@ function DemoAppShellPreview({
     );
 }
 
+function DemoShellBrand() {
+    return (
+        <div className='oui-app-sidebar-brand'>
+            <span className='oui-app-sidebar-logo'>
+                <span className='oui-ui-demo-logo'>O</span>
+            </span>
+            <span className='oui-app-sidebar-title'>Deliveries</span>
+        </div>
+    );
+}
+
 function DemoHeaderActions() {
+    const [locale, setLocale] = useState<'ru' | 'en'>('en');
+    const languageItems: MenuItem[] = [
+        {
+            key: 'ru',
+            label: 'RU',
+            icon: locale === 'ru' ? <LuCheck size={14} /> : undefined,
+            onSelect: () => setLocale('ru'),
+        },
+        {
+            key: 'en',
+            label: 'EN',
+            icon: locale === 'en' ? <LuCheck size={14} /> : undefined,
+            onSelect: () => setLocale('en'),
+        },
+    ];
+
     return (
         <Flex className='oui-ui-app-shell-header-actions-demo' a='c' g={1}>
             <IconTextButton
@@ -409,11 +446,17 @@ function DemoHeaderActions() {
                 badge={99}
                 aria-label='Messages'
             />
-            <IconButton
-                size={2}
-                v='ghost'
-                icon={<LuLanguages size={18} />}
-                aria-label='Language'
+            <Menu
+                align='end'
+                items={languageItems}
+                trigger={
+                    <IconButton
+                        size={2}
+                        v='ghost'
+                        icon={<LuLanguages size={18} />}
+                        aria-label={`Language: ${locale.toUpperCase()}`}
+                    />
+                }
             />
             <IconButton
                 size={2}

@@ -49,6 +49,7 @@ export type DrawerProps = {
     panelClassName?: string;
     bodyClassName?: string;
     backdropClassName?: string;
+    portalContainer?: HTMLElement | null;
     style?: CSSProperties;
     panelStyle?: CSSProperties;
     backdropStyle?: CSSProperties;
@@ -76,6 +77,7 @@ export function Drawer({
     panelClassName,
     bodyClassName,
     backdropClassName,
+    portalContainer,
     style,
     panelStyle,
     backdropStyle,
@@ -128,7 +130,7 @@ export function Drawer({
     if (!present) return null;
 
     return (
-        <Portal>
+        <Portal container={portalContainer}>
             <div
                 className={cn('oui-drawer-layer', className)}
                 data-state={state}

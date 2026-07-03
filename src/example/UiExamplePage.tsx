@@ -1,19 +1,12 @@
 'use client';
 
-import {useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction} from 'react';
+import {memo, useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction} from 'react';
 import {
     LuBell,
-    LuBox,
-    LuCalendar,
     LuCheck,
-    LuClipboardList,
     LuExternalLink,
-    LuFileText,
-    LuLayoutDashboard,
-    LuMousePointerClick,
-    LuPanelTop,
+    LuLanguages,
     LuRefreshCw,
-    LuSettings,
     LuTrash2,
 } from 'react-icons/lu';
 
@@ -22,6 +15,8 @@ import {
     AppShellContent,
     AppShellHeader,
     AppSidebar,
+    IconButton,
+    Menu,
     OrcestrUiProvider,
     ScrollArea,
     useOrcestrTheme,
@@ -30,7 +25,7 @@ import {
     type OrcestrThemeOverrides,
     type OrcestrUiLocale,
 } from '..';
-import {LayoutSection, TypographySection} from './ExampleBasicsSections';
+import {LayoutSection, TextSection} from './ExampleBasicsSections';
 import {ActionsSection} from './ExampleActionsSection';
 import {ApplicationSection} from './ExampleApplicationSection';
 import {FieldsSection} from './ExampleFieldsSection';
@@ -58,6 +53,18 @@ const UI_EXAMPLE_ACTIVE_PROBE_OFFSET = UI_EXAMPLE_SCROLL_LEAD + 220;
 const UI_EXAMPLE_CLICK_TARGET_TOP_TOLERANCE = 180;
 const UI_EXAMPLE_SCROLL_LOCK_TIMEOUT_MS = 1600;
 
+const MemoFoundationsSection = memo(FoundationsSection);
+const MemoTextSection = memo(TextSection);
+const MemoIconTextSection = memo(IconTextSection);
+const MemoLayoutSection = memo(LayoutSection);
+const MemoActionsSection = memo(ActionsSection);
+const MemoFieldsSection = memo(FieldsSection);
+const MemoSelectionSection = memo(SelectionSection);
+const MemoStateCardSection = memo(StateCardSection);
+const MemoBadgeSection = memo(BadgeSection);
+const MemoDataSection = memo(DataSection);
+const MemoOverlaysSection = memo(OverlaysSection);
+const MemoApplicationSection = memo(ApplicationSection);
 
 function scrollUiExampleSection(id: string, behavior: ScrollBehavior = 'auto') {
     const node = document.getElementById(id);
@@ -134,6 +141,7 @@ function UiExampleContent({
         from: '2026-06-01',
         to: '2026-06-26',
     });
+    const openPalette = useCallback(() => setPaletteOpen(true), []);
 
     useEffect(() => {
         document.documentElement.classList.add('oui-ui-document-lock');
@@ -242,9 +250,9 @@ function UiExampleContent({
             onSidebarOpenChange={setMobileNavOpen}
             header={
                 <AppShellHeader
-                    visibility='mobile'
                     sidebarOpen={mobileNavOpen}
                     onSidebarOpenChange={setMobileNavOpen}
+                    navigationVisibility='mobile'
                     actions={
                         <UiExampleHeaderActions
                             compact
@@ -252,9 +260,7 @@ function UiExampleContent({
                             onLocaleChange={onLocaleChange}
                         />
                     }
-                >
-                    <UiExampleHeaderTitle locale={locale} />
-                </AppShellHeader>
+                />
             }
             sidebar={
                 <UiExampleSidebar onNavigate={() => setMobileNavOpen(false)} />
@@ -271,19 +277,19 @@ function UiExampleContent({
                             onThemeOverridesChange={onThemeOverridesChange}
                         />
 
-                        <FoundationsSection onOpenCode={setCodeExample} />
+                        <MemoFoundationsSection onOpenCode={setCodeExample} />
 
-                        <TypographySection onOpenCode={setCodeExample} />
+                        <MemoTextSection onOpenCode={setCodeExample} />
 
-                        <IconTextSection onOpenCode={setCodeExample} />
+                        <MemoIconTextSection onOpenCode={setCodeExample} />
 
-                        <LayoutSection onOpenCode={setCodeExample} />
-                        <ActionsSection
+                        <MemoLayoutSection onOpenCode={setCodeExample} />
+                        <MemoActionsSection
                             menuItems={menuItems}
                             onOpenCode={setCodeExample}
-                            onOpenPalette={() => setPaletteOpen(true)}
+                            onOpenPalette={openPalette}
                         />
-                        <FieldsSection
+                        <MemoFieldsSection
                             stepperValue={stepperValue}
                             onStepperValueChange={setStepperValue}
                             dateValue={dateValue}
@@ -292,7 +298,7 @@ function UiExampleContent({
                             onDateRangeChange={setDateRange}
                             onOpenCode={setCodeExample}
                         />
-                        <SelectionSection
+                        <MemoSelectionSection
                             locale={locale}
                             segment={segment}
                             onSegmentChange={setSegment}
@@ -317,10 +323,10 @@ function UiExampleContent({
                             onOpenCode={setCodeExample}
                             onToast={toast.push}
                         />
-                        <StateCardSection onOpenCode={setCodeExample} />
-                        <BadgeSection onOpenCode={setCodeExample} />
-                        <DataSection onOpenCode={setCodeExample} />
-                        <OverlaysSection
+                        <MemoStateCardSection onOpenCode={setCodeExample} />
+                        <MemoBadgeSection onOpenCode={setCodeExample} />
+                        <MemoDataSection onOpenCode={setCodeExample} />
+                        <MemoOverlaysSection
                             setModalOpen={setModalOpen}
                             setBlurModalOpen={setBlurModalOpen}
                             setFastModalOpen={setFastModalOpen}
@@ -329,7 +335,7 @@ function UiExampleContent({
                             setDangerModalOpen={setDangerModalOpen}
                             onOpenCode={setCodeExample}
                         />
-                        <ApplicationSection onOpenCode={setCodeExample} />
+                        <MemoApplicationSection onOpenCode={setCodeExample} />
                     </AppShellContent>
                 </div>
                 <UiExampleThemeRail
@@ -534,7 +540,6 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
                 items: group.items.map((item) => ({
                     key: item.id,
                     label: item.label,
-                    icon: uiExampleNavIcon(item.id),
                     active: activeSection === item.id,
                     onSelect: () => navigateToSection(item.id),
                 })),
@@ -548,50 +553,8 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
             header={<UiExampleBrand />}
             itemH={34}
             groups={sidebarNavGroups}
-            footer={(
-                <button
-                    type='button'
-                    className='oui-ui-sidebar-footer-action'
-                    onClick={() => navigateToSection('app-shell-example')}
-                >
-                    <LuSettings size={15} aria-hidden />
-                    <span>Application components</span>
-                </button>
-            )}
         />
     );
-}
-
-function UiExampleHeaderTitle({locale}: {locale: OrcestrUiLocale}) {
-    const title = locale === 'ru'
-        ? 'Единый язык компонентов для всех модулей.'
-        : 'One component language for every module.';
-    const subtitle = locale === 'ru'
-        ? 'Одна тема, предсказуемый интерфейс.'
-        : 'One theme, predictable interface.';
-
-    return (
-        <div className='oui-ui-header-title'>
-            <strong>{title}</strong>
-            <span>{subtitle}</span>
-        </div>
-    );
-}
-
-function uiExampleNavIcon(id: string) {
-    const size = 16;
-    if (id === 'theme') return <LuSettings size={size} />;
-    if (id === 'foundations') return <LuLayoutDashboard size={size} />;
-    if (id === 'buttons-example') return <LuMousePointerClick size={size} />;
-    if (id === 'text-fields-example') return <LuFileText size={size} />;
-    if (id === 'selects-example') return <LuCheck size={size} />;
-    if (id === 'data-table-example') return <LuClipboardList size={size} />;
-    if (id === 'toast-example') return <LuBell size={size} />;
-    if (id === 'app-shell-example') return <LuPanelTop size={size} />;
-    if (id === 'app-sidebar-example') return <LuLayoutDashboard size={size} />;
-    if (id === 'special-modal-example') return <LuBox size={size} />;
-    if (id === 'date-range-example') return <LuCalendar size={size} />;
-    return null;
 }
 
 function UiExampleBrand({compact = false}: {compact?: boolean}) {
@@ -616,25 +579,38 @@ function UiExampleHeaderActions({
     locale: OrcestrUiLocale;
     onLocaleChange: (locale: OrcestrUiLocale) => void;
 }) {
+    const languageItems = useMemo<MenuItem[]>(
+        () => [
+            {
+                key: 'ru',
+                label: 'RU',
+                icon: locale === 'ru' ? <LuCheck size={14} /> : undefined,
+                onSelect: () => onLocaleChange('ru'),
+            },
+            {
+                key: 'en',
+                label: 'EN',
+                icon: locale === 'en' ? <LuCheck size={14} /> : undefined,
+                onSelect: () => onLocaleChange('en'),
+            },
+        ],
+        [locale, onLocaleChange],
+    );
+
     return (
         <div className='oui-ui-header-actions' data-compact={compact ? 'true' : undefined}>
-            <span className='oui-ui-language-switch' aria-label='UI example language'>
-                <span className='oui-ui-language-label'>
-                    {locale === 'ru' ? 'Язык' : 'Language'}
-                </span>
-                {(['ru', 'en'] as const).map((item) => (
-                    <button
-                        key={item}
-                        type='button'
-                        className='oui-ui-language-option'
-                        data-active={locale === item ? 'true' : undefined}
-                        aria-pressed={locale === item}
-                        onClick={() => onLocaleChange(item)}
-                    >
-                        {item.toUpperCase()}
-                    </button>
-                ))}
-            </span>
+            <Menu
+                items={languageItems}
+                trigger={
+                    <IconButton
+                        className='oui-ui-language-button'
+                        size={2}
+                        v='pad'
+                        icon={<LuLanguages size={16} />}
+                        aria-label={`Language: ${locale.toUpperCase()}`}
+                    />
+                }
+            />
             <a
                 className='oui-ui-header-link'
                 href='https://github.com/Artasov/orcestr'

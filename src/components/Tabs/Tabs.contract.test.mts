@@ -18,9 +18,29 @@ test('Tabs keep stable trigger height with badges', () => {
 
 test('Tabs hide hover indicator when hovering the active tab', () => {
     assert.match(tabsSource, /hoveredValue !== active\?\.value/);
-    assert.match(selectionStyles, /\.oui-tabs-active-indicator,[\s\S]*?\.oui-tabs-hover-indicator[\s\S]*?transition: left 380ms[\s\S]*?opacity 220ms ease/);
+    assert.match(selectionStyles, /\.oui-tabs-active-indicator,[\s\S]*?\.oui-tabs-hover-indicator[\s\S]*?transition: left 460ms[\s\S]*?opacity 220ms ease/);
     assert.match(selectionStyles, /\.oui-tabs-hover-indicator\s+z-index: 0[\s\S]*?opacity: 0/);
     assert.match(selectionStyles, /\.oui-tabs-hover-indicator\[data-visible="true"\]\s+opacity: 1/);
+});
+
+test('Tabs avoid state updates when measured rects did not change', () => {
+    assert.match(tabsSource, /function stableTabRect/);
+    assert.match(tabsSource, /current\.left === next\.left[\s\S]*?current\.height === next\.height/);
+    assert.match(tabsSource, /setActiveRect\(\(current\) => stableTabRect\(current, readRect\(active\?\.value\)\)\)/);
+    assert.match(tabsSource, /setHoverRect\(\(current\) => \(nextHoverRect \? stableTabRect\(current, nextHoverRect\) : current\)\)/);
+    assert.match(tabsSource, /setActiveRect\(\(current\) => stableTabRect\(current, active\)\)/);
+    assert.match(tabsSource, /setHoverRect\(\(current\) => \(hover \? stableTabRect\(current, hover\) : current\)\)/);
+});
+
+test('Tabs use shared pad hover tokens instead of private colors', () => {
+    assert.match(selectionStyles, /\.oui-tabs-active-indicator\s+z-index: 0[\s\S]*?background: var\(--oui-border, var\(--oui-pad-hover-bg, var\(--oui-control-hover-bg, var\(--oui-gray-a3\)\)\)\)/);
+    assert.match(selectionStyles, /\.oui-tabs-hover-indicator\s+z-index: 0[\s\S]*?background: var\(--oui-border, var\(--oui-pad-hover-bg, var\(--oui-control-hover-bg, var\(--oui-gray-a3\)\)\)\)/);
+    assert.match(selectionStyles, /\.oui-tabs-compound-active-indicator\s+z-index: 0[\s\S]*?background: var\(--oui-border, var\(--oui-pad-hover-bg, var\(--oui-control-hover-bg, var\(--oui-gray-a3\)\)\)\)/);
+    assert.match(selectionStyles, /\.oui-tabs-compound-hover-indicator\s+z-index: 0[\s\S]*?background: var\(--oui-border, var\(--oui-pad-hover-bg, var\(--oui-control-hover-bg, var\(--oui-gray-a3\)\)\)\)/);
+    assert.doesNotMatch(selectionStyles, /--oui-tabs-hover-indicator-bg/);
+    assert.doesNotMatch(selectionStyles, /\.oui-segmented,\s*\.oui-tabs-list/);
+    assert.doesNotMatch(selectionStyles, /\.oui-segmented-item,\s*\.oui-tabs-trigger/);
+    assert.doesNotMatch(selectionStyles, /\.oui-tabs-trigger\[data-active="true"\]\s+font-weight/);
 });
 
 test('Tabs expose compound API for app-level document tabs', () => {

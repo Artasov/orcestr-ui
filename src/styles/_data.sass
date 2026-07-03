@@ -34,7 +34,7 @@
     background: var(--oui-data-table-row-base-bg)
     min-height: 0
     scrollbar-width: thin
-    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-gray-a8, var(--oui-border-strong))) transparent
+    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-gray-a8, var(--oui-border-strong))) var(--oui-scrollbar-track, transparent)
 
 .oui-data-table-wrap:focus,
 .oui-data-table-wrap:focus-visible
@@ -265,7 +265,7 @@
     height: 10px
 
 .oui-data-table-wrap::-webkit-scrollbar-track
-    background: transparent
+    background: var(--oui-scrollbar-track, transparent)
 
 .oui-data-table-wrap::-webkit-scrollbar-thumb
     min-height: 28px

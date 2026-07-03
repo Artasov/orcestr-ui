@@ -21,12 +21,26 @@ test('selection dropdown surfaces use themed floating background', () => {
 
     assert.match(
         selectionStyles,
-        /\.oui-combobox-content,\s+\.oui-select-content[\s\S]*?background: var\(--oui-floating-bg, var\(--oui-bg\)\)/,
+        /\.oui-combobox-content,\s+\.oui-select-content[\s\S]*?--oui-selection-content-text: var\(--oui-text, #202020\)[\s\S]*?--oui-selection-content-bg: var\(--oui-floating-bg, var\(--oui-bg, #ffffff\)\)/,
     );
     assert.match(
         overlayStyles,
-        /\.oui-popover-content\.oui-select-content[\s\S]*?color: var\(--oui-text\)[\s\S]*?background: var\(--oui-floating-bg, var\(--oui-bg\)\)/,
+        /\.oui-popover-content\.oui-select-content[\s\S]*?color: var\(--oui-selection-content-text, var\(--oui-text, #202020\)\)[\s\S]*?background: var\(--oui-selection-content-bg, var\(--oui-floating-bg, var\(--oui-bg, #ffffff\)\)\)/,
     );
+    assert.match(selectionStyles, /\.oui-combobox-content\[data-oui-theme="light"\],[\s\S]*?--oui-selection-content-text: #202020/);
+    assert.match(selectionStyles, /\.oui-combobox-content\[data-oui-theme="light"\],[\s\S]*?--oui-selection-option-hover-bg: #0000000f/);
+    assert.match(selectionStyles, /\.oui-combobox-content\[data-oui-theme="light"\],[\s\S]*?--oui-selection-option-selected-bg: #008ff519/);
+    assert.match(selectionStyles, /\.oui-combobox-content\[data-oui-theme="light"\],[\s\S]*?--oui-selection-option-selected-hover-bg: #008ff526/);
+    assert.match(selectionStyles, /\.oui-combobox-content\[data-oui-theme="light"\],[\s\S]*?--oui-selection-check-color: #0d74ce/);
+    assert.match(selectionStyles, /\.oui-combobox-content\[data-oui-theme="dark"\],[\s\S]*?--oui-selection-content-text: #eeeeee/);
+    assert.match(selectionStyles, /\.oui-combobox-content\[data-oui-theme="dark"\],[\s\S]*?--oui-selection-option-selected-bg: #0077ff3a/);
+    assert.match(selectionStyles, /\.oui-button\.oui-combobox-trigger\s+background-color: var\(--oui-control-bg, transparent\)[\s\S]*?border-color: var\(--oui-field-border-color, var\(--oui-border\)\)/);
+    assert.match(selectionStyles, /\.oui-button\.oui-combobox-trigger:not\(:disabled\):hover\s+background-color: var\(--oui-control-bg, transparent\)[\s\S]*?border-color: var\(--oui-field-border-hover-color, var\(--oui-border-strong\)\)/);
+    assert.match(overlayStyles, /\.oui-popover-content\.oui-select-content[\s\S]*?background: var\(--oui-selection-content-bg, var\(--oui-floating-bg, var\(--oui-bg, #ffffff\)\)\)/);
+    assert.doesNotMatch(overlayStyles, /oui-popover-content\.oui-select-content \.oui-combobox-option\[data-selected="true"\]/);
+    assert.doesNotMatch(overlayStyles, /oui-popover-content\.oui-select-content \.oui-combobox-check/);
+    assert.match(selectionStyles, /\.oui-combobox-option,[\s\S]*?color: var\(--oui-selection-content-text, var\(--oui-text, #202020\)\)/);
+    assert.match(selectionStyles, /\.oui-combobox-check\s+flex:[\s\S]*?color: var\(--oui-selection-check-color\)/);
 });
 
 test('BadgeSelectMenu uses the shared selection dropdown surface', () => {

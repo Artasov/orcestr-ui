@@ -20,10 +20,13 @@ test('Copy buttons own clipboard action and toast feedback', () => {
 
 test('Code preview exposes a hover copy icon without vertical scroll ownership', () => {
     assert.match(preview, /<CopyIconButton[\s\S]*?className='oui-code-preview-copy'/);
+    assert.match(preview, /<ScrollArea[\s\S]*?className='oui-code-preview-scroll oui-code-preview-scroll-inline'[\s\S]*?scrollbars='horizontal'/);
     assert.match(styles, /\.oui-code-preview-wrap\s+position: relative/);
     assert.match(styles, /\.oui-code-preview-copy\s+position: absolute[\s\S]*?opacity: 0/);
     assert.match(styles, /\.oui-code-preview-wrap:hover \.oui-code-preview-copy/);
-    assert.match(styles, /\.oui-code-preview-scroll-inline\s+overflow-x: auto[\s\S]*?overflow-y: visible/);
+    assert.match(styles, /\.oui-code-preview-scroll-inline\s+overflow: hidden/);
+    assert.match(styles, /\.oui-code-preview-scroll-inline \.oui-scroll-area-viewport\s+max-height: none[\s\S]*?overflow-x: auto[\s\S]*?overflow-y: hidden[\s\S]*?overscroll-behavior-x: contain[\s\S]*?overscroll-behavior-y: auto/);
+    assert.match(styles, /\.oui-code-inline-panel \.oui-code-preview\s+padding-bottom: 42px/);
 });
 
 test('Copy buttons are represented in the button examples', () => {

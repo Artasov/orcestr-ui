@@ -148,9 +148,12 @@ export function CodeBlock({code, mode = 'scroll'}: {code: string; mode?: 'scroll
                     size={1}
                     v='soft'
                 />
-                <div className='oui-code-preview-scroll oui-code-preview-scroll-inline'>
+                <ScrollArea
+                    className='oui-code-preview-scroll oui-code-preview-scroll-inline'
+                    scrollbars='horizontal'
+                >
                     {codeNode}
-                </div>
+                </ScrollArea>
             </div>
         );
     }

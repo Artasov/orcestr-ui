@@ -34,6 +34,19 @@ type TabRect = {
     height: number;
 };
 
+function stableTabRect(current: TabRect | null, next: TabRect | null): TabRect | null {
+    if (!current || !next) return next;
+    if (
+        current.left === next.left &&
+        current.top === next.top &&
+        current.width === next.width &&
+        current.height === next.height
+    ) {
+        return current;
+    }
+    return next;
+}
+
 function ItemTabs({
     items,
     value,
@@ -75,9 +88,9 @@ function ItemTabs({
             };
         };
 
-        setActiveRect(readRect(active?.value));
+        setActiveRect((current) => stableTabRect(current, readRect(active?.value)));
         const nextHoverRect = readRect(hoveredValue);
-        setHoverRect((current) => nextHoverRect ?? current);
+        setHoverRect((current) => (nextHoverRect ? stableTabRect(current, nextHoverRect) : current));
         setHoverVisible(Boolean(hoveredValue && nextHoverRect && hoveredValue !== active?.value));
     }, [active?.value, hoveredValue]);
 
@@ -337,9 +350,9 @@ function List({
             if (nextValue === ctx.activeValue) active = rect;
         });
 
-        setHoverRect((current) => hover ?? current);
+        setHoverRect((current) => (hover ? stableTabRect(current, hover) : current));
         setHoverVisible(Boolean(hover && ctx.hoveredValue !== ctx.activeValue));
-        setActiveRect(active);
+        setActiveRect((current) => stableTabRect(current, active));
         setCanScrollLeft(list.scrollLeft > 1);
         setCanScrollRight(list.scrollLeft + list.clientWidth < list.scrollWidth - 1);
     }, [ctx.activeValue, ctx.hoveredValue]);

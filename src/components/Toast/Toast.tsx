@@ -40,10 +40,6 @@ export type ToastOptions = {
     tone?: ToastTone;
     icon?: ReactNode | false;
     position?: ToastPosition;
-    background?: string;
-    blur?: number | string | false;
-    borderColor?: string;
-    shadow?: string;
     progressColor?: string;
     action?: ToastAction;
     duration?: number | null;
@@ -286,7 +282,7 @@ export function ToastProvider({
                     return (
                         <div
                             key={position}
-                            className='oui-toast-viewport'
+                            className='oui-toast-stack'
                             data-position={position}
                             data-testid={testId ? `${testId}-${position}` : undefined}
                             aria-live='polite'
@@ -339,18 +335,12 @@ function ToastCard({
     const duration = toastDuration(item);
     const hasProgress = item.duration !== null && duration > 0;
     const icon = item.icon === false ? null : item.icon ?? toastIcon(item.tone);
-    const effectiveBlur =
-        item.blur !== undefined ? cssLength(item.blur) : 'var(--oui-toast-blur, 14px)';
     const style = {
-        ...(item.background ? {'--oui-toast-bg': item.background} : null),
-        '--oui-toast-effective-blur': effectiveBlur,
-        ...(item.borderColor ? {'--oui-toast-custom-border-color': item.borderColor} : null),
-        ...(item.shadow ? {'--oui-toast-shadow': item.shadow} : null),
         ...(item.progressColor ? {'--oui-toast-progress-color': item.progressColor} : null),
     } as CSSProperties;
     return (
         <div
-            className='oui-toast-frame'
+            className='oui-toast-viewport oui-toast-frame'
             data-position={item.position}
             data-state={item.state}
             style={style}
@@ -427,11 +417,6 @@ function ToastCard({
             </div>
         </div>
     );
-}
-
-function cssLength(value: number | string | false) {
-    if (value === false) return '0px';
-    return typeof value === 'number' ? `${value}px` : value;
 }
 
 function toastDuration(item: ToastItem) {

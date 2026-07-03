@@ -32,14 +32,20 @@ export type AppShellNavItem = {
     onSelect?: () => void;
 };
 
+export type AppShellSide = 'left' | 'right';
+
 export type AppShellProps = ComponentPropsWithoutRef<'div'> &
     SystemProps & {
         sidebar: ReactNode;
         header?: ReactNode;
         sidebarMode?: 'auto' | 'desktop' | 'mobile';
+        sidebarSide?: AppShellSide;
         sidebarOpen?: boolean;
+        desktopSidebarOpen?: boolean;
         onSidebarOpenChange?: (open: boolean) => void;
         sidebarWidth?: number | string;
+        headerHeight?: number | string;
+        mobileBreakpoint?: number;
         maxWidth?: number | string;
         contentInset?: number | string;
         testId?: string;
@@ -52,9 +58,13 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
         sidebar,
         header,
         sidebarMode = 'auto',
+        sidebarSide = 'left',
         sidebarOpen = false,
+        desktopSidebarOpen = true,
         onSidebarOpenChange,
         sidebarWidth = 260,
+        headerHeight = 56,
+        mobileBreakpoint = 860,
         maxWidth = 1440,
         contentInset = 28,
         children,
@@ -64,11 +74,14 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
     ref,
 ) {
     const [autoDrawerMode, setAutoDrawerMode] = useState(false);
+    const [drawerPortalContainer, setDrawerPortalContainer] =
+        useState<HTMLDivElement | null>(null);
     const {systemStyle, restProps} = splitSystemProps(props);
     const drawerMode =
         sidebarMode === 'auto' ? autoDrawerMode : sidebarMode === 'mobile';
     const shellStyle = {
         '--oui-app-shell-sidebar-width': shellSizeValue(sidebarWidth),
+        '--oui-app-shell-header-h': shellSizeValue(headerHeight),
         '--oui-app-shell-max-width': shellSizeValue(maxWidth),
         '--oui-app-shell-inset': shellSizeValue(contentInset),
         ...systemStyle,
@@ -77,35 +90,40 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
 
     useEffect(() => {
         if (sidebarMode !== 'auto') return;
-        const media = window.matchMedia('(max-width: 860px)');
+        const media = window.matchMedia(`(max-width: ${mobileBreakpoint}px)`);
         const update = () => setAutoDrawerMode(media.matches);
         update();
         media.addEventListener('change', update);
         return () => media.removeEventListener('change', update);
-    }, [sidebarMode]);
+    }, [mobileBreakpoint, sidebarMode]);
 
     return (
         <div
             ref={ref}
             className={cn('oui-app-shell', className)}
             data-sidebar-open={sidebarOpen ? 'true' : 'false'}
+            data-desktop-sidebar-open={desktopSidebarOpen ? 'true' : 'false'}
+            data-sidebar-side={sidebarSide}
+            data-sidebar-mode={drawerMode ? 'mobile' : 'desktop'}
+            data-has-header={header ? 'true' : undefined}
             data-testid={testId}
             style={shellStyle}
             {...restProps}
         >
-            {header}
             <div className='oui-app-shell-frame'>
                 {!drawerMode ? (
                     <div className='oui-app-shell-sidebar-desktop'>
                         {sidebar}
                     </div>
                 ) : null}
-                {drawerMode ? (
+                {drawerMode && drawerPortalContainer ? (
                     <Drawer
                         open={sidebarOpen}
                         onOpenChange={(nextOpen) => onSidebarOpenChange?.(nextOpen)}
-                        side='left'
+                        side={sidebarSide}
                         size={sidebarWidth}
+                        lockScroll={false}
+                        portalContainer={drawerPortalContainer}
                         showCloseButton={false}
                         backdropClassName='oui-app-shell-sidebar-drawer-overlay'
                         panelClassName='oui-app-shell-sidebar-drawer-panel'
@@ -115,8 +133,17 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
                         {sidebar}
                     </Drawer>
                 ) : null}
-                <main className='oui-app-shell-main'>{children}</main>
+                <main className='oui-app-shell-main'>
+                    {header}
+                    {children}
+                </main>
             </div>
+            {drawerMode ? (
+                <div
+                    ref={setDrawerPortalContainer}
+                    className='oui-app-shell-drawer-root'
+                />
+            ) : null}
         </div>
     );
 });
@@ -128,6 +155,7 @@ export type AppShellHeaderProps = Omit<ComponentPropsWithoutRef<'header'>, 'titl
         sidebarOpen?: boolean;
         onSidebarOpenChange?: (open: boolean) => void;
         navigationLabel?: string;
+        navigationVisibility?: 'always' | 'mobile';
         visibility?: 'always' | 'mobile';
         testId?: string;
     };
@@ -142,6 +170,7 @@ export const AppShellHeader = forwardRef<HTMLElement, AppShellHeaderProps>(
             sidebarOpen = false,
             onSidebarOpenChange,
             navigationLabel,
+            navigationVisibility = 'always',
             visibility = 'always',
             children,
             testId,
@@ -165,10 +194,12 @@ export const AppShellHeader = forwardRef<HTMLElement, AppShellHeaderProps>(
             >
                 {onSidebarOpenChange ? (
                     <IconButton
+                        className='oui-app-shell-header-nav-button'
                         v='pad'
                         icon={sidebarOpen ? <LuX size={19} /> : <LuMenu size={19} />}
                         aria-label={actualNavigationLabel}
                         aria-expanded={sidebarOpen}
+                        data-navigation-visibility={navigationVisibility}
                         onClick={() => onSidebarOpenChange(!sidebarOpen)}
                     />
                 ) : null}

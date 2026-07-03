@@ -53,6 +53,8 @@ test('DataTable settings and pinned cells use shared UI primitives', () => {
     assert.doesNotMatch(source, /<button\s+type='button'\s+className='oui-data-table-settings-reset'/);
     assert.match(styles, /\.oui-data-table-wrap\s+--oui-data-table-row-base-bg:/);
     assert.match(styles, /\.oui-data-table-wrap[\s\S]*?scrollbar-color: var\(--oui-scrollbar-thumb/);
+    assert.match(styles, /\.oui-data-table-wrap[\s\S]*?scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/);
+    assert.match(styles, /\.oui-data-table-wrap::-webkit-scrollbar-track[\s\S]*?background: var\(--oui-scrollbar-track, transparent\)/);
     assert.match(styles, /\.oui-data-table-wrap::-webkit-scrollbar-thumb[\s\S]*?background-color: var\(--oui-scrollbar-thumb,/);
     assert.match(styles, /\.oui-data-table-wrap::-webkit-scrollbar-thumb:hover[\s\S]*?background-color: var\(--oui-scrollbar-thumb-hover,/);
     assert.match(styles, /\.oui-data-table tbody tr\s+--oui-data-table-row-bg: var\(--oui-data-table-row-base-bg\)/);

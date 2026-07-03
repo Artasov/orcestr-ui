@@ -24,6 +24,8 @@ body.oui-ui-document-lock
 
 .oui-ui-section
     container-type: inline-size
+    content-visibility: auto
+    contain-intrinsic-size: auto 560px
     overflow: hidden
     padding: 18px
 
@@ -94,6 +96,9 @@ body.oui-ui-document-lock
 .oui-ui-main-sidebar .oui-ui-brand-text
     flex: 1 1 auto
 
+.oui-app-shell-header > .oui-ui-brand
+    flex: 1 1 auto
+
 .oui-ui-header-title
     display: flex
     min-width: 0
@@ -147,48 +152,8 @@ body.oui-ui-document-lock
     background: var(--oui-pad-bg)
     padding: 0 9px
 
-.oui-ui-language-switch
-    display: inline-flex
-    min-height: 30px
-    align-items: center
-    gap: 3px
-    border: 0
-    border-radius: var(--oui-radius-sm)
-    background: var(--oui-pad-bg)
-    padding: 2px
-
-.oui-ui-language-label
-    padding: 0 6px
-    color: var(--oui-muted)
-    font-size: 12px
-    font-weight: 720
-    line-height: 1
-    white-space: nowrap
-
-.oui-ui-language-option
-    display: inline-flex
-    min-width: 32px
-    min-height: 24px
-    align-items: center
-    justify-content: center
-    border: 0
-    border-radius: 5px
-    background: transparent
-    color: var(--oui-muted)
-    cursor: pointer
-    font: inherit
-    font-size: 12px
-    font-weight: 800
-    line-height: 1
-
-.oui-ui-language-option:hover,
-.oui-ui-language-option:focus-visible
-    color: var(--oui-text)
-    outline: none
-
-.oui-ui-language-option[data-active="true"]
-    background: var(--oui-primary-surface)
-    color: var(--oui-primary-text)
+.oui-ui-language-button
+    flex: 0 0 auto
 
 .oui-ui-header-link:hover
     background: var(--oui-pad-hover-bg)
@@ -358,7 +323,7 @@ body.oui-ui-document-lock
 .oui-ui-app-shell-preview-stage[data-mode="phone"]
     width: min(100%, 410px)
     min-height: 0
-    border-radius: 24px
+    border-radius: 14px
 
 .oui-ui-app-shell-preview-stage .oui-app-shell
     height: 100%
@@ -368,9 +333,16 @@ body.oui-ui-document-lock
     padding: 0
 
 .oui-ui-app-shell-preview-stage .oui-app-shell-frame
-    height: calc(100% - 56px)
+    height: 100%
     max-width: 100%
     margin: 0
+
+.oui-ui-app-shell-preview-stage .oui-app-shell[data-has-header="true"] .oui-app-shell-frame
+    height: 100%
+
+.oui-ui-app-shell-preview-stage .oui-app-shell[data-sidebar-mode="mobile"] .oui-app-shell-frame,
+.oui-ui-app-shell-preview-stage .oui-app-shell[data-sidebar-mode="mobile"][data-has-header="true"] .oui-app-shell-frame
+    height: 100%
 
 .oui-ui-app-shell-preview-stage[data-mode="phone"] .oui-app-shell-frame
     grid-template-columns: minmax(0, 1fr)
@@ -378,6 +350,9 @@ body.oui-ui-document-lock
 .oui-ui-app-shell-preview-stage .oui-app-shell-header
     min-height: 56px
     padding: 8px 12px
+
+.oui-ui-app-shell-preview-stage[data-mode="phone"] .oui-app-shell-header
+    padding: 8px 18px 8px 10px
 
 .oui-ui-app-shell-header-main
     min-width: 0
@@ -416,31 +391,6 @@ body.oui-ui-document-lock
     border-radius: var(--oui-radius)
     background: var(--oui-section-surface-bg, var(--oui-panel))
     box-shadow: var(--oui-section-shadow, none)
-
-.oui-ui-sidebar-footer-action
-    display: inline-flex
-    width: 100%
-    min-height: 30px
-    align-items: center
-    justify-content: flex-start
-    gap: 8px
-    border: 0
-    border-radius: var(--oui-radius-sm)
-    background: transparent
-    color: var(--oui-muted)
-    cursor: pointer
-    font: inherit
-    font-size: 12px
-    font-weight: 720
-    line-height: 1
-    padding: 0 8px
-    text-align: left
-
-.oui-ui-sidebar-footer-action:hover,
-.oui-ui-sidebar-footer-action:focus-visible
-    background: var(--oui-pad-hover-bg)
-    color: var(--oui-text)
-    outline: none
 
 .oui-ui-demo-logo
     display: inline-flex
@@ -868,10 +818,10 @@ body.oui-ui-document-lock
     flex: 1 1 420px
     align-self: flex-start
     height: var(--oui-code-collapsed-height)
+    contain: layout paint style
     overflow: hidden
     border-radius: var(--oui-radius)
     transition: height 460ms cubic-bezier(.2, 0, .2, 1), padding-bottom 320ms ease
-    will-change: height
 
 .oui-code-inline-content
     min-width: 0
@@ -955,12 +905,18 @@ body.oui-ui-document-lock
     transform: translateY(0)
 
 .oui-code-preview-scroll-inline
-    overflow-x: auto
-    overflow-y: visible
+    overflow: hidden
 
 .oui-code-preview-scroll .oui-scroll-area-viewport
     max-height: min(62vh, 620px)
     overflow: auto
+
+.oui-code-preview-scroll-inline .oui-scroll-area-viewport
+    max-height: none
+    overflow-x: auto
+    overflow-y: hidden
+    overscroll-behavior-x: contain
+    overscroll-behavior-y: auto
 
 .oui-code-preview
     min-width: max-content
@@ -975,6 +931,9 @@ body.oui-ui-document-lock
     padding: 14px
     tab-size: 4
     white-space: pre
+
+.oui-code-inline-panel .oui-code-preview
+    padding-bottom: 42px
 
 .oui-code-line
     display: block

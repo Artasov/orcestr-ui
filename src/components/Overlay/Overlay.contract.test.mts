@@ -78,7 +78,10 @@ test('ScrollArea applies requested scrollbar axis and exposes overflow state', (
     assert.match(styles, /data-scrollbars="vertical"/);
     assert.match(styles, /overflow-x: hidden/);
     assert.match(styles, /scrollbar-color: var\(--oui-scrollbar-thumb/);
+    assert.match(styles, /scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/);
+    assert.match(styles, /background: var\(--oui-scrollbar-track, transparent\)/);
     assert.match(styles, /background-color: var\(--oui-scrollbar-thumb,/);
+    assert.match(styles, /transition: background-color 180ms ease/);
     assert.match(styles, /background-color: var\(--oui-scrollbar-thumb-hover,/);
 });
 

@@ -93,8 +93,7 @@
 .oui-switch[data-checked="true"] .oui-switch-thumb
     transform: translateX(18px)
 
-.oui-segmented,
-.oui-tabs-list
+.oui-segmented
     display: inline-flex
     align-items: center
     gap: 3px
@@ -104,8 +103,7 @@
     background: var(--oui-control-bg, transparent)
     padding: 3px
 
-.oui-segmented-item,
-.oui-tabs-trigger
+.oui-segmented-item
     border: 0
     border-radius: var(--oui-radius-sm)
     padding: 7px 11px
@@ -117,8 +115,7 @@
     cursor: pointer
     transition: background-color 140ms ease, color 140ms ease, box-shadow 140ms ease
 
-.oui-segmented-item[data-active="true"],
-.oui-tabs-trigger[data-active="true"]
+.oui-segmented-item[data-active="true"]
     color: var(--oui-text)
     background: var(--oui-control-hover-bg, var(--oui-gray-a4, var(--oui-soft)))
     box-shadow: var(--oui-shadow-sm)
@@ -134,23 +131,16 @@
 
 
 .oui-button[data-variant="surface"],
-.oui-icon-button[data-variant="surface"],
-.oui-combobox-trigger
+.oui-icon-button[data-variant="surface"]
     background-color: var(--oui-control-bg, transparent)
     border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
     box-shadow: none
     font-weight: 400
 
 .oui-button[data-variant="surface"]:not(:disabled):hover,
-.oui-icon-button[data-variant="surface"]:not(:disabled):hover,
-.oui-combobox-trigger:not(:disabled):hover
+.oui-icon-button[data-variant="surface"]:not(:disabled):hover
     border-color: var(--oui-gray-a8)
     background-color: var(--oui-control-hover-bg, var(--oui-gray-a4))
-
-.oui-combobox-trigger[data-state="open"],
-.oui-combobox-trigger[data-state="open"]:hover
-    border-color: var(--oui-primary-base)
-    box-shadow: none
 
 .oui-combobox-trigger .oui-button-label
     flex: 1 1 auto
@@ -190,12 +180,36 @@
 
 .oui-combobox-content,
 .oui-select-content
+    --oui-selection-content-text: var(--oui-text, #202020)
+    --oui-selection-content-bg: var(--oui-floating-bg, var(--oui-bg, #ffffff))
+    --oui-selection-option-hover-bg: var(--oui-control-hover-bg, color-mix(in srgb, var(--oui-selection-content-text) 8%, transparent))
+    --oui-selection-option-selected-bg: var(--oui-selected-bg, color-mix(in srgb, var(--oui-selection-content-text) 10%, transparent))
+    --oui-selection-option-selected-hover-bg: var(--oui-control-hover-bg, color-mix(in srgb, var(--oui-selection-content-text) 13%, transparent))
+    --oui-selection-check-color: var(--oui-primary-text, #0d74ce)
     min-width: 280px
     max-width: min(420px, calc(100vw - 24px))
     padding: 0
     overflow: hidden
-    color: var(--oui-text)
-    background: var(--oui-floating-bg, var(--oui-bg))
+    color: var(--oui-selection-content-text)
+    background: var(--oui-selection-content-bg)
+
+.oui-combobox-content[data-oui-theme="light"],
+.oui-select-content[data-oui-theme="light"]
+    --oui-selection-content-text: #202020
+    --oui-selection-content-bg: #ffffff
+    --oui-selection-option-hover-bg: #0000000f
+    --oui-selection-option-selected-bg: #008ff519
+    --oui-selection-option-selected-hover-bg: #008ff526
+    --oui-selection-check-color: #0d74ce
+
+.oui-combobox-content[data-oui-theme="dark"],
+.oui-select-content[data-oui-theme="dark"]
+    --oui-selection-content-text: #eeeeee
+    --oui-selection-content-bg: #0c0c0f
+    --oui-selection-option-hover-bg: #ffffff12
+    --oui-selection-option-selected-bg: #0077ff3a
+    --oui-selection-option-selected-hover-bg: #0077ff52
+    --oui-selection-check-color: #70b8ff
 
 .oui-combobox-search-wrap
     display: flex
@@ -210,7 +224,7 @@
     overflow-y: auto
     overscroll-behavior: contain
     scrollbar-width: thin
-    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-gray-a8)) transparent
+    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-gray-a8)) var(--oui-scrollbar-track, transparent)
 
 .oui-combobox-options,
 .oui-listbox.oui-combobox-options
@@ -229,7 +243,7 @@
     border: 0
     border-radius: 6px
     padding: 0
-    color: var(--oui-text)
+    color: var(--oui-selection-content-text, var(--oui-text, #202020))
     background: transparent
     font: inherit
     font-size: 14px
@@ -264,29 +278,29 @@
 .oui-combobox-option[data-highlighted="true"],
 .oui-listbox.oui-combobox-options .oui-listbox-item:hover,
 .oui-listbox.oui-combobox-options .oui-listbox-item[data-highlighted="true"]
-    background: var(--oui-control-hover-bg, var(--oui-gray-a3))
+    background: var(--oui-selection-option-hover-bg)
 
 .oui-combobox-option[data-selected="true"]:hover,
 .oui-combobox-option[data-selected="true"][data-highlighted="true"],
 .oui-listbox.oui-combobox-options .oui-listbox-item[data-selected="true"]:hover,
 .oui-listbox.oui-combobox-options .oui-listbox-item[data-selected="true"][data-highlighted="true"]
-    background: var(--oui-control-hover-bg, var(--oui-gray-a3))
+    background: var(--oui-selection-option-selected-hover-bg)
 
 .oui-combobox-option[data-selected="true"],
 .oui-listbox.oui-combobox-options .oui-listbox-item[data-selected="true"]
-    color: var(--oui-text)
-    background: color-mix(in srgb, var(--oui-text) 7%, transparent)
+    color: var(--oui-selection-content-text, var(--oui-text, #202020))
+    background: var(--oui-selection-option-selected-bg)
 
 .oui-combobox-option[data-selected="true"]:hover,
 .oui-combobox-option[data-selected="true"][data-highlighted="true"],
 .oui-listbox.oui-combobox-options .oui-listbox-item[data-selected="true"]:hover,
 .oui-listbox.oui-combobox-options .oui-listbox-item[data-selected="true"][data-highlighted="true"]
-    background: var(--oui-control-hover-bg, var(--oui-gray-a3))
+    background: var(--oui-selection-option-selected-hover-bg)
 
 .oui-combobox-check
     flex: 0 0 auto
     margin-right: 10px
-    color: var(--oui-primary-text)
+    color: var(--oui-selection-check-color)
 
 .oui-combobox-option-action
     display: inline-flex
@@ -430,16 +444,17 @@
 .oui-button.oui-combobox-trigger[data-variant="surface"],
 .oui-button.oui-combobox-trigger
     background-color: var(--oui-control-bg, transparent)
-    border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border-color: var(--oui-field-border-color, var(--oui-border))
     border-radius: 6px
     box-shadow: none
+    font-weight: 400
     outline: none
     transition: border-color 280ms ease, background-color 180ms ease
 
 .oui-button.oui-combobox-trigger[data-variant="surface"]:not(:disabled):hover,
 .oui-button.oui-combobox-trigger:not(:disabled):hover
-    background-color: var(--oui-control-hover-bg, var(--oui-gray-a4))
-    border-color: var(--oui-gray-a8)
+    background-color: var(--oui-control-bg, transparent)
+    border-color: var(--oui-field-border-hover-color, var(--oui-border-strong))
     box-shadow: none
 
 .oui-button.oui-combobox-trigger[data-state="open"],
@@ -621,15 +636,15 @@
     position: absolute
     border-radius: 6px
     pointer-events: none
-    transition: left 380ms cubic-bezier(.22, 1, .36, 1), top 220ms cubic-bezier(.22, 1, .36, 1), width 380ms cubic-bezier(.22, 1, .36, 1), height 220ms cubic-bezier(.22, 1, .36, 1), opacity 220ms ease
+    transition: left 460ms cubic-bezier(.22, 1, .36, 1), top 460ms cubic-bezier(.22, 1, .36, 1), width 460ms cubic-bezier(.22, 1, .36, 1), height 460ms cubic-bezier(.22, 1, .36, 1), opacity 220ms ease
 
 .oui-tabs-active-indicator
     z-index: 0
-    background: var(--oui-gray-a4)
+    background: var(--oui-border, var(--oui-pad-hover-bg, var(--oui-control-hover-bg, var(--oui-gray-a3))))
 
 .oui-tabs-hover-indicator
     z-index: 0
-    background: var(--oui-gray-a3)
+    background: var(--oui-border, var(--oui-pad-hover-bg, var(--oui-control-hover-bg, var(--oui-gray-a3))))
     opacity: 0
 
 .oui-tabs-hover-indicator[data-visible="true"]
@@ -665,9 +680,6 @@
     background: transparent
     box-shadow: none
     outline: none
-
-.oui-tabs-trigger[data-active="true"]
-    font-weight: 500
 
 .oui-tabs-trigger-icon
     display: inline-flex
@@ -766,15 +778,15 @@
     position: absolute
     border-radius: 6px
     pointer-events: none
-    transition: left 380ms cubic-bezier(.22, 1, .36, 1), top 220ms cubic-bezier(.22, 1, .36, 1), width 380ms cubic-bezier(.22, 1, .36, 1), height 220ms cubic-bezier(.22, 1, .36, 1), opacity 220ms ease
+    transition: left 460ms cubic-bezier(.22, 1, .36, 1), top 460ms cubic-bezier(.22, 1, .36, 1), width 460ms cubic-bezier(.22, 1, .36, 1), height 460ms cubic-bezier(.22, 1, .36, 1), opacity 220ms ease
 
 .oui-tabs-compound-active-indicator
     z-index: 0
-    background: var(--oui-gray-a4)
+    background: var(--oui-border, var(--oui-pad-hover-bg, var(--oui-control-hover-bg, var(--oui-gray-a3))))
 
 .oui-tabs-compound-hover-indicator
     z-index: 0
-    background: var(--oui-gray-a3)
+    background: var(--oui-border, var(--oui-pad-hover-bg, var(--oui-control-hover-bg, var(--oui-gray-a3))))
     opacity: 0
 
 .oui-tabs-compound-hover-indicator[data-visible="true"]

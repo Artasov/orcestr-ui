@@ -46,51 +46,42 @@ const toastPositionVariants: Array<{
     label: string;
     tone: ToastTone;
     message: string;
-    background?: string;
-    blur?: number | string | false;
 }> = [
     {
         position: 'top-left',
         label: 'Status synced',
         tone: 'success',
-        message: 'Glass toast from the left edge.',
-        blur: 14,
+        message: 'Default glass toast from the left edge.',
     },
     {
         position: 'top-center',
         label: 'Command ready',
         tone: 'info',
-        message: 'Centered toast drops from the top.',
-        background: 'rgb(18 28 42 / 88%)',
-        blur: 10,
+        message: 'Centered toast uses the same glass surface.',
     },
     {
         position: 'top-right',
         label: 'Needs attention',
         tone: 'warning',
-        message: 'Right edge bubble animation.',
-        blur: 12,
+        message: 'Right edge toast keeps the same translucent surface.',
     },
     {
         position: 'bottom-left',
         label: 'Import queued',
         tone: 'info',
-        message: 'Static background, no blur.',
-        blur: false,
+        message: 'Bottom left toast keeps the same theme blur.',
     },
     {
         position: 'bottom-center',
         label: 'Batch completed',
         tone: 'success',
-        message: 'Bottom center rises into place.',
-        blur: 16,
+        message: 'Bottom center toast uses the theme defaults.',
     },
     {
         position: 'bottom-right',
         label: 'Export failed',
         tone: 'danger',
         message: 'Actionable toast from the right edge.',
-        blur: 12,
     },
 ];
 
@@ -232,6 +223,21 @@ export function OverlaysSection({
                             </Button>
                             <Button
                                 v='soft'
+                                tone='success'
+                                onClick={() =>
+                                    toast.success({
+                                        title: 'Endless',
+                                        message: 'This success toast stays until you click it.',
+                                        position: 'bottom-right',
+                                        duration: null,
+                                        dedupeKey: 'endless-success-toast',
+                                    })
+                                }
+                            >
+                                Endless
+                            </Button>
+                            <Button
+                                v='soft'
                                 tone='warning'
                                 onClick={() =>
                                     toast.warning({
@@ -280,31 +286,13 @@ export function OverlaysSection({
                                 onClick={() =>
                                     toast.info({
                                         title: 'Glass background',
-                                        message: 'Custom blur and translucent background.',
+                                        message: 'Theme blur and translucent background.',
                                         position: 'bottom-right',
-                                        background: 'rgb(18 24 34 / 72%)',
-                                        blur: 18,
-                                        borderColor: 'rgb(255 255 255 / 18%)',
                                         duration: 5200,
                                     })
                                 }
                             >
                                 Glass
-                            </Button>
-                            <Button
-                                v='surface'
-                                onClick={() =>
-                                    toast.info({
-                                        title: 'Static background',
-                                        message: 'Blur can be disabled per toast.',
-                                        position: 'bottom-left',
-                                        background: 'var(--oui-floating-bg)',
-                                        blur: false,
-                                        duration: 5200,
-                                    })
-                                }
-                            >
-                                Static
                             </Button>
                         </div>
                         <Text color='var(--oui-muted)' fs='13px' lh={1.45}>
@@ -319,7 +307,7 @@ export function OverlaysSection({
                                     onClick={() =>
                                         toast.info({
                                             title: item.label,
-                                            message: 'Positioned toast with directional bubble animation.',
+                                            message: 'Positioned toast with the default glass surface.',
                                             position: item.position,
                                             duration: 3600,
                                         })
@@ -342,8 +330,6 @@ export function OverlaysSection({
                                                 message: item.message,
                                                 position: item.position,
                                                 tone: item.tone,
-                                                background: item.background,
-                                                blur: item.blur,
                                                 duration: 4200 + index * 220,
                                             });
                                         }, index * 120);

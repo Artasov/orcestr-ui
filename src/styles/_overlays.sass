@@ -1,3 +1,5 @@
+@use 'sass:string'
+
 .oui-overlay-root
     position: fixed
     inset: 0
@@ -28,9 +30,9 @@
 
 .oui-popover-content,
 .oui-tooltip-content
-    color: var(--oui-text)
-    background: var(--oui-floating-bg, var(--oui-bg))
-    border: 1px solid var(--oui-border)
+    color: var(--oui-text, #202020)
+    background: var(--oui-floating-bg, var(--oui-bg, #ffffff))
+    border: 1px solid var(--oui-border, #00000017)
     border-radius: var(--oui-radius)
     box-shadow: var(--oui-shadow-md)
     transform-origin: top center
@@ -72,7 +74,7 @@
     border: 0
     border-radius: var(--oui-radius-sm)
     padding: 7px 9px
-    color: var(--oui-text)
+    color: var(--oui-text, #202020)
     background: transparent
     font: inherit
     font-size: 13px
@@ -87,8 +89,8 @@
     background: var(--oui-control-hover-bg, var(--oui-soft))
 
 .oui-listbox-item[data-selected="true"]
-    color: var(--oui-text)
-    background: color-mix(in srgb, var(--oui-text) 7%, transparent)
+    color: var(--oui-text, #202020)
+    background: color-mix(in srgb, var(--oui-text, #202020) 7%, transparent)
 
 .oui-listbox-item[data-selected="true"]:hover,
 .oui-listbox-item[data-selected="true"][data-highlighted="true"]
@@ -120,13 +122,13 @@
     overflow: auto
     padding-right: 2px
     scrollbar-width: thin
-    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-gray-a8, var(--oui-border-strong))) transparent
+    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-gray-a8, var(--oui-border-strong))) var(--oui-scrollbar-track, transparent)
 
 .oui-command-palette-results::-webkit-scrollbar
     width: 8px
 
 .oui-command-palette-results::-webkit-scrollbar-track
-    background: transparent
+    background: var(--oui-scrollbar-track, transparent)
 
 .oui-command-palette-results::-webkit-scrollbar-thumb
     border: 2px solid transparent
@@ -403,50 +405,49 @@
     overflow: auto
     padding: 18px
 
-.oui-toast-viewport
+.oui-toast-stack
     position: fixed
     z-index: var(--oui-z-toast, 2147483000)
     display: flex
-    width: min(380px, calc(100vw - 32px))
+    width: string.unquote("min(380px, calc(100vw - 32px))")
     flex-direction: column
     gap: 8px
     pointer-events: none
 
-.oui-toast-viewport[data-position^="top"]
+.oui-toast-stack[data-position^="top"]
     top: 16px
 
-.oui-toast-viewport[data-position^="bottom"]
+.oui-toast-stack[data-position^="bottom"]
     bottom: 16px
 
-.oui-toast-viewport[data-position$="left"]
+.oui-toast-stack[data-position$="left"]
     left: 16px
     align-items: flex-start
 
-.oui-toast-viewport[data-position$="right"]
+.oui-toast-stack[data-position$="right"]
     right: 16px
     align-items: flex-end
 
-.oui-toast-viewport[data-position$="center"]
+.oui-toast-stack[data-position$="center"]
     left: 50%
     align-items: center
     transform: translateX(-50%)
 
-.oui-toast-frame
+.oui-toast-viewport
     position: relative
     width: 100%
     overflow: hidden
     border-radius: var(--oui-radius-xl, 12px)
     background: var(--oui-toast-bg, var(--oui-floating-bg, var(--oui-bg)))
     box-shadow: var(--oui-toast-shadow, 0 10px 26px rgb(0 0 0 / 18%))
-    backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(160%)
-    -webkit-backdrop-filter: blur(var(--oui-toast-effective-blur, 0px)) saturate(160%)
+    -webkit-backdrop-filter: blur(6px)
+    backdrop-filter: blur(6px)
     animation: ouiToastIn var(--oui-toast-animation-duration, 420ms) cubic-bezier(.22, 1, .36, 1) both
     pointer-events: none
     will-change: opacity, transform
 
 .oui-toast
     position: relative
-    z-index: 1
     display: flex
     align-items: flex-start
     justify-content: space-between
@@ -458,7 +459,7 @@
     overflow: hidden
     padding: 16px
     color: var(--oui-text)
-    background: transparent
+    background: color-mix(in srgb, var(--oui-toast-tone-color, var(--oui-info-base)) 5%, transparent)
     box-shadow: none
     transform-origin: var(--oui-toast-origin, center)
     pointer-events: auto
@@ -466,42 +467,39 @@
 .oui-toast[data-clickable="true"]
     cursor: pointer
 
-.oui-toast[data-clickable="true"]:hover
-    background: transparent
-
-.oui-root[data-oui-theme="light"] .oui-toast-frame,
-:root[data-oui-theme="light"] .oui-toast-frame
+.oui-root[data-oui-theme="light"] .oui-toast-viewport,
+:root[data-oui-theme="light"] .oui-toast-viewport
     box-shadow: var(--oui-toast-shadow, 0 10px 24px rgb(15 23 42 / 12%))
 
-.oui-toast-frame[data-position$="right"]
+.oui-toast-viewport[data-position$="right"]
     --oui-toast-enter-x: calc(100% + 32px)
     --oui-toast-enter-y: 0
     --oui-toast-exit-x: calc(100% + 32px)
     --oui-toast-exit-y: 0
     --oui-toast-origin: right center
 
-.oui-toast-frame[data-position$="left"]
+.oui-toast-viewport[data-position$="left"]
     --oui-toast-enter-x: calc(-100% - 32px)
     --oui-toast-enter-y: 0
     --oui-toast-exit-x: calc(-100% - 32px)
     --oui-toast-exit-y: 0
     --oui-toast-origin: left center
 
-.oui-toast-frame[data-position="top-center"]
+.oui-toast-viewport[data-position="top-center"]
     --oui-toast-enter-x: 0
     --oui-toast-enter-y: calc(-100% - 32px)
     --oui-toast-exit-x: 0
     --oui-toast-exit-y: calc(-100% - 32px)
     --oui-toast-origin: top center
 
-.oui-toast-frame[data-position="bottom-center"]
+.oui-toast-viewport[data-position="bottom-center"]
     --oui-toast-enter-x: 0
     --oui-toast-enter-y: calc(100% + 32px)
     --oui-toast-exit-x: 0
     --oui-toast-exit-y: calc(100% + 32px)
     --oui-toast-origin: bottom center
 
-.oui-toast-frame[data-state="closing"]
+.oui-toast-viewport[data-state="closing"]
     animation: ouiToastOut var(--oui-toast-exit-duration, 320ms) cubic-bezier(.4, 0, .2, 1) forwards
 
 .oui-toast-content
@@ -521,14 +519,26 @@
     color: var(--oui-info-base)
     line-height: 1
 
+.oui-toast[data-tone="success"]
+    --oui-toast-tone-color: var(--oui-success-base)
+
 .oui-toast-icon[data-tone="success"]
     color: var(--oui-success-base)
+
+.oui-toast[data-tone="warning"]
+    --oui-toast-tone-color: var(--oui-warning-base)
 
 .oui-toast-icon[data-tone="warning"]
     color: var(--oui-warning-base)
 
+.oui-toast[data-tone="danger"]
+    --oui-toast-tone-color: var(--oui-danger-base)
+
 .oui-toast-icon[data-tone="danger"]
     color: var(--oui-danger-base)
+
+.oui-toast[data-tone="info"]
+    --oui-toast-tone-color: var(--oui-info-base)
 
 .oui-toast-main
     display: flex
@@ -755,8 +765,8 @@
 .oui-select-content,
 .oui-popover-content.oui-combobox-content,
 .oui-popover-content.oui-select-content
-    color: var(--oui-text)
-    background: var(--oui-floating-bg, var(--oui-bg))
+    color: var(--oui-selection-content-text, var(--oui-text, #202020))
+    background: var(--oui-selection-content-bg, var(--oui-floating-bg, var(--oui-bg, #ffffff)))
 
 .oui-menu.oui-action-menu-content,
 .oui-context-menu-content,

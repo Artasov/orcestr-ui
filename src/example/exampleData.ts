@@ -18,7 +18,7 @@ export const navGroups: ExampleNavGroup[] = [
         items: [
             {id: 'theme', label: 'Themes'},
             {id: 'foundations', label: 'Foundations'},
-            {id: 'typography', label: 'Typography'},
+            {id: 'text', label: 'Text'},
             {id: 'skeleton-example', label: 'Skeleton'},
             {id: 'icon-text-example', label: 'IconText'},
         ],
@@ -45,6 +45,8 @@ export const navGroups: ExampleNavGroup[] = [
             {id: 'icon-text-buttons-example', label: 'Icon text buttons'},
             {id: 'icon-buttons-example', label: 'Icon buttons'},
             {id: 'context-menu-example', label: 'Context menu'},
+            {id: 'state-card-example', label: 'StateCard'},
+            {id: 'badges-example', label: 'Badge'},
         ],
     },
     {
@@ -65,14 +67,6 @@ export const navGroups: ExampleNavGroup[] = [
             {id: 'selects-example', label: 'Selects'},
             {id: 'choice-controls-example', label: 'Checkbox, switch, radio'},
             {id: 'tabs-example', label: 'Tabs'},
-        ],
-    },
-    {
-        key: 'states',
-        label: 'States',
-        items: [
-            {id: 'state-card-example', label: 'StateCard'},
-            {id: 'badges-example', label: 'Badge'},
         ],
     },
     {

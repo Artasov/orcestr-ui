@@ -4,7 +4,7 @@ export type CodeExample = {
 };
 
 export const codeSamples = {
-    typography: `import {Badge, Box, Flex, Stack, Text} from '@orcestr/ui';
+    text: `import {Badge, Box, Flex, Stack, Text} from '@orcestr/ui';
 
 <Stack g={3}>
     <Stack g={1}>
@@ -60,22 +60,31 @@ import {
     AppShell,
     AppShellContent,
     AppShellHeader,
+    type AppShellSide,
     AppSidebar,
-    Badge,
     Button,
     Flex,
     IconButton,
     IconTextButton,
+    Menu,
     PageTitleBlock,
     SpecialModal,
-    Text,
+    Tooltip,
+    type MenuItem,
 } from '@orcestr/ui';
-import {LuBell, LuBox, LuCalendar, LuClipboardList, LuEllipsis, LuMessageSquare, LuSearch, LuTruck} from 'react-icons/lu';
+import {LuArrowLeft, LuArrowLeftRight, LuBell, LuBox, LuCalendar, LuCheck, LuClipboardList, LuEllipsis, LuLanguages, LuMessageSquare, LuSearch, LuTruck} from 'react-icons/lu';
 
 const [open, setOpen] = useState(false);
 const [mobileOpen, setMobileOpen] = useState(false);
 const [previewMode, setPreviewMode] = useState<'desktop' | 'phone'>('desktop');
+const [sidebarSide, setSidebarSide] = useState<AppShellSide>('left');
 const [activeKey, setActiveKey] = useState('requests');
+const [locale, setLocale] = useState<'ru' | 'en'>('en');
+const isPhone = previewMode === 'phone';
+const isRight = sidebarSide === 'right';
+const toggleSidebarSide = () => {
+    setSidebarSide((side) => side === 'left' ? 'right' : 'left');
+};
 
 const groups = [
     {
@@ -93,13 +102,16 @@ const groups = [
         ],
     },
 ];
+const languageItems: MenuItem[] = [
+    {key: 'ru', label: 'RU', icon: locale === 'ru' ? <LuCheck /> : undefined, onSelect: () => setLocale('ru')},
+    {key: 'en', label: 'EN', icon: locale === 'en' ? <LuCheck /> : undefined, onSelect: () => setLocale('en')},
+];
 
 <>
     <Button onClick={() => setOpen(true)}>Open AppShell preview</Button>
     <SpecialModal open={open} onOpenChange={setOpen} size='full' scroll='body'>
         <SpecialModal.Header
             title='AppShell preview'
-            meta={<Badge tone='primary'>{previewMode}</Badge>}
             actions={(
                 <>
                     <Button size={2} v='surface' onClick={() => setPreviewMode((mode) => mode === 'desktop' ? 'phone' : 'desktop')}>
@@ -111,8 +123,10 @@ const groups = [
         />
         <SpecialModal.Body>
             <AppShell
-                sidebarMode={previewMode === 'phone' ? 'mobile' : 'desktop'}
+                sidebarMode={isPhone ? 'mobile' : 'desktop'}
+                sidebarSide={sidebarSide}
                 sidebarOpen={mobileOpen}
+                desktopSidebarOpen
                 onSidebarOpenChange={setMobileOpen}
                 sidebarWidth={300}
                 contentInset={0}
@@ -121,21 +135,39 @@ const groups = [
                     <AppShellHeader
                         visibility='always'
                         sidebarOpen={mobileOpen}
-                        onSidebarOpenChange={previewMode === 'phone' ? setMobileOpen : undefined}
+                        onSidebarOpenChange={setMobileOpen}
+                        navigationVisibility='mobile'
                         actions={(
                             <Flex a='c' g={1}>
                                 <IconTextButton size={2} v='soft' tone='neutral' icon={<LuSearch />}>Quick jump</IconTextButton>
                                 <IconButton size={2} v='ghost' icon={<LuBell />} badge={64} aria-label='Notifications' />
                                 <IconButton size={2} v='ghost' icon={<LuMessageSquare />} badge={99} aria-label='Messages' />
+                                <Menu
+                                    align='end'
+                                    items={languageItems}
+                                    trigger={<IconButton size={2} v='ghost' icon={<LuLanguages />} aria-label={'Language: ' + locale.toUpperCase()} />}
+                                />
                             </Flex>
                         )}
-                    >
-                        <Text fw={760}>Deliveries</Text>
-                    </AppShellHeader>
+                    />
                 )}
                 sidebar={(
                     <AppSidebar
-                        header={<div className='oui-app-sidebar-brand'><span className='oui-app-sidebar-logo'>O</span><span className='oui-app-sidebar-title'>Deliveries</span></div>}
+                        side={sidebarSide}
+                        header={(
+                            <>
+                                <div className='oui-app-sidebar-brand'><span className='oui-app-sidebar-logo'>O</span><span className='oui-app-sidebar-title'>Deliveries</span></div>
+                                <div className='oui-app-sidebar-actions'>
+                                    <Tooltip content='Back'>
+                                        <IconButton size={2} v='ghost' icon={<LuArrowLeft />} aria-label='Back' />
+                                    </Tooltip>
+                                    <Tooltip content={isRight ? 'Move sidebar left' : 'Move sidebar right'}>
+                                        <IconButton size={2} v='ghost' icon={<LuArrowLeftRight />} aria-label={isRight ? 'Move sidebar left' : 'Move sidebar right'} onClick={toggleSidebarSide} />
+                                    </Tooltip>
+                                    <IconButton size={2} v='ghost' icon={<LuEllipsis />} aria-label='Sidebar actions' />
+                                </div>
+                            </>
+                        )}
                         itemH={38}
                         onNavigate={(item) => setActiveKey(item.key)}
                         groups={groups}
@@ -146,7 +178,6 @@ const groups = [
                     <PageTitleBlock
                         title='Requests'
                         caption='Module workspace with responsive header and AppSidebar navigation.'
-                        badge='shell'
                         action={<IconButton size={2} v='pad' icon={<LuEllipsis />} aria-label='More actions' />}
                     />
                     {children}
@@ -1092,6 +1123,19 @@ const toast = useToast();
 </Button>
 <Button
     onClick={() =>
+        toast.success({
+            title: 'Endless',
+            message: 'This success toast stays until you click it.',
+            position: 'bottom-right',
+            duration: null,
+            dedupeKey: 'endless-success-toast',
+        })
+    }
+>
+    Endless
+</Button>
+<Button
+    onClick={() =>
         toast.warning({
             title: 'Needs attention',
             message: 'Only 4 items need attention in this view.',
@@ -1134,30 +1178,13 @@ const toast = useToast();
     onClick={() =>
         toast.info({
             title: 'Glass background',
-            message: 'Custom blur and translucent background.',
+            message: 'Theme blur and translucent background.',
             position: 'bottom-right',
-            background: 'rgb(18 24 34 / 72%)',
-            blur: 18,
-            borderColor: 'rgb(255 255 255 / 18%)',
             duration: 5200,
         })
     }
 >
     Glass
-</Button>
-<Button
-    onClick={() =>
-        toast.info({
-            title: 'Static background',
-            message: 'Blur can be disabled per toast.',
-            position: 'bottom-left',
-            background: 'var(--oui-floating-bg)',
-            blur: false,
-            duration: 5200,
-        })
-    }
->
-    Static
 </Button>
 
 const toastPositions: Array<{position: ToastPosition; label: string}> = [
@@ -1174,51 +1201,42 @@ const toastPositionVariants: Array<{
     label: string;
     tone: ToastTone;
     message: string;
-    background?: string;
-    blur?: number | string | false;
 }> = [
     {
         position: 'top-left',
         label: 'Status synced',
         tone: 'success',
-        message: 'Glass toast from the left edge.',
-        blur: 14,
+        message: 'Default glass toast from the left edge.',
     },
     {
         position: 'top-center',
         label: 'Command ready',
         tone: 'info',
-        message: 'Centered toast drops from the top.',
-        background: 'rgb(18 28 42 / 88%)',
-        blur: 10,
+        message: 'Centered toast uses the same glass surface.',
     },
     {
         position: 'top-right',
         label: 'Needs attention',
         tone: 'warning',
-        message: 'Right edge bubble animation.',
-        blur: 12,
+        message: 'Right edge toast keeps the same translucent surface.',
     },
     {
         position: 'bottom-left',
         label: 'Import queued',
         tone: 'info',
-        message: 'Static background, no blur.',
-        blur: false,
+        message: 'Bottom left toast keeps the same theme blur.',
     },
     {
         position: 'bottom-center',
         label: 'Batch completed',
         tone: 'success',
-        message: 'Bottom center rises into place.',
-        blur: 16,
+        message: 'Bottom center toast uses the theme defaults.',
     },
     {
         position: 'bottom-right',
         label: 'Export failed',
         tone: 'danger',
         message: 'Actionable toast from the right edge.',
-        blur: 12,
     },
 ];
 
@@ -1230,7 +1248,7 @@ const toastPositionVariants: Array<{
         onClick={() =>
             toast.info({
                 title: item.label,
-                message: 'Positioned toast with directional bubble animation.',
+                message: 'Positioned toast with the default glass surface.',
                 position: item.position,
                 duration: 3600,
             })
@@ -1252,8 +1270,6 @@ const toastPositionVariants: Array<{
                     message: item.message,
                     position: item.position,
                     tone: item.tone,
-                    background: item.background,
-                    blur: item.blur,
                     duration: 4200 + index * 220,
                 });
             }, index * 120);
