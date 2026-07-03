@@ -52,6 +52,7 @@ export type PaginatedComboboxProps<T> = {
     disabled?: boolean;
     clearable?: boolean;
     showChevron?: boolean;
+    trigger?: ReactNode;
     size?: UiSize;
     maxHeight?: number;
     closeOnSelect?: boolean;
@@ -87,6 +88,7 @@ export function PaginatedCombobox<T>({
     disabled = false,
     clearable = false,
     showChevron = true,
+    trigger,
     size = 3,
     maxHeight = 280,
     closeOnSelect = true,
@@ -305,44 +307,46 @@ export function PaginatedCombobox<T>({
                 }
             }}
             trigger={
-                <Button
-                    type='button'
-                    v='surface'
-                    size={size}
-                    disabled={disabled}
-                    fullWidth
-                    pressAnimation='none'
-                    className='oui-combobox-trigger'
-                    data-testid={testId}
-                    data-state={open ? 'open' : 'closed'}
-                    onKeyDown={handleKeyDown}
-                    rightIcon={
-                        <span className='oui-combobox-trigger-actions'>
-                            {canClear ? (
-                                <span
-                                    aria-label={clearLabel ?? copy.common.clear}
-                                    className='oui-combobox-clear'
-                                    onPointerDown={(event) => {
-                                        event.preventDefault();
-                                        event.stopPropagation();
-                                    }}
-                                    onClick={(event) => {
-                                        event.preventDefault();
-                                        event.stopPropagation();
-                                        clear();
-                                    }}
-                                >
-                                    <LuX size={14} />
-                                </span>
-                            ) : null}
-                            {showChevron ? <LuChevronsUpDown size={15} /> : null}
+                trigger ?? (
+                    <Button
+                        type='button'
+                        v='surface'
+                        size={size}
+                        disabled={disabled}
+                        fullWidth
+                        pressAnimation='none'
+                        className='oui-combobox-trigger'
+                        data-testid={testId}
+                        data-state={open ? 'open' : 'closed'}
+                        onKeyDown={handleKeyDown}
+                        rightIcon={
+                            <span className='oui-combobox-trigger-actions'>
+                                {canClear ? (
+                                    <span
+                                        aria-label={clearLabel ?? copy.common.clear}
+                                        className='oui-combobox-clear'
+                                        onPointerDown={(event) => {
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                        }}
+                                        onClick={(event) => {
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                            clear();
+                                        }}
+                                    >
+                                        <LuX size={14} />
+                                    </span>
+                                ) : null}
+                                {showChevron ? <LuChevronsUpDown size={15} /> : null}
+                            </span>
+                        }
+                    >
+                        <span className={triggerLabel ? 'oui-combobox-trigger-label' : 'oui-combobox-placeholder'}>
+                            {triggerLabel ?? actualPlaceholder}
                         </span>
-                    }
-                >
-                    <span className={triggerLabel ? 'oui-combobox-trigger-label' : 'oui-combobox-placeholder'}>
-                        {triggerLabel ?? actualPlaceholder}
-                    </span>
-                </Button>
+                    </Button>
+                )
             }
             className='oui-combobox-content'
             align='start'

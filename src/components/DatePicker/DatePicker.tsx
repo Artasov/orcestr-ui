@@ -1,6 +1,6 @@
 'use client';
 
-import {useMemo, useState, type ReactNode} from 'react';
+import {useMemo, useState, type MouseEvent, type ReactNode} from 'react';
 import {LuCalendarDays, LuChevronLeft, LuChevronRight} from 'react-icons/lu';
 
 import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
@@ -76,6 +76,13 @@ export function DatePicker({
         onValueChange(clampDate(nextValue, min, max));
         setOpen(false);
     };
+    const openCalendar = (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (disabled || readOnly) return;
+        setCursorMonth(monthCursorForDate(value));
+        setOpen(true);
+    };
 
     return (
         <Popover
@@ -100,12 +107,15 @@ export function DatePicker({
                     aria-label={openCalendarLabel ?? copy.common.openCalendar}
                     onClear={() => onValueChange('')}
                     rightSlot={
-                        <span
+                        <button
+                            type='button'
                             className='oui-date-picker-trigger'
-                            aria-hidden
+                            aria-label={openCalendarLabel ?? copy.common.openCalendar}
+                            disabled={disabled || readOnly}
+                            onClick={openCalendar}
                         >
                             <LuCalendarDays size={16} />
-                        </span>
+                        </button>
                     }
                 />
             }

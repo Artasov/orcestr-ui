@@ -79,8 +79,17 @@
 .oui-drawer-panel[data-state="open"]
     transform: translate(0, 0)
 
-.oui-drawer-panel[data-state="opening"]
-    transition: transform var(--oui-drawer-duration, 260ms) var(--oui-drawer-ease, ease)
+.oui-drawer-panel[data-side="left"][data-state="opening"]
+    animation: ouiDrawerLeftIn var(--oui-drawer-duration, 260ms) var(--oui-drawer-ease, ease) forwards
+
+.oui-drawer-panel[data-side="right"][data-state="opening"]
+    animation: ouiDrawerRightIn var(--oui-drawer-duration, 260ms) var(--oui-drawer-ease, ease) forwards
+
+.oui-drawer-panel[data-side="top"][data-state="opening"]
+    animation: ouiDrawerTopIn var(--oui-drawer-duration, 260ms) var(--oui-drawer-ease, ease) forwards
+
+.oui-drawer-panel[data-side="bottom"][data-state="opening"]
+    animation: ouiDrawerBottomIn var(--oui-drawer-duration, 260ms) var(--oui-drawer-ease, ease) forwards
 
 .oui-drawer-panel[data-state="closing"]
     transition: transform var(--oui-drawer-duration, 260ms) ease
@@ -146,3 +155,27 @@
         opacity: 1
     to
         opacity: 0
+
+@keyframes ouiDrawerLeftIn
+    from
+        transform: translateX(-105%)
+    to
+        transform: translate(0, 0)
+
+@keyframes ouiDrawerRightIn
+    from
+        transform: translateX(105%)
+    to
+        transform: translate(0, 0)
+
+@keyframes ouiDrawerTopIn
+    from
+        transform: translateY(-105%)
+    to
+        transform: translate(0, 0)
+
+@keyframes ouiDrawerBottomIn
+    from
+        transform: translateY(105%)
+    to
+        transform: translate(0, 0)

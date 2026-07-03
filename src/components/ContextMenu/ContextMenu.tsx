@@ -14,7 +14,11 @@ import {cn} from '../../utils/cn';
 import {ActionConfirmModal} from '../Action/ActionConfirmModal';
 import {isActionItemDisabled} from '../Action/ActionTypes';
 import type {MenuItem} from '../Menu/Menu';
-import {useOverlayContext, useOverlayLayerIndex} from '../Overlay/OverlayProvider';
+import {
+    overlayLayerZIndex,
+    useOverlayContext,
+    useOverlayLayerIndex,
+} from '../Overlay/OverlayProvider';
 import {Portal} from '../Portal/Portal';
 import {Spinner} from '../Spinner/Spinner';
 
@@ -81,7 +85,11 @@ export function ContextMenu({
                         style={{
                             left: point.x,
                             top: point.y,
-                            zIndex: overlay.zIndex.dropdown + layerIndex * 10,
+                            zIndex: overlayLayerZIndex(
+                                overlay.zIndex,
+                                'dropdown',
+                                layerIndex,
+                            ),
                         }}
                         onClick={(event) => event.stopPropagation()}
                     >

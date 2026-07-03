@@ -102,7 +102,7 @@ export function useFloatingPosition({
             position: 'fixed',
             left,
             top,
-            minWidth: matchTriggerWidth ? triggerRect.width : undefined,
+            minWidth: matchTriggerWidth ? contentWidth : undefined,
             maxWidth: `calc(100vw - ${collisionPadding * 2}px)`,
             maxHeight: `calc(100vh - ${collisionPadding * 2}px)`,
             visibility: 'visible',

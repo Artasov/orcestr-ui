@@ -1,25 +1,25 @@
 'use client';
 
 import {
+    createContext,
     useContext,
     useEffect,
-    useId,
     useLayoutEffect,
     useRef,
+    type ButtonHTMLAttributes,
     type CSSProperties,
+    type KeyboardEventHandler,
     type ReactNode,
 } from 'react';
-import {LuX} from 'react-icons/lu';
 
 import {useFocusTrap} from '../../hooks/useFocusTrap';
 import {usePresence} from '../../hooks/usePresence';
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
 import {OrcestrThemeContext} from '../../theme/useTheme';
 import type {ModalAnimation} from '../../theme/themeTypes';
 import {cn} from '../../utils/cn';
-import {IconButton} from '../IconButton/IconButton';
 import {
     lockOverlayScroll,
+    overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
 } from '../Overlay/OverlayProvider';
@@ -28,10 +28,7 @@ import {Portal} from '../Portal/Portal';
 export type ModalProps = {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    title?: ReactNode;
-    description?: ReactNode;
     children: ReactNode;
-    footer?: ReactNode;
     maxWidth?: number | string;
     minHeight?: number | string;
     overlayColor?: string;
@@ -46,18 +43,26 @@ export type ModalProps = {
     overlayStyle?: CSSProperties;
     className?: string;
     contentClassName?: string;
-    bodyClassName?: string;
+    contentStyle?: CSSProperties;
+    onKeyDown?: KeyboardEventHandler<HTMLDivElement>;
+    onOpenAutoFocus?: (event: {preventDefault: () => void}) => void;
     closeOnOverlayClick?: boolean;
+    ariaLabel?: string;
+    ariaLabelledBy?: string;
+    ariaDescribedBy?: string;
     testId?: string;
 };
 
-export function Modal({
+type ModalContextValue = {
+    onOpenChange: (open: boolean) => void;
+};
+
+const ModalContext = createContext<ModalContextValue | null>(null);
+
+function ModalRoot({
     open,
     onOpenChange,
-    title,
-    description,
     children,
-    footer,
     maxWidth,
     minHeight,
     overlayColor,
@@ -72,17 +77,19 @@ export function Modal({
     overlayStyle,
     className,
     contentClassName,
-    bodyClassName,
+    contentStyle,
+    onKeyDown,
+    onOpenAutoFocus,
     closeOnOverlayClick = true,
+    ariaLabel,
+    ariaLabelledBy,
+    ariaDescribedBy,
     testId,
 }: ModalProps) {
-    const {copy} = useOrcestrUiLocale();
     const themeContext = useContext(OrcestrThemeContext);
     const overlayContext = useOverlayContext();
     const layerRef = useRef<HTMLDivElement | null>(null);
     const contentRef = useRef<HTMLDivElement | null>(null);
-    const titleId = useId();
-    const descriptionId = useId();
     const actualAnimationDuration =
         animationDuration ?? themeContext?.theme.motion.modalDuration ?? '380ms';
     const actualAnimation =
@@ -100,7 +107,7 @@ export function Modal({
         themeContext?.theme.motion.ease ?? 'cubic-bezier(0.22, 1, 0.36, 1)';
     const {present, state} = usePresence(open, actualAnimationMs);
     const layerIndex = useOverlayLayerIndex(present);
-    const zIndex = overlayContext.zIndex.modal + layerIndex * 20;
+    const zIndex = overlayLayerZIndex(overlayContext.zIndex, 'modal', layerIndex);
     const overlayBlurValue = cssLength(actualOverlayBlur) ?? '10px';
     const overlayBackdropFilter = `blur(${overlayBlurValue})`;
     const overlayBackground = modalOverlayBackground(
@@ -114,6 +121,11 @@ export function Modal({
         if (!open) return;
         return lockOverlayScroll();
     }, [open]);
+
+    useEffect(() => {
+        if (!open || !onOpenAutoFocus) return;
+        onOpenAutoFocus({preventDefault: () => undefined});
+    }, [onOpenAutoFocus, open]);
 
     useLayoutEffect(() => {
         const layer = layerRef.current;
@@ -185,8 +197,9 @@ export function Modal({
                     ref={contentRef}
                     role='dialog'
                     aria-modal='true'
-                    aria-labelledby={title ? titleId : undefined}
-                    aria-describedby={description ? descriptionId : undefined}
+                    aria-label={ariaLabel}
+                    aria-labelledby={ariaLabelledBy}
+                    aria-describedby={ariaDescribedBy}
                     className={cn('oui-modal-content', contentClassName)}
                     data-state={state}
                     data-animation={actualAnimation}
@@ -203,35 +216,13 @@ export function Modal({
                         '--oui-modal-border-color': borderColor,
                         '--oui-modal-radius': cssLength(radius),
                         '--oui-modal-shadow': shadow,
+                        ...contentStyle,
                     } as CSSProperties}
+                    onKeyDown={onKeyDown}
                 >
-                    <div className='oui-modal-header'>
-                        <div className='oui-modal-title-wrap'>
-                            {title ? (
-                                <h2 id={titleId} className='oui-modal-title'>
-                                    {title}
-                                </h2>
-                            ) : null}
-                            {description ? (
-                                <p
-                                    id={descriptionId}
-                                    className='oui-modal-description'
-                                >
-                                    {description}
-                                </p>
-                            ) : null}
-                        </div>
-                        <IconButton
-                            v='ghost'
-                            icon={<LuX size={18} />}
-                            aria-label={copy.common.close}
-                            onClick={() => onOpenChange(false)}
-                        />
-                    </div>
-                    <div className={cn('oui-modal-body', bodyClassName)}>
+                    <ModalContext.Provider value={{onOpenChange}}>
                         {children}
-                    </div>
-                    {footer ? <div className='oui-modal-footer'>{footer}</div> : null}
+                    </ModalContext.Provider>
                 </div>
             </div>
         </Portal>
@@ -295,3 +286,58 @@ function hexToRgb(value: string) {
 
     return null;
 }
+
+type ModalPartProps = {
+    children: ReactNode;
+    className?: string;
+    style?: CSSProperties;
+};
+
+function ModalHeader({children, className, style}: ModalPartProps) {
+    return (
+        <div className={cn('oui-modal-header', className)} style={style}>
+            {children}
+        </div>
+    );
+}
+
+function ModalBody({children, className, style}: ModalPartProps) {
+    return (
+        <div className={cn('oui-modal-body', className)} style={style}>
+            {children}
+        </div>
+    );
+}
+
+function ModalFooter({children, className, style}: ModalPartProps) {
+    return (
+        <div className={cn('oui-modal-footer', className)} style={style}>
+            {children}
+        </div>
+    );
+}
+
+type ModalCloseProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+    asChild?: false;
+};
+
+function ModalClose({onClick, ...props}: ModalCloseProps) {
+    const context = useContext(ModalContext);
+    return (
+        <button
+            type='button'
+            {...props}
+            onClick={(event) => {
+                onClick?.(event);
+                if (!event.defaultPrevented) context?.onOpenChange(false);
+            }}
+        />
+    );
+}
+
+export const Modal = Object.assign(ModalRoot, {
+    Header: ModalHeader,
+    Body: ModalBody,
+    Footer: ModalFooter,
+    Close: ModalClose,
+});

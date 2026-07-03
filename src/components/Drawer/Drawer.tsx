@@ -20,6 +20,7 @@ import {cn} from '../../utils/cn';
 import {IconButton} from '../IconButton/IconButton';
 import {
     lockOverlayScroll,
+    overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
 } from '../Overlay/OverlayProvider';
@@ -90,7 +91,7 @@ export function Drawer({
     const ease = themeContext?.theme.motion.ease ?? 'cubic-bezier(0.22, 1, 0.36, 1)';
     const {present, state} = usePresence(isOpen, durationMs);
     const layerIndex = useOverlayLayerIndex(present);
-    const zIndex = overlay.zIndex.modal + layerIndex * 20;
+    const zIndex = overlayLayerZIndex(overlay.zIndex, 'modal', layerIndex);
     const panelRef = useRef<HTMLDivElement | null>(null);
     const titleId = useId();
     const descriptionId = useId();

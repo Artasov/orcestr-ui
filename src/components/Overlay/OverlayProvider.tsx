@@ -33,6 +33,9 @@ const defaultZIndex: OverlayZIndex = {
     toast: 2147483000,
 };
 
+const OVERLAY_LAYER_STEP = 20;
+const DROPDOWN_LAYER_OFFSET = 10;
+
 const OverlayContext = createContext<OverlayContextValue>({
     portalContainer: null,
     zIndex: defaultZIndex,
@@ -92,6 +95,12 @@ export function useOverlayContext() {
 export function useOverlayLayerIndex(active: boolean) {
     const [id] = useState(() => Symbol('oui-layer'));
     const [index, setIndex] = useState(0);
+    const currentIndex = layerIds.indexOf(id);
+    const optimisticIndex = active
+        ? currentIndex === -1
+            ? layerIds.length
+            : currentIndex
+        : index;
 
     useEffect(() => {
         if (!active) return;
@@ -110,7 +119,20 @@ export function useOverlayLayerIndex(active: boolean) {
         };
     }, [active, id]);
 
-    return index;
+    return optimisticIndex;
+}
+
+export function overlayLayerZIndex(
+    zIndex: OverlayZIndex,
+    kind: OverlayLayerKind,
+    layerIndex: number,
+) {
+    if (kind === 'toast') return zIndex.toast;
+    if (kind === 'dropdown') {
+        const base = Math.max(zIndex.dropdown, zIndex.modal, zIndex.overlay);
+        return base + layerIndex * OVERLAY_LAYER_STEP + DROPDOWN_LAYER_OFFSET;
+    }
+    return zIndex[kind] + layerIndex * OVERLAY_LAYER_STEP;
 }
 
 let scrollLockCount = 0;

@@ -52,43 +52,54 @@ export function OrcestrThemeProvider({
     const toggleMode = useCallback(() => {
         setMode(resolvedMode === 'dark' ? 'light' : 'dark');
     }, [resolvedMode, setMode]);
-    const value = useMemo(
-        () => ({
-            mode: resolvedMode,
-            surface: resolvedSurface,
-            theme,
-            setMode,
-            setSurface,
-            toggleMode,
-        }),
-        [resolvedMode, resolvedSurface, theme, setMode, setSurface, toggleMode],
-    );
     const rootStyle = useMemo<CSSProperties>(
         () => ({
             '--oui-bg': theme.colors.bg,
             '--oui-panel': theme.colors.panel,
             '--oui-panel-2': theme.colors.panelSoft,
-            '--oui-control-bg': theme.colors.control,
+            '--oui-control-bg': controlBackgroundForMode(theme),
             '--oui-control-hover-bg': theme.colors.controlHover,
             '--oui-border': theme.colors.border,
             '--oui-border-strong': theme.colors.borderStrong,
             '--oui-text': theme.colors.text,
             '--oui-muted': theme.colors.muted,
-            '--oui-soft': theme.colors.brandSoft,
+            '--oui-soft': theme.colors.primary.surface,
             '--oui-soft-hover': theme.colors.selected,
-            '--oui-brand': theme.colors.brand,
-            '--oui-brand-strong': theme.colors.brandStrong,
-            '--oui-brand-solid': theme.colors.brandSolid,
-            '--oui-brand-solid-hover': theme.colors.brandSolidHover,
-            '--oui-brand-soft': theme.colors.brandSoft,
-            '--oui-success': theme.colors.success,
-            '--oui-success-soft': theme.colors.successSoft,
-            '--oui-warning': theme.colors.warning,
-            '--oui-warning-soft': theme.colors.warningSoft,
-            '--oui-danger': theme.colors.danger,
-            '--oui-danger-soft': theme.colors.dangerSoft,
-            '--oui-info': theme.colors.info,
-            '--oui-info-soft': theme.colors.infoSoft,
+            '--oui-primary-base': theme.colors.primary.base,
+            '--oui-primary-text': theme.colors.primary.text,
+            '--oui-primary-surface': theme.colors.primary.surface,
+            '--oui-primary-border': theme.colors.primary.border,
+            '--oui-primary-contrast': theme.colors.primary.contrast,
+            '--oui-secondary-base': theme.colors.secondary.base,
+            '--oui-secondary-text': theme.colors.secondary.text,
+            '--oui-secondary-surface': theme.colors.secondary.surface,
+            '--oui-secondary-border': theme.colors.secondary.border,
+            '--oui-secondary-contrast': theme.colors.secondary.contrast,
+            '--oui-neutral-base': theme.colors.neutral.base,
+            '--oui-neutral-text': theme.colors.neutral.text,
+            '--oui-neutral-surface': theme.colors.neutral.surface,
+            '--oui-neutral-border': theme.colors.neutral.border,
+            '--oui-neutral-contrast': theme.colors.neutral.contrast,
+            '--oui-success-base': theme.colors.success.base,
+            '--oui-success-text': theme.colors.success.text,
+            '--oui-success-surface': theme.colors.success.surface,
+            '--oui-success-border': theme.colors.success.border,
+            '--oui-success-contrast': theme.colors.success.contrast,
+            '--oui-warning-base': theme.colors.warning.base,
+            '--oui-warning-text': theme.colors.warning.text,
+            '--oui-warning-surface': theme.colors.warning.surface,
+            '--oui-warning-border': theme.colors.warning.border,
+            '--oui-warning-contrast': theme.colors.warning.contrast,
+            '--oui-danger-base': theme.colors.danger.base,
+            '--oui-danger-text': theme.colors.danger.text,
+            '--oui-danger-surface': theme.colors.danger.surface,
+            '--oui-danger-border': theme.colors.danger.border,
+            '--oui-danger-contrast': theme.colors.danger.contrast,
+            '--oui-info-base': theme.colors.info.base,
+            '--oui-info-text': theme.colors.info.text,
+            '--oui-info-surface': theme.colors.info.surface,
+            '--oui-info-border': theme.colors.info.border,
+            '--oui-info-contrast': theme.colors.info.contrast,
             '--oui-selected-bg': theme.colors.selected,
             '--oui-disabled': theme.colors.disabled,
             '--oui-overlay-bg': theme.colors.overlay,
@@ -143,10 +154,14 @@ export function OrcestrThemeProvider({
             '--oui-status-neutral-text': theme.status.neutral.text,
             '--oui-status-neutral-soft': theme.status.neutral.soft,
             '--oui-status-neutral-border': theme.status.neutral.border,
-            '--oui-status-brand': theme.status.brand.color,
-            '--oui-status-brand-text': theme.status.brand.text,
-            '--oui-status-brand-soft': theme.status.brand.soft,
-            '--oui-status-brand-border': theme.status.brand.border,
+            '--oui-status-primary': theme.status.primary.color,
+            '--oui-status-primary-text': theme.status.primary.text,
+            '--oui-status-primary-soft': theme.status.primary.soft,
+            '--oui-status-primary-border': theme.status.primary.border,
+            '--oui-status-secondary': theme.status.secondary.color,
+            '--oui-status-secondary-text': theme.status.secondary.text,
+            '--oui-status-secondary-soft': theme.status.secondary.soft,
+            '--oui-status-secondary-border': theme.status.secondary.border,
             '--oui-status-success': theme.status.success.color,
             '--oui-status-success-text': theme.status.success.text,
             '--oui-status-success-soft': theme.status.success.soft,
@@ -196,13 +211,32 @@ export function OrcestrThemeProvider({
             '--oui-table-header-height': theme.components.tableHeaderHeight,
             '--oui-field-gap': theme.components.fieldGap,
             '--oui-modal-max-width': theme.components.modalMaxWidth,
-            '--oui-pipeline-step-min-width': theme.components.pipelineStepMinWidth,
         }) as CSSProperties,
         [theme],
     );
     const themeStyle = useMemo<CSSProperties>(
         () => ({...rootStyle, ...style}),
         [rootStyle, style],
+    );
+    const value = useMemo(
+        () => ({
+            mode: resolvedMode,
+            surface: resolvedSurface,
+            theme,
+            cssVariables: rootStyle,
+            setMode,
+            setSurface,
+            toggleMode,
+        }),
+        [
+            resolvedMode,
+            resolvedSurface,
+            theme,
+            rootStyle,
+            setMode,
+            setSurface,
+            toggleMode,
+        ],
     );
 
     useEffect(() => {
@@ -257,14 +291,37 @@ function compositeColor(foreground: string, background: string) {
     const fg = parseCssColor(foreground);
     const bg = parseCssColor(background);
     if (!fg || !bg) return foreground;
-    if (fg.a <= 0) return rgbColor(bg);
-    if (fg.a >= 1) return rgbColor(fg);
-    return rgbColor({
-        r: Math.round(fg.r * fg.a + bg.r * (1 - fg.a)),
-        g: Math.round(fg.g * fg.a + bg.g * (1 - fg.a)),
-        b: Math.round(fg.b * fg.a + bg.b * (1 - fg.a)),
+    return rgbColor(blendColor(fg, bg));
+}
+
+function controlBackgroundForMode(theme: OrcestrTheme) {
+    if (theme.mode !== 'light') return theme.colors.control;
+
+    const control = parseCssColor(theme.colors.control);
+    const bg = parseCssColor(theme.colors.bg);
+    if (!control || !bg || control.a <= 0) return theme.colors.control;
+
+    const visibleControl = blendColor(control, bg);
+    return relativeLuminance(visibleControl) < 0.52 ? 'transparent' : theme.colors.control;
+}
+
+function blendColor(foreground: RgbColor, background: RgbColor): RgbColor {
+    if (foreground.a <= 0) return {...background, a: 1};
+    if (foreground.a >= 1) return {...foreground, a: 1};
+    return {
+        r: Math.round(foreground.r * foreground.a + background.r * (1 - foreground.a)),
+        g: Math.round(foreground.g * foreground.a + background.g * (1 - foreground.a)),
+        b: Math.round(foreground.b * foreground.a + background.b * (1 - foreground.a)),
         a: 1,
+    };
+}
+
+function relativeLuminance(color: RgbColor) {
+    const [r, g, b] = [color.r, color.g, color.b].map((channel) => {
+        const value = channel / 255;
+        return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
     });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
 function rgbColor(color: RgbColor) {

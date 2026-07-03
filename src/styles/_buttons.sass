@@ -70,6 +70,60 @@
 .oui-icon-button[data-size="4"]
     width: 42px
 
+.oui-icon-button-badge
+    position: absolute
+    top: -7px
+    right: -10px
+    z-index: 1
+    box-sizing: border-box
+    display: inline-flex
+    min-width: 17px
+    height: 17px
+    align-items: center
+    justify-content: center
+    border: 1px solid transparent
+    border-radius: 999px
+    padding: 0 4px
+    font-size: 11px
+    font-weight: 650
+    line-height: 1
+    pointer-events: none
+
+.oui-icon-button-badge[data-tone="neutral"]
+    color: var(--oui-text)
+    background: var(--oui-gray-a3, var(--oui-soft))
+
+.oui-icon-button-badge[data-tone="primary"]
+    color: var(--oui-primary-text)
+    background: var(--oui-primary-surface)
+
+.oui-icon-button-badge[data-tone="secondary"]
+    color: var(--oui-secondary-text)
+    background: var(--oui-secondary-surface)
+
+.oui-icon-button-badge[data-tone="success"]
+    color: var(--oui-success-base)
+    background: var(--oui-success-surface)
+
+.oui-icon-button-badge[data-tone="warning"]
+    color: var(--oui-warning-base)
+    background: var(--oui-warning-surface)
+
+.oui-icon-button-badge[data-tone="danger"]
+    color: var(--oui-danger-base)
+    background: var(--oui-danger-surface)
+
+.oui-icon-button-badge[data-tone="info"]
+    color: var(--oui-info-base)
+    background: var(--oui-info-surface)
+
+$oui-icon-button-badge-tones: 'blue' 'sky' 'cyan' 'teal' 'indigo' 'violet' 'purple' 'iris' 'green' 'jade' 'mint' 'grass' 'lime' 'yellow' 'amber' 'orange' 'brown' 'red' 'ruby' 'crimson' 'pink' 'tomato'
+
+@each $tone in $oui-icon-button-badge-tones
+    .oui-icon-button-badge[data-tone="#{$tone}"]
+        color: var(--#{$tone}-11, var(--oui-text))
+        background: var(--#{$tone}-a3, var(--oui-soft))
+
 .oui-button-full
     width: 100%
     min-width: 0
@@ -77,6 +131,7 @@
 .oui-button-label
     display: inline-flex
     align-items: center
+    gap: var(--oui-button-label-gap, 8px)
     min-height: 1rem
     line-height: 1rem
 
@@ -103,20 +158,20 @@
 
 .oui-button[data-variant="solid"],
 .oui-icon-button[data-variant="solid"]
-    color: #ffffff
-    background: var(--oui-brand-solid, var(--oui-brand))
-    border-color: var(--oui-brand-solid, var(--oui-brand))
+    color: var(--oui-primary-contrast, #ffffff)
+    background: var(--oui-primary-base)
+    border-color: var(--oui-primary-base)
 
 .oui-button[data-variant="solid"]:not(:disabled):hover,
 .oui-icon-button[data-variant="solid"]:not(:disabled):hover
-    background: var(--oui-brand-solid-hover, var(--oui-brand-strong))
-    border-color: var(--oui-brand-solid-hover, var(--oui-brand-strong))
+    background: color-mix(in srgb, var(--oui-primary-base) 88%, var(--oui-primary-text) 12%)
+    border-color: color-mix(in srgb, var(--oui-primary-base) 88%, var(--oui-primary-text) 12%)
 
 .oui-button[data-variant="soft"],
 .oui-icon-button[data-variant="soft"]
-    background: var(--oui-brand-soft)
+    background: var(--oui-primary-surface)
     border-color: transparent
-    color: var(--oui-brand-strong)
+    color: var(--oui-primary-text)
 
 .oui-button[data-variant="surface"],
 .oui-icon-button[data-variant="surface"]
@@ -141,6 +196,28 @@
     border-color: transparent
     box-shadow: none
 
+.oui-button[data-tone="neutral"][data-variant="soft"],
+.oui-icon-button[data-tone="neutral"][data-variant="soft"]
+    color: var(--oui-text)
+    background: var(--oui-gray-a3, var(--oui-control-hover-bg))
+    border-color: transparent
+
+.oui-button[data-tone="neutral"][data-variant="surface"],
+.oui-icon-button[data-tone="neutral"][data-variant="surface"]
+    color: var(--oui-text)
+    background: var(--oui-control-bg, transparent)
+    border-color: var(--oui-border)
+    box-shadow: none
+
+.oui-button[data-tone="neutral"][data-variant="outline"],
+.oui-icon-button[data-tone="neutral"][data-variant="outline"]
+    color: var(--oui-text)
+    border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+
+.oui-button[data-tone="neutral"][data-variant="ghost"],
+.oui-icon-button[data-tone="neutral"][data-variant="ghost"]
+    color: var(--oui-text)
+
 .oui-button[data-variant="soft"]:not(:disabled):hover,
 .oui-button[data-variant="surface"]:not(:disabled):hover,
 .oui-button[data-variant="pad"]:not(:disabled):hover,
@@ -153,6 +230,17 @@
 .oui-icon-button[data-variant="ghost"]:not(:disabled):hover
     background: var(--oui-control-hover-bg, var(--oui-gray-a4, var(--oui-soft-hover)))
 
+.oui-button[data-tone="neutral"][data-variant="soft"]:not(:disabled):hover,
+.oui-button[data-tone="neutral"][data-variant="surface"]:not(:disabled):hover,
+.oui-button[data-tone="neutral"][data-variant="outline"]:not(:disabled):hover,
+.oui-button[data-tone="neutral"][data-variant="ghost"]:not(:disabled):hover,
+.oui-icon-button[data-tone="neutral"][data-variant="soft"]:not(:disabled):hover,
+.oui-icon-button[data-tone="neutral"][data-variant="surface"]:not(:disabled):hover,
+.oui-icon-button[data-tone="neutral"][data-variant="outline"]:not(:disabled):hover,
+.oui-icon-button[data-tone="neutral"][data-variant="ghost"]:not(:disabled):hover
+    color: var(--oui-text)
+    background: var(--oui-gray-a4, var(--oui-control-hover-bg))
+
 .oui-button[data-variant="pad"]:not(:disabled):hover,
 .oui-icon-button[data-variant="pad"]:not(:disabled):hover
     background: color-mix(in srgb, var(--oui-pad-bg, var(--oui-section-bg)) var(--oui-pad-hover-opacity, var(--oui-section-nested-opacity)), transparent)
@@ -163,46 +251,59 @@
 
 .oui-button[data-tone="success"],
 .oui-icon-button[data-tone="success"]
-    --oui-brand: var(--oui-success)
-    --oui-brand-strong: var(--oui-success)
-    --oui-brand-solid: var(--oui-success)
-    --oui-brand-solid-hover: var(--oui-success)
-    --oui-brand-soft: var(--oui-success-soft)
+    --oui-primary-base: var(--oui-success-base)
+    --oui-primary-text: var(--oui-success-text)
+    --oui-primary-surface: var(--oui-success-surface)
+    --oui-primary-contrast: var(--oui-success-contrast)
 
 .oui-button[data-tone="warning"],
 .oui-icon-button[data-tone="warning"]
-    --oui-brand: var(--oui-warning)
-    --oui-brand-strong: var(--oui-warning)
-    --oui-brand-solid: var(--oui-warning)
-    --oui-brand-solid-hover: var(--oui-warning)
-    --oui-brand-soft: var(--oui-warning-soft)
+    --oui-primary-base: var(--oui-warning-base)
+    --oui-primary-text: var(--oui-warning-text)
+    --oui-primary-surface: var(--oui-warning-surface)
+    --oui-primary-contrast: var(--oui-warning-contrast)
 
 .oui-button[data-tone="info"],
 .oui-icon-button[data-tone="info"]
-    --oui-brand: var(--oui-info)
-    --oui-brand-strong: var(--oui-info)
-    --oui-brand-solid: var(--oui-info)
-    --oui-brand-solid-hover: var(--oui-info)
-    --oui-brand-soft: var(--oui-info-soft)
+    --oui-primary-base: var(--oui-info-base)
+    --oui-primary-text: var(--oui-info-text)
+    --oui-primary-surface: var(--oui-info-surface)
+    --oui-primary-contrast: var(--oui-info-contrast)
 
 .oui-button[data-tone="danger"],
 .oui-icon-button[data-tone="danger"]
-    --oui-brand: var(--oui-danger)
-    --oui-brand-strong: var(--oui-danger)
-    --oui-brand-solid: var(--oui-danger)
-    --oui-brand-solid-hover: var(--oui-danger)
-    --oui-brand-soft: var(--oui-danger-soft)
+    --oui-primary-base: var(--oui-danger-base)
+    --oui-primary-text: var(--oui-danger-text)
+    --oui-primary-surface: var(--oui-danger-surface)
+    --oui-primary-contrast: var(--oui-danger-contrast)
+
+.oui-button[data-tone="secondary"],
+.oui-icon-button[data-tone="secondary"]
+    --oui-primary-base: var(--oui-secondary-base)
+    --oui-primary-text: var(--oui-secondary-text)
+    --oui-primary-surface: var(--oui-secondary-surface)
+    --oui-primary-contrast: var(--oui-secondary-contrast)
+
+$oui-color-tones: 'blue' 'sky' 'cyan' 'teal' 'indigo' 'violet' 'purple' 'iris' 'green' 'jade' 'mint' 'grass' 'lime' 'yellow' 'amber' 'orange' 'brown' 'red' 'ruby' 'crimson' 'pink' 'tomato'
+
+@each $tone in $oui-color-tones
+    .oui-button[data-tone="#{$tone}"],
+    .oui-icon-button[data-tone="#{$tone}"]
+        --oui-primary-base: var(--#{$tone}-9, var(--oui-primary-base))
+        --oui-primary-text: var(--#{$tone}-11, var(--oui-primary-text))
+        --oui-primary-surface: var(--#{$tone}-a3, var(--oui-primary-surface))
+        --oui-primary-contrast: #ffffff
 
 .oui-button[data-tone="success"][data-variant="solid"],
 .oui-icon-button[data-tone="success"][data-variant="solid"]
-    color: var(--oui-success)
-    background: var(--oui-success-soft)
+    color: var(--oui-success-base)
+    background: var(--oui-success-surface)
     border-color: transparent
 
 .oui-button[data-tone="success"][data-variant="solid"]:not(:disabled):hover,
 .oui-icon-button[data-tone="success"][data-variant="solid"]:not(:disabled):hover
-    color: var(--oui-success)
-    background: color-mix(in srgb, var(--oui-success-soft) 68%, var(--oui-success) 32%)
+    color: var(--oui-success-base)
+    background: color-mix(in srgb, var(--oui-success-surface) 68%, var(--oui-success-base) 32%)
     border-color: transparent
 
 .oui-button[data-tone="success"][data-variant="soft"]:not(:disabled):hover,
@@ -211,8 +312,8 @@
 .oui-icon-button[data-tone="success"][data-variant="soft"]:not(:disabled):hover,
 .oui-icon-button[data-tone="success"][data-variant="outline"]:not(:disabled):hover,
 .oui-icon-button[data-tone="success"][data-variant="ghost"]:not(:disabled):hover
-    color: var(--oui-success)
-    background: color-mix(in srgb, var(--oui-success-soft) 74%, var(--oui-success) 26%)
+    color: var(--oui-success-base)
+    background: color-mix(in srgb, var(--oui-success-surface) 74%, var(--oui-success-base) 26%)
 
 .oui-button[data-tone="danger"][data-variant="soft"]:not(:disabled):hover,
 .oui-button[data-tone="danger"][data-variant="outline"]:not(:disabled):hover,
@@ -220,8 +321,8 @@
 .oui-icon-button[data-tone="danger"][data-variant="soft"]:not(:disabled):hover,
 .oui-icon-button[data-tone="danger"][data-variant="outline"]:not(:disabled):hover,
 .oui-icon-button[data-tone="danger"][data-variant="ghost"]:not(:disabled):hover
-    color: var(--oui-danger)
-    background: color-mix(in srgb, var(--oui-danger-soft) 74%, var(--oui-danger) 26%)
+    color: var(--oui-danger-base)
+    background: color-mix(in srgb, var(--oui-danger-surface) 74%, var(--oui-danger-base) 26%)
 
 .oui-button[data-tone="warning"][data-variant="soft"]:not(:disabled):hover,
 .oui-button[data-tone="warning"][data-variant="outline"]:not(:disabled):hover,
@@ -229,8 +330,8 @@
 .oui-icon-button[data-tone="warning"][data-variant="soft"]:not(:disabled):hover,
 .oui-icon-button[data-tone="warning"][data-variant="outline"]:not(:disabled):hover,
 .oui-icon-button[data-tone="warning"][data-variant="ghost"]:not(:disabled):hover
-    color: var(--oui-warning)
-    background: color-mix(in srgb, var(--oui-warning-soft) 74%, var(--oui-warning) 26%)
+    color: var(--oui-warning-base)
+    background: color-mix(in srgb, var(--oui-warning-surface) 74%, var(--oui-warning-base) 26%)
 
 .oui-button[data-tone="info"][data-variant="soft"]:not(:disabled):hover,
 .oui-button[data-tone="info"][data-variant="outline"]:not(:disabled):hover,
@@ -238,30 +339,48 @@
 .oui-icon-button[data-tone="info"][data-variant="soft"]:not(:disabled):hover,
 .oui-icon-button[data-tone="info"][data-variant="outline"]:not(:disabled):hover,
 .oui-icon-button[data-tone="info"][data-variant="ghost"]:not(:disabled):hover
-    color: var(--oui-info)
-    background: color-mix(in srgb, var(--oui-info-soft) 74%, var(--oui-info) 26%)
+    color: var(--oui-info-base)
+    background: color-mix(in srgb, var(--oui-info-surface) 74%, var(--oui-info-base) 26%)
 
 .oui-root[data-oui-theme="dark"] .oui-button[data-tone="success"]:not(:disabled):hover,
 .oui-root[data-oui-theme="dark"] .oui-icon-button[data-tone="success"]:not(:disabled):hover
-    color: color-mix(in srgb, var(--oui-success) 72%, white 28%)
+    color: color-mix(in srgb, var(--oui-success-base) 72%, white 28%)
 
 .oui-root[data-oui-theme="dark"] .oui-button[data-tone="danger"]:not(:disabled):hover,
 .oui-root[data-oui-theme="dark"] .oui-icon-button[data-tone="danger"]:not(:disabled):hover
-    color: color-mix(in srgb, var(--oui-danger) 72%, white 28%)
+    color: color-mix(in srgb, var(--oui-danger-base) 72%, white 28%)
 
 .oui-root[data-oui-theme="dark"] .oui-button[data-tone="warning"]:not(:disabled):hover,
 .oui-root[data-oui-theme="dark"] .oui-icon-button[data-tone="warning"]:not(:disabled):hover
-    color: color-mix(in srgb, var(--oui-warning) 72%, white 28%)
+    color: color-mix(in srgb, var(--oui-warning-base) 72%, white 28%)
 
 .oui-root[data-oui-theme="dark"] .oui-button[data-tone="info"]:not(:disabled):hover,
 .oui-root[data-oui-theme="dark"] .oui-icon-button[data-tone="info"]:not(:disabled):hover
-    color: color-mix(in srgb, var(--oui-info) 72%, white 28%)
+    color: color-mix(in srgb, var(--oui-info-base) 72%, white 28%)
 
 
 
 .oui-button-label
     display: inline-flex
     align-items: center
+    gap: var(--oui-button-label-gap, 8px)
+
+.oui-icon-text-button
+    gap: var(--oui-icon-text-button-gap, var(--oui-button-label-gap, 8px))
+
+.oui-icon-text-button-icon,
+.oui-icon-text-button-label
+    display: inline-flex
+    min-width: 0
+    align-items: center
+
+.oui-icon-text-button-icon
+    flex: 0 0 auto
+
+.oui-icon-text-button-label
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
 
 .oui-button[data-press-animation="none"]:not(:disabled):active,
 .oui-icon-button[data-press-animation="none"]:not(:disabled):active

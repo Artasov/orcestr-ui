@@ -2,12 +2,17 @@
 
 import {
     cloneElement,
+    Children,
+    forwardRef,
     isValidElement,
     useCallback,
+    useContext,
     useEffect,
     useRef,
     type KeyboardEvent as ReactKeyboardEvent,
     type MouseEvent as ReactMouseEvent,
+    type CSSProperties,
+    type HTMLAttributes,
     type ReactElement,
     type ReactNode,
     type Ref,
@@ -17,9 +22,15 @@ import {useDisclosure} from '../../hooks/useDisclosure';
 import {type FloatingAlign, type FloatingSide} from '../../hooks/useFloatingPosition';
 import {useFloatingLayer} from '../../hooks/useFloatingLayer';
 import {useOutsidePointerDown} from '../../hooks/useOutsidePointerDown';
+import {splitSystemProps, type SystemProps} from '../../theme/systemProps';
+import {OrcestrThemeContext} from '../../theme/useTheme';
 import {composeRefs} from '../../utils/composeRefs';
 import {cn} from '../../utils/cn';
-import {useOverlayContext, useOverlayLayerIndex} from '../Overlay/OverlayProvider';
+import {
+    overlayLayerZIndex,
+    useOverlayContext,
+    useOverlayLayerIndex,
+} from '../Overlay/OverlayProvider';
 import {Portal} from '../Portal/Portal';
 
 type TriggerElementProps = {
@@ -32,7 +43,8 @@ type TriggerElementProps = {
     'data-testid'?: string;
 };
 
-export type PopoverProps = {
+export type PopoverProps = SystemProps &
+    Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
     trigger: ReactNode;
     children: ReactNode;
     open?: boolean;
@@ -45,6 +57,10 @@ export type PopoverProps = {
     matchTriggerWidth?: boolean;
     disabled?: boolean;
     className?: string;
+    contentStyle?: CSSProperties;
+    contentRef?: Ref<HTMLDivElement>;
+    onOpenAutoFocus?: (event: {preventDefault: () => void}) => void;
+    onInteractOutside?: (event: Event) => void;
     testId?: string;
 };
 
@@ -61,9 +77,16 @@ export function Popover({
     matchTriggerWidth = false,
     disabled = false,
     className,
+    contentStyle,
+    contentRef: externalContentRef,
+    style: contentStyleProp,
+    onOpenAutoFocus,
+    onInteractOutside,
     testId,
+    ...props
 }: PopoverProps) {
     const overlay = useOverlayContext();
+    const themeContext = useContext(OrcestrThemeContext);
     const disclosure = useDisclosure({open, defaultOpen, onOpenChange});
     const {open: isOpen, close: closeDisclosure, toggle} = disclosure;
     const previousFocusRef = useRef<HTMLElement | null>(null);
@@ -81,12 +104,21 @@ export function Popover({
         collisionPadding,
         matchTriggerWidth,
     });
-    const close = useCallback(() => closeDisclosure(), [closeDisclosure]);
     const layerIndex = useOverlayLayerIndex(present);
-    useOutsidePointerDown([triggerRef, contentRef], isOpen, close);
+    const {systemStyle, restProps} = splitSystemProps(props);
+    const handleOutsidePointerDown = useCallback(
+        (event: PointerEvent) => {
+            onInteractOutside?.(event);
+            if (event.defaultPrevented) return;
+            closeDisclosure();
+        },
+        [closeDisclosure, onInteractOutside],
+    );
+    useOutsidePointerDown([triggerRef, contentRef], isOpen, handleOutsidePointerDown);
 
     useEffect(() => {
         if (!isOpen) return;
+        onOpenAutoFocus?.({preventDefault: () => undefined});
         previousFocusRef.current =
             document.activeElement instanceof HTMLElement ? document.activeElement : null;
         const onKeyDown = (event: KeyboardEvent) => {
@@ -99,7 +131,7 @@ export function Popover({
             document.removeEventListener('keydown', onKeyDown, true);
             previousFocusRef.current?.focus?.();
         };
-    }, [closeDisclosure, isOpen]);
+    }, [closeDisclosure, isOpen, onOpenAutoFocus]);
 
     const handleTriggerClick = useCallback(
         (event: ReactMouseEvent<HTMLElement>) => {
@@ -148,15 +180,26 @@ export function Popover({
             {present ? (
                 <Portal>
                     <div
-                        ref={contentRef}
+                        ref={composeRefs(contentRef, externalContentRef)}
                         className={cn('oui-popover-content', className)}
                         data-state={state}
                         data-layer='dropdown'
+                        data-oui-theme={themeContext?.mode}
+                        data-oui-surface={themeContext?.surface}
                         data-testid={testId ? `${testId}-content` : undefined}
                         style={{
+                            ...themeContext?.cssVariables,
                             ...style,
-                            zIndex: overlay.zIndex.dropdown + layerIndex * 10,
+                            ...systemStyle,
+                            ...contentStyle,
+                            ...contentStyleProp,
+                            zIndex: overlayLayerZIndex(
+                                overlay.zIndex,
+                                'dropdown',
+                                layerIndex,
+                            ),
                         }}
+                        {...restProps}
                     >
                         {children}
                     </div>
@@ -164,6 +207,88 @@ export function Popover({
             ) : null}
         </>
     );
+}
+
+type PopoverRootProps = Pick<PopoverProps, 'open' | 'defaultOpen' | 'onOpenChange'> & {
+    children: ReactNode;
+};
+
+type PopoverTriggerProps = {
+    children: ReactNode;
+};
+
+type PopoverContentProps = SystemProps &
+    Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
+    children: ReactNode;
+    width?: number | string;
+    size?: number | string;
+    align?: FloatingAlign;
+    side?: FloatingSide;
+    sideOffset?: number;
+    matchTriggerWidth?: boolean;
+    className?: string;
+    onOpenAutoFocus?: (event: {preventDefault: () => void}) => void;
+    onInteractOutside?: (event: Event) => void;
+};
+
+function PopoverRoot({children, ...props}: PopoverRootProps) {
+    const trigger = findPopoverChild<PopoverTriggerProps>(children, PopoverTrigger);
+    const content = findPopoverChild<PopoverContentProps>(children, PopoverContent);
+    if (!trigger || !content) return null;
+    const {
+        children: contentChildren,
+        width,
+        size: _size,
+        ref: contentRef,
+        ...contentProps
+    } = content.props as PopoverContentProps & {ref?: Ref<HTMLDivElement>};
+
+    return (
+        <Popover
+            {...props}
+            {...contentProps}
+            w={width}
+            contentRef={contentRef}
+            trigger={trigger.props.children}
+        >
+            {contentChildren}
+        </Popover>
+    );
+}
+
+function PopoverTrigger(_props: PopoverTriggerProps) {
+    return null;
+}
+
+const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
+    function PopoverContent(_props, _ref) {
+        return null;
+    },
+);
+
+function findPopoverChild<P>(
+    children: ReactNode,
+    type: unknown,
+): ReactElement<P> | null {
+    let found: ReactElement<P> | null = null;
+    Children.forEach(children, (child) => {
+        if (!found && isValidElement(child) && child.type === type) {
+            found = child as ReactElement<P>;
+        }
+    });
+    return found;
+}
+
+Object.assign(Popover, {
+    Root: PopoverRoot,
+    Trigger: PopoverTrigger,
+    Content: PopoverContent,
+});
+
+export namespace Popover {
+    export const Root = PopoverRoot;
+    export const Trigger = PopoverTrigger;
+    export const Content = PopoverContent;
 }
 
 function clonePopoverTrigger(

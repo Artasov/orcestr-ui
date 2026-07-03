@@ -15,22 +15,35 @@ test('selection components expose selected fallback labels', () => {
     assert.match(read('components/MultiSelect/MultiSelect.tsx'), /selectedFallbackLabel\?: ReactNode \| \(\(values: ReadonlyArray<V>\) => ReactNode\)/);
 });
 
-test('selection dropdown surfaces use theme page background', () => {
+test('selection dropdown surfaces use themed floating background', () => {
     const selectionStyles = read('styles/_selection.sass');
     const overlayStyles = read('styles/_overlays.sass');
 
     assert.match(
         selectionStyles,
-        /\.oui-combobox-content,\s+\.oui-select-content[\s\S]*?background: var\(--oui-bg\)/,
+        /\.oui-combobox-content,\s+\.oui-select-content[\s\S]*?background: var\(--oui-floating-bg, var\(--oui-bg\)\)/,
     );
     assert.match(
         overlayStyles,
-        /\.oui-popover-content\.oui-select-content[\s\S]*?background: var\(--oui-bg\)/,
+        /\.oui-popover-content\.oui-select-content[\s\S]*?color: var\(--oui-text\)[\s\S]*?background: var\(--oui-floating-bg, var\(--oui-bg\)\)/,
     );
+});
+
+test('BadgeSelectMenu uses the shared selection dropdown surface', () => {
+    const source = read('components/BadgeSelectMenu/BadgeSelectMenu.tsx');
+    const barrel = read('index.ts');
+
+    assert.match(source, /export type BadgeSelectItem/);
+    assert.match(source, /export function BadgeSelectMenu/);
+    assert.match(source, /className='oui-combobox-option oui-badge-select-option'/);
+    assert.doesNotMatch(source, /mst-/);
+    assert.match(barrel, /export \* from '\.\/components\/BadgeSelectMenu\/BadgeSelectMenu';/);
 });
 
 test('PaginatedCombobox exposes retry contract for failed page loads', () => {
     const source = read('components/PaginatedCombobox/PaginatedCombobox.tsx');
+    assert.match(source, /trigger\?: ReactNode/);
+    assert.match(source, /trigger \?\? \(/);
     assert.match(source, /retryLabel\?: ReactNode/);
     assert.match(source, /onClick=\{\(\) => void fetchPage\(1, debouncedSearch\)\}/);
     assert.match(source, /actualRetryLabel/);
@@ -41,6 +54,8 @@ test('EntityPicker forwards paginated loading error and retry labels', () => {
     assert.match(source, /loadingText\?: ReactNode/);
     assert.match(source, /errorText\?: ReactNode/);
     assert.match(source, /retryLabel\?: ReactNode/);
+    assert.match(source, /trigger\?: ReactNode/);
+    assert.match(source, /trigger=\{trigger\}/);
     assert.match(source, /retryLabel=\{retryLabel\}/);
 });
 

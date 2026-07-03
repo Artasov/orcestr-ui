@@ -6,6 +6,10 @@ import {
     Badge,
     Button,
     DataTable,
+    Flex,
+    Pagination,
+    Stack,
+    Table,
     Text,
     TextField,
     type DataTableColumn,
@@ -88,112 +92,163 @@ export function DataSection({onOpenCode}: DataSectionProps) {
     );
     const [columnOrder, setColumnOrder] = useState<string[]>(defaultColumnOrder);
     const [columnWidths, setColumnWidths] = useState<Record<string, number>>({});
+    const [page, setPage] = useState(2);
     const filteredRows = useMemo(
         () => sortRows(rows.filter((row) => rowMatches(row, query)), sort),
         [query, sort],
     );
 
     return (
-        <UiExampleSection
-            id='data-table-example'
-            title='DataTable'
-            description='Reusable DataTable without CRUD or page-level entity logic.'
-        >
-            <ExampleTile
-                className='oui-ui-table-tile'
+        <>
+            <UiExampleSection
+                id='data-table-example'
                 title='DataTable'
-                code={codeSamples.data}
-                onOpen={onOpenCode}
+                description='Reusable DataTable without CRUD or page-level entity logic.'
             >
-                <div className='oui-ui-table-demo'>
-                    <DataTable
-                        toolbar={(
-                            <>
-                                <TextField
-                                    value={query}
-                                    placeholder='Filter rows'
-                                    clearable
-                                    onChange={(event) => setQuery(event.target.value)}
-                                    onClear={() => setQuery('')}
+                <ExampleTile
+                    className='oui-ui-table-tile'
+                    title='DataTable'
+                    code={codeSamples.data}
+                    onOpen={onOpenCode}
+                >
+                    <div className='oui-ui-table-demo'>
+                        <DataTable
+                            toolbar={(
+                                <>
+                                    <TextField
+                                        value={query}
+                                        placeholder='Filter rows'
+                                        clearable
+                                        onChange={(event) => setQuery(event.target.value)}
+                                        onClear={() => setQuery('')}
+                                    />
+                                    <Button
+                                        size={3}
+                                        v='surface'
+                                        onClick={() => {
+                                            setVisibleColumnKeys(defaultVisibleColumnKeys);
+                                            setColumnOrder(defaultColumnOrder);
+                                            setColumnWidths({});
+                                        }}
+                                    >
+                                        Reset
+                                    </Button>
+                                </>
+                            )}
+                            rowKey={(row) => row.name}
+                            rows={filteredRows}
+                            columns={columns}
+                            sort={sort}
+                            onSortChange={(nextSort) =>
+                                setSort(Array.isArray(nextSort) ? nextSort[0] ?? null : nextSort)
+                            }
+                            selectable
+                            selectedRowKeys={selectedRowKeys}
+                            onSelectedRowKeysChange={setSelectedRowKeys}
+                            total={rows.length}
+                            emptyText='No rows match the filter.'
+                            columnSettings={{
+                                columns,
+                                visibleColumnKeys,
+                                onVisibleColumnKeysChange: setVisibleColumnKeys,
+                                columnOrder,
+                                onColumnOrderChange: setColumnOrder,
+                                columnWidths,
+                                onColumnWidthsChange: setColumnWidths,
+                                onReset: () => {
+                                    setVisibleColumnKeys(defaultVisibleColumnKeys);
+                                    setColumnOrder(defaultColumnOrder);
+                                    setColumnWidths({});
+                                },
+                            }}
+                            rowContextMenuActions={(row) => [
+                                {
+                                    key: 'open',
+                                    label: `Open ${row.name}`,
+                                    onSelect: () => undefined,
+                                },
+                                {
+                                    key: 'archive',
+                                    label: 'Archive',
+                                    tone: 'danger',
+                                    onSelect: () => undefined,
+                                },
+                            ]}
+                        />
+                        <div className='oui-ui-table-variants'>
+                            <div className='oui-ui-table-variant'>
+                                <Text fs='13px' fw={760}>
+                                    Plain table
+                                </Text>
+                                <DataTable
+                                    rowKey={(row) => row.name}
+                                    rows={rows.slice(0, 4)}
+                                    columns={columns}
+                                    sort={sort}
+                                    onSortChange={(nextSort) =>
+                                        setSort(
+                                            Array.isArray(nextSort)
+                                                ? nextSort[0] ?? null
+                                                : nextSort,
+                                        )
+                                    }
+                                    total={rows.length}
+                                    emptyText='No rows.'
                                 />
-                                <Button
-                                    size={3}
-                                    v='surface'
-                                    onClick={() => {
-                                        setVisibleColumnKeys(defaultVisibleColumnKeys);
-                                        setColumnOrder(defaultColumnOrder);
-                                        setColumnWidths({});
-                                    }}
-                                >
-                                    Reset
-                                </Button>
-                            </>
-                        )}
-                        rowKey={(row) => row.name}
-                        rows={filteredRows}
-                        columns={columns}
-                        sort={sort}
-                        onSortChange={(nextSort) =>
-                            setSort(Array.isArray(nextSort) ? nextSort[0] ?? null : nextSort)
-                        }
-                        selectable
-                        selectedRowKeys={selectedRowKeys}
-                        onSelectedRowKeysChange={setSelectedRowKeys}
-                        total={rows.length}
-                        emptyText='No rows match the filter.'
-                        columnSettings={{
-                            columns,
-                            visibleColumnKeys,
-                            onVisibleColumnKeysChange: setVisibleColumnKeys,
-                            columnOrder,
-                            onColumnOrderChange: setColumnOrder,
-                            columnWidths,
-                            onColumnWidthsChange: setColumnWidths,
-                            onReset: () => {
-                                setVisibleColumnKeys(defaultVisibleColumnKeys);
-                                setColumnOrder(defaultColumnOrder);
-                                setColumnWidths({});
-                            },
-                        }}
-                        rowContextMenuActions={(row) => [
-                            {
-                                key: 'open',
-                                label: `Open ${row.name}`,
-                                onSelect: () => undefined,
-                            },
-                            {
-                                key: 'archive',
-                                label: 'Archive',
-                                tone: 'danger',
-                                onSelect: () => undefined,
-                            },
-                        ]}
-                    />
-                    <div className='oui-ui-table-variants'>
-                        <div className='oui-ui-table-variant'>
-                            <Text fs='13px' fw={760}>
-                                Plain table
-                            </Text>
-                            <DataTable
-                                rowKey={(row) => row.name}
-                                rows={rows.slice(0, 4)}
-                                columns={columns}
-                                sort={sort}
-                                onSortChange={(nextSort) =>
-                                    setSort(
-                                        Array.isArray(nextSort)
-                                            ? nextSort[0] ?? null
-                                            : nextSort,
-                                    )
-                                }
-                                total={rows.length}
-                                emptyText='No rows.'
-                            />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </ExampleTile>
-        </UiExampleSection>
+                </ExampleTile>
+            </UiExampleSection>
+            <UiExampleSection
+                id='table-primitives-example'
+                title='Table and pagination'
+                description='Low-level Table primitive and page navigation.'
+            >
+                <ExampleTile
+                    title='Table and pagination'
+                    code={codeSamples.tablePagination}
+                    onOpen={onOpenCode}
+                >
+                    <Stack g={3}>
+                        <Table v='surface' w='100%'>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.ColumnHeaderCell>Document</Table.ColumnHeaderCell>
+                                    <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
+                                    <Table.ColumnHeaderCell align='right'>
+                                        Qty
+                                    </Table.ColumnHeaderCell>
+                                </Table.Row>
+                            </Table.Header>
+                            <Table.Body>
+                                {rows.slice(0, 3).map((row) => (
+                                    <Table.Row key={row.name}>
+                                        <Table.RowHeaderCell>{row.name}</Table.RowHeaderCell>
+                                        <Table.Cell>
+                                            <Badge tone={statusTone(row.status)}>
+                                                {row.status}
+                                            </Badge>
+                                        </Table.Cell>
+                                        <Table.Cell align='right'>{row.quantity}</Table.Cell>
+                                    </Table.Row>
+                                ))}
+                            </Table.Body>
+                        </Table>
+                        <Flex j='sb' a='c' wrap g={2}>
+                            <Text fs='13px' tone='muted'>
+                                Showing 25 items per page
+                            </Text>
+                            <Pagination
+                                page={page}
+                                pageCount={4}
+                                onPageChange={setPage}
+                            />
+                        </Flex>
+                    </Stack>
+                </ExampleTile>
+            </UiExampleSection>
+        </>
     );
 }
 

@@ -46,8 +46,8 @@
 
 .oui-checkbox[data-checked="true"] .oui-checkbox-box,
 .oui-radio[data-checked="true"] .oui-radio-dot
-    border-color: var(--oui-brand)
-    background: var(--oui-brand)
+    border-color: var(--oui-primary-base)
+    background: var(--oui-primary-base)
 
 .oui-radio[data-checked="true"] .oui-radio-dot::after
     transform: scale(1)
@@ -88,7 +88,7 @@
     transition: transform 160ms ease
 
 .oui-switch[data-checked="true"] .oui-switch-track
-    background: var(--oui-brand)
+    background: var(--oui-primary-base)
 
 .oui-switch[data-checked="true"] .oui-switch-thumb
     transform: translateX(18px)
@@ -149,7 +149,7 @@
 
 .oui-combobox-trigger[data-state="open"],
 .oui-combobox-trigger[data-state="open"]:hover
-    border-color: var(--oui-brand)
+    border-color: var(--oui-primary-base)
     box-shadow: none
 
 .oui-combobox-trigger .oui-button-label
@@ -195,7 +195,7 @@
     padding: 0
     overflow: hidden
     color: var(--oui-text)
-    background: var(--oui-bg)
+    background: var(--oui-floating-bg, var(--oui-bg))
 
 .oui-combobox-search-wrap
     display: flex
@@ -210,7 +210,7 @@
     overflow-y: auto
     overscroll-behavior: contain
     scrollbar-width: thin
-    scrollbar-color: var(--oui-gray-a8) transparent
+    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-gray-a8)) transparent
 
 .oui-combobox-options,
 .oui-listbox.oui-combobox-options
@@ -286,7 +286,7 @@
 .oui-combobox-check
     flex: 0 0 auto
     margin-right: 10px
-    color: var(--oui-brand-strong)
+    color: var(--oui-primary-text)
 
 .oui-combobox-option-action
     display: inline-flex
@@ -424,8 +424,8 @@
     height: 13px
 
 .oui-multi-select-option[data-selected="true"] .oui-multi-select-check
-    border-color: var(--oui-brand)
-    background: var(--oui-brand)
+    border-color: var(--oui-primary-base)
+    background: var(--oui-primary-base)
 
 .oui-button.oui-combobox-trigger[data-variant="surface"],
 .oui-button.oui-combobox-trigger
@@ -447,7 +447,7 @@
 .oui-button.oui-combobox-trigger[data-state="open"]:focus-visible,
 .oui-button.oui-combobox-trigger[data-state="open"]:not(:disabled):hover
     background-color: var(--oui-control-bg, transparent)
-    border-color: var(--oui-brand)
+    border-color: var(--oui-primary-base)
     box-shadow: none
     outline: none
 
@@ -491,6 +491,7 @@
     transition: background-color 180ms ease, border-color 220ms ease, color 180ms ease
 
 .oui-checkbox-box
+    position: relative
     border-radius: 4px
     overflow: hidden
 
@@ -498,6 +499,7 @@
     border-radius: 999px
 
 .oui-checkbox-box svg
+    position: absolute
     opacity: 0
     transform: scale(.72)
     transition: opacity 140ms ease, transform 160ms ease
@@ -506,22 +508,24 @@
 .oui-radio:hover .oui-radio-dot
     border-color: var(--oui-gray-a8)
 
-.oui-checkbox[data-checked="true"] .oui-checkbox-box
-    border-color: var(--oui-brand)
-    background: var(--oui-brand)
+.oui-checkbox[data-checked="true"] .oui-checkbox-box,
+.oui-checkbox[data-indeterminate="true"] .oui-checkbox-box
+    border-color: var(--oui-primary-base)
+    background: var(--oui-primary-base)
 
 .oui-radio[data-checked="true"] .oui-radio-dot
-    border-color: var(--oui-brand)
-    background: var(--oui-brand)
+    border-color: var(--oui-primary-base)
+    background: var(--oui-primary-base)
 
-.oui-checkbox[data-checked="true"] .oui-checkbox-box svg
+.oui-checkbox[data-checked="true"] .oui-checkbox-check,
+.oui-checkbox[data-indeterminate="true"] .oui-checkbox-minus
     opacity: 1
     transform: scale(1)
 
 .oui-checkbox:focus-within .oui-checkbox-box,
 .oui-radio:focus-within .oui-radio-dot,
 .oui-switch:focus-within .oui-switch-track
-    border-color: var(--oui-brand)
+    border-color: var(--oui-primary-base)
     box-shadow: none
 
 .oui-switch-track
@@ -549,8 +553,8 @@
     transition: background-color 180ms ease, transform 180ms cubic-bezier(.22, 1, .36, 1)
 
 .oui-switch[data-checked="true"] .oui-switch-track
-    border-color: var(--oui-brand)
-    background: var(--oui-brand)
+    border-color: var(--oui-primary-base)
+    background: var(--oui-primary-base)
 
 .oui-switch[data-checked="true"] .oui-switch-thumb
     transform: translateX(16px)
@@ -634,10 +638,11 @@
     align-items: center
     gap: 8px
     flex: 0 0 auto
-    min-height: 34px
+    box-sizing: border-box
+    height: 34px
     border: 0
     border-radius: 6px
-    padding: 8px 14px
+    padding: 0 14px
     color: var(--oui-muted)
     background: transparent
     box-shadow: none
@@ -667,7 +672,7 @@
     transition: color 240ms ease
 
 .oui-tabs-trigger[data-active="true"] .oui-tabs-trigger-icon
-    color: var(--oui-brand)
+    color: var(--oui-primary-text)
 
 .oui-tabs-trigger-label
     line-height: 1rem
@@ -676,13 +681,14 @@
     display: inline-flex
     align-items: center
     justify-content: center
-    min-width: 20px
-    height: 20px
+    min-width: 16px
+    height: 16px
     border-radius: 999px
-    padding: 0 6px
+    padding: 0 5px
     color: var(--oui-muted)
     background: var(--oui-gray-a4)
-    font-size: 12px
+    font-size: 10px
+    font-weight: 650
     line-height: 1
 
 .oui-tabs-content
@@ -691,3 +697,127 @@
 .oui-tabs-panel
     min-width: 0
     padding-top: 2px
+
+.oui-tabs-compound
+    min-width: 0
+
+.oui-tabs-compound-shell
+    position: relative
+    min-width: 0
+    margin-inline: -8px
+    padding-inline: 8px
+    overflow: visible
+
+.oui-tabs-list-scroll
+    position: relative
+    display: flex
+    gap: 4px
+    min-width: 0
+    overflow-x: auto
+    overflow-y: hidden
+    padding: 2px var(--oui-tabs-extra-padding-right, 2px) 2px 2px
+    scrollbar-width: none
+
+.oui-tabs-list-scroll[data-overflow="true"]
+    padding-left: 36px
+    padding-right: max(36px, var(--oui-tabs-extra-padding-right, 2px))
+
+.oui-tabs-list-scroll::-webkit-scrollbar
+    display: none
+
+.oui-tabs-edge
+    position: absolute
+    top: 0
+    bottom: 0
+    width: 42px
+    z-index: 2
+    pointer-events: none
+
+.oui-tabs-edge-left
+    left: 0
+    background: linear-gradient(90deg, var(--oui-panel-solid, var(--oui-bg)) 0%, color-mix(in srgb, var(--oui-panel-solid, var(--oui-bg)) 78%, transparent) 62%, transparent 100%)
+
+.oui-tabs-edge-right
+    right: 0
+    background: linear-gradient(270deg, var(--oui-panel-solid, var(--oui-bg)) 0%, color-mix(in srgb, var(--oui-panel-solid, var(--oui-bg)) 78%, transparent) 62%, transparent 100%)
+
+.oui-tabs-scroll-button
+    position: absolute
+    top: 50%
+    z-index: 3
+    width: 24px
+    height: 24px
+    padding: 0
+    transform: translateY(-50%)
+    box-shadow: var(--oui-shadow-md)
+
+.oui-tabs-scroll-button-left
+    left: 4px
+
+.oui-tabs-scroll-button-right
+    right: 4px
+
+.oui-tabs-compound-active-indicator,
+.oui-tabs-compound-hover-indicator
+    position: absolute
+    border-radius: 6px
+    pointer-events: none
+    transition: left 380ms cubic-bezier(.22, 1, .36, 1), top 220ms cubic-bezier(.22, 1, .36, 1), width 380ms cubic-bezier(.22, 1, .36, 1), height 220ms cubic-bezier(.22, 1, .36, 1), opacity 220ms ease
+
+.oui-tabs-compound-active-indicator
+    z-index: 0
+    background: var(--oui-gray-a4)
+
+.oui-tabs-compound-hover-indicator
+    z-index: 0
+    background: var(--oui-gray-a3)
+    opacity: 0
+
+.oui-tabs-compound-hover-indicator[data-visible="true"]
+    opacity: 1
+
+.oui-tabs-trigger[data-size="3"]
+    height: 40px
+    padding-inline: 15px
+    font-size: 16px
+
+.oui-tabs-trigger[data-size="3"]:has(.oui-tabs-trigger-icon)
+    padding-left: 11px
+
+.oui-tabs-trigger[data-size="2"]:has(.oui-tabs-trigger-icon)
+    padding-left: 10px
+
+.oui-tabs-count-badge
+    box-sizing: border-box
+    display: inline-flex !important
+    align-items: center
+    justify-content: center
+    flex: 0 0 auto
+    min-width: 20px
+    height: 20px
+    min-height: 20px
+    padding: 0 6px !important
+    line-height: 1
+
+.oui-tabs-compound-panel,
+.oui-tabs-compound-panel-inner
+    min-width: 0
+
+.oui-grid
+    grid-template-columns: var(--oui-grid-columns, minmax(0, 1fr))
+
+@media (min-width: 640px)
+    .oui-grid
+        grid-template-columns: var(--oui-grid-columns-sm, var(--oui-grid-columns, minmax(0, 1fr)))
+
+@media (min-width: 768px)
+    .oui-grid
+        grid-template-columns: var(--oui-grid-columns-md, var(--oui-grid-columns-sm, var(--oui-grid-columns, minmax(0, 1fr))))
+
+@media (min-width: 1024px)
+    .oui-grid
+        grid-template-columns: var(--oui-grid-columns-lg, var(--oui-grid-columns-md, var(--oui-grid-columns-sm, var(--oui-grid-columns, minmax(0, 1fr)))))
+
+@media (min-width: 1280px)
+    .oui-grid
+        grid-template-columns: var(--oui-grid-columns-xl, var(--oui-grid-columns-lg, var(--oui-grid-columns-md, var(--oui-grid-columns-sm, var(--oui-grid-columns, minmax(0, 1fr))))))

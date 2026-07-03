@@ -1,14 +1,20 @@
 'use client';
 
+import {useState} from 'react';
 import {
     LuCircleAlert,
     LuCircleCheck,
     LuCircleX,
+    LuClock3,
     LuInfo,
     LuLoaderCircle,
+    LuPackageCheck,
+    LuShieldCheck,
 } from 'react-icons/lu';
 
 import {
+    Badge,
+    BadgeSelectMenu,
     Button,
     EmptyState,
     ErrorState,
@@ -50,6 +56,28 @@ const validationItems = [
         title='General state'
         description='One card for informational, empty, loading and error states.'
     />
+    <div className='oui-ui-state-grid'>
+        <StateCard
+            v='surface'
+            tone='primary'
+            title='Surface'
+            titleTone='primary'
+            description='Uses the regular surface with a toned title.'
+            descriptionTone='muted'
+        />
+        <StateCard
+            v='outline'
+            tone='warning'
+            title='Outline'
+            description='Useful when the card should stay quiet.'
+        />
+        <StateCard
+            v='ghost'
+            tone='success'
+            title='Ghost'
+            description='No extra background.'
+        />
+    </div>
     <StateCard tone='danger' title='Validation failed'>
         <Stack g={1}>
             {validationItems.map((item) => (
@@ -74,6 +102,30 @@ const validationItems = [
 </Stack>`,
 };
 
+const badgeSample: CodeExample = {
+    title: 'Badge',
+    code: `import {useState} from 'react';
+import {Badge, BadgeSelectMenu, Flex} from '@orcestr/ui';
+import {LuClock3, LuPackageCheck, LuShieldCheck} from 'react-icons/lu';
+
+const [status, setStatus] = useState('review');
+const statusItems = [
+    {value: 'draft', label: 'Draft'},
+    {value: 'review', label: 'Review'},
+    {value: 'accepted', label: 'Accepted'},
+];
+
+<Flex g={2} wrap>
+    <Badge tone='neutral'>Requested <strong>43</strong></Badge>
+    <Badge tone='info' icon={<LuClock3 />}>Ordered <strong>12</strong></Badge>
+    <Badge tone='success' icon={<LuPackageCheck />}>Accepted <strong>8</strong></Badge>
+    <Badge tone='warning' v='surface' icon={<LuShieldCheck />}>Review</Badge>
+    <Badge tone='danger' v='outline'>Blocked</Badge>
+    <Badge tone='primary' v='solid'>Primary</Badge>
+    <BadgeSelectMenu value={status} items={statusItems} onValueChange={setStatus} tone='warning' />
+</Flex>`,
+};
+
 const iconTextSample: CodeExample = {
     title: 'IconText',
     code: `import {IconText, Stack} from '@orcestr/ui';
@@ -87,6 +139,48 @@ import {LuCircleAlert, LuCircleCheck, LuCircleX, LuInfo, LuLoaderCircle} from 'r
     <IconText icon={<LuInfo />} iconTone='info' fs='13px'>Sync scheduled</IconText>
 </Stack>`,
 };
+
+export function BadgeSection({
+    onOpenCode,
+}: {
+    onOpenCode: (example: CodeExample) => void;
+}) {
+    const [status, setStatus] = useState('review');
+    const statusItems = [
+        {value: 'draft', label: 'Draft'},
+        {value: 'review', label: 'Review'},
+        {value: 'accepted', label: 'Accepted'},
+    ];
+
+    return (
+        <UiExampleSection
+            id='badges-example'
+            title='Badge'
+            description='Compact counters and statuses without a special wrapper.'
+        >
+            <ExampleTile
+                title='Badge'
+                code={badgeSample.code}
+                onOpen={onOpenCode}
+            >
+                <div className='oui-ui-badge-demo'>
+                    <Badge tone='neutral'>Requested <strong>43</strong></Badge>
+                    <Badge tone='info' icon={<LuClock3 />}>Ordered <strong>12</strong></Badge>
+                    <Badge tone='success' icon={<LuPackageCheck />}>Accepted <strong>8</strong></Badge>
+                    <Badge tone='warning' v='surface' icon={<LuShieldCheck />}>Review</Badge>
+                    <Badge tone='danger' v='outline'>Blocked</Badge>
+                    <Badge tone='primary' v='solid'>Primary</Badge>
+                    <BadgeSelectMenu
+                        value={status}
+                        items={statusItems}
+                        onValueChange={setStatus}
+                        tone='warning'
+                    />
+                </div>
+            </ExampleTile>
+        </UiExampleSection>
+    );
+}
 
 export function StateCardSection({
     onOpenCode,
@@ -110,6 +204,28 @@ export function StateCardSection({
                         title='General state'
                         description='One card for informational, empty, loading and error states.'
                     />
+                    <div className='oui-ui-state-grid'>
+                        <StateCard
+                            v='surface'
+                            tone='primary'
+                            title='Surface'
+                            titleTone='primary'
+                            description='Uses the regular surface with a toned title.'
+                            descriptionTone='muted'
+                        />
+                        <StateCard
+                            v='outline'
+                            tone='warning'
+                            title='Outline'
+                            description='Useful when the card should stay quiet.'
+                        />
+                        <StateCard
+                            v='ghost'
+                            tone='success'
+                            title='Ghost'
+                            description='No extra background.'
+                        />
+                    </div>
                     <StateCard tone='danger' title='Validation failed'>
                         <Stack g={1}>
                             {validationItems.map((item) => (

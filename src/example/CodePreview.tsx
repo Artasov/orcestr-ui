@@ -8,7 +8,7 @@ import {
     type ReactNode,
     type WheelEvent as ReactWheelEvent,
 } from 'react';
-import {LuInfo} from 'react-icons/lu';
+import {LuInfo, LuX} from 'react-icons/lu';
 
 import {Flex, IconButton, Modal, ScrollArea} from '..';
 import {cn} from '../utils/cn';
@@ -195,11 +195,27 @@ export function CodePreviewModal({
             onOpenChange={(open) => {
                 if (!open) onClose();
             }}
-            title={example?.title ?? 'Component code'}
-            description='Import and usage example.'
             maxWidth={760}
         >
-            {example ? <CodeBlock code={example.code} /> : null}
+            <Modal.Header>
+                <div className='oui-modal-title-wrap'>
+                    <h2 className='oui-modal-title'>
+                        {example?.title ?? 'Component code'}
+                    </h2>
+                    <p className='oui-modal-description'>
+                        Import and usage example.
+                    </p>
+                </div>
+                <IconButton
+                    v='ghost'
+                    icon={<LuX size={18} />}
+                    aria-label='Close'
+                    onClick={onClose}
+                />
+            </Modal.Header>
+            <Modal.Body>
+                {example ? <CodeBlock code={example.code} /> : null}
+            </Modal.Body>
         </Modal>
     );
 }

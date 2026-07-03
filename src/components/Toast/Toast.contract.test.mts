@@ -32,7 +32,7 @@ test('Toast visuals use backdrop blur and smooth non-bouncy motion', () => {
     assert.match(overlays, /\.oui-toast-frame\[data-state="closing"\][\s\S]*animation: ouiToastOut/);
     assert.match(overlays, /--oui-toast-exit-x: calc\(100% \+ 32px\)/);
     assert.match(overlays, /--oui-toast-exit-y: calc\(100% \+ 32px\)/);
-    assert.match(overlays, /cubic-bezier\(\.16, 1, \.3, 1\)/);
-    assert.match(overlays, /color-mix\(in srgb, var\(--oui-success\) 16%, var\(--oui-border\)\)/);
+    assert.match(overlays, /cubic-bezier\(\.22, 1, \.36, 1\)/);
+    assert.match(overlays, /color-mix\(in srgb, var\(--oui-success-base\) 16%, var\(--oui-border\)\)/);
     assert.doesNotMatch(animations, /oui-toast-overshoot|scale\(1\.018\)|cubic-bezier\(\.18, 1\.34|opacity: 0\s+filter: blur\(3px\)/);
 });

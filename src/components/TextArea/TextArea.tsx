@@ -33,6 +33,8 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
             autoResize = false,
             value,
             testId,
+            children: _children,
+            dangerouslySetInnerHTML: _dangerouslySetInnerHTML,
             ...props
         },
         ref,

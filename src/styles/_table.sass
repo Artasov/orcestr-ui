@@ -1,0 +1,57 @@
+.oui-table
+    width: 100%
+    border-collapse: separate
+    border-spacing: 0
+    color: var(--oui-text)
+    font-size: 13px
+
+.oui-table[data-variant="surface"]
+    border: 1px solid var(--oui-border)
+    border-radius: var(--oui-radius)
+    background: var(--oui-panel)
+    overflow: hidden
+
+.oui-table th,
+.oui-table td
+    border-bottom: 1px solid var(--oui-border)
+    vertical-align: middle
+    text-align: left
+
+.oui-table[data-size="1"] th,
+.oui-table[data-size="1"] td
+    padding: 7px 9px
+
+.oui-table[data-size="2"] th,
+.oui-table[data-size="2"] td
+    padding: 9px 11px
+
+.oui-table[data-size="3"] th,
+.oui-table[data-size="3"] td
+    padding: 11px 13px
+
+.oui-table[data-size="4"] th,
+.oui-table[data-size="4"] td
+    padding: 13px 15px
+
+.oui-table th
+    color: var(--oui-muted)
+    font-weight: 700
+    white-space: nowrap
+
+.oui-table tr:last-child td,
+.oui-table tr:last-child th[scope="row"]
+    border-bottom: 0
+
+.oui-table-cell[data-align="center"],
+.oui-table-column-header-cell[data-align="center"],
+.oui-table-row-header-cell[data-align="center"]
+    text-align: center
+
+.oui-table-cell[data-align="right"],
+.oui-table-column-header-cell[data-align="right"],
+.oui-table-row-header-cell[data-align="right"]
+    text-align: right
+
+.oui-table-row-header-cell
+    color: var(--oui-text)
+    font-weight: 650

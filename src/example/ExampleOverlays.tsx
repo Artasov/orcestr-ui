@@ -1,11 +1,51 @@
 'use client';
 
-import {Button, CommandPalette, Flex, Field, Modal, Stack, Text, TextField} from '..';
+import {type ReactNode} from 'react';
+import {LuX} from 'react-icons/lu';
+
+import {Button, CommandPalette, Flex, Field, IconButton, Modal, Stack, Text, TextField, type ModalProps} from '..';
 import {getCommandItems} from './exampleData';
 import {type OrcestrUiLocale} from '..';
 
 type ToastTone = 'info' | 'success' | 'danger';
 type SetOpen = (open: boolean) => void;
+
+type ExampleModalProps = Omit<ModalProps, 'children'> & {
+    title: ReactNode;
+    description?: ReactNode;
+    footer?: ReactNode;
+    children: ReactNode;
+};
+
+function ExampleModal({
+    title,
+    description,
+    footer,
+    children,
+    onOpenChange,
+    ...props
+}: ExampleModalProps) {
+    return (
+        <Modal {...props} onOpenChange={onOpenChange}>
+            <Modal.Header>
+                <div className='oui-modal-title-wrap'>
+                    <h2 className='oui-modal-title'>{title}</h2>
+                    {description ? (
+                        <p className='oui-modal-description'>{description}</p>
+                    ) : null}
+                </div>
+                <IconButton
+                    v='ghost'
+                    icon={<LuX size={18} />}
+                    aria-label='Close'
+                    onClick={() => onOpenChange(false)}
+                />
+            </Modal.Header>
+            <Modal.Body>{children}</Modal.Body>
+            {footer ? <Modal.Footer>{footer}</Modal.Footer> : null}
+        </Modal>
+    );
+}
 
 type ExampleOverlaysProps = {
     locale: OrcestrUiLocale;
@@ -60,7 +100,7 @@ export function ExampleOverlays({
 
     return (
         <>
-            <Modal
+            <ExampleModal
                 open={modalOpen}
                 onOpenChange={setModalOpen}
                 title='Custom modal'
@@ -80,9 +120,9 @@ export function ExampleOverlays({
                         <TextField placeholder='Focus stays inside modal' />
                     </Field>
                 </Stack>
-            </Modal>
+            </ExampleModal>
 
-            <Modal
+            <ExampleModal
                 open={nestedOpen}
                 onOpenChange={setNestedOpen}
                 title='Nested modal'
@@ -97,9 +137,9 @@ export function ExampleOverlays({
                         Show toast
                     </Button>
                 </Stack>
-            </Modal>
+            </ExampleModal>
 
-            <Modal
+            <ExampleModal
                 open={blurModalOpen}
                 onOpenChange={setBlurModalOpen}
                 title='Blur modal'
@@ -108,7 +148,7 @@ export function ExampleOverlays({
                 overlayColor='transparent'
                 overlayOpacity={0}
                 overlayBlur={10}
-                borderColor='color-mix(in srgb, var(--oui-brand) 34%, var(--oui-border))'
+                borderColor='color-mix(in srgb, var(--oui-primary-base) 34%, var(--oui-border))'
                 radius={10}
                 shadow='0 24px 90px rgb(0 0 0 / 44%)'
                 footer={
@@ -126,9 +166,9 @@ export function ExampleOverlays({
                         <TextField placeholder='ORD-2048' />
                     </Field>
                 </Stack>
-            </Modal>
+            </ExampleModal>
 
-            <Modal
+            <ExampleModal
                 open={blurNestedOpen}
                 onOpenChange={setBlurNestedOpen}
                 title='Nested blur modal'
@@ -137,7 +177,7 @@ export function ExampleOverlays({
                 overlayColor='transparent'
                 overlayOpacity={0}
                 overlayBlur={8}
-                borderColor='color-mix(in srgb, var(--oui-brand) 38%, var(--oui-border))'
+                borderColor='color-mix(in srgb, var(--oui-primary-base) 38%, var(--oui-border))'
                 radius={10}
                 footer={
                     <Flex g={2} j='e' w='100%'>
@@ -152,9 +192,9 @@ export function ExampleOverlays({
                     </Text>
                     <TextField placeholder='Nested value' />
                 </Stack>
-            </Modal>
+            </ExampleModal>
 
-            <Modal
+            <ExampleModal
                 open={blurFinalOpen}
                 onOpenChange={setBlurFinalOpen}
                 title='Final blur modal'
@@ -163,7 +203,7 @@ export function ExampleOverlays({
                 overlayColor='transparent'
                 overlayOpacity={0}
                 overlayBlur={6}
-                borderColor='color-mix(in srgb, var(--oui-brand) 42%, var(--oui-border))'
+                borderColor='color-mix(in srgb, var(--oui-primary-base) 42%, var(--oui-border))'
                 radius={10}
             >
                 <Stack g={3}>
@@ -174,9 +214,9 @@ export function ExampleOverlays({
                         Show toast
                     </Button>
                 </Stack>
-            </Modal>
+            </ExampleModal>
 
-            <Modal
+            <ExampleModal
                 open={fastModalOpen}
                 onOpenChange={setFastModalOpen}
                 title='Fast modal'
@@ -193,9 +233,9 @@ export function ExampleOverlays({
                     </Text>
                     <Button onClick={() => setFastModalOpen(false)}>Close</Button>
                 </Stack>
-            </Modal>
+            </ExampleModal>
 
-            <Modal
+            <ExampleModal
                 open={slowModalOpen}
                 onOpenChange={setSlowModalOpen}
                 title='Very slow modal'
@@ -205,7 +245,7 @@ export function ExampleOverlays({
                 overlayOpacity={0}
                 overlayBlur={14}
                 animationDuration='1200ms'
-                borderColor='color-mix(in srgb, var(--oui-brand) 42%, var(--oui-border))'
+                borderColor='color-mix(in srgb, var(--oui-primary-base) 42%, var(--oui-border))'
                 radius={10}
             >
                 <Stack g={3}>
@@ -214,9 +254,9 @@ export function ExampleOverlays({
                     </Text>
                     <Button onClick={() => setSlowModalOpen(false)}>Close</Button>
                 </Stack>
-            </Modal>
+            </ExampleModal>
 
-            <Modal
+            <ExampleModal
                 open={riseModalOpen}
                 onOpenChange={setRiseModalOpen}
                 title='Rise modal'
@@ -233,9 +273,9 @@ export function ExampleOverlays({
                     </Text>
                     <Button onClick={() => setRiseModalOpen(false)}>Close</Button>
                 </Stack>
-            </Modal>
+            </ExampleModal>
 
-            <Modal
+            <ExampleModal
                 open={dangerModalOpen}
                 onOpenChange={setDangerModalOpen}
                 title='Danger modal'
@@ -244,7 +284,7 @@ export function ExampleOverlays({
                 overlayColor='#3b0712'
                 overlayOpacity={0.48}
                 overlayBlur={3}
-                borderColor='color-mix(in srgb, var(--oui-danger) 46%, var(--oui-border))'
+                borderColor='color-mix(in srgb, var(--oui-danger-base) 46%, var(--oui-border))'
                 radius={8}
                 footer={
                     <Flex g={2} j='e' w='100%'>
@@ -267,7 +307,7 @@ export function ExampleOverlays({
                     </Text>
                     <TextField value='Archive selected record' readOnly />
                 </Stack>
-            </Modal>
+            </ExampleModal>
 
             <CommandPalette
                 open={paletteOpen}

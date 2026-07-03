@@ -4,6 +4,7 @@ import {
     forwardRef,
     useContext,
     type ButtonHTMLAttributes,
+    type Ref,
     type ReactNode,
 } from 'react';
 
@@ -12,10 +13,13 @@ import {
     splitSystemProps,
     type SystemProps,
     type Tone,
+    type ToneInput,
     type UiSize,
+    normalizeTone,
 } from '../../theme/systemProps';
 import {OrcestrThemeContext} from '../../theme/useTheme';
 import type {ButtonPressAnimation} from '../../theme/themeTypes';
+import {renderSlot} from '../../utils/slot';
 import {Spinner} from '../Spinner/Spinner';
 
 export type ButtonVariant = 'solid' | 'soft' | 'surface' | 'pad' | 'ghost' | 'outline';
@@ -24,12 +28,14 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
     SystemProps & {
         size?: UiSize;
         v?: ButtonVariant;
-        tone?: Tone;
+        tone?: ToneInput;
         loading?: boolean;
         fullWidth?: boolean;
         leftIcon?: ReactNode;
         rightIcon?: ReactNode;
         pressAnimation?: ButtonPressAnimation;
+        asChild?: boolean;
+        children?: ReactNode;
         testId?: string;
     };
 
@@ -45,6 +51,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
         leftIcon,
         rightIcon,
         pressAnimation,
+        asChild = false,
         testId,
         children,
         disabled,
@@ -57,21 +64,33 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     const actualPressAnimation =
         pressAnimation ?? themeContext?.theme.motion.pressAnimation ?? 'soft';
     const {systemStyle, restProps} = splitSystemProps(props);
+    const commonProps = {
+        className: cn('oui-button', fullWidth && 'oui-button-full', className),
+        'data-size': size,
+        'data-variant': v,
+        'data-tone': normalizeTone(tone),
+        'data-press-animation': actualPressAnimation,
+        'data-loading': loading ? 'true' : undefined,
+        'data-testid': testId,
+        'aria-busy': loading || undefined,
+        style: {...systemStyle, ...style},
+        ...restProps,
+    };
+
+    if (asChild) {
+        return renderSlot(children, {
+            ...commonProps,
+            ref: ref as Ref<HTMLElement>,
+            'aria-disabled': disabled || loading ? true : undefined,
+        });
+    }
+
     return (
         <button
             ref={ref}
             type={type}
-            className={cn('oui-button', fullWidth && 'oui-button-full', className)}
-            data-size={size}
-            data-variant={v}
-            data-tone={tone}
-            data-press-animation={actualPressAnimation}
-            data-loading={loading ? 'true' : undefined}
-            data-testid={testId}
-            aria-busy={loading ? 'true' : undefined}
+            {...commonProps}
             disabled={disabled || loading}
-            style={{...systemStyle, ...style}}
-            {...restProps}
         >
             {loading ? <Spinner size={1} /> : leftIcon}
             <span className='oui-button-label'>{children}</span>

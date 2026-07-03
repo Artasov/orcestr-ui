@@ -11,7 +11,7 @@ import {
     type CSSProperties,
     type ReactNode,
 } from 'react';
-import {LuX} from 'react-icons/lu';
+import {LuCircleAlert, LuCircleCheck, LuCircleX, LuInfo, LuX} from 'react-icons/lu';
 
 import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
 import {Button} from '../Button/Button';
@@ -38,6 +38,7 @@ export type ToastOptions = {
     title: ReactNode;
     message?: ReactNode;
     tone?: ToastTone;
+    icon?: ReactNode | false;
     position?: ToastPosition;
     background?: string;
     blur?: number | string | false;
@@ -286,6 +287,7 @@ function ToastCard({
     const {copy} = useOrcestrUiLocale();
     const duration = toastDuration(item);
     const hasProgress = item.duration !== null && duration > 0;
+    const icon = item.icon === false ? null : item.icon ?? toastIcon(item.tone);
     const effectiveBlur =
         item.blur !== undefined ? cssLength(item.blur) : 'var(--oui-toast-blur, 14px)';
     const style = {
@@ -326,28 +328,35 @@ function ToastCard({
                     if (item.dismissible !== false) onDismiss(item.id);
                 }}
             >
-                <div className='oui-toast-main'>
-                    <div className='oui-toast-title'>{item.title}</div>
-                    {item.message ? (
-                        <div className='oui-toast-message'>{item.message}</div>
+                <div className='oui-toast-content'>
+                    {icon ? (
+                        <span className='oui-toast-icon' data-tone={item.tone}>
+                            {icon}
+                        </span>
                     ) : null}
-                    {item.action ? (
-                        <Button
-                            className='oui-toast-action'
-                            size={1}
-                            v='surface'
-                            tone={item.tone}
-                            onClick={(event) => {
-                                event.stopPropagation();
-                                item.action?.onClick();
-                                if (item.action?.closeOnClick !== false) {
-                                    onDismiss(item.id);
-                                }
-                            }}
-                        >
-                            {item.action.label}
-                        </Button>
-                    ) : null}
+                    <div className='oui-toast-main'>
+                        <div className='oui-toast-title'>{item.title}</div>
+                        {item.message ? (
+                            <div className='oui-toast-message'>{item.message}</div>
+                        ) : null}
+                        {item.action ? (
+                            <Button
+                                className='oui-toast-action'
+                                size={1}
+                                v='surface'
+                                tone={item.tone}
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    item.action?.onClick();
+                                    if (item.action?.closeOnClick !== false) {
+                                        onDismiss(item.id);
+                                    }
+                                }}
+                            >
+                                {item.action.label}
+                            </Button>
+                        ) : null}
+                    </div>
                 </div>
                 {item.closeButton ? (
                     <IconButton
@@ -381,6 +390,14 @@ function cssLength(value: number | string | false) {
 
 function toastDuration(item: ToastItem) {
     return item.duration ?? DEFAULT_TOAST_DURATION;
+}
+
+function toastIcon(tone: ToastTone) {
+    const size = 26;
+    if (tone === 'success') return <LuCircleCheck size={size} />;
+    if (tone === 'warning') return <LuCircleAlert size={size} />;
+    if (tone === 'danger') return <LuCircleX size={size} />;
+    return <LuInfo size={size} />;
 }
 
 function limitToastItems(items: ToastItem[], maxVisible: number) {

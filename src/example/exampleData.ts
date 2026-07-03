@@ -27,10 +27,10 @@ export const navGroups: ExampleNavGroup[] = [
         key: 'layout',
         label: 'Layout',
         items: [
-            {id: 'app-shell-example', label: 'AppShell'},
             {id: 'flex-example', label: 'Flex'},
             {id: 'stack-example', label: 'Stack'},
             {id: 'collapse-example', label: 'Collapse'},
+            {id: 'surfaces-example', label: 'Surfaces'},
             {id: 'grid-example', label: 'Grid'},
             {id: 'highlight-primitives-example', label: 'Highlights'},
             {id: 'scroll-area-example', label: 'ScrollArea'},
@@ -42,7 +42,9 @@ export const navGroups: ExampleNavGroup[] = [
         label: 'Actions',
         items: [
             {id: 'buttons-example', label: 'Buttons'},
+            {id: 'icon-text-buttons-example', label: 'Icon text buttons'},
             {id: 'icon-buttons-example', label: 'Icon buttons'},
+            {id: 'context-menu-example', label: 'Context menu'},
         ],
     },
     {
@@ -51,6 +53,7 @@ export const navGroups: ExampleNavGroup[] = [
         items: [
             {id: 'text-fields-example', label: 'Text fields'},
             {id: 'grouped-fields-example', label: 'Grouped fields'},
+            {id: 'inline-edit-example', label: 'Inline edit'},
             {id: 'number-date-fields-example', label: 'Number and date'},
             {id: 'date-range-example', label: 'Date range'},
         ],
@@ -69,6 +72,7 @@ export const navGroups: ExampleNavGroup[] = [
         label: 'States',
         items: [
             {id: 'state-card-example', label: 'StateCard'},
+            {id: 'badges-example', label: 'Badge'},
         ],
     },
     {
@@ -76,6 +80,7 @@ export const navGroups: ExampleNavGroup[] = [
         label: 'Data',
         items: [
             {id: 'data-table-example', label: 'DataTable'},
+            {id: 'table-primitives-example', label: 'Table and pagination'},
         ],
     },
     {
@@ -85,6 +90,15 @@ export const navGroups: ExampleNavGroup[] = [
             {id: 'overlay-primitives-example', label: 'Overlay primitives'},
             {id: 'toast-example', label: 'Toast'},
             {id: 'overlay-settings-example', label: 'Overlay settings'},
+        ],
+    },
+    {
+        key: 'application',
+        label: 'Application',
+        items: [
+            {id: 'app-shell-example', label: 'AppShell'},
+            {id: 'app-sidebar-example', label: 'AppSidebar'},
+            {id: 'special-modal-example', label: 'SpecialModal'},
         ],
     },
 ];
@@ -148,7 +162,7 @@ const enCommandItems: CommandPaletteItem[] = [
     {
         key: 'create-record',
         label: 'Create record',
-        description: 'Start a new workflow.',
+        description: 'Start a new record.',
         shortcut: 'C',
         group: 'Create',
     },

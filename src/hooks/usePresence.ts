@@ -1,21 +1,25 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 export function usePresence(open: boolean, durationMs = 220) {
     const [present, setPresent] = useState(open);
     const [state, setState] = useState<'opening' | 'open' | 'closed' | 'closing'>(
         open ? 'open' : 'closed',
     );
+    const previousOpenRef = useRef(open);
 
     useEffect(() => {
+        if (previousOpenRef.current === open) return;
+        previousOpenRef.current = open;
+
         let frame = 0;
         let timer = 0;
 
         if (open) {
+            setState('opening');
+            setPresent(true);
             frame = window.requestAnimationFrame(() => {
-                setPresent(true);
-                setState('opening');
                 timer = window.setTimeout(() => setState('open'), durationMs);
             });
             return () => {
@@ -24,10 +28,8 @@ export function usePresence(open: boolean, durationMs = 220) {
             };
         }
 
-        if (!present) return;
-
+        setState('closing');
         frame = window.requestAnimationFrame(() => {
-            setState('closing');
             timer = window.setTimeout(() => {
                 setPresent(false);
                 setState('closed');
@@ -37,7 +39,7 @@ export function usePresence(open: boolean, durationMs = 220) {
             window.cancelAnimationFrame(frame);
             window.clearTimeout(timer);
         };
-    }, [durationMs, open, present]);
+    }, [durationMs, open]);
 
     return {present, state};
 }

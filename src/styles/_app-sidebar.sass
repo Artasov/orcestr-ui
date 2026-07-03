@@ -1,0 +1,172 @@
+.oui-app-sidebar
+    display: flex
+    height: 100%
+    min-height: 0
+    flex-direction: column
+    overflow: hidden
+    color: var(--oui-text)
+    background: var(--color-background, var(--oui-bg))
+
+.oui-app-sidebar-head
+    display: flex
+    flex: 0 0 61px
+    min-height: 61px
+    align-items: center
+    justify-content: space-between
+    gap: 8px
+    border-bottom: 1px solid var(--gray-a4, var(--oui-border))
+    padding: 0 16px
+    background: var(--color-background, var(--oui-bg))
+
+.oui-app-sidebar[data-side="right"] .oui-app-sidebar-head
+    flex-direction: row-reverse
+
+.oui-app-sidebar-brand
+    display: flex
+    min-width: 0
+    flex: 1 1 auto
+    align-items: center
+    gap: 8px
+
+.oui-app-sidebar[data-side="right"] .oui-app-sidebar-brand
+    flex-direction: row-reverse
+
+.oui-app-sidebar-logo
+    display: inline-flex
+    flex: 0 0 auto
+    align-items: center
+    justify-content: center
+
+.oui-app-sidebar-logo img
+    display: block
+
+.oui-app-sidebar-title
+    min-width: 0
+    overflow: hidden
+    font-size: 18px
+    line-height: 1.15
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-app-sidebar-actions
+    display: inline-flex
+    flex: 0 0 auto
+    align-items: center
+    gap: 8px
+
+.oui-app-sidebar[data-side="right"] .oui-app-sidebar-actions
+    flex-direction: row-reverse
+
+.oui-app-sidebar-scroll
+    display: flex
+    min-height: 0
+    flex: 1 1 auto
+
+.oui-app-sidebar-scroll > .oui-scroll-area-viewport
+    min-height: 0
+    flex: 1 1 auto
+
+.oui-app-sidebar-content
+    position: relative
+    min-width: 0
+    padding: 16px 16px 24px
+
+.oui-app-sidebar-indicator
+    position: absolute
+    top: 0
+    right: 16px
+    left: 16px
+    z-index: 0
+    height: var(--oui-app-sidebar-item-h, 40px)
+    border-radius: var(--radius-3, var(--oui-radius-sm))
+    background: var(--gray-a4, var(--oui-soft))
+    opacity: 0
+    pointer-events: none
+    transform: translateY(0)
+    transition: transform 600ms cubic-bezier(.22, 1, .36, 1), opacity 180ms ease
+
+.oui-app-sidebar-groups
+    position: relative
+    z-index: 1
+    display: flex
+    flex-direction: column
+    gap: 12px
+
+.oui-app-sidebar-group
+    display: flex
+    min-width: 0
+    flex-direction: column
+    gap: 12px
+
+.oui-app-sidebar-separator,
+.oui-app-sidebar-footer-separator
+    width: 100%
+
+.oui-app-sidebar-nav
+    display: flex
+    min-width: 0
+    flex-direction: column
+    gap: 4px
+
+.oui-app-sidebar-item
+    display: flex
+    width: 100%
+    height: var(--oui-app-sidebar-item-h, 40px)
+    min-width: 0
+    align-items: center
+    justify-content: flex-start
+    gap: 10px
+    border: 0
+    border-radius: var(--radius-3, var(--oui-radius-sm))
+    padding: 0 12px
+    color: var(--gray-11, var(--oui-muted))
+    background: transparent
+    font: inherit
+    text-align: left
+    text-decoration: none
+    cursor: pointer
+    transition: color 280ms ease
+
+.oui-app-sidebar[data-side="right"] .oui-app-sidebar-item
+    flex-direction: row-reverse
+    text-align: right
+
+.oui-app-sidebar-item:hover,
+.oui-app-sidebar-item:focus-visible
+    color: var(--gray-12, var(--oui-text))
+    outline: none
+
+.oui-app-sidebar-item:focus-visible
+    box-shadow: var(--oui-ring)
+
+.oui-app-sidebar-item[data-sidebar-active="true"]
+    color: var(--gray-12, var(--oui-text))
+
+.oui-app-sidebar-item:disabled
+    cursor: not-allowed
+    opacity: .55
+
+.oui-app-sidebar-item-icon
+    display: inline-flex
+    flex: 0 0 auto
+    color: var(--oui-app-sidebar-icon-color, currentColor)
+    transition: color 280ms ease
+
+.oui-app-sidebar-item[data-sidebar-active="true"] .oui-app-sidebar-item-icon
+    color: var(--oui-primary-text)
+
+.oui-app-sidebar-item-label
+    min-width: 0
+    flex: 1 1 auto
+    overflow: hidden
+    font-size: 14px
+    line-height: 1rem
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-app-sidebar[data-side="right"] .oui-app-sidebar-item-label
+    text-align: right
+
+.oui-app-sidebar-footer
+    flex: 0 0 auto
+    padding: 16px

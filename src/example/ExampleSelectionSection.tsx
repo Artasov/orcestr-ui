@@ -8,6 +8,7 @@ import {
     Combobox,
     EntityPicker,
     MultiSelect,
+    PaginatedCombobox,
     RadioGroup,
     SegmentedControl,
     Select,
@@ -42,6 +43,8 @@ type SelectionSectionProps = {
     onComboValueChange: (value: string | null) => void;
     entityValue: EntityOption | null;
     onEntityValueChange: (value: EntityOption | null) => void;
+    paginatedValue: EntityOption | null;
+    onPaginatedValueChange: (value: EntityOption | null) => void;
     ownerValues: string[];
     onOwnerValuesChange: (value: string[]) => void;
     radioValue: string;
@@ -66,6 +69,8 @@ export function SelectionSection({
     onComboValueChange,
     entityValue,
     onEntityValueChange,
+    paginatedValue,
+    onPaginatedValueChange,
     ownerValues,
     onOwnerValuesChange,
     radioValue,
@@ -88,7 +93,7 @@ export function SelectionSection({
         <UiExampleSection
             id='selects-example'
             title='Selects'
-            description='Select, Combobox, MultiSelect, EntityPicker and SegmentedControl.'
+            description='Select, Combobox, MultiSelect, EntityPicker wrapper, lower-level PaginatedCombobox and SegmentedControl.'
         >
                 <ExampleTile
                         title='Selects and comboboxes'
@@ -161,6 +166,36 @@ export function SelectionSection({
                         createAction={{
                             label: copy.createEntityFromSearch,
                             onCreate: (search) =>
+                                onToast(copy.createEntityToast(search), 'info'),
+                        }}
+                        optionAction={{
+                            icon: <LuPlus size={14} />,
+                            label: (item) => copy.addEntity(item.article),
+                            onClick: (item) =>
+                                onToast(copy.entityAction(item.article), 'success'),
+                        }}
+                    />
+                    <PaginatedCombobox<EntityOption>
+                        value={paginatedValue}
+                        onChange={onPaginatedValueChange}
+                        loadPage={loadLocalizedEntityPage}
+                        getItemId={(item) => item.id}
+                        renderSelectedLabel={(item) => item.article}
+                        renderOption={(item) => (
+                            <span className='oui-entity-option-main'>
+                                <span className='oui-entity-option-code'>
+                                    {item.article}
+                                </span>
+                                <span className='oui-entity-option-meta'>
+                                    {item.name}
+                                </span>
+                            </span>
+                        )}
+                        placeholder='Paginated combobox'
+                        clearable
+                        searchAction={{
+                            label: copy.createEntityFromSearch,
+                            onClick: (search) =>
                                 onToast(copy.createEntityToast(search), 'info'),
                         }}
                         optionAction={{

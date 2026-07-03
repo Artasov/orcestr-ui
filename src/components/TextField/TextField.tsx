@@ -55,6 +55,8 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             onChange,
             disabled,
             id,
+            children: _children,
+            dangerouslySetInnerHTML: _dangerouslySetInnerHTML,
             ...props
         },
         ref,

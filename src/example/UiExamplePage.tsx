@@ -3,9 +3,17 @@
 import {useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction} from 'react';
 import {
     LuBell,
+    LuBox,
+    LuCalendar,
     LuCheck,
+    LuClipboardList,
     LuExternalLink,
+    LuFileText,
+    LuLayoutDashboard,
+    LuMousePointerClick,
+    LuPanelTop,
     LuRefreshCw,
+    LuSettings,
     LuTrash2,
 } from 'react-icons/lu';
 
@@ -13,8 +21,7 @@ import {
     AppShell,
     AppShellContent,
     AppShellHeader,
-    AppShellNav,
-    AppShellSidebar,
+    AppSidebar,
     OrcestrUiProvider,
     ScrollArea,
     useOrcestrTheme,
@@ -25,12 +32,13 @@ import {
 } from '..';
 import {LayoutSection, TypographySection} from './ExampleBasicsSections';
 import {ActionsSection} from './ExampleActionsSection';
+import {ApplicationSection} from './ExampleApplicationSection';
 import {FieldsSection} from './ExampleFieldsSection';
 import {SelectionSection} from './ExampleSelectionSection';
 import {DataSection} from './ExampleDataSection';
 import {OverlaysSection} from './ExampleOverlaysSection';
 import {FoundationsSection} from './ExampleFoundationsSection';
-import {IconTextSection, StateCardSection} from './ExampleStateSection';
+import {BadgeSection, IconTextSection, StateCardSection} from './ExampleStateSection';
 import {
     ExampleThemePlayground,
     getThemePlaygroundPreset,
@@ -104,6 +112,7 @@ function UiExampleContent({
     const [selectPlainValue, setSelectPlainValue] = useState<string | null>('blocked');
     const [comboValue, setComboValue] = useState<string | null>('ready');
     const [entityValue, setEntityValue] = useState<EntityOption | null>(null);
+    const [paginatedValue, setPaginatedValue] = useState<EntityOption | null>(null);
     const [ownerValues, setOwnerValues] = useState<string[]>(['anna', 'ops']);
     const [radioValue, setRadioValue] = useState('manual');
     const [tabValue, setTabValue] = useState('overview');
@@ -244,22 +253,15 @@ function UiExampleContent({
                         />
                     }
                 >
-                    <UiExampleBrand compact />
+                    <UiExampleHeaderTitle locale={locale} />
                 </AppShellHeader>
             }
             sidebar={
-                <AppShellSidebar
-                    title={<UiExampleBrand />}
-                    onClose={() => setMobileNavOpen(false)}
-                >
-                    <UiExampleSidebar onNavigate={() => setMobileNavOpen(false)} />
-                </AppShellSidebar>
+                <UiExampleSidebar onNavigate={() => setMobileNavOpen(false)} />
             }
         >
             <div className='oui-ui-workspace'>
                 <div className='oui-ui-workspace-main'>
-                    <UiExampleTopBar locale={locale} onLocaleChange={onLocaleChange} />
-
                     <AppShellContent>
                         <ExampleThemePlayground
                             activePresetId={activePresetId}
@@ -304,6 +306,8 @@ function UiExampleContent({
                             onComboValueChange={setComboValue}
                             entityValue={entityValue}
                             onEntityValueChange={setEntityValue}
+                            paginatedValue={paginatedValue}
+                            onPaginatedValueChange={setPaginatedValue}
                             ownerValues={ownerValues}
                             onOwnerValuesChange={setOwnerValues}
                             radioValue={radioValue}
@@ -314,6 +318,7 @@ function UiExampleContent({
                             onToast={toast.push}
                         />
                         <StateCardSection onOpenCode={setCodeExample} />
+                        <BadgeSection onOpenCode={setCodeExample} />
                         <DataSection onOpenCode={setCodeExample} />
                         <OverlaysSection
                             setModalOpen={setModalOpen}
@@ -324,6 +329,7 @@ function UiExampleContent({
                             setDangerModalOpen={setDangerModalOpen}
                             onOpenCode={setCodeExample}
                         />
+                        <ApplicationSection onOpenCode={setCodeExample} />
                     </AppShellContent>
                 </div>
                 <UiExampleThemeRail
@@ -517,17 +523,18 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
         setActiveSectionValue(id);
         lockScrollNavigationTarget(id);
         window.history.replaceState(null, '', `#${id}`);
-        scrollUiExampleSection(id);
+        scrollUiExampleSection(id, 'smooth');
         onNavigate();
     }, [lockScrollNavigationTarget, onNavigate, setActiveSectionValue]);
 
     const sidebarNavGroups = useMemo(
         () =>
             navGroups.map((group) => ({
-                ...group,
+                key: group.key,
                 items: group.items.map((item) => ({
                     key: item.id,
                     label: item.label,
+                    icon: uiExampleNavIcon(item.id),
                     active: activeSection === item.id,
                     onSelect: () => navigateToSection(item.id),
                 })),
@@ -536,24 +543,26 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
     );
 
     return (
-        <div className='oui-ui-sidebar-groups'>
-            {sidebarNavGroups.map((group) => (
-                <div key={group.key} className='oui-ui-sidebar-group'>
-                    <div className='oui-ui-sidebar-group-label'>{group.label}</div>
-                    <AppShellNav className='oui-ui-sidebar-nav' items={group.items} />
-                </div>
-            ))}
-        </div>
+        <AppSidebar
+            className='oui-ui-main-sidebar'
+            header={<UiExampleBrand />}
+            itemH={34}
+            groups={sidebarNavGroups}
+            footer={(
+                <button
+                    type='button'
+                    className='oui-ui-sidebar-footer-action'
+                    onClick={() => navigateToSection('app-shell-example')}
+                >
+                    <LuSettings size={15} aria-hidden />
+                    <span>Application components</span>
+                </button>
+            )}
+        />
     );
 }
 
-function UiExampleTopBar({
-    locale,
-    onLocaleChange,
-}: {
-    locale: OrcestrUiLocale;
-    onLocaleChange: (locale: OrcestrUiLocale) => void;
-}) {
+function UiExampleHeaderTitle({locale}: {locale: OrcestrUiLocale}) {
     const title = locale === 'ru'
         ? 'Единый язык компонентов для всех модулей.'
         : 'One component language for every module.';
@@ -562,14 +571,27 @@ function UiExampleTopBar({
         : 'One theme, predictable interface.';
 
     return (
-        <header className='oui-ui-topbar'>
-            <div className='oui-ui-topbar-slogan'>
-                <strong>{title}</strong>
-                <span>{subtitle}</span>
-            </div>
-            <UiExampleHeaderActions locale={locale} onLocaleChange={onLocaleChange} />
-        </header>
+        <div className='oui-ui-header-title'>
+            <strong>{title}</strong>
+            <span>{subtitle}</span>
+        </div>
     );
+}
+
+function uiExampleNavIcon(id: string) {
+    const size = 16;
+    if (id === 'theme') return <LuSettings size={size} />;
+    if (id === 'foundations') return <LuLayoutDashboard size={size} />;
+    if (id === 'buttons-example') return <LuMousePointerClick size={size} />;
+    if (id === 'text-fields-example') return <LuFileText size={size} />;
+    if (id === 'selects-example') return <LuCheck size={size} />;
+    if (id === 'data-table-example') return <LuClipboardList size={size} />;
+    if (id === 'toast-example') return <LuBell size={size} />;
+    if (id === 'app-shell-example') return <LuPanelTop size={size} />;
+    if (id === 'app-sidebar-example') return <LuLayoutDashboard size={size} />;
+    if (id === 'special-modal-example') return <LuBox size={size} />;
+    if (id === 'date-range-example') return <LuCalendar size={size} />;
+    return null;
 }
 
 function UiExampleBrand({compact = false}: {compact?: boolean}) {
@@ -595,7 +617,7 @@ function UiExampleHeaderActions({
     onLocaleChange: (locale: OrcestrUiLocale) => void;
 }) {
     return (
-        <div className='oui-ui-topbar-actions' data-compact={compact ? 'true' : undefined}>
+        <div className='oui-ui-header-actions' data-compact={compact ? 'true' : undefined}>
             <span className='oui-ui-language-switch' aria-label='UI example language'>
                 <span className='oui-ui-language-label'>
                     {locale === 'ru' ? 'Язык' : 'Language'}
@@ -614,7 +636,7 @@ function UiExampleHeaderActions({
                 ))}
             </span>
             <a
-                className='oui-ui-topbar-link'
+                className='oui-ui-header-link'
                 href='https://github.com/Artasov/orcestr'
                 target='_blank'
                 rel='noreferrer'

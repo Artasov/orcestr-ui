@@ -36,6 +36,7 @@ export type AppShellProps = ComponentPropsWithoutRef<'div'> &
     SystemProps & {
         sidebar: ReactNode;
         header?: ReactNode;
+        sidebarMode?: 'auto' | 'desktop' | 'mobile';
         sidebarOpen?: boolean;
         onSidebarOpenChange?: (open: boolean) => void;
         sidebarWidth?: number | string;
@@ -50,6 +51,7 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
         style,
         sidebar,
         header,
+        sidebarMode = 'auto',
         sidebarOpen = false,
         onSidebarOpenChange,
         sidebarWidth = 260,
@@ -61,8 +63,10 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
     },
     ref,
 ) {
-    const [drawerMode, setDrawerMode] = useState(false);
+    const [autoDrawerMode, setAutoDrawerMode] = useState(false);
     const {systemStyle, restProps} = splitSystemProps(props);
+    const drawerMode =
+        sidebarMode === 'auto' ? autoDrawerMode : sidebarMode === 'mobile';
     const shellStyle = {
         '--oui-app-shell-sidebar-width': shellSizeValue(sidebarWidth),
         '--oui-app-shell-max-width': shellSizeValue(maxWidth),
@@ -72,12 +76,13 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
     } as CSSProperties;
 
     useEffect(() => {
+        if (sidebarMode !== 'auto') return;
         const media = window.matchMedia('(max-width: 860px)');
-        const update = () => setDrawerMode(media.matches);
+        const update = () => setAutoDrawerMode(media.matches);
         update();
         media.addEventListener('change', update);
         return () => media.removeEventListener('change', update);
-    }, []);
+    }, [sidebarMode]);
 
     return (
         <div
@@ -102,6 +107,7 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
                         side='left'
                         size={sidebarWidth}
                         showCloseButton={false}
+                        backdropClassName='oui-app-shell-sidebar-drawer-overlay'
                         panelClassName='oui-app-shell-sidebar-drawer-panel'
                         bodyClassName='oui-app-shell-sidebar-drawer-body'
                         testId={testId ? `${testId}-sidebar-drawer` : undefined}
@@ -384,7 +390,7 @@ export const PageTitleBlock = forwardRef<HTMLDivElement, PageTitleBlockProps>(
                 <div className='oui-page-title-main'>
                     <div className='oui-page-title-row'>
                         <h1 className='oui-page-title'>{title}</h1>
-                        {badge ? <Badge tone='brand'>{badge}</Badge> : null}
+                        {badge ? <Badge tone='primary'>{badge}</Badge> : null}
                     </div>
                     {caption ? <p className='oui-page-title-caption'>{caption}</p> : null}
                 </div>

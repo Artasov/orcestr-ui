@@ -8,28 +8,62 @@
     gap: 10px
     border: 1px solid transparent
     border-radius: var(--oui-radius)
+    color: var(--oui-text)
     background: var(--oui-section-surface-bg)
     font-size: 14px
     padding: 12px
+
+.oui-state-card[data-variant="surface"]
+    border-color: var(--oui-border)
+    background: var(--oui-section-surface-bg)
+
+.oui-state-card[data-variant="outline"]
+    border-color: var(--oui-border-strong)
+    background: transparent
+
+.oui-state-card[data-variant="ghost"]
+    border-color: transparent
+    background: transparent
 
 .oui-state-card[data-compact="true"]
     gap: 8px
     padding: 9px
 
-.oui-state-card[data-tone="brand"]
-    background: var(--oui-brand-soft)
+.oui-state-card[data-variant="soft"][data-tone="primary"]
+    background: var(--oui-primary-surface)
 
-.oui-state-card[data-tone="success"]
-    background: var(--oui-success-soft)
+.oui-state-card[data-variant="soft"][data-tone="secondary"]
+    background: var(--oui-secondary-surface)
 
-.oui-state-card[data-tone="warning"]
-    background: var(--oui-warning-soft)
+.oui-state-card[data-variant="soft"][data-tone="success"]
+    background: var(--oui-success-surface)
 
-.oui-state-card[data-tone="danger"]
-    background: var(--oui-danger-soft)
+.oui-state-card[data-variant="soft"][data-tone="warning"]
+    background: var(--oui-warning-surface)
 
-.oui-state-card[data-tone="info"]
-    background: var(--oui-info-soft)
+.oui-state-card[data-variant="soft"][data-tone="danger"]
+    background: var(--oui-danger-surface)
+
+.oui-state-card[data-variant="soft"][data-tone="info"]
+    background: var(--oui-info-surface)
+
+.oui-state-card[data-variant="outline"][data-tone="primary"]
+    border-color: var(--oui-status-primary-border, var(--oui-primary-base))
+
+.oui-state-card[data-variant="outline"][data-tone="secondary"]
+    border-color: var(--oui-status-secondary-border, var(--oui-secondary-base))
+
+.oui-state-card[data-variant="outline"][data-tone="success"]
+    border-color: var(--oui-status-success-border, var(--oui-success-base))
+
+.oui-state-card[data-variant="outline"][data-tone="warning"]
+    border-color: var(--oui-status-warning-border, var(--oui-warning-base))
+
+.oui-state-card[data-variant="outline"][data-tone="danger"]
+    border-color: var(--oui-status-danger-border, var(--oui-danger-base))
+
+.oui-state-card[data-variant="outline"][data-tone="info"]
+    border-color: var(--oui-status-info-border, var(--oui-info-base))
 
 .oui-state-card-main
     display: flex
@@ -48,7 +82,6 @@
 .oui-state-card-description
     display: block
     overflow-wrap: anywhere
-    color: var(--oui-text)
 
 .oui-state-card-action
     display: inline-flex

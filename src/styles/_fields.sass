@@ -37,7 +37,7 @@
 
 .oui-text-field[data-invalid="true"],
 .oui-text-area[data-invalid="true"]
-    border-color: var(--oui-danger)
+    border-color: var(--oui-danger-base)
 
 .oui-text-field[data-disabled="true"]
     opacity: 0.62
@@ -101,7 +101,7 @@
 
 .oui-field-required,
 .oui-field-error
-    color: var(--oui-danger)
+    color: var(--oui-danger-base)
 
 .oui-field-helper
     color: var(--oui-muted)
@@ -121,7 +121,7 @@
 .oui-text-area
     background-clip: border-box
     background-color: var(--oui-control-bg, transparent)
-    border: 1px solid color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border: 1px solid var(--oui-field-border-color, var(--oui-border))
     border-radius: 6px
     box-shadow: none
     outline: none
@@ -129,13 +129,13 @@
 
 .oui-text-field:hover,
 .oui-text-area:hover
-    border-color: var(--oui-gray-a8)
+    border-color: var(--oui-field-border-hover-color, var(--oui-border-strong))
 
 .oui-text-field:focus-within,
 .oui-text-field:has(.oui-text-field-input:focus),
 .oui-text-area:focus,
 .oui-text-area:focus-within
-    border-color: var(--oui-brand)
+    border-color: var(--oui-primary-base)
     box-shadow: none
     outline: none
 
@@ -193,7 +193,7 @@
 
 .oui-text-field[data-invalid="true"],
 .oui-text-area[data-invalid="true"]
-    border-color: var(--oui-danger)
+    border-color: var(--oui-danger-base)
 
 .oui-text-field[data-disabled="true"],
 .oui-text-area:disabled
@@ -209,6 +209,7 @@
     border-color: transparent
 
 .oui-date-picker-trigger
+    appearance: none
     display: inline-flex
     align-items: center
     justify-content: center
@@ -220,6 +221,7 @@
     padding: 0
     color: var(--oui-muted)
     background: transparent
+    font: inherit
     cursor: pointer
     transition: background-color 140ms ease, color 140ms ease
 
@@ -228,6 +230,10 @@
     color: var(--oui-text)
     background: var(--oui-control-hover-bg, var(--oui-gray-a4))
     outline: none
+
+.oui-date-picker-trigger:disabled
+    cursor: not-allowed
+    opacity: var(--oui-state-disabled-opacity, .56)
 
 .oui-date-picker-popover
     width: 292px
@@ -297,9 +303,9 @@
     border-color: var(--oui-border-strong)
 
 .oui-date-picker-day[data-selected="true"]
-    border-color: var(--oui-brand)
-    color: var(--oui-brand-text)
-    background: var(--oui-brand-soft)
+    border-color: var(--oui-primary-base)
+    color: var(--oui-primary-contrast)
+    background: var(--oui-primary-surface)
     font-weight: 760
 
 .oui-date-picker-day:disabled
@@ -330,11 +336,11 @@
     width: 32px
     min-width: 32px
     background-color: var(--oui-control-bg, transparent)
-    border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border-color: var(--oui-stepper-border-color, var(--oui-field-border-color, var(--oui-border)))
     color: var(--oui-muted)
 
 .oui-stepper .oui-stepper-button:hover:not(:disabled)
-    border-color: var(--oui-gray-a8)
+    border-color: var(--oui-stepper-border-hover-color, var(--oui-field-border-hover-color, var(--oui-border-strong)))
     color: var(--oui-text)
 
 .oui-stepper .oui-stepper-decrease
@@ -379,17 +385,18 @@
 
 .oui-stepper .oui-stepper-field:focus-within
     z-index: 3
-    border-right-color: var(--oui-brand)
-    border-left-color: var(--oui-brand)
+    border-right-color: var(--oui-primary-base)
+    border-left-color: var(--oui-primary-base)
 
 .oui-stepper
-    --oui-stepper-border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    --oui-stepper-border-color: var(--oui-field-border-color, var(--oui-border))
+    --oui-stepper-border-hover-color: var(--oui-field-border-hover-color, var(--oui-border-strong))
 
 .oui-stepper:hover
-    --oui-stepper-border-color: var(--oui-gray-a8)
+    --oui-stepper-border-color: var(--oui-stepper-border-hover-color)
 
 .oui-stepper:focus-within
-    --oui-stepper-border-color: var(--oui-brand)
+    --oui-stepper-border-color: var(--oui-primary-base)
 
 .oui-stepper .oui-stepper-button,
 .oui-stepper .oui-stepper-field
@@ -402,7 +409,7 @@
 .oui-stepper .oui-stepper-field,
 .oui-stepper .oui-stepper-field:hover,
 .oui-stepper .oui-stepper-field:focus-within
-    z-index: auto
+    z-index: 2
     margin-right: 0
     margin-left: 0
     border-right: 0
@@ -410,7 +417,7 @@
 
 .oui-stepper:focus-within .oui-stepper-button,
 .oui-stepper:focus-within .oui-stepper-field
-    border-color: var(--oui-brand)
+    border-color: var(--oui-primary-base)
 
 .oui-field-addon
     display: inline-flex
@@ -418,6 +425,135 @@
     color: var(--oui-muted)
     font-size: 12px
     font-weight: 650
+
+.oui-inline-edit
+    display: inline-grid
+    grid-template-columns: minmax(0, auto) auto auto
+    grid-template-areas: "label extra actions"
+    align-items: center
+    column-gap: 6px
+    row-gap: 2px
+    width: fit-content
+    max-width: 100%
+    min-width: 0
+    border-radius: 6px
+    padding: 2px 4px
+    margin: -2px -4px
+
+.oui-inline-edit-compact
+    grid-template-columns: minmax(0, auto) auto
+    grid-template-areas: "label actions" "extra extra"
+
+.oui-inline-edit[data-disabled="true"]
+    opacity: 0.72
+
+.oui-inline-edit-label
+    grid-area: label
+    appearance: none
+    display: inline-block
+    min-width: 0
+    max-width: 100%
+    border: 0
+    padding: 0
+    margin: 0
+    color: var(--oui-text)
+    background: transparent
+    font: inherit
+    text-align: left
+    cursor: default
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    transition: color 140ms ease
+
+.oui-inline-edit-label:not(:disabled)
+    cursor: pointer
+
+.oui-inline-edit:not([data-disabled="true"]):hover .oui-inline-edit-label,
+.oui-inline-edit:not([data-disabled="true"]):focus-within .oui-inline-edit-label
+    color: var(--oui-primary-base)
+
+.oui-inline-edit-label > *
+    min-width: 0
+    max-width: 100%
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.oui-inline-edit-meta
+    display: contents
+
+.oui-inline-edit-extra
+    grid-area: extra
+    display: inline-flex
+    min-width: 0
+    max-width: 100%
+    justify-self: start
+
+.oui-inline-edit-actions
+    grid-area: actions
+    display: inline-flex
+    align-items: center
+    gap: 4px
+    min-width: 20px
+    min-height: 20px
+    flex: 0 0 auto
+    justify-self: start
+    opacity: 0
+    pointer-events: none
+    transition: opacity 140ms ease
+
+.oui-inline-edit:hover .oui-inline-edit-actions,
+.oui-inline-edit:focus-within .oui-inline-edit-actions,
+.oui-inline-edit[data-busy="true"] .oui-inline-edit-actions
+    opacity: 1
+    pointer-events: auto
+
+.oui-inline-edit-action
+    flex: 0 0 auto
+
+.oui-inline-edit-multi
+    display: inline-flex
+    align-items: center
+    flex-wrap: wrap
+    gap: 4px
+    max-width: 100%
+    min-width: 0
+
+.oui-inline-edit-multi[data-clickable="true"]
+    cursor: pointer
+
+.oui-inline-edit-multi-items
+    display: flex
+    align-items: center
+    flex-wrap: wrap
+    gap: 4px
+    min-width: 0
+    max-width: 100%
+
+.oui-inline-edit-multi[data-col="true"] .oui-inline-edit-multi-items
+    flex-direction: column
+    align-items: flex-start
+
+.oui-inline-edit-multi-actions
+    display: inline-flex
+    align-items: center
+    min-width: 20px
+    min-height: 20px
+    flex: 0 0 auto
+    opacity: 0
+    pointer-events: none
+    transition: opacity 140ms ease
+
+.oui-inline-edit-multi:hover .oui-inline-edit-multi-actions,
+.oui-inline-edit-multi:focus-within .oui-inline-edit-multi-actions,
+.oui-inline-edit-multi[data-busy="true"] .oui-inline-edit-multi-actions
+    opacity: 1
+    pointer-events: auto
+
+.oui-inline-edit-empty
+    color: var(--oui-muted)
+    font-size: 14px
 
 .oui-range-field
     display: grid

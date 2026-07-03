@@ -1,0 +1,57 @@
+.oui-card
+    display: block
+    min-width: 0
+    color: var(--oui-text)
+    background: transparent
+    border: 1px solid transparent
+    border-radius: var(--oui-radius)
+    transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease
+
+.oui-card[data-size="1"]
+    padding: 8px
+
+.oui-card[data-size="2"]
+    padding: 12px
+
+.oui-card[data-size="3"]
+    padding: 16px
+
+.oui-card[data-size="4"]
+    padding: 20px
+
+.oui-card[data-variant="surface"]
+    background: var(--oui-panel)
+    border-color: var(--oui-border)
+
+.oui-card[data-variant="classic"]
+    background: var(--oui-panel)
+    border-color: var(--oui-border)
+    box-shadow: none
+
+.oui-card[data-variant="soft"]
+    background: var(--oui-pad-bg)
+    border-color: color-mix(in srgb, var(--oui-border) 72%, transparent)
+
+.oui-card[data-interactive="true"]
+    cursor: pointer
+
+.oui-card[data-interactive="true"]:hover
+    background: var(--oui-control-hover-bg, var(--oui-gray-a4))
+    border-color: color-mix(in srgb, var(--oui-border-strong) 54%, transparent)
+
+.oui-root[data-oui-theme="light"] .oui-card[data-variant="surface"],
+.oui-root[data-oui-theme="light"] .oui-card[data-variant="classic"],
+:root[data-oui-theme="light"] .oui-card[data-variant="surface"],
+:root[data-oui-theme="light"] .oui-card[data-variant="classic"]
+    box-shadow: 0 1px 2px rgb(0 0 0 / 4%), 0 2px 8px rgb(0 0 0 / 5%)
+
+@media (hover: hover)
+    .oui-root[data-oui-theme="light"] .oui-card[data-variant="surface"][data-interactive="true"]:hover,
+    .oui-root[data-oui-theme="light"] .oui-card[data-variant="classic"][data-interactive="true"]:hover,
+    :root[data-oui-theme="light"] .oui-card[data-variant="surface"][data-interactive="true"]:hover,
+    :root[data-oui-theme="light"] .oui-card[data-variant="classic"][data-interactive="true"]:hover
+        box-shadow: 0 1px 2px color-mix(in srgb, var(--oui-primary-base) 8%, transparent), 0 4px 12px color-mix(in srgb, var(--oui-primary-base) 14%, transparent)
+
+a.oui-card
+    color: inherit
+    text-decoration: none

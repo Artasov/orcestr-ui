@@ -4,6 +4,13 @@ export type OrcestrThemeMode = 'dark' | 'light';
 export type OrcestrThemeSurface = 'orcestr' | 'operations' | 'media' | 'catalog';
 export type ButtonPressAnimation = 'translate' | 'scale' | 'soft' | 'none';
 export type ModalAnimation = 'zoom-blur' | 'rise' | 'fade';
+export type OrcestrThemeColorRole = {
+    base: string;
+    text: string;
+    surface: string;
+    border: string;
+    contrast: string;
+};
 
 export type OrcestrTheme = {
     mode: OrcestrThemeMode;
@@ -18,20 +25,13 @@ export type OrcestrTheme = {
         muted: string;
         border: string;
         borderStrong: string;
-        brand: string;
-        brandStrong: string;
-        brandSolid: string;
-        brandSolidHover: string;
-        brandSoft: string;
-        brandText: string;
-        danger: string;
-        dangerSoft: string;
-        success: string;
-        successSoft: string;
-        warning: string;
-        warningSoft: string;
-        info: string;
-        infoSoft: string;
+        primary: OrcestrThemeColorRole;
+        secondary: OrcestrThemeColorRole;
+        neutral: OrcestrThemeColorRole;
+        danger: OrcestrThemeColorRole;
+        success: OrcestrThemeColorRole;
+        warning: OrcestrThemeColorRole;
+        info: OrcestrThemeColorRole;
         selected: string;
         focusRing: string;
         disabled: string;
@@ -91,7 +91,8 @@ export type OrcestrTheme = {
     };
     status: {
         neutral: OrcestrThemeStatus;
-        brand: OrcestrThemeStatus;
+        primary: OrcestrThemeStatus;
+        secondary: OrcestrThemeStatus;
         success: OrcestrThemeStatus;
         warning: OrcestrThemeStatus;
         danger: OrcestrThemeStatus;
@@ -147,7 +148,6 @@ export type OrcestrTheme = {
         tableHeaderHeight: string;
         fieldGap: string;
         modalMaxWidth: string;
-        pipelineStepMinWidth: string;
     };
 };
 
@@ -159,7 +159,7 @@ export type OrcestrThemeOverrides = Partial<
         | 'typography' | 'status' | 'states' | 'components'
     >
 > & {
-    colors?: Partial<OrcestrTheme['colors']>;
+    colors?: PartialColorOverrides;
     radii?: Partial<OrcestrTheme['radii']>;
     spacing?: Partial<OrcestrTheme['spacing']>;
     breakpoints?: Partial<OrcestrTheme['breakpoints']>;
@@ -185,10 +185,33 @@ type PartialStatusOverrides = Partial<{
     [K in keyof OrcestrTheme['status']]: Partial<OrcestrThemeStatus>;
 }>;
 
+type PartialColorOverrides = Partial<
+    Omit<
+        OrcestrTheme['colors'],
+        | 'primary'
+        | 'secondary'
+        | 'neutral'
+        | 'danger'
+        | 'success'
+        | 'warning'
+        | 'info'
+    >
+> & {
+    [K in
+        | 'primary'
+        | 'secondary'
+        | 'neutral'
+        | 'danger'
+        | 'success'
+        | 'warning'
+        | 'info']?: Partial<OrcestrThemeColorRole>;
+};
+
 export type OrcestrThemeContextValue = {
     mode: OrcestrThemeMode;
     surface: OrcestrThemeSurface;
     theme: OrcestrTheme;
+    cssVariables: CSSProperties;
     setMode: (mode: OrcestrThemeMode) => void;
     setSurface: (surface: OrcestrThemeSurface) => void;
     toggleMode: () => void;

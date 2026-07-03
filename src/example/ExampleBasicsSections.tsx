@@ -3,15 +3,17 @@
 import {useState} from 'react';
 
 import {
-    AppShellNav,
+    Alert,
     Badge,
     Box,
     Button,
+    Card,
     Collapse,
     Flex,
     Grid,
-    PageTitleBlock,
     ScrollArea,
+    Section,
+    Separator,
     Skeleton,
     Stack,
     Text,
@@ -42,7 +44,7 @@ export function TypographySection({onOpenCode}: ExampleSectionProps) {
                     <Stack g={3}>
                         <Stack g={1}>
                             <Text as='h1' fs='28px' fw={780} lh={1.1}>
-                                Workflow review
+                                Operations review
                             </Text>
                             <Text as='h2' fs='20px' fw={720} lh={1.2}>
                                 Review window and status
@@ -57,7 +59,7 @@ export function TypographySection({onOpenCode}: ExampleSectionProps) {
                             <Text fs='12px' tone='muted' lh={1.4}>Caption text, helper text and quiet labels.</Text>
                         </Stack>
                         <Flex g={2} wrap>
-                            <Text tone='brand' fw={700}>Brand</Text>
+                            <Text tone='primary' fw={700}>Primary</Text>
                             <Text tone='success' fw={700}>Success</Text>
                             <Text tone='warning' fw={700}>Warning</Text>
                             <Text tone='danger' fw={700}>Danger</Text>
@@ -70,7 +72,7 @@ export function TypographySection({onOpenCode}: ExampleSectionProps) {
                         </Box>
                         <Flex g={2} wrap>
                             <Badge>Neutral</Badge>
-                            <Badge tone='brand'>Brand</Badge>
+                            <Badge tone='primary'>Primary</Badge>
                             <Badge tone='success'>Success</Badge>
                             <Badge tone='warning'>Warning</Badge>
                             <Badge tone='danger'>Danger</Badge>
@@ -106,33 +108,6 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
     return (
         <>
         <UiExampleSection
-            id='app-shell-example'
-            title='AppShell'
-            description='Shared module frame primitives.'
-        >
-                <ExampleTile
-                        title='AppShell primitives'
-                        code={codeSamples.appShell}
-                        onOpen={onOpenCode}
-                    >
-                    <Stack g={3}>
-                        <PageTitleBlock
-                            title='Operations'
-                            caption='Shared module frame with themed navigation and page actions.'
-                            badge='shell'
-                            action={<Button size={1}>Create</Button>}
-                        />
-                        <AppShellNav
-                            items={[
-                                {key: 'queue', label: 'Queue', caption: 'Daily operations', active: true},
-                                {key: 'status', label: 'Status', caption: 'Inventory control', badge: 12},
-                                {key: 'reports', label: 'Reports', caption: 'Exports and analytics'},
-                            ]}
-                        />
-                    </Stack>
-                </ExampleTile>
-        </UiExampleSection>
-        <UiExampleSection
             id='flex-example'
             title='Flex'
             description='Row and column alignment primitive.'
@@ -145,7 +120,7 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
                     <Flex col g={3}>
                         <Flex row g={2} a='c' j='sb' wrap>
                             <Flex row g={2} a='c' wrap>
-                                <Badge tone='brand'>status</Badge>
+                                <Badge tone='primary'>status</Badge>
                                 <Text fw={700}>Task TASK-2048</Text>
                             </Flex>
                             <Flex row g={1} a='c'>
@@ -197,7 +172,7 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
                                 a='s'
                                 style={{background: 'var(--oui-gray-a3)'}}
                             >
-                                <Box size={8} r={7} mt={1} style={{background: 'var(--oui-brand)'}} />
+                                <Box size={8} r={7} mt={1} style={{background: 'var(--oui-primary-base)'}} />
                                 <Stack g={0}>
                                     <Text fs='13px' fw={700}>{title}</Text>
                                     <Text fs='12px' tone='muted' lh={1.45}>{description}</Text>
@@ -241,6 +216,47 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
                             </Stack>
                         </Collapse>
                     </Stack>
+                </ExampleTile>
+        </UiExampleSection>
+        <UiExampleSection
+            id='surfaces-example'
+            title='Surfaces'
+            description='Card, Section, Separator and Alert primitives.'
+        >
+                <ExampleTile
+                        title='Surfaces'
+                        code={codeSamples.surfaces}
+                        onOpen={onOpenCode}
+                    >
+                    <Section g={3}>
+                        <Grid columns='repeat(auto-fit, minmax(min(100%, 180px), 1fr))' g={2}>
+                            <Card v='surface' interactive>
+                                <Stack g={1}>
+                                    <Text fw={760}>Surface card</Text>
+                                    <Text fs='12px' tone='muted'>Default operational surface.</Text>
+                                </Stack>
+                            </Card>
+                            <Card v='soft'>
+                                <Stack g={1}>
+                                    <Text fw={760}>Soft card</Text>
+                                    <Text fs='12px' tone='muted'>Quiet grouped content.</Text>
+                                </Stack>
+                            </Card>
+                            <Card v='classic'>
+                                <Stack g={1}>
+                                    <Text fw={760}>Classic card</Text>
+                                    <Text fs='12px' tone='muted'>More explicit border and background.</Text>
+                                </Stack>
+                            </Card>
+                        </Grid>
+                        <Separator />
+                        <Alert
+                            title='Inventory sync delayed'
+                            action={<Button size={1} v='surface'>Retry</Button>}
+                        >
+                            Check this status before creating the next shipment.
+                        </Alert>
+                    </Section>
                 </ExampleTile>
         </UiExampleSection>
         <UiExampleSection
@@ -385,7 +401,7 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
                                         a='c'
                                         style={{background: 'var(--oui-gray-a3)'}}
                                     >
-                                        <Badge tone={index < 3 ? 'brand' : 'info'}>
+                                        <Badge tone={index < 3 ? 'primary' : 'info'}>
                                             {index + 1}
                                         </Badge>
                                         <Stack g={0}>

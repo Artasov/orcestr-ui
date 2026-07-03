@@ -1,0 +1,98 @@
+.oui-special-modal-layer
+    overflow: hidden
+    overscroll-behavior: contain
+    padding: 12px 24px
+
+.oui-special-modal
+    max-height: min(90vh, calc(100vh - 24px))
+    min-width: 0
+    overflow: hidden
+    background: var(--oui-panel)
+    border-color: color-mix(in srgb, var(--oui-gray-a8, var(--oui-border-strong)) 48%, transparent)
+    border-radius: 10px
+    box-shadow: var(--oui-special-modal-shadow, 0 8px 20px var(--oui-shadow-soft, rgb(0 0 0 / 48%)))
+
+.oui-special-modal-size-full
+    width: min(calc(100vw - 48px), 1920px) !important
+
+.oui-special-modal-scroll-body
+    display: flex
+    flex-direction: column
+
+.oui-special-modal-scroll-body .oui-special-modal-body
+    min-height: 0
+    overflow: auto
+
+.oui-special-modal-scroll-content
+    overflow: auto
+
+.oui-special-modal-scroll-content .oui-special-modal-body
+    overflow: visible
+
+.oui-special-modal-header,
+.oui-special-modal-footer
+    display: flex
+    min-width: 0
+    align-items: center
+    justify-content: space-between
+    gap: 12px
+    flex: 0 0 auto
+
+.oui-special-modal-header
+    padding: 12px 14px 8px
+
+.oui-special-modal-footer
+    padding: 10px 14px 12px
+
+.oui-special-modal-body
+    min-width: 0
+    padding: 10px 14px 12px
+
+.oui-special-modal-density-compact .oui-special-modal-header
+    padding: 10px 12px 6px
+
+.oui-special-modal-density-compact .oui-special-modal-body
+    padding: 8px 12px 10px
+
+.oui-special-modal-density-compact .oui-special-modal-footer
+    padding: 8px 12px 10px
+
+.oui-special-modal-title-wrap
+    min-width: 0
+
+.oui-special-modal-title
+    margin: 0
+    color: var(--oui-text)
+    font-size: var(--oui-heading-size, 18px)
+    font-weight: var(--oui-weight-bold, 760)
+    line-height: var(--oui-heading-line-height, 1.18)
+    letter-spacing: 0
+
+.oui-special-modal-meta
+    margin-top: 4px
+    color: var(--oui-muted)
+    font-size: var(--oui-compact-size, 13px)
+    line-height: 1.35
+
+.oui-special-modal-actions
+    display: inline-flex
+    flex: 0 0 auto
+    align-items: center
+    gap: 8px
+
+.oui-special-modal-close
+    border: 0
+
+@media (max-width: 768px)
+    .oui-special-modal-layer
+        padding: 0
+
+    .oui-special-modal
+        width: 100dvw !important
+        max-width: 100dvw !important
+        height: 100dvh
+        max-height: 100dvh
+        border-radius: 0
+
+    .oui-special-modal-size-full
+        width: 100dvw !important

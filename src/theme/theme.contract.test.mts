@@ -3,6 +3,8 @@ import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import test from 'node:test';
 
+import {splitSystemProps} from './systemProps.ts';
+
 const root = fileURLToPath(new URL('..', import.meta.url));
 
 function read(path: string): string {
@@ -13,6 +15,11 @@ test('theme contract includes surfaces and full token families', () => {
     const types = read('theme/themeTypes.ts');
     assert.match(types, /OrcestrThemeSurface = 'orcestr' \| 'operations' \| 'media' \| 'catalog'/);
     assert.match(types, /colors: \{/);
+    assert.match(types, /primary: OrcestrThemeColorRole/);
+    assert.match(types, /secondary: OrcestrThemeColorRole/);
+    assert.match(types, /base: string/);
+    assert.match(types, /contrast: string/);
+    assert.doesNotMatch(types, /brandSolid|brandStrong|brandSoft|brandText/);
     assert.match(types, /density: \{/);
     assert.match(types, /radii: \{/);
     assert.match(types, /spacing: \{/);
@@ -23,6 +30,26 @@ test('theme contract includes surfaces and full token families', () => {
     assert.match(types, /motion: \{/);
     assert.match(types, /states: \{/);
     assert.match(types, /components: \{/);
+});
+
+test('system props accept numeric strings as spacing scale values', () => {
+    const {systemStyle, restProps} = splitSystemProps({
+        p: '4',
+        mt: '1',
+        g: '2',
+        mb: '5',
+        py: '6',
+        maxW: 'calc(100vw - 24px)',
+        id: 'sample',
+    });
+
+    assert.equal(systemStyle.padding, '16px');
+    assert.equal(systemStyle.marginTop, '4px');
+    assert.equal(systemStyle.gap, '8px');
+    assert.equal(systemStyle.marginBottom, '24px');
+    assert.equal(systemStyle.paddingBlock, '32px');
+    assert.equal(systemStyle.maxWidth, 'calc(100vw - 24px)');
+    assert.deepEqual(restProps, {id: 'sample'});
 });
 
 test('theme surface registry includes all first-party surfaces', () => {
@@ -38,7 +65,6 @@ test('theme contract keeps only active component tokens', () => {
     const types = read('theme/themeTypes.ts');
     assert.match(types, /tableCellPaddingY: string/);
     assert.match(types, /fieldGap: string/);
-    assert.match(types, /pipelineStepMinWidth: string/);
     assert.doesNotMatch(types, /widgetRadius: string/);
     assert.doesNotMatch(types, /chatBubbleRadius: string/);
     assert.doesNotMatch(types, /composerMinHeight: string/);
@@ -46,21 +72,59 @@ test('theme contract keeps only active component tokens', () => {
 });
 
 test('theme provider exposes component tokens as CSS variables', () => {
+    const types = read('theme/themeTypes.ts');
     const provider = read('theme/ThemeProvider.tsx');
+    const styles = read('styles/_theme.sass');
     assert.match(provider, /--oui-space-page/);
+    assert.match(provider, /--oui-primary-base/);
+    assert.match(provider, /--oui-primary-text/);
+    assert.match(provider, /--oui-secondary-base/);
+    assert.doesNotMatch(provider, /--oui-brand/);
+    assert.doesNotMatch(provider, /--oui-status-brand/);
     assert.match(provider, /--oui-breakpoint-desktop/);
     assert.match(provider, /--oui-state-disabled-opacity/);
-    assert.match(provider, /--oui-pipeline-step-min-width/);
+    assert.match(types, /cssVariables: CSSProperties/);
+    assert.match(provider, /--oui-control-bg': controlBackgroundForMode\(theme\)/);
+    assert.match(provider, /function relativeLuminance/);
+    assert.match(styles, /color-scheme: light/);
+    assert.match(styles, /color-scheme: dark/);
+    assert.match(styles, /--oui-pad-bg: #00000006/);
+    assert.match(styles, /--oui-pad-hover-bg: #0000000f/);
+    assert.match(styles, /--oui-scrollbar-thumb:/);
+    assert.match(styles, /--oui-scrollbar-thumb-hover:/);
     assert.doesNotMatch(provider, /--oui-widget-radius/);
     assert.doesNotMatch(provider, /--oui-chat-bubble-radius/);
     assert.doesNotMatch(provider, /--oui-composer-min-height/);
     assert.doesNotMatch(provider, /--oui-media-preview-bg/);
 });
 
+test('default toast theme matches compact glass notification defaults', () => {
+    const source = read('theme/defaultTheme.ts');
+    const overlays = read('styles/_overlays.sass');
+    const animations = read('styles/_animations.sass');
+    const toast = read('components/Toast/Toast.tsx');
+
+    assert.match(source, /background: 'rgb\(12 12 15 \/ 56%\)'/);
+    assert.match(source, /background: 'rgb\(255 255 255 \/ 72%\)'/);
+    assert.match(source, /blur: 18/);
+    assert.match(source, /animationDuration: '420ms'/);
+    assert.match(source, /exitDuration: '320ms'/);
+    assert.match(source, /progressHeight: '2px'/);
+    assert.match(overlays, /width: min\(380px, calc\(100vw - 32px\)\)/);
+    assert.match(overlays, /padding: 16px/);
+    assert.match(overlays, /saturate\(180%\)/);
+    assert.match(overlays, /\.oui-toast-icon/);
+    assert.match(animations, /@keyframes ouiToastIn/);
+    assert.match(animations, /opacity: 0[\s\S]*transform: translate3d\(var\(--oui-toast-enter-x/);
+    assert.match(toast, /icon\?: ReactNode \| false/);
+    assert.match(toast, /function toastIcon/);
+});
+
 test('theme provider mirrors active CSS variables to document root for portals', () => {
     const provider = read('theme/ThemeProvider.tsx');
 
     assert.match(provider, /document\.documentElement/);
+    assert.match(provider, /cssVariables: rootStyle/);
     assert.match(provider, /themeStyle/);
     assert.match(provider, /Object\.entries\(themeStyle\)/);
     assert.match(provider, /root\.style\.setProperty\(name, String\(value\)\)/);
@@ -86,7 +150,6 @@ test('default themes include module surface overrides', () => {
     assert.match(source, /operations: \{/);
     assert.match(source, /media: \{/);
     assert.match(source, /catalog: \{/);
-    assert.match(source, /pipelineStepMinWidth: '148px'/);
     assert.doesNotMatch(source, /chatBubbleRadius/);
     assert.doesNotMatch(source, /mediaPreviewBackground/);
 });

@@ -27,6 +27,8 @@ export type ScrollHighlightConfig = {
 
 export type ScrollAreaProps = ComponentPropsWithoutRef<'div'> &
     SystemProps & {
+        scrollbars?: 'vertical' | 'horizontal' | 'both';
+        type?: 'auto' | 'always' | 'scroll' | 'hover';
         highlights?: boolean;
         highlightH?: number | string;
         highlightColor?: string;
@@ -54,6 +56,8 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
             highlightMaxOpacity = 1,
             highlightTop,
             highlightBottom,
+            scrollbars = 'both',
+            type = 'auto',
             testId,
             ...props
         },
@@ -65,6 +69,7 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
         const scrollRef = useRef<HTMLDivElement | null>(null);
         const frameRef = useRef<number | null>(null);
         const [opacity, setOpacity] = useState({top: 0, bottom: 0});
+        const [overflow, setOverflow] = useState({x: false, y: false});
         const topConfig = useMemo(
             () =>
                 normalizeHighlightConfig({
@@ -110,8 +115,34 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
 
         const updateOpacity = useCallback(() => {
             const node = scrollRef.current;
-            if (!node || !showHighlights) {
-                setOpacity({top: 0, bottom: 0});
+            if (!node) {
+                setOpacity((current) =>
+                    current.top === 0 && current.bottom === 0
+                        ? current
+                        : {top: 0, bottom: 0},
+                );
+                setOverflow((current) =>
+                    !current.x && !current.y ? current : {x: false, y: false},
+                );
+                return;
+            }
+
+            const nextOverflow = {
+                x: node.scrollWidth > node.clientWidth + 1,
+                y: node.scrollHeight > node.clientHeight + 1,
+            };
+            setOverflow((current) =>
+                current.x === nextOverflow.x && current.y === nextOverflow.y
+                    ? current
+                    : nextOverflow,
+            );
+
+            if (!showHighlights) {
+                setOpacity((current) =>
+                    current.top === 0 && current.bottom === 0
+                        ? current
+                        : {top: 0, bottom: 0},
+                );
                 return;
             }
 
@@ -148,6 +179,10 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
                 typeof ResizeObserver === 'undefined'
                     ? null
                     : new ResizeObserver(scheduleUpdate);
+            const mutationObserver =
+                typeof MutationObserver === 'undefined'
+                    ? null
+                    : new MutationObserver(scheduleUpdate);
             observer?.observe(node);
             Array.from(node.children).forEach((child) => {
                 if (
@@ -157,10 +192,16 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
                     observer?.observe(child);
                 }
             });
+            mutationObserver?.observe(node, {
+                attributes: true,
+                childList: true,
+                subtree: true,
+            });
             window.addEventListener('resize', scheduleUpdate);
 
             return () => {
                 observer?.disconnect();
+                mutationObserver?.disconnect();
                 window.removeEventListener('resize', scheduleUpdate);
                 if (frameRef.current !== null) {
                     window.cancelAnimationFrame(frameRef.current);
@@ -172,6 +213,10 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
         return (
             <div
                 className={cn('oui-scroll-area', className)}
+                data-scrollbars={scrollbars}
+                data-type={type}
+                data-overflow-x={overflow.x ? 'true' : undefined}
+                data-overflow-y={overflow.y ? 'true' : undefined}
                 data-testid={testId}
                 style={{...systemStyle, ...style}}
                 {...outerProps}

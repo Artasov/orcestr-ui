@@ -75,14 +75,19 @@ export const themePlaygroundPresets = [
                 panel: '#0d2119',
                 panelSoft: '#133126',
                 floating: '#0d2119',
-                brand: '#34d399',
-                brandStrong: '#86efac',
-                brandSolid: '#059669',
-                brandSolidHover: '#10b981',
-                brandSoft: 'rgb(52 211 153 / 16%)',
+                primary: {
+                    base: '#059669',
+                    text: '#86efac',
+                    surface: 'rgb(52 211 153 / 16%)',
+                    border: 'rgb(52 211 153 / 16%)',
+                    contrast: '#ffffff',
+                },
                 selected: 'rgb(52 211 153 / 14%)',
-                info: '#7dd3fc',
-                infoSoft: '#0b3240',
+                info: {
+                    base: '#7dd3fc',
+                    text: '#7dd3fc',
+                    surface: '#0b3240',
+                },
             },
         },
     },
@@ -118,11 +123,13 @@ export const themePlaygroundPresets = [
                 borderStrong: 'rgb(255 255 255 / 12%)',
                 text: '#f7f7f7',
                 muted: '#9a9a9a',
-                brand: '#8ab4ff',
-                brandStrong: '#b7d1ff',
-                brandSolid: '#2759c7',
-                brandSolidHover: '#3369e6',
-                brandSoft: 'rgb(138 180 255 / 17%)',
+                primary: {
+                    base: '#2759c7',
+                    text: '#b7d1ff',
+                    surface: 'rgb(138 180 255 / 17%)',
+                    border: 'rgb(138 180 255 / 17%)',
+                    contrast: '#ffffff',
+                },
                 selected: 'rgb(138 180 255 / 14%)',
                 focusRing: '0 0 0 3px rgb(138 180 255 / 20%)',
                 skeletonShimmer: 'rgb(255 255 255 / 7%)',
@@ -161,14 +168,19 @@ export const themePlaygroundPresets = [
                 panel: '#1a1a1a',
                 panelSoft: '#242424',
                 floating: '#1b1b1b',
-                brand: '#c4d3e8',
-                brandStrong: '#e4edf8',
-                brandSolid: '#5d6f87',
-                brandSolidHover: '#71839b',
-                brandSoft: 'rgb(196 211 232 / 14%)',
+                primary: {
+                    base: '#5d6f87',
+                    text: '#e4edf8',
+                    surface: 'rgb(196 211 232 / 14%)',
+                    border: 'rgb(196 211 232 / 14%)',
+                    contrast: '#ffffff',
+                },
                 selected: 'rgb(196 211 232 / 12%)',
-                info: '#8ecae6',
-                infoSoft: '#122f3a',
+                info: {
+                    base: '#8ecae6',
+                    text: '#8ecae6',
+                    surface: '#122f3a',
+                },
             },
             radii: {
                 md: '5px',
@@ -200,14 +212,19 @@ export const themePlaygroundPresets = [
                 panel: '#1d1820',
                 panelSoft: '#29212d',
                 floating: '#1d1820',
-                brand: '#f0a6d8',
-                brandStrong: '#ffc1e7',
-                brandSolid: '#a84486',
-                brandSolidHover: '#bc5399',
-                brandSoft: 'rgb(240 166 216 / 17%)',
+                primary: {
+                    base: '#a84486',
+                    text: '#ffc1e7',
+                    surface: 'rgb(240 166 216 / 17%)',
+                    border: 'rgb(240 166 216 / 17%)',
+                    contrast: '#ffffff',
+                },
                 selected: 'rgb(240 166 216 / 16%)',
-                warning: '#fbbf24',
-                warningSoft: '#49371c',
+                warning: {
+                    base: '#fbbf24',
+                    text: '#fbbf24',
+                    surface: '#49371c',
+                },
             },
         },
     },
@@ -252,14 +269,19 @@ export const themePlaygroundPresets = [
                 panel: '#101a2b',
                 panelSoft: '#172338',
                 floating: '#101a2b',
-                brand: '#7dd3fc',
-                brandStrong: '#bae6fd',
-                brandSolid: '#0369a1',
-                brandSolidHover: '#0284c7',
-                brandSoft: 'rgb(125 211 252 / 16%)',
+                primary: {
+                    base: '#0369a1',
+                    text: '#bae6fd',
+                    surface: 'rgb(125 211 252 / 16%)',
+                    border: 'rgb(125 211 252 / 16%)',
+                    contrast: '#ffffff',
+                },
                 selected: 'rgb(125 211 252 / 13%)',
-                info: '#22d3ee',
-                infoSoft: '#083344',
+                info: {
+                    base: '#22d3ee',
+                    text: '#22d3ee',
+                    surface: '#083344',
+                },
             },
         },
     },
@@ -303,11 +325,13 @@ export const themePlaygroundPresets = [
                 bg: '#eefbf4',
                 panel: '#ffffff',
                 panelSoft: '#ddf4e8',
-                brand: '#047857',
-                brandStrong: '#065f46',
-                brandSolid: '#047857',
-                brandSolidHover: '#065f46',
-                brandSoft: 'rgb(4 120 87 / 12%)',
+                primary: {
+                    base: '#047857',
+                    text: '#065f46',
+                    surface: 'rgb(4 120 87 / 12%)',
+                    border: 'rgb(4 120 87 / 12%)',
+                    contrast: '#ffffff',
+                },
                 selected: 'rgb(4 120 87 / 10%)',
             },
         },
@@ -334,11 +358,13 @@ export const themePlaygroundPresets = [
                 bg: '#fff1f8',
                 panel: '#ffffff',
                 panelSoft: '#ffe4f2',
-                brand: '#db2777',
-                brandStrong: '#be185d',
-                brandSolid: '#db2777',
-                brandSolidHover: '#be185d',
-                brandSoft: 'rgb(219 39 119 / 12%)',
+                primary: {
+                    base: '#db2777',
+                    text: '#be185d',
+                    surface: 'rgb(219 39 119 / 12%)',
+                    border: 'rgb(219 39 119 / 12%)',
+                    contrast: '#ffffff',
+                },
                 selected: 'rgb(219 39 119 / 10%)',
             },
         },
@@ -383,11 +409,13 @@ export const themePlaygroundPresets = [
                 bg: '#f8f5ff',
                 panel: '#ffffff',
                 panelSoft: '#ede9fe',
-                brand: '#7c3aed',
-                brandStrong: '#5b21b6',
-                brandSolid: '#7c3aed',
-                brandSolidHover: '#6d28d9',
-                brandSoft: 'rgb(124 58 237 / 10%)',
+                primary: {
+                    base: '#7c3aed',
+                    text: '#5b21b6',
+                    surface: 'rgb(124 58 237 / 10%)',
+                    border: 'rgb(124 58 237 / 10%)',
+                    contrast: '#ffffff',
+                },
                 selected: 'rgb(124 58 237 / 8%)',
                 section: 'rgb(124 58 237 / 3%)',
                 sectionNested: 'rgb(124 58 237 / 2%)',
@@ -419,11 +447,13 @@ export const themePlaygroundPresets = [
                 bg: '#f4fbf8',
                 panel: '#ffffff',
                 panelSoft: '#eaf7f1',
-                brand: '#0f9f6e',
-                brandStrong: '#087a54',
-                brandSolid: '#0f9f6e',
-                brandSolidHover: '#0b8a5e',
-                brandSoft: 'rgb(15 159 110 / 11%)',
+                primary: {
+                    base: '#0f9f6e',
+                    text: '#087a54',
+                    surface: 'rgb(15 159 110 / 11%)',
+                    border: 'rgb(15 159 110 / 11%)',
+                    contrast: '#ffffff',
+                },
                 selected: 'rgb(15 159 110 / 9%)',
             },
         },
@@ -450,6 +480,7 @@ export function themePresetDescription(preset: ThemePreset, locale: OrcestrUiLoc
 }
 
 type FlatTokenSection = Exclude<keyof OrcestrThemeOverrides, 'status'>;
+type TokenValueRecord = Record<string, string | number | false>;
 
 const flatTokenSections = [
     'colors',
@@ -466,7 +497,7 @@ const flatTokenSections = [
     'components',
 ] as const satisfies ReadonlyArray<FlatTokenSection>;
 
-const statusKeys = ['neutral', 'brand', 'success', 'warning', 'danger', 'info'] as const;
+const statusKeys = ['neutral', 'primary', 'secondary', 'success', 'warning', 'danger', 'info'] as const;
 const COLOR_TOKEN_COMMIT_DELAY_MS = 180;
 
 const themePlaygroundCopy = {
@@ -600,7 +631,7 @@ export function ExampleThemePlayground({
                                     key={section}
                                     title={tokenSectionLabel(section, locale)}
                                     section={section}
-                                    values={theme[section]}
+                                    values={tokenSectionValues(theme, section)}
                                     onTokenChange={(key, value) =>
                                         updateFlatToken(onThemeOverridesChange, section, key, value)
                                     }
@@ -717,7 +748,7 @@ function TokenSection({
     title: string;
     section: FlatTokenSection | 'status';
     statusKey?: keyof OrcestrTheme['status'];
-    values: Record<string, string | number | false>;
+    values: TokenValueRecord;
     onTokenChange: (key: string, value: string | number | false) => void;
 }) {
     return (
@@ -781,7 +812,7 @@ function ThemeTokenControl({
                     background: visibleColorValue ?? (
                         section === 'colors' || section === 'status'
                             ? valueText
-                        : 'var(--oui-brand-soft)'
+                        : 'var(--oui-primary-surface)'
                     ),
                 }}
             >
@@ -832,6 +863,21 @@ function updateFlatToken(
     key: string,
     value: string | number | false,
 ) {
+    if (section === 'colors' && key.includes('.')) {
+        const [roleKey, slotKey] = key.split('.', 2);
+        updateOverrides((current) => ({
+            ...current,
+            colors: {
+                ...current.colors,
+                [roleKey]: {
+                    ...(current.colors?.[roleKey as keyof NonNullable<OrcestrThemeOverrides['colors']>] as Record<string, string> | undefined),
+                    [slotKey]: value,
+                },
+            },
+        }));
+        return;
+    }
+
     updateOverrides((current) => ({
         ...current,
         [section]: {
@@ -839,6 +885,29 @@ function updateFlatToken(
             [key]: value,
         },
     }));
+}
+
+function tokenSectionValues(theme: OrcestrTheme, section: FlatTokenSection): TokenValueRecord {
+    const values = theme[section];
+    if (section !== 'colors') return values as TokenValueRecord;
+    return flattenTokenValues(values as Record<string, unknown>);
+}
+
+function flattenTokenValues(
+    values: Record<string, unknown>,
+    prefix = '',
+): TokenValueRecord {
+    return Object.entries(values).reduce<TokenValueRecord>((result, [key, value]) => {
+        const path = prefix ? `${prefix}.${key}` : key;
+        if (typeof value === 'string' || typeof value === 'number' || value === false) {
+            result[path] = value;
+            return result;
+        }
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+            Object.assign(result, flattenTokenValues(value as Record<string, unknown>, path));
+        }
+        return result;
+    }, {});
 }
 
 function updateStatusToken(

@@ -60,7 +60,9 @@ test('Orcestr UI keeps runtime and example styles split', () => {
     assert.deepEqual(styleUses, [
         'theme',
         'shell',
+        'app-sidebar',
         'buttons',
+        'card',
         'badge',
         'fields',
         'icon-text',
@@ -68,15 +70,16 @@ test('Orcestr UI keeps runtime and example styles split', () => {
         'alert',
         'selection',
         'overlays',
+        'special-modal',
         'drawer',
         'data',
+        'table',
         'scroll-area',
         'highlight',
         'separator',
         'spinner',
         'skeleton',
         'visually-hidden',
-        'workflow',
         'animations',
     ]);
     assert.match(exampleStyles, /@use '\.\.\/styles\/_example\.sass'/);

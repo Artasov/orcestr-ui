@@ -52,6 +52,9 @@ test('DataTable settings and pinned cells use shared UI primitives', () => {
     assert.match(source, /<Button\s+className='oui-data-table-settings-reset'[\s\S]*?size=\{1\}[\s\S]*?v='ghost'[\s\S]*?leftIcon=\{<LuRotateCcw size=\{13\} \/>\}/);
     assert.doesNotMatch(source, /<button\s+type='button'\s+className='oui-data-table-settings-reset'/);
     assert.match(styles, /\.oui-data-table-wrap\s+--oui-data-table-row-base-bg:/);
+    assert.match(styles, /\.oui-data-table-wrap[\s\S]*?scrollbar-color: var\(--oui-scrollbar-thumb/);
+    assert.match(styles, /\.oui-data-table-wrap::-webkit-scrollbar-thumb[\s\S]*?background-color: var\(--oui-scrollbar-thumb,/);
+    assert.match(styles, /\.oui-data-table-wrap::-webkit-scrollbar-thumb:hover[\s\S]*?background-color: var\(--oui-scrollbar-thumb-hover,/);
     assert.match(styles, /\.oui-data-table tbody tr\s+--oui-data-table-row-bg: var\(--oui-data-table-row-base-bg\)/);
     assert.match(styles, /\.oui-data-table td\[data-pinned="left"\],[\s\S]*?background: linear-gradient\(var\(--oui-data-table-row-bg\), var\(--oui-data-table-row-bg\)\), var\(--oui-data-table-row-base-bg\)/);
     assert.match(styles, /\.oui-data-table td\.oui-data-table-expand-cell,[\s\S]*?background: linear-gradient\(var\(--oui-data-table-row-bg\), var\(--oui-data-table-row-bg\)\), var\(--oui-data-table-row-base-bg\)/);

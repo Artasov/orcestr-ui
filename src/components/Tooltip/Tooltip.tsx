@@ -1,28 +1,77 @@
 'use client';
 
-import {useState, type ReactNode} from 'react';
+import {
+    cloneElement,
+    forwardRef,
+    isValidElement,
+    useState,
+    type FocusEvent,
+    type MouseEvent,
+    type ReactElement,
+    type ReactNode,
+    type Ref,
+} from 'react';
 
-import {type FloatingSide} from '../../hooks/useFloatingPosition';
+import {type FloatingAlign, type FloatingSide} from '../../hooks/useFloatingPosition';
 import {useFloatingLayer} from '../../hooks/useFloatingLayer';
+import {composeRefs} from '../../utils/composeRefs';
 import {cn} from '../../utils/cn';
-import {useOverlayContext, useOverlayLayerIndex} from '../Overlay/OverlayProvider';
+import {
+    overlayLayerZIndex,
+    useOverlayContext,
+    useOverlayLayerIndex,
+} from '../Overlay/OverlayProvider';
 import {Portal} from '../Portal/Portal';
 
-export function Tooltip({
-    content,
-    children,
-    side = 'top',
-    className,
-    testId,
-}: {
+type TooltipTriggerProps = {
+    ref?: Ref<HTMLElement>;
+    className?: string;
+    'data-testid'?: string;
+    onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
+    onMouseLeave?: (event: MouseEvent<HTMLElement>) => void;
+    onFocus?: (event: FocusEvent<HTMLElement>) => void;
+    onBlur?: (event: FocusEvent<HTMLElement>) => void;
+};
+
+export type TooltipProps = {
     content: ReactNode;
     children: ReactNode;
     side?: FloatingSide;
+    align?: FloatingAlign;
+    sideOffset?: number;
+    avoidCollisions?: boolean;
+    collisionPadding?: number;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
     className?: string;
     testId?: string;
-}) {
+};
+
+export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
+    {
+        content,
+        children,
+        side = 'top',
+        align = 'center',
+        sideOffset = 8,
+        avoidCollisions: _avoidCollisions,
+        collisionPadding: _collisionPadding,
+        open,
+        defaultOpen = false,
+        onOpenChange,
+        className,
+        testId,
+    },
+    ref,
+) {
     const overlay = useOverlayContext();
-    const [open, setOpen] = useState(false);
+    const [internalOpen, setInternalOpen] = useState(defaultOpen);
+    const actualOpen = open ?? internalOpen;
+    const setOpen = (nextOpen: boolean) => {
+        if (open === undefined) setInternalOpen(nextOpen);
+        onOpenChange?.(nextOpen);
+    };
     const {
         triggerRef,
         contentRef,
@@ -30,27 +79,41 @@ export function Tooltip({
         state,
         style,
     } = useFloatingLayer<HTMLSpanElement, HTMLDivElement>({
-        open,
+        open: actualOpen,
         presenceDuration: 140,
         side,
-        align: 'center',
-        sideOffset: 8,
+        align,
+        sideOffset,
     });
     const layerIndex = useOverlayLayerIndex(present);
-
-    return (
-        <>
+    const triggerHandlers = {
+        onMouseEnter: () => setOpen(true),
+        onMouseLeave: () => setOpen(false),
+        onFocus: (event: FocusEvent<HTMLElement>) => {
+            if (isKeyboardFocus(event.currentTarget)) setOpen(true);
+        },
+        onBlur: () => setOpen(false),
+    };
+    const trigger = isValidElement(children)
+        ? cloneTooltipTrigger(children as ReactElement<TooltipTriggerProps>, {
+            ref: composeRefs(triggerRef, ref),
+            testId,
+            ...triggerHandlers,
+        })
+        : (
             <span
-                ref={triggerRef}
+                ref={composeRefs(triggerRef, ref)}
                 className='oui-tooltip-trigger'
                 data-testid={testId}
-                onMouseEnter={() => setOpen(true)}
-                onMouseLeave={() => setOpen(false)}
-                onFocus={() => setOpen(true)}
-                onBlur={() => setOpen(false)}
+                {...triggerHandlers}
             >
                 {children}
             </span>
+        );
+
+    return (
+        <>
+            {trigger}
             {present ? (
                 <Portal>
                     <div
@@ -62,7 +125,11 @@ export function Tooltip({
                         data-testid={testId ? `${testId}-content` : undefined}
                         style={{
                             ...style,
-                            zIndex: overlay.zIndex.dropdown + layerIndex * 10,
+                            zIndex: overlayLayerZIndex(
+                                overlay.zIndex,
+                                'dropdown',
+                                layerIndex,
+                            ),
                         }}
                     >
                         {content}
@@ -71,4 +138,42 @@ export function Tooltip({
             ) : null}
         </>
     );
+});
+
+function cloneTooltipTrigger(
+    trigger: ReactElement<TooltipTriggerProps>,
+    {
+        ref,
+        testId,
+        onMouseEnter,
+        onMouseLeave,
+        onFocus,
+        onBlur,
+    }: TooltipTriggerProps & {testId?: string},
+) {
+    return cloneElement(trigger, {
+        ref: composeRefs(trigger.props.ref, ref),
+        className: cn('oui-tooltip-trigger', trigger.props.className),
+        'data-testid': testId,
+        onMouseEnter: (event) => {
+            trigger.props.onMouseEnter?.(event);
+            onMouseEnter?.(event);
+        },
+        onMouseLeave: (event) => {
+            trigger.props.onMouseLeave?.(event);
+            onMouseLeave?.(event);
+        },
+        onFocus: (event) => {
+            trigger.props.onFocus?.(event);
+            onFocus?.(event);
+        },
+        onBlur: (event) => {
+            trigger.props.onBlur?.(event);
+            onBlur?.(event);
+        },
+    });
+}
+
+function isKeyboardFocus(element: HTMLElement) {
+    return element.matches(':focus-visible');
 }

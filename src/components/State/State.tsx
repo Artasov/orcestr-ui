@@ -7,18 +7,23 @@ import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
 import {cn} from '../../utils/cn';
 import type {SystemProps, Tone} from '../../theme/systemProps';
 import {Button} from '../Button/Button';
-import {IconText} from '../IconText/IconText';
+import {IconText, type IconTextProps} from '../IconText/IconText';
 import {Spinner} from '../Spinner/Spinner';
-import {Text} from '../Text/Text';
+import {Text, type TextProps} from '../Text/Text';
 import {stateIcon} from './stateIcon';
 
 export type StateCardTone = Tone;
+export type StateCardVariant = 'soft' | 'surface' | 'outline' | 'ghost';
 
 export type StateCardProps = Omit<HTMLAttributes<HTMLDivElement>, 'title'> & {
     tone?: StateCardTone;
+    v?: StateCardVariant;
     icon?: ReactNode;
+    iconTone?: IconTextProps['iconTone'];
     title?: ReactNode;
+    titleTone?: TextProps['tone'];
     description?: ReactNode;
+    descriptionTone?: TextProps['tone'];
     titleFs?: SystemProps['fs'];
     descriptionFs?: SystemProps['fs'];
     action?: ReactNode;
@@ -28,9 +33,13 @@ export type StateCardProps = Omit<HTMLAttributes<HTMLDivElement>, 'title'> & {
 
 export function StateCard({
     tone = 'neutral',
+    v = 'soft',
     icon,
+    iconTone,
     title,
+    titleTone,
     description,
+    descriptionTone,
     titleFs,
     descriptionFs = '13px',
     action,
@@ -46,6 +55,7 @@ export function StateCard({
         <div
             className={cn('oui-state-card', className)}
             data-tone={tone}
+            data-variant={v}
             data-compact={compact ? 'true' : undefined}
             data-testid={testId}
             {...props}
@@ -55,14 +65,19 @@ export function StateCard({
                     fw={760}
                     fs={actualTitleFs}
                     icon={icon ?? stateIcon(tone)}
-                    iconTone={tone === 'neutral' ? 'muted' : tone}
+                    iconTone={iconTone ?? (tone === 'neutral' ? 'muted' : tone)}
+                    tone={titleTone}
                 >
                     {title}
                 </IconText>
                 {hasBody ? (
                     <div className='oui-state-card-body'>
                         {description ? (
-                            <Text className='oui-state-card-description' fs={descriptionFs}>
+                            <Text
+                                className='oui-state-card-description'
+                                fs={descriptionFs}
+                                tone={descriptionTone}
+                            >
                                 {description}
                             </Text>
                         ) : null}

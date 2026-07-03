@@ -38,6 +38,7 @@ export type EntityPickerProps<T> = {
     disabled?: boolean;
     clearable?: boolean;
     showChevron?: boolean;
+    trigger?: ReactNode;
     size?: UiSize;
     maxHeight?: number;
     closeOnSelect?: boolean;
@@ -64,6 +65,7 @@ export function EntityPicker<T>({
     disabled = false,
     clearable = true,
     showChevron = true,
+    trigger,
     size = 3,
     maxHeight = 280,
     closeOnSelect = true,
@@ -108,6 +110,7 @@ export function EntityPicker<T>({
             disabled={disabled}
             clearable={clearable}
             showChevron={showChevron}
+            trigger={trigger}
             size={size}
             maxHeight={maxHeight}
             closeOnSelect={closeOnSelect}

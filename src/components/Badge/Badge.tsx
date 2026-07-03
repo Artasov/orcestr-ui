@@ -1,18 +1,21 @@
-import {forwardRef, type ComponentPropsWithoutRef} from 'react';
+import {forwardRef, type ComponentPropsWithoutRef, type ReactNode} from 'react';
 
 import {cn} from '../../utils/cn';
 import {
     splitSystemProps,
     type SystemProps,
     type Tone,
+    type ToneInput,
     type UiSize,
+    normalizeTone,
 } from '../../theme/systemProps';
 
 export type BadgeProps = ComponentPropsWithoutRef<'span'> &
     SystemProps & {
-        tone?: Tone;
+        tone?: ToneInput;
         size?: UiSize;
-        v?: 'soft' | 'solid' | 'outline';
+        v?: 'soft' | 'solid' | 'outline' | 'surface';
+        icon?: ReactNode;
         testId?: string;
     };
 
@@ -23,7 +26,9 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
         tone = 'neutral',
         size = 2,
         v = 'soft',
+        icon,
         testId,
+        children,
         ...props
     },
     ref,
@@ -33,12 +38,15 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
         <span
             ref={ref}
             className={cn('oui-badge', className)}
-            data-tone={tone}
+            data-tone={normalizeTone(tone)}
             data-size={size}
             data-variant={v}
             data-testid={testId}
             style={{...systemStyle, ...style}}
             {...restProps}
-        />
+        >
+            {icon ? <span className='oui-badge-icon'>{icon}</span> : null}
+            {children}
+        </span>
     );
 });

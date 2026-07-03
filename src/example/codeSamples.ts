@@ -9,7 +9,7 @@ export const codeSamples = {
 <Stack g={3}>
     <Stack g={1}>
         <Text as='h1' fs='28px' fw={780} lh={1.1}>
-            Workflow review
+            Operations review
         </Text>
         <Text as='h2' fs='20px' fw={720} lh={1.2}>
             Review window and status
@@ -26,7 +26,7 @@ export const codeSamples = {
     </Stack>
 
     <Flex g={2} wrap>
-        <Text tone='brand' fw={700}>Brand</Text>
+        <Text tone='primary' fw={700}>Primary</Text>
         <Text tone='success' fw={700}>Success</Text>
         <Text tone='warning' fw={700}>Warning</Text>
         <Text tone='danger' fw={700}>Danger</Text>
@@ -41,7 +41,7 @@ export const codeSamples = {
 
     <Flex g={2} wrap>
         <Badge>Neutral</Badge>
-        <Badge tone='brand'>Brand</Badge>
+        <Badge tone='primary'>Primary</Badge>
         <Badge tone='success'>Success</Badge>
         <Badge tone='warning'>Warning</Badge>
         <Badge tone='danger'>Danger</Badge>
@@ -55,57 +55,112 @@ export const codeSamples = {
     <Skeleton h={16} w='64%' />
     <Skeleton h={36} />
 </Stack>`,
-    appShell: `import {
+    appShell: `import {useState} from 'react';
+import {
     AppShell,
     AppShellContent,
     AppShellHeader,
-    AppShellNav,
-    AppShellSidebar,
+    AppSidebar,
+    Badge,
     Button,
-    OrcestrUiProvider,
-    Stack,
+    Flex,
+    IconButton,
+    IconTextButton,
+    PageTitleBlock,
+    SpecialModal,
     Text,
 } from '@orcestr/ui';
+import {LuBell, LuBox, LuCalendar, LuClipboardList, LuEllipsis, LuMessageSquare, LuSearch, LuTruck} from 'react-icons/lu';
 
-<OrcestrUiProvider surface='operations' locale='ru'>
-    <AppShell
-        sidebarOpen={mobileOpen}
-        onSidebarOpenChange={setMobileOpen}
-        header={
-            <AppShellHeader
-                visibility='mobile'
-                title='Operations'
+const [open, setOpen] = useState(false);
+const [mobileOpen, setMobileOpen] = useState(false);
+const [previewMode, setPreviewMode] = useState<'desktop' | 'phone'>('desktop');
+const [activeKey, setActiveKey] = useState('requests');
+
+const groups = [
+    {
+        key: 'demand',
+        items: [
+            {key: 'requests', label: 'Requests', icon: <LuTruck />, active: activeKey === 'requests'},
+            {key: 'orders', label: 'Supplier orders', icon: <LuClipboardList />, active: activeKey === 'orders'},
+        ],
+    },
+    {
+        key: 'operations',
+        items: [
+            {key: 'products', label: 'Products', icon: <LuBox />, active: activeKey === 'products'},
+            {key: 'calendar', label: 'Calendar', icon: <LuCalendar />, active: activeKey === 'calendar'},
+        ],
+    },
+];
+
+<>
+    <Button onClick={() => setOpen(true)}>Open AppShell preview</Button>
+    <SpecialModal open={open} onOpenChange={setOpen} size='full' scroll='body'>
+        <SpecialModal.Header
+            title='AppShell preview'
+            meta={<Badge tone='primary'>{previewMode}</Badge>}
+            actions={(
+                <>
+                    <Button size={2} v='surface' onClick={() => setPreviewMode((mode) => mode === 'desktop' ? 'phone' : 'desktop')}>
+                        Toggle preview
+                    </Button>
+                    <SpecialModal.Close />
+                </>
+            )}
+        />
+        <SpecialModal.Body>
+            <AppShell
+                sidebarMode={previewMode === 'phone' ? 'mobile' : 'desktop'}
                 sidebarOpen={mobileOpen}
                 onSidebarOpenChange={setMobileOpen}
-                actions={<Button size={1}>Create</Button>}
-            />
-        }
-        sidebar={
-            <AppShellSidebar
-                title='Operations'
-                description='Operational module shell with themed navigation.'
-                onClose={() => setMobileOpen(false)}
-                footer={<Button fullWidth v='surface'>Settings</Button>}
+                sidebarWidth={300}
+                contentInset={0}
+                maxWidth='100%'
+                header={(
+                    <AppShellHeader
+                        visibility='always'
+                        sidebarOpen={mobileOpen}
+                        onSidebarOpenChange={previewMode === 'phone' ? setMobileOpen : undefined}
+                        actions={(
+                            <Flex a='c' g={1}>
+                                <IconTextButton size={2} v='soft' tone='neutral' icon={<LuSearch />}>Quick jump</IconTextButton>
+                                <IconButton size={2} v='ghost' icon={<LuBell />} badge={64} aria-label='Notifications' />
+                                <IconButton size={2} v='ghost' icon={<LuMessageSquare />} badge={99} aria-label='Messages' />
+                            </Flex>
+                        )}
+                    >
+                        <Text fw={760}>Deliveries</Text>
+                    </AppShellHeader>
+                )}
+                sidebar={(
+                    <AppSidebar
+                        header={<div className='oui-app-sidebar-brand'><span className='oui-app-sidebar-logo'>O</span><span className='oui-app-sidebar-title'>Deliveries</span></div>}
+                        itemH={38}
+                        onNavigate={(item) => setActiveKey(item.key)}
+                        groups={groups}
+                    />
+                )}
             >
-                <AppShellNav items={navigationItems} />
-            </AppShellSidebar>
-        }
-    >
-        <AppShellContent>
-            <Stack g={1}>
-                <Text as='h1' fs='22px' fw={760}>Queue</Text>
-                <Text tone='muted'>Daily workspace operations and status movement.</Text>
-            </Stack>
-            {children}
-        </AppShellContent>
-    </AppShell>
-</OrcestrUiProvider>`,
+                <AppShellContent scroll={false}>
+                    <PageTitleBlock
+                        title='Requests'
+                        caption='Module workspace with responsive header and AppSidebar navigation.'
+                        badge='shell'
+                        action={<IconButton size={2} v='pad' icon={<LuEllipsis />} aria-label='More actions' />}
+                    />
+                    {children}
+                </AppShellContent>
+            </AppShell>
+        </SpecialModal.Body>
+    </SpecialModal>
+</>`,
     layoutFlex: `import {Badge, Button, Flex, Text} from '@orcestr/ui';
 
 <Flex col g={3}>
     <Flex row g={2} a='c' j='sb' wrap>
         <Flex row g={2} a='c' wrap>
-            <Badge tone='brand'>status</Badge>
+            <Badge tone='primary'>status</Badge>
             <Text fw={700}>Task TASK-2048</Text>
         </Flex>
         <Flex row g={1} a='c'>
@@ -239,7 +294,7 @@ const [detailsOpen, setDetailsOpen] = useState(true);
         <Stack g={1}>
             {rows.map((row, index) => (
                 <Flex key={row.id} row g={2} p={2} r={3} a='c'>
-                    <Badge tone={index < 3 ? 'brand' : 'info'}>
+                    <Badge tone={index < 3 ? 'primary' : 'info'}>
                         {index + 1}
                     </Badge>
                     <Stack g={0}>
@@ -263,6 +318,28 @@ const [detailsOpen, setDetailsOpen] = useState(true);
 <Button mt={2} v='pad' r={7}>
     Button r=7
 </Button>`,
+    surfaces: `import {Alert, Button, Card, Grid, Section, Separator, Stack, Text} from '@orcestr/ui';
+
+<Section g={3}>
+    <Grid columns='repeat(auto-fit, minmax(min(100%, 180px), 1fr))' g={2}>
+        <Card v='surface' interactive>
+            <Stack g={1}>
+                <Text fw={760}>Surface card</Text>
+                <Text fs='12px' tone='muted'>Default operational surface.</Text>
+            </Stack>
+        </Card>
+        <Card v='soft'>
+            <Stack g={1}>
+                <Text fw={760}>Soft card</Text>
+                <Text fs='12px' tone='muted'>Quiet grouped content.</Text>
+            </Stack>
+        </Card>
+    </Grid>
+    <Separator />
+    <Alert title='Inventory sync delayed' action={<Button size={1} v='surface'>Retry</Button>}>
+        Check this status before creating the next shipment.
+    </Alert>
+</Section>`,
     buttons: `import {Button, Spinner} from '@orcestr/ui';
 import {LuCheck, LuInfo, LuTrash2, LuTriangleAlert} from 'react-icons/lu';
 
@@ -300,22 +377,40 @@ import {LuCheck, LuInfo, LuTrash2, LuTriangleAlert} from 'react-icons/lu';
 <Button size={3} tone='success' loading leftIcon={<LuCheck size={16} />}>Success</Button>
 <Spinner />`,
     iconButtons: `import {Button, IconButton, Menu, Tooltip} from '@orcestr/ui';
-import {LuBell, LuCheck, LuCommand, LuEllipsis, LuInfo} from 'react-icons/lu';
+import {
+    LuBell,
+    LuCheck,
+    LuCommand,
+    LuDownload,
+    LuEllipsis,
+    LuInfo,
+    LuMessageSquare,
+    LuRefreshCw,
+    LuSearch,
+    LuSettings,
+    LuShield,
+    LuUpload,
+} from 'react-icons/lu';
 
 <IconButton v='solid' icon={<LuCheck size={17} />} aria-label='Solid icon' />
-<IconButton v='soft' icon={<LuBell size={17} />} aria-label='Soft icon' />
-<IconButton v='surface' icon={<LuBell size={17} />} aria-label='Surface icon' />
-<IconButton v='pad' icon={<LuBell size={17} />} aria-label='Pad icon' />
+<IconButton v='soft' icon={<LuSearch size={17} />} aria-label='Search icon' />
+<IconButton v='surface' icon={<LuUpload size={17} />} aria-label='Upload icon' />
+<IconButton v='pad' icon={<LuShield size={17} />} aria-label='Security icon' />
 <IconButton v='outline' icon={<LuInfo size={17} />} aria-label='Outline icon' />
 <IconButton v='ghost' icon={<LuEllipsis size={17} />} aria-label='Ghost icon' />
 
-<IconButton size={1} v='surface' icon={<LuBell size={13} />} aria-label='Size 1 icon' />
-<IconButton size={2} v='surface' icon={<LuBell size={15} />} aria-label='Size 2 icon' />
-<IconButton size={3} v='surface' icon={<LuBell size={17} />} aria-label='Size 3 icon' />
-<IconButton size={4} v='surface' icon={<LuBell size={19} />} aria-label='Size 4 icon' />
+<IconButton size={1} v='surface' icon={<LuSearch size={13} />} aria-label='Size 1 search' />
+<IconButton size={2} v='surface' icon={<LuDownload size={15} />} aria-label='Size 2 download' />
+<IconButton size={3} v='surface' icon={<LuRefreshCw size={17} />} aria-label='Size 3 refresh' />
+<IconButton size={4} v='surface' icon={<LuSettings size={19} />} aria-label='Size 4 settings' />
 
 <IconButton size={3} v='pad' round={false} r={3} icon={<LuCommand size={17} />} aria-label='Square pad icon' />
-<IconButton size={3} v='outline' loading icon={<LuBell size={17} />} aria-label='Loading icon' />
+<IconButton size={3} v='outline' loading icon={<LuRefreshCw size={17} />} aria-label='Loading icon' />
+
+<IconButton v='surface' icon={<LuBell size={17} />} badge={64} aria-label='Notifications' />
+<IconButton v='surface' icon={<LuMessageSquare size={17} />} badge={99} aria-label='Unread chats' />
+<IconButton v='pad' icon={<LuShield size={17} />} badge={3} badgeTone='warning' aria-label='Security warnings' />
+<IconButton v='ghost' icon={<LuDownload size={17} />} badge='new' badgeTone='info' aria-label='New export' />
 
 <IconButton size={1} v='ghost' icon={<LuEllipsis size={13} />} aria-label='Ghost size 1' />
 <IconButton size={2} v='ghost' icon={<LuEllipsis size={15} />} aria-label='Ghost size 2' />
@@ -323,10 +418,10 @@ import {LuBell, LuCheck, LuCommand, LuEllipsis, LuInfo} from 'react-icons/lu';
 <IconButton size={4} v='ghost' icon={<LuEllipsis size={19} />} aria-label='Ghost size 4' />
 
 <Tooltip content='Notifications'>
-    <IconButton v='surface' icon={<LuBell size={17} />} aria-label='Notifications' />
+    <IconButton v='surface' icon={<LuBell size={17} />} badge={8} aria-label='Notifications' />
 </Tooltip>
-<IconButton v='surface' loading icon={<LuBell size={17} />} aria-label='Loading action' />
-<IconButton v='pad' icon={<LuBell size={17} />} aria-label='Pad action' />
+<IconButton v='surface' loading icon={<LuRefreshCw size={17} />} aria-label='Loading action' />
+<IconButton v='pad' icon={<LuSettings size={17} />} aria-label='Pad action' />
 <Menu
     trigger={<IconButton v='surface' icon={<LuEllipsis size={17} />} aria-label='Actions' />}
     items={menuItems}
@@ -334,6 +429,35 @@ import {LuBell, LuCheck, LuCommand, LuEllipsis, LuInfo} from 'react-icons/lu';
 <Button v='surface' leftIcon={<LuCommand size={16} />} onClick={openPalette}>
     Commands
 </Button>`,
+    iconTextButton: `import {IconTextButton} from '@orcestr/ui';
+import {LuCopy, LuExternalLink, LuPackagePlus} from 'react-icons/lu';
+
+<IconTextButton icon={<LuPackagePlus size={16} />}>
+    Create PO
+</IconTextButton>
+<IconTextButton v='soft' tone='info' icon={<LuCopy size={16} />}>
+    Duplicate
+</IconTextButton>
+<IconTextButton href='/requests' v='surface' icon={<LuExternalLink size={16} />}>
+    Link action
+</IconTextButton>
+<IconTextButton v='outline' iconSide='end' icon={<LuExternalLink size={16} />}>
+    Open details
+</IconTextButton>`,
+    contextMenu: `import {ContextMenu, Text, type MenuItem} from '@orcestr/ui';
+
+const items: MenuItem[] = [
+    {key: 'open', label: 'Open'},
+    {key: 'copy', label: 'Copy link'},
+    {key: 'delete', label: 'Delete', tone: 'danger', separatorBefore: true},
+];
+
+<ContextMenu items={items}>
+    <div className='row'>
+        <Text fs='13px' fw={760}>Right-click this row</Text>
+        <Text fs='12px' tone='muted'>Context menu reuses Menu item styling.</Text>
+    </div>
+</ContextMenu>`,
     textFields: `import {Button, Flex, Field, TextArea, TextField} from '@orcestr/ui';
 import {LuSearch} from 'react-icons/lu';
 
@@ -351,6 +475,120 @@ import {LuSearch} from 'react-icons/lu';
 <Field label='Comment'>
     <TextArea rows={4} placeholder='Internal note' />
 </Field>`,
+    inlineEdit: `import {useState} from 'react';
+import {Badge, Field, IconButton, InlineEditField, InlineEditMultiField, Listbox, Popover, Stack} from '@orcestr/ui';
+import {LuCheck, LuPencil} from 'react-icons/lu';
+
+const [supplierOpen, setSupplierOpen] = useState(false);
+const [paymentOpen, setPaymentOpen] = useState(false);
+const [supplierKey, setSupplierKey] = useState('northwind');
+const [paymentTermKey, setPaymentTermKey] = useState('net30');
+const [ownerOpen, setOwnerOpen] = useState(false);
+const [ownerKeys, setOwnerKeys] = useState(['michael', 'team']);
+const supplier = suppliers.find((item) => item.key === supplierKey);
+const paymentTerm = paymentTerms.find((item) => item.key === paymentTermKey);
+const selectedOwners = owners.filter((item) => ownerKeys.includes(item.key));
+const toggleOwner = (key) => {
+    setOwnerKeys((current) =>
+        current.includes(key)
+            ? current.filter((item) => item !== key)
+            : [...current, key],
+    );
+};
+
+<Stack g={3}>
+    <Field label='Single value'>
+        <InlineEditField
+            label={supplier?.label ?? 'Choose supplier'}
+            meta='Supplier'
+            onOpen={() => setSupplierOpen(true)}
+            action={
+                <Popover
+                    open={supplierOpen}
+                    onOpenChange={setSupplierOpen}
+                    trigger={<IconButton size={1} v='ghost' icon={<LuPencil size={13} />} />}
+                    className='oui-combobox-content'
+                >
+                    <Listbox
+                        className='oui-combobox-options'
+                        items={suppliers.map((item) => ({value: item.key, label: item.label}))}
+                        value={supplierKey}
+                        onValueChange={(next) => {
+                            setSupplierKey(next);
+                            setSupplierOpen(false);
+                        }}
+                    />
+                </Popover>
+            }
+        />
+    </Field>
+    <Field label='Single value without meta'>
+        <InlineEditField
+            label={paymentTerm?.label ?? 'Choose payment terms'}
+            onOpen={() => setPaymentOpen(true)}
+            action={
+                <Popover
+                    open={paymentOpen}
+                    onOpenChange={setPaymentOpen}
+                    trigger={<IconButton size={1} v='ghost' icon={<LuPencil size={13} />} />}
+                    className='oui-combobox-content'
+                >
+                    <Listbox
+                        className='oui-combobox-options'
+                        items={paymentTerms.map((item) => ({value: item.key, label: item.label}))}
+                        value={paymentTermKey}
+                        onValueChange={(next) => {
+                            setPaymentTermKey(next);
+                            setPaymentOpen(false);
+                        }}
+                    />
+                </Popover>
+            }
+        />
+    </Field>
+    <Field label='Multiple values'>
+        <InlineEditMultiField
+            onOpen={() => setOwnerOpen(true)}
+            action={(
+                <span onClick={(event) => event.stopPropagation()}>
+                    <Popover
+                        open={ownerOpen}
+                        onOpenChange={setOwnerOpen}
+                        trigger={<IconButton size={1} v='ghost' icon={<LuPencil size={13} />} />}
+                        className='oui-combobox-content'
+                    >
+                        <Stack g={1} p={1}>
+                            {owners.map((item) => {
+                                const selected = ownerKeys.includes(item.key);
+                                return (
+                                    <button
+                                        key={item.key}
+                                        type='button'
+                                        className='oui-combobox-option'
+                                        data-selected={selected ? 'true' : 'false'}
+                                        onClick={() => toggleOwner(item.key)}
+                                    >
+                                        <span className='oui-multi-select-check'>
+                                            {selected ? <LuCheck size={13} /> : null}
+                                        </span>
+                                        <span className='oui-combobox-option-main'>
+                                            {item.label}
+                                        </span>
+                                    </button>
+                                );
+                            })}
+                        </Stack>
+                    </Popover>
+                </span>
+            )}
+            col
+        >
+            {selectedOwners.map((item) => (
+                <Badge key={item.key} tone='neutral' v='soft'>{item.label}</Badge>
+            ))}
+        </InlineEditMultiField>
+    </Field>
+</Stack>`,
     groupedFields: `import {Button, Flex, Field, Grid, Section, Stack, Text, TextArea, TextField} from '@orcestr/ui';
 
 <Section g={3}>
@@ -396,7 +634,7 @@ import {LuSearch} from 'react-icons/lu';
     today='2026-06-26'
     onValueChange={setDateRange}
 />`,
-    selection: `import {Combobox, EntityPicker, MultiSelect, Select, SegmentedControl} from '@orcestr/ui';
+    selection: `import {Combobox, EntityPicker, MultiSelect, PaginatedCombobox, Select, SegmentedControl} from '@orcestr/ui';
 import {LuPlus} from 'react-icons/lu';
 
 <Select items={items} value={status} onValueChange={setStatus} clearable />
@@ -453,6 +691,27 @@ import {LuPlus} from 'react-icons/lu';
         label: 'Create entity from search',
         onCreate: createEntity,
     }}
+    optionAction={{
+        icon: <LuPlus size={14} />,
+        label: (item) => 'Add ' + item.article,
+        onClick: addEntity,
+    }}
+/>
+<PaginatedCombobox
+    value={paginatedValue}
+    onChange={setPaginatedValue}
+    loadPage={(page, search) => loadEntityPage(locale, page, search)}
+    getItemId={(item) => item.id}
+    renderSelectedLabel={(item) => item.article}
+    renderOption={(item) => (
+        <span className='oui-entity-option-main'>
+            <span className='oui-entity-option-code'>{item.article}</span>
+            <span className='oui-entity-option-meta'>{item.name}</span>
+        </span>
+    )}
+    placeholder='Paginated combobox'
+    clearable
+    searchAction={{label: 'Create entity from search', onClick: createEntity}}
     optionAction={{
         icon: <LuPlus size={14} />,
         label: (item) => 'Add ' + item.article,
@@ -571,7 +830,7 @@ import {LuChevronDown} from 'react-icons/lu';
     overlayColor='transparent'
     overlayOpacity={0}
     overlayBlur={10}
-    borderColor='color-mix(in srgb, var(--oui-brand) 34%, var(--oui-border))'
+    borderColor='color-mix(in srgb, var(--oui-primary-base) 34%, var(--oui-border))'
     radius={10}
     shadow='0 24px 90px rgb(0 0 0 / 44%)'
     footer={
@@ -600,7 +859,7 @@ import {LuChevronDown} from 'react-icons/lu';
     overlayColor='transparent'
     overlayOpacity={0}
     overlayBlur={8}
-    borderColor='color-mix(in srgb, var(--oui-brand) 38%, var(--oui-border))'
+    borderColor='color-mix(in srgb, var(--oui-primary-base) 38%, var(--oui-border))'
     radius={10}
     footer={
         <Flex g={2} j='e' w='100%'>
@@ -624,7 +883,7 @@ import {LuChevronDown} from 'react-icons/lu';
     overlayColor='transparent'
     overlayOpacity={0}
     overlayBlur={6}
-    borderColor='color-mix(in srgb, var(--oui-brand) 42%, var(--oui-border))'
+    borderColor='color-mix(in srgb, var(--oui-primary-base) 42%, var(--oui-border))'
     radius={10}
 >
     <Stack g={3}>
@@ -662,7 +921,7 @@ import {LuChevronDown} from 'react-icons/lu';
     overlayOpacity={0}
     overlayBlur={14}
     animationDuration='1200ms'
-    borderColor='color-mix(in srgb, var(--oui-brand) 42%, var(--oui-border))'
+    borderColor='color-mix(in srgb, var(--oui-primary-base) 42%, var(--oui-border))'
     radius={10}
 >
     <Stack g={3}>
@@ -697,7 +956,7 @@ import {LuChevronDown} from 'react-icons/lu';
     overlayColor='#3b0712'
     overlayOpacity={0.48}
     overlayBlur={3}
-    borderColor='color-mix(in srgb, var(--oui-danger) 46%, var(--oui-border))'
+    borderColor='color-mix(in srgb, var(--oui-danger-base) 46%, var(--oui-border))'
     radius={8}
     footer={
         <Flex g={2} j='e' w='100%'>
@@ -719,10 +978,10 @@ import {LuChevronDown} from 'react-icons/lu';
         {
             key: 'create-record',
             label: 'Create record',
-            description: 'Start a workflow.',
+            description: 'Start a new record.',
             shortcut: 'C',
             group: 'Create',
-            keywords: ['new', 'workflow'],
+            keywords: ['new', 'record'],
             onSelect: () => toast.info('Create record action'),
         },
     ]}
@@ -934,6 +1193,116 @@ const toastPositionVariants: Array<{
 </Modal>
 
 <Button onClick={() => setOpen(true)}>Open modal</Button>`,
+    tablePagination: `import {Badge, Flex, Pagination, Stack, Table, Text} from '@orcestr/ui';
+
+<Stack g={3}>
+    <Table v='surface' w='100%'>
+        <Table.Header>
+            <Table.Row>
+                <Table.ColumnHeaderCell>Document</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell align='right'>Qty</Table.ColumnHeaderCell>
+            </Table.Row>
+        </Table.Header>
+        <Table.Body>
+            {rows.map((row) => (
+                <Table.Row key={row.name}>
+                    <Table.RowHeaderCell>{row.name}</Table.RowHeaderCell>
+                    <Table.Cell><Badge>{row.status}</Badge></Table.Cell>
+                    <Table.Cell align='right'>{row.quantity}</Table.Cell>
+                </Table.Row>
+            ))}
+        </Table.Body>
+    </Table>
+    <Flex j='sb' a='c' wrap g={2}>
+        <Text fs='13px' tone='muted'>Showing 25 items per page</Text>
+        <Pagination page={page} pageCount={4} onPageChange={setPage} />
+    </Flex>
+</Stack>`,
+    appSidebar: `import {useState} from 'react';
+import {AppSidebar, Flex, IconButton, Text} from '@orcestr/ui';
+import {LuBell, LuBox, LuLayoutDashboard, LuSettings, LuTruck} from 'react-icons/lu';
+
+const [activeKey, setActiveKey] = useState('requests');
+
+<AppSidebar
+    header={(
+        <>
+            <div className='oui-app-sidebar-brand'>
+                <span className='oui-app-sidebar-logo'>O</span>
+                <span className='oui-app-sidebar-title'>Deliveries</span>
+            </div>
+            <div className='oui-app-sidebar-actions'>
+                <IconButton size={2} v='ghost' icon={<LuSettings />} />
+            </div>
+        </>
+    )}
+    itemH={38}
+    onNavigate={(item) => setActiveKey(item.key)}
+    groups={[
+        {
+            key: 'main',
+            items: [
+                {
+                    key: 'overview',
+                    label: 'Overview',
+                    icon: <LuLayoutDashboard />,
+                    active: activeKey === 'overview',
+                },
+                {
+                    key: 'requests',
+                    label: 'Requests',
+                    icon: <LuTruck />,
+                    active: activeKey === 'requests',
+                },
+                {
+                    key: 'products',
+                    label: 'Products',
+                    icon: <LuBox />,
+                    active: activeKey === 'products',
+                },
+            ],
+        },
+    ]}
+    footer={(
+        <Flex col g={2}>
+            <Flex g={1}>
+                <IconButton size={2} v='ghost' icon={<LuBell />} badge={64} />
+                <IconButton size={2} v='ghost' icon={<LuSettings />} />
+            </Flex>
+            <Text fs='12px' tone='muted'>Admin workspace</Text>
+        </Flex>
+    )}
+/>`,
+    specialModal: `import {Badge, Button, Flex, SpecialModal, Stack, Text} from '@orcestr/ui';
+
+<SpecialModal open={open} onOpenChange={setOpen} size='lg' scroll='body'>
+    <SpecialModal.Header
+        title='Request PR-2026-0900'
+        meta={<Badge tone='success'>Closed</Badge>}
+        actions={<SpecialModal.Close />}
+    />
+    <SpecialModal.Body>
+        <Stack g={3}>
+            <Flex g={4} wrap>
+                <Stack g={0} w='min(100%, 220px)'>
+                    <Text fs='12px' tone='muted'>Supplier</Text>
+                    <Text fw={760}>Northwind Trading LLC</Text>
+                </Stack>
+                <Stack g={0} w='min(100%, 180px)'>
+                    <Text fs='12px' tone='muted'>Plan arrival</Text>
+                    <Text fw={760}>25.06.2026</Text>
+                </Stack>
+            </Flex>
+        </Stack>
+    </SpecialModal.Body>
+    <SpecialModal.Footer>
+        <Flex g={2} j='e' w='100%'>
+            <Button v='surface' onClick={() => setOpen(false)}>Close</Button>
+            <Button>Save</Button>
+        </Flex>
+    </SpecialModal.Footer>
+</SpecialModal>`,
     data: `import {Button, DataTable, TextField, type DataTableSort} from '@orcestr/ui';
 
 const [sort, setSort] = useState<DataTableSort | null>({key: 'name', direction: 'asc'});

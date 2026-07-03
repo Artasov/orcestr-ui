@@ -43,7 +43,7 @@ export function FoundationsSection({
                             ['Проверки', 'tsc, contract tests, diff check, /ui smoke'],
                         ].map(([title, description]) => (
                             <div key={title} className='oui-ui-contract-item'>
-                                <Badge tone='brand'>{title}</Badge>
+                                <Badge tone='primary'>{title}</Badge>
                                 <Text fs='12px' tone='muted'>
                                     {description}
                                 </Text>

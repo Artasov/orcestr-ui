@@ -1,29 +1,51 @@
 :root[data-oui-theme="light"],
 .oui-root
-    --oui-bg: #f8fafc
+    --oui-bg: #ffffff
     --oui-panel: #ffffff
-    --oui-panel-2: #f3f6fa
+    --oui-panel-2: #f9f9f9
     --oui-control-bg: transparent
-    --oui-control-hover-bg: rgb(15 23 42 / 6%)
-    --oui-border: rgb(15 23 42 / 8%)
-    --oui-border-strong: rgb(15 23 42 / 16%)
-    --oui-text: #111827
-    --oui-muted: #6b7280
-    --oui-soft: #eef3f8
-    --oui-soft-hover: #e6edf5
-    --oui-brand: #2563eb
-    --oui-brand-strong: #1d4ed8
-    --oui-brand-solid: #2563eb
-    --oui-brand-solid-hover: #1d4ed8
-    --oui-brand-soft: rgb(37 99 235 / 12%)
-    --oui-success: #0f9f6e
-    --oui-success-soft: #e8f8f2
-    --oui-warning: #bd7a00
-    --oui-warning-soft: #fff6db
-    --oui-danger: #dc2626
-    --oui-danger-soft: rgb(220 38 38 / 12%)
-    --oui-info: #0876bd
-    --oui-info-soft: #e7f4ff
+    --oui-control-hover-bg: #0000000f
+    --oui-border: #00000017
+    --oui-border-strong: #00000026
+    --oui-text: #202020
+    --oui-muted: #646464
+    --oui-soft: #008ff519
+    --oui-soft-hover: #008ff519
+    --oui-primary-base: #0090ff
+    --oui-primary-text: #0d74ce
+    --oui-primary-surface: #008ff519
+    --oui-primary-border: #0083eb71
+    --oui-primary-contrast: #ffffff
+    --oui-secondary-base: #8d8d8d
+    --oui-secondary-text: #202020
+    --oui-secondary-surface: #00000006
+    --oui-secondary-border: #00000017
+    --oui-secondary-contrast: #ffffff
+    --oui-neutral-base: #6b7280
+    --oui-neutral-text: #202020
+    --oui-neutral-surface: #00000006
+    --oui-neutral-border: #00000017
+    --oui-neutral-contrast: #ffffff
+    --oui-success-base: #0f9f6e
+    --oui-success-text: #218358
+    --oui-success-surface: #00a43319
+    --oui-success-border: #00914071
+    --oui-success-contrast: #ffffff
+    --oui-warning-base: #ffc53d
+    --oui-warning-text: #ab6400
+    --oui-warning-surface: #ffde003d
+    --oui-warning-border: #eab5008c
+    --oui-warning-contrast: #202020
+    --oui-danger-base: #e5484d
+    --oui-danger-text: #ce2c31
+    --oui-danger-surface: #f3000d14
+    --oui-danger-border: #df000356
+    --oui-danger-contrast: #ffffff
+    --oui-info-base: #0090ff
+    --oui-info-text: #0d74ce
+    --oui-info-surface: #008ff519
+    --oui-info-border: #0083eb71
+    --oui-info-contrast: #ffffff
     --oui-section-bg: #0f172a
     --oui-section-opacity: 0%
     --oui-section-nested-opacity: 0%
@@ -34,13 +56,16 @@
     --oui-section-solid-bg: var(--oui-bg)
     --oui-section-nested-solid-bg: var(--oui-bg)
     --oui-floating-bg: var(--oui-surface-bg)
-    --oui-pad-bg: #0f172a
-    --oui-pad-opacity: 3.5%
-    --oui-pad-hover-opacity: 5.5%
+    --oui-pad-bg: #00000006
+    --oui-pad-hover-bg: #0000000f
+    --oui-pad-opacity: 100%
+    --oui-pad-hover-opacity: 100%
+    --oui-scrollbar-thumb: color-mix(in srgb, var(--oui-bg) 78%, var(--oui-text) 22%)
+    --oui-scrollbar-thumb-hover: color-mix(in srgb, var(--oui-bg) 68%, var(--oui-text) 32%)
     --oui-skeleton-shimmer: rgb(255 255 255 / 18%)
-    --oui-shadow-sm: 0 2px 8px rgb(17 24 39 / 8%)
-    --oui-shadow-md: 0 16px 48px var(--oui-shadow-soft)
-    --oui-ring: 0 0 0 3px rgb(37 99 235 / 16%)
+    --oui-shadow-sm: inset 0 0 0 1px #0000001f, inset 0 1.5px 2px 0 #00000006, inset 0 1.5px 2px 0 rgb(0 0 0 / 10%)
+    --oui-shadow-md: 0 0 0 1px #0000000f, 0 2px 3px -2px #0000000f, 0 3px 12px -4px rgb(0 0 0 / 10%), 0 4px 16px -8px rgb(0 0 0 / 10%)
+    --oui-ring: 0 0 0 3px #009eff2a
     --oui-radius: 8px
     --oui-radius-sm: 6px
     --oui-radius-xl: 12px
@@ -64,46 +89,69 @@
     --oui-state-selected-opacity: .15
     --oui-state-focus-ring-width: 3px
     --oui-panel-solid: #ffffff
-    --oui-gray-3: #eef2f7
-    --oui-gray-a3: rgb(15 23 42 / 6%)
-    --oui-gray-a4: rgb(15 23 42 / 8%)
-    --oui-gray-a5: rgb(15 23 42 / 12%)
-    --oui-gray-a8: rgb(15 23 42 / 18%)
-    --oui-shadow-soft: rgb(15 23 42 / 18%)
+    --oui-gray-3: #f0f0f0
+    --oui-gray-a3: #0000000f
+    --oui-gray-a4: #00000017
+    --oui-gray-a5: #0000001f
+    --oui-gray-a8: #00000044
+    --oui-shadow-soft: rgb(0 0 0 / 12%)
     color: var(--oui-text)
+    color-scheme: light
     background: var(--oui-bg)
     min-height: 100%
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
 
 :root[data-oui-theme="dark"],
 .oui-root[data-oui-theme="dark"]
-    --oui-bg: #111318
-    --oui-panel: #171a21
-    --oui-panel-2: #20242d
+    --oui-bg: #09090b
+    --oui-panel: #0c0c0f
+    --oui-panel-2: #222222
     --oui-control-bg: transparent
-    --oui-control-hover-bg: rgb(255 255 255 / 6%)
-    --oui-border: rgb(255 255 255 / 8%)
-    --oui-border-strong: rgb(255 255 255 / 14%)
-    --oui-text: #f4f6f8
-    --oui-muted: #9aa4b2
-    --oui-soft: #223147
-    --oui-soft-hover: #2b3b54
-    --oui-brand: #6ea0ff
-    --oui-brand-strong: #93b8ff
-    --oui-brand-solid: #315fbe
-    --oui-brand-solid-hover: #3b70d8
-    --oui-brand-soft: rgb(110 160 255 / 16%)
-    --oui-success: #5fd3a1
-    --oui-success-soft: #173a31
-    --oui-warning: #f3c969
-    --oui-warning-soft: #443516
-    --oui-danger: #ff7b72
-    --oui-danger-soft: rgb(255 123 114 / 14%)
-    --oui-info: #71c7ff
-    --oui-info-soft: #173852
+    --oui-control-hover-bg: #ffffff12
+    --oui-border: #ffffff1b
+    --oui-border-strong: #ffffff2c
+    --oui-text: #eeeeee
+    --oui-muted: #b4b4b4
+    --oui-soft: #0077ff3a
+    --oui-soft-hover: #0077ff3a
+    --oui-primary-base: #0090ff
+    --oui-primary-text: #70b8ff
+    --oui-primary-surface: #0077ff3a
+    --oui-primary-border: #2a91fe98
+    --oui-primary-contrast: #ffffff
+    --oui-secondary-base: #8d8d8d
+    --oui-secondary-text: #eeeeee
+    --oui-secondary-surface: #ffffff09
+    --oui-secondary-border: #ffffff1b
+    --oui-secondary-contrast: #ffffff
+    --oui-neutral-base: #b4b4b4
+    --oui-neutral-text: #eeeeee
+    --oui-neutral-surface: #ffffff09
+    --oui-neutral-border: #ffffff1b
+    --oui-neutral-contrast: #ffffff
+    --oui-success-base: #30a46c
+    --oui-success-text: #3dd68c
+    --oui-success-surface: #22ff991e
+    --oui-success-border: #50fdac5e
+    --oui-success-contrast: #ffffff
+    --oui-warning-base: #ffc53d
+    --oui-warning-text: #ffca16
+    --oui-warning-surface: #fa820022
+    --oui-warning-border: #fd9b0051
+    --oui-warning-contrast: #202020
+    --oui-danger-base: #e5484d
+    --oui-danger-text: #ff9592
+    --oui-danger-surface: #ff173f2d
+    --oui-danger-border: #ff536184
+    --oui-danger-contrast: #ffffff
+    --oui-info-base: #0090ff
+    --oui-info-text: #70b8ff
+    --oui-info-surface: #0077ff3a
+    --oui-info-border: #2a91fe98
+    --oui-info-contrast: #ffffff
     --oui-section-bg: #ffffff
-    --oui-section-opacity: 2%
-    --oui-section-nested-opacity: 2%
+    --oui-section-opacity: 0%
+    --oui-section-nested-opacity: 0%
     --oui-section-shadow: none
     --oui-section-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-opacity), transparent)
     --oui-section-nested-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-nested-opacity), transparent)
@@ -111,20 +159,24 @@
     --oui-section-solid-bg: rgb(22 24 29)
     --oui-section-nested-solid-bg: rgb(27 29 34)
     --oui-floating-bg: var(--oui-surface-bg)
-    --oui-pad-bg: #ffffff
-    --oui-pad-opacity: 2%
-    --oui-pad-hover-opacity: 4.5%
-    --oui-skeleton-shimmer: rgb(255 255 255 / 8%)
-    --oui-shadow-sm: 0 2px 10px rgb(0 0 0 / 22%)
-    --oui-shadow-md: 0 16px 48px var(--oui-shadow-soft)
-    --oui-ring: 0 0 0 3px rgb(106 160 255 / 22%)
+    --oui-pad-bg: #ffffff09
+    --oui-pad-hover-bg: #ffffff12
+    --oui-pad-opacity: 100%
+    --oui-pad-hover-opacity: 100%
+    --oui-scrollbar-thumb: color-mix(in srgb, var(--oui-bg) 82%, var(--oui-text) 18%)
+    --oui-scrollbar-thumb-hover: color-mix(in srgb, var(--oui-bg) 74%, var(--oui-text) 26%)
+    --oui-skeleton-shimmer: #ffffff12
+    --oui-shadow-sm: inset 0 -1px 1px 0 #ffffff12, inset 0 0 0 1px #ffffff12, inset 0 3px 4px 0 rgb(0 0 0 / 30%), inset 0 0 0 1px #ffffff1b
+    --oui-shadow-md: 0 0 0 1px #ffffff2c, 0 2px 3px -2px rgb(0 0 0 / 15%), 0 3px 8px -2px rgb(0 0 0 / 40%), 0 4px 12px -4px rgb(0 0 0 / 50%)
+    --oui-ring: 0 0 0 3px #0075ff57
     --oui-panel-solid: var(--oui-panel)
-    --oui-gray-3: #20242d
-    --oui-gray-a3: rgb(255 255 255 / 5%)
-    --oui-gray-a4: rgb(255 255 255 / 8%)
-    --oui-gray-a5: rgb(255 255 255 / 11%)
-    --oui-gray-a8: rgb(255 255 255 / 16%)
-    --oui-shadow-soft: rgb(0 0 0 / 42%)
+    --oui-gray-3: #222222
+    --oui-gray-a3: #ffffff12
+    --oui-gray-a4: #ffffff1b
+    --oui-gray-a5: #ffffff22
+    --oui-gray-a8: #ffffff55
+    --oui-shadow-soft: rgb(0 0 0 / 48%)
+    color-scheme: dark
 
 .oui-root *,
 .oui-root *::before,
@@ -164,21 +216,29 @@
 .oui-text-neutral
     color: var(--oui-text)
 
-.oui-text-brand
-    color: var(--oui-brand-strong)
+.oui-text-primary
+    color: var(--oui-primary-text)
+
+.oui-text-secondary
+    color: var(--oui-secondary-text)
 
 .oui-text-success
-    color: var(--oui-success)
+    color: var(--oui-success-base)
 
 .oui-text-warning
-    color: var(--oui-warning)
+    color: var(--oui-warning-base)
 
 .oui-text-danger
-    color: var(--oui-danger)
+    color: var(--oui-danger-base)
 
 .oui-text-info
-    color: var(--oui-info)
+    color: var(--oui-info-base)
 
 .oui-muted
     color: var(--oui-muted)
 
+$oui-color-tones: 'blue' 'sky' 'cyan' 'teal' 'indigo' 'violet' 'purple' 'iris' 'green' 'jade' 'mint' 'grass' 'lime' 'yellow' 'amber' 'orange' 'brown' 'red' 'ruby' 'crimson' 'pink' 'tomato'
+
+@each $tone in $oui-color-tones
+    .oui-text-#{$tone}
+        color: var(--#{$tone}-11, var(--oui-text))

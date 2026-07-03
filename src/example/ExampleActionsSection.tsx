@@ -4,13 +4,34 @@ import {
     LuBell,
     LuCheck,
     LuCommand,
+    LuCopy,
+    LuDownload,
     LuEllipsis,
+    LuExternalLink,
     LuInfo,
+    LuMessageSquare,
+    LuPackagePlus,
+    LuRefreshCw,
+    LuSearch,
+    LuSettings,
+    LuShield,
     LuTrash2,
     LuTriangleAlert,
+    LuUpload,
 } from 'react-icons/lu';
 
-import {Button, Flex, IconButton, Menu, Spinner, Tooltip, type MenuItem} from '..';
+import {
+    Button,
+    ContextMenu,
+    Flex,
+    IconButton,
+    IconTextButton,
+    Menu,
+    Spinner,
+    Text,
+    Tooltip,
+    type MenuItem,
+} from '..';
 import {ExampleTile} from './CodePreview';
 import {codeSamples, type CodeExample} from './codeSamples';
 import {UiExampleSection} from './UiExampleSection';
@@ -79,6 +100,44 @@ export function ActionsSection({
                 </ExampleTile>
         </UiExampleSection>
         <UiExampleSection
+            id='icon-text-buttons-example'
+            title='Icon text buttons'
+            description='Button and link-button behavior with library-owned icon spacing.'
+        >
+                <ExampleTile
+                    title='IconTextButton'
+                    code={codeSamples.iconTextButton}
+                    onOpen={onOpenCode}
+                >
+                    <Flex g={2} a='c' wrap>
+                        <IconTextButton icon={<LuPackagePlus size={16} />}>
+                            Create PO
+                        </IconTextButton>
+                        <IconTextButton
+                            v='soft'
+                            tone='info'
+                            icon={<LuCopy size={16} />}
+                        >
+                            Duplicate
+                        </IconTextButton>
+                        <IconTextButton
+                            href='#icon-text-buttons-example'
+                            v='surface'
+                            icon={<LuExternalLink size={16} />}
+                        >
+                            Link action
+                        </IconTextButton>
+                        <IconTextButton
+                            v='outline'
+                            iconSide='end'
+                            icon={<LuExternalLink size={16} />}
+                        >
+                            Open details
+                        </IconTextButton>
+                    </Flex>
+                </ExampleTile>
+        </UiExampleSection>
+        <UiExampleSection
             id='icon-buttons-example'
             title='Icon buttons'
             description='Icon-only actions, loading state, menu trigger and command entry.'
@@ -90,19 +149,25 @@ export function ActionsSection({
                 >
                     <Flex g={2} a='c' wrap>
                         <IconButton v='solid' icon={<LuCheck size={17} />} aria-label='Solid icon' />
-                        <IconButton v='soft' icon={<LuBell size={17} />} aria-label='Soft icon' />
-                        <IconButton v='surface' icon={<LuBell size={17} />} aria-label='Surface icon' />
-                        <IconButton v='pad' icon={<LuBell size={17} />} aria-label='Pad icon' />
+                        <IconButton v='soft' icon={<LuSearch size={17} />} aria-label='Search icon' />
+                        <IconButton v='surface' icon={<LuUpload size={17} />} aria-label='Upload icon' />
+                        <IconButton v='pad' icon={<LuShield size={17} />} aria-label='Security icon' />
                         <IconButton v='outline' icon={<LuInfo size={17} />} aria-label='Outline icon' />
                         <IconButton v='ghost' icon={<LuEllipsis size={17} />} aria-label='Ghost icon' />
                     </Flex>
                     <Flex g={2} a='c' wrap>
-                        <IconButton size={1} v='surface' icon={<LuBell size={13} />} aria-label='Size 1 icon' />
-                        <IconButton size={2} v='surface' icon={<LuBell size={15} />} aria-label='Size 2 icon' />
-                        <IconButton size={3} v='surface' icon={<LuBell size={17} />} aria-label='Size 3 icon' />
-                        <IconButton size={4} v='surface' icon={<LuBell size={19} />} aria-label='Size 4 icon' />
+                        <IconButton size={1} v='surface' icon={<LuSearch size={13} />} aria-label='Size 1 search' />
+                        <IconButton size={2} v='surface' icon={<LuDownload size={15} />} aria-label='Size 2 download' />
+                        <IconButton size={3} v='surface' icon={<LuRefreshCw size={17} />} aria-label='Size 3 refresh' />
+                        <IconButton size={4} v='surface' icon={<LuSettings size={19} />} aria-label='Size 4 settings' />
                         <IconButton size={3} v='pad' round={false} r={3} icon={<LuCommand size={17} />} aria-label='Square pad icon' />
-                        <IconButton size={3} v='outline' loading icon={<LuBell size={17} />} aria-label='Loading icon' />
+                        <IconButton size={3} v='outline' loading icon={<LuRefreshCw size={17} />} aria-label='Loading icon' />
+                    </Flex>
+                    <Flex g={2} a='c' wrap>
+                        <IconButton v='surface' icon={<LuBell size={17} />} badge={64} aria-label='Notifications' />
+                        <IconButton v='surface' icon={<LuMessageSquare size={17} />} badge={99} aria-label='Unread chats' />
+                        <IconButton v='pad' icon={<LuShield size={17} />} badge={3} badgeTone='warning' aria-label='Security warnings' />
+                        <IconButton v='ghost' icon={<LuDownload size={17} />} badge='new' badgeTone='info' aria-label='New export' />
                     </Flex>
                     <Flex g={2} a='c' wrap>
                         <IconButton size={1} v='ghost' icon={<LuEllipsis size={13} />} aria-label='Ghost size 1' />
@@ -112,10 +177,10 @@ export function ActionsSection({
                     </Flex>
                     <div className='oui-ui-row'>
                         <Tooltip content='Notifications'>
-                            <IconButton v='surface' icon={<LuBell size={17} />} aria-label='Notifications' />
+                            <IconButton v='surface' icon={<LuBell size={17} />} badge={8} aria-label='Notifications' />
                         </Tooltip>
-                        <IconButton v='surface' loading icon={<LuBell size={17} />} aria-label='Loading action' />
-                        <IconButton v='pad' icon={<LuBell size={17} />} aria-label='Pad action' />
+                        <IconButton v='surface' loading icon={<LuRefreshCw size={17} />} aria-label='Loading action' />
+                        <IconButton v='pad' icon={<LuSettings size={17} />} aria-label='Pad action' />
                         <Menu
                             trigger={
                                 <IconButton v='surface' icon={<LuEllipsis size={17} />} aria-label='Actions' />
@@ -130,6 +195,26 @@ export function ActionsSection({
                             Commands
                         </Button>
                     </div>
+                </ExampleTile>
+        </UiExampleSection>
+        <UiExampleSection
+            id='context-menu-example'
+            title='Context menu'
+            description='Right-click menu layer using shared action menu items.'
+        >
+                <ExampleTile
+                    title='ContextMenu'
+                    code={codeSamples.contextMenu}
+                    onOpen={onOpenCode}
+                >
+                    <ContextMenu items={menuItems}>
+                        <div className='oui-ui-context-menu-demo'>
+                            <Text fs='13px' fw={760}>Right-click this row</Text>
+                            <Text fs='12px' tone='muted'>
+                                ContextMenu reuses Menu item sizing, tones and confirm actions.
+                            </Text>
+                        </div>
+                    </ContextMenu>
                 </ExampleTile>
         </UiExampleSection>
         </>

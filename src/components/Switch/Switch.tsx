@@ -12,6 +12,7 @@ import {cn} from '../../utils/cn';
 
 export type SwitchProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> & {
     label?: ReactNode;
+    onCheckedChange?: (checked: boolean) => void;
     testId?: string;
 };
 
@@ -24,7 +25,9 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
         defaultChecked,
         disabled,
         onChange,
+        onCheckedChange,
         testId,
+        dangerouslySetInnerHTML: _dangerouslySetInnerHTML,
         ...props
     },
     ref,
@@ -34,6 +37,7 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (checked === undefined) setInternalChecked(event.target.checked);
         onChange?.(event);
+        onCheckedChange?.(event.target.checked);
     };
 
     return (

@@ -10,7 +10,7 @@ import {
     type KeyboardEvent,
     type ReactNode,
 } from 'react';
-import {LuSearch} from 'react-icons/lu';
+import {LuSearch, LuX} from 'react-icons/lu';
 
 import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
 import {
@@ -21,6 +21,7 @@ import {
 import {ActionConfirmModal} from '../Action/ActionConfirmModal';
 import {Collapse} from '../Collapse/Collapse';
 import {Modal} from '../Modal/Modal';
+import {IconButton} from '../IconButton/IconButton';
 import {Spinner} from '../Spinner/Spinner';
 import {TextField} from '../TextField/TextField';
 
@@ -217,104 +218,116 @@ export function CommandPalette({
                     if (next) onOpenChange(true);
                     else close();
                 }}
-                title={actualTitle}
-                description={actualDescription}
                 maxWidth={520}
                 testId={testId}
             >
-                <div className='oui-command-palette' data-testid={testId ? `${testId}-panel` : undefined} onKeyDown={handleKeyDown}>
-                    <TextField
-                        autoFocus
-                        className='oui-command-palette-search'
-                        leftSlot={<LuSearch size={16} />}
-                        placeholder={actualPlaceholder}
-                        value={query}
-                        role='combobox'
-                        aria-autocomplete='list'
-                        aria-controls={listboxId}
-                        aria-expanded={open}
-                        aria-activedescendant={
-                            selectedItem
-                                ? commandOptionId(listboxId, actualSelectedIndex)
-                                : undefined
-                        }
-                        onChange={(event) => setQuery(event.target.value)}
+                <Modal.Header>
+                    <div className='oui-modal-title-wrap'>
+                        <h2 className='oui-modal-title'>{actualTitle}</h2>
+                        <p className='oui-modal-description'>{actualDescription}</p>
+                    </div>
+                    <IconButton
+                        v='ghost'
+                        icon={<LuX size={18} />}
+                        aria-label={copy.common.close}
+                        onClick={close}
                     />
-                    <div
-                        ref={optionsRef}
-                        id={listboxId}
-                        className='oui-command-palette-results'
-                        role='listbox'
-                        aria-label={copy.common.commandPaletteResults}
-                    >
-                        <Collapse open className='oui-command-palette-collapse'>
-                            {groups.length > 0 ? (
-                                groups.map((groupData) => (
-                                    <div
-                                        key={groupData.group}
-                                        className='oui-command-palette-group'
-                                    >
+                </Modal.Header>
+                <Modal.Body>
+                    <div className='oui-command-palette' data-testid={testId ? `${testId}-panel` : undefined} onKeyDown={handleKeyDown}>
+                        <TextField
+                            autoFocus
+                            className='oui-command-palette-search'
+                            leftSlot={<LuSearch size={16} />}
+                            placeholder={actualPlaceholder}
+                            value={query}
+                            role='combobox'
+                            aria-autocomplete='list'
+                            aria-controls={listboxId}
+                            aria-expanded={open}
+                            aria-activedescendant={
+                                selectedItem
+                                    ? commandOptionId(listboxId, actualSelectedIndex)
+                                    : undefined
+                            }
+                            onChange={(event) => setQuery(event.target.value)}
+                        />
+                        <div
+                            ref={optionsRef}
+                            id={listboxId}
+                            className='oui-command-palette-results'
+                            role='listbox'
+                            aria-label={copy.common.commandPaletteResults}
+                        >
+                            <Collapse open className='oui-command-palette-collapse'>
+                                {groups.length > 0 ? (
+                                    groups.map((groupData) => (
                                         <div
-                                            className='oui-command-palette-group-title'
-                                            data-recent={groupData.recent ? 'true' : undefined}
+                                            key={groupData.group}
+                                            className='oui-command-palette-group'
                                         >
-                                            {groupData.group}
-                                        </div>
-                                        <div className='oui-command-palette-items'>
-                                            {groupData.items.map((item) => {
-                                                const index = options.indexOf(item);
-                                                const selected = index === actualSelectedIndex;
-                                                return (
-                                                    <button
-                                                        key={`${groupData.group}-${item.key}`}
-                                                        id={commandOptionId(listboxId, index)}
-                                                        type='button'
-                                                        role='option'
-                                                        aria-selected={selected}
-                                                        className='oui-command-palette-item'
-                                                        data-selected={selected ? 'true' : undefined}
-                                                        data-loading={item.loading ? 'true' : undefined}
-                                                        data-tone={item.tone}
-                                                        data-oui-command-index={index}
-                                                        aria-busy={item.loading ? 'true' : undefined}
-                                                        disabled={isActionItemDisabled(item)}
-                                                        onMouseEnter={() => setSelectedIndex(index)}
-                                                        onClick={() => selectItem(item)}
-                                                    >
-                                                        {item.icon || item.loading ? (
-                                                            <span className='oui-command-palette-item-icon'>
-                                                                {item.loading ? <Spinner size={1} /> : item.icon}
-                                                            </span>
-                                                        ) : null}
-                                                        <span className='oui-command-palette-item-main'>
-                                                            <span className='oui-command-palette-item-label'>
-                                                                {item.label}
-                                                            </span>
-                                                            {item.description ? (
-                                                                <span className='oui-command-palette-item-description'>
-                                                                    {item.description}
+                                            <div
+                                                className='oui-command-palette-group-title'
+                                                data-recent={groupData.recent ? 'true' : undefined}
+                                            >
+                                                {groupData.group}
+                                            </div>
+                                            <div className='oui-command-palette-items'>
+                                                {groupData.items.map((item) => {
+                                                    const index = options.indexOf(item);
+                                                    const selected = index === actualSelectedIndex;
+                                                    return (
+                                                        <button
+                                                            key={`${groupData.group}-${item.key}`}
+                                                            id={commandOptionId(listboxId, index)}
+                                                            type='button'
+                                                            role='option'
+                                                            aria-selected={selected}
+                                                            className='oui-command-palette-item'
+                                                            data-selected={selected ? 'true' : undefined}
+                                                            data-loading={item.loading ? 'true' : undefined}
+                                                            data-tone={item.tone}
+                                                            data-oui-command-index={index}
+                                                            aria-busy={item.loading ? 'true' : undefined}
+                                                            disabled={isActionItemDisabled(item)}
+                                                            onMouseEnter={() => setSelectedIndex(index)}
+                                                            onClick={() => selectItem(item)}
+                                                        >
+                                                            {item.icon || item.loading ? (
+                                                                <span className='oui-command-palette-item-icon'>
+                                                                    {item.loading ? <Spinner size={1} /> : item.icon}
                                                                 </span>
                                                             ) : null}
-                                                        </span>
-                                                        {item.shortcut ? (
-                                                            <span className='oui-command-palette-shortcut'>
-                                                                {item.shortcut}
+                                                            <span className='oui-command-palette-item-main'>
+                                                                <span className='oui-command-palette-item-label'>
+                                                                    {item.label}
+                                                                </span>
+                                                                {item.description ? (
+                                                                    <span className='oui-command-palette-item-description'>
+                                                                        {item.description}
+                                                                    </span>
+                                                                ) : null}
                                                             </span>
-                                                        ) : null}
-                                                    </button>
-                                                );
-                                            })}
+                                                            {item.shortcut ? (
+                                                                <span className='oui-command-palette-shortcut'>
+                                                                    {item.shortcut}
+                                                                </span>
+                                                            ) : null}
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
+                                    ))
+                                ) : (
+                                    <div className='oui-command-palette-empty'>
+                                    {actualEmptyText}
                                     </div>
-                                ))
-                            ) : (
-                                <div className='oui-command-palette-empty'>
-                                {actualEmptyText}
-                                </div>
-                            )}
-                        </Collapse>
+                                )}
+                            </Collapse>
+                        </div>
                     </div>
-                </div>
+                </Modal.Body>
             </Modal>
             <ActionConfirmModal
                 item={confirmItem}

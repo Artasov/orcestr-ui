@@ -7,14 +7,18 @@ import {
     useMemo,
     useRef,
     useState,
+    Children,
+    isValidElement,
+    type CSSProperties,
     type KeyboardEvent,
+    type ReactElement,
     type ReactNode,
 } from 'react';
 import {LuCheck, LuChevronsUpDown, LuX} from 'react-icons/lu';
 
 import {Button} from '../Button/Button';
 import {Popover} from '../Popover/Popover';
-import type {UiSize} from '../../theme/systemProps';
+import {splitSystemProps, type SystemProps, type UiSize} from '../../theme/systemProps';
 import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
 import {useListNavigation} from '../../hooks/useListNavigation';
 import {useTypeahead} from '../../hooks/useTypeahead';
@@ -40,9 +44,11 @@ export function Select<V extends string = string>({
     maxHeight = 280,
     onClear,
     className,
+    style,
     showChevron = true,
     clearLabel,
     testId,
+    ...props
 }: {
     items: ReadonlyArray<SelectItem<V>>;
     value: V | null;
@@ -56,10 +62,11 @@ export function Select<V extends string = string>({
     maxHeight?: number;
     onClear?: () => void;
     className?: string;
+    style?: CSSProperties;
     showChevron?: boolean;
     clearLabel?: string;
     testId?: string;
-}) {
+} & SystemProps) {
     const {copy} = useOrcestrUiLocale();
     const actualPlaceholder = placeholder ?? copy.common.selectValue;
     const actualEmptyText = emptyText ?? copy.common.noOptions;
@@ -162,6 +169,7 @@ export function Select<V extends string = string>({
     const hasSelectedValue = value !== null;
     const canClear = clearable && hasSelectedValue && !disabled;
     const triggerLabel = selected?.triggerLabel ?? selected?.label ?? selectedFallbackLabel ?? null;
+    const {systemStyle} = splitSystemProps(props);
 
     return (
         <Popover
@@ -181,6 +189,7 @@ export function Select<V extends string = string>({
                     className='oui-combobox-trigger'
                     data-state={open ? 'open' : 'closed'}
                     testId={testId}
+                    style={{...systemStyle, ...style}}
                     aria-haspopup='listbox'
                     aria-expanded={open}
                     aria-controls={listboxId}
@@ -271,6 +280,116 @@ export function Select<V extends string = string>({
             </div>
         </Popover>
     );
+}
+
+type SelectRootProps<V extends string = string> = {
+    value: V | null;
+    onValueChange?: (value: V) => void;
+    disabled?: boolean;
+    children: ReactNode;
+};
+
+type SelectTriggerProps = {
+    placeholder?: string;
+    style?: CSSProperties;
+    width?: number | string;
+    size?: UiSize;
+};
+
+type SelectContentProps = {
+    children: ReactNode;
+};
+
+type SelectItemProps<V extends string = string> = {
+    value: V;
+    disabled?: boolean;
+    children: ReactNode;
+};
+
+function SelectRoot<V extends string = string>({
+    value,
+    onValueChange,
+    disabled,
+    children,
+}: SelectRootProps<V>) {
+    const trigger = findChild<SelectTriggerProps>(children, SelectTrigger);
+    const content = findChild<SelectContentProps>(children, SelectContent);
+    const items = collectSelectItems<V>(content?.props.children);
+    const triggerStyle = {
+        ...trigger?.props.style,
+        width: trigger?.props.width,
+    };
+
+    return (
+        <Select
+            items={items}
+            value={value}
+            onValueChange={(next) => {
+                if (next !== null) onValueChange?.(next);
+            }}
+            disabled={disabled}
+            placeholder={trigger?.props.placeholder}
+            size={trigger?.props.size}
+            style={triggerStyle}
+        />
+    );
+}
+
+function SelectTrigger(_props: SelectTriggerProps) {
+    return null;
+}
+
+function SelectContent(_props: SelectContentProps) {
+    return null;
+}
+
+function SelectItem<V extends string = string>(_props: SelectItemProps<V>) {
+    return null;
+}
+
+function collectSelectItems<V extends string = string>(children: ReactNode): SelectItem<V>[] {
+    const items: SelectItem<V>[] = [];
+    Children.forEach(children, (child) => {
+        if (!isValidElement(child)) return;
+        if (child.type === SelectItem) {
+            const props = child.props as SelectItemProps<V>;
+            items.push({
+                value: props.value,
+                label: props.children,
+                disabled: props.disabled,
+            });
+        } else {
+            const props = (child as ReactElement<{children?: ReactNode}>).props;
+            if (props && 'children' in props) {
+                items.push(...collectSelectItems<V>(props.children));
+            }
+        }
+    });
+    return items;
+}
+
+function findChild<P>(children: ReactNode, type: (props: P) => ReactNode): ReactElement<P> | null {
+    let found: ReactElement<P> | null = null;
+    Children.forEach(children, (child) => {
+        if (!found && isValidElement(child) && child.type === type) {
+            found = child as ReactElement<P>;
+        }
+    });
+    return found;
+}
+
+Object.assign(Select, {
+    Root: SelectRoot,
+    Trigger: SelectTrigger,
+    Content: SelectContent,
+    Item: SelectItem,
+});
+
+export namespace Select {
+    export const Root = SelectRoot;
+    export const Trigger = SelectTrigger;
+    export const Content = SelectContent;
+    export const Item = SelectItem;
 }
 
 function labelText(item: SelectItem): string {

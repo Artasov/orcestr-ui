@@ -1,9 +1,13 @@
 'use client';
 
+import {useState} from 'react';
 import {LuChevronDown} from 'react-icons/lu';
 
 import {
     Button,
+    Dialog,
+    Drawer,
+    Flex,
     Popover,
     Stack,
     Text,
@@ -100,6 +104,8 @@ export function OverlaysSection({
     onOpenCode,
 }: OverlaysSectionProps) {
     const toast = useToast();
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
     return (
         <>
@@ -129,6 +135,12 @@ export function OverlaysSection({
                         <Tooltip content='Tooltip uses the same floating layer'>
                             <Button v='outline'>Hover me</Button>
                         </Tooltip>
+                        <Button v='surface' onClick={() => setDialogOpen(true)}>
+                            Dialog
+                        </Button>
+                        <Button v='surface' onClick={() => setDrawerOpen(true)}>
+                            Drawer
+                        </Button>
                     </div>
                     <div className='oui-ui-row'>
                         <Button onClick={() => setModalOpen(true)}>Default modal</Button>
@@ -154,6 +166,45 @@ export function OverlaysSection({
                     </div>
                 </ExampleTile>
         </UiExampleSection>
+        <Dialog.Root open={dialogOpen} onOpenChange={setDialogOpen}>
+            <Dialog.Content maxWidth={460}>
+                <Stack g={3}>
+                    <Stack g={1}>
+                        <Dialog.Title>Dialog title</Dialog.Title>
+                        <Dialog.Description>
+                            Dialog keeps the Modal layer but owns accessible title and description.
+                        </Dialog.Description>
+                    </Stack>
+                    <Flex g={2} j='e'>
+                        <Dialog.Close>
+                            <Button v='surface'>Cancel</Button>
+                        </Dialog.Close>
+                        <Button onClick={() => setDialogOpen(false)}>Confirm</Button>
+                    </Flex>
+                </Stack>
+            </Dialog.Content>
+        </Dialog.Root>
+        <Drawer
+            open={drawerOpen}
+            onOpenChange={setDrawerOpen}
+            title='Drawer title'
+            description='Drawer uses the same overlay stack and focus behavior.'
+            footer={(
+                <Flex g={2} j='e'>
+                    <Button v='surface' onClick={() => setDrawerOpen(false)}>
+                        Close
+                    </Button>
+                    <Button>Apply</Button>
+                </Flex>
+            )}
+        >
+            <Stack g={2}>
+                <Text tone='muted' fs='13px'>
+                    Use Drawer for side panels and contextual forms.
+                </Text>
+                <Button v='soft'>Panel action</Button>
+            </Stack>
+        </Drawer>
         <UiExampleSection
             id='toast-example'
             title='Toast'

@@ -1,48 +1,127 @@
 import type {CSSProperties} from 'react';
 
-export type Tone = 'neutral' | 'brand' | 'success' | 'warning' | 'danger' | 'info';
-export type UiSize = 1 | 2 | 3 | 4;
+export type SemanticTone =
+    | 'neutral'
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'warning'
+    | 'danger'
+    | 'info';
+export type ColorTone =
+    | 'blue'
+    | 'sky'
+    | 'cyan'
+    | 'teal'
+    | 'indigo'
+    | 'violet'
+    | 'purple'
+    | 'iris'
+    | 'green'
+    | 'jade'
+    | 'mint'
+    | 'grass'
+    | 'lime'
+    | 'yellow'
+    | 'amber'
+    | 'orange'
+    | 'brown'
+    | 'red'
+    | 'ruby'
+    | 'crimson'
+    | 'pink'
+    | 'tomato';
+export type Tone = SemanticTone | ColorTone;
+export type ToneInput =
+    | Tone
+    | 'muted'
+    | 'gray'
+    | 'mauve'
+    | 'slate'
+    | 'sage'
+    | 'olive'
+    | 'sand'
+    | 'blue'
+    | 'sky'
+    | 'cyan'
+    | 'teal'
+    | 'indigo'
+    | 'violet'
+    | 'purple'
+    | 'iris'
+    | 'green'
+    | 'jade'
+    | 'mint'
+    | 'grass'
+    | 'lime'
+    | 'yellow'
+    | 'amber'
+    | 'orange'
+    | 'brown'
+    | 'red'
+    | 'ruby'
+    | 'crimson'
+    | 'pink'
+    | 'tomato'
+    | (string & {});
+export type UiSize = 1 | 2 | 3 | 4 | '1' | '2' | '3' | '4';
 export type RadiusScale = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
-export type AlignShort = 's' | 'c' | 'e' | 'st' | 'b';
-export type JustifyShort = 's' | 'c' | 'e' | 'sb' | 'sa' | 'se';
+export type AlignShort = 's' | 'c' | 'e' | 'st' | 'b' | 'start' | 'center' | 'end' | 'stretch' | 'baseline';
+export type JustifyShort = 's' | 'c' | 'e' | 'sb' | 'sa' | 'se' | 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
+export type ResponsiveValue<T> = T | {
+    initial?: T;
+    sm?: T;
+    md?: T;
+    lg?: T;
+    xl?: T;
+};
 
 export type SystemProps = {
-    m?: number | string;
-    mt?: number | string;
-    mr?: number | string;
-    mb?: number | string;
-    ml?: number | string;
-    mx?: number | string;
-    my?: number | string;
-    p?: number | string;
-    pt?: number | string;
-    pr?: number | string;
-    pb?: number | string;
-    pl?: number | string;
-    px?: number | string;
-    py?: number | string;
-    g?: number | string;
-    w?: number | string;
-    minW?: number | string;
-    maxW?: number | string;
-    size?: number | string;
-    h?: number | string;
-    minH?: number | string;
-    maxH?: number | string;
+    m?: ResponsiveValue<number | string>;
+    mt?: ResponsiveValue<number | string>;
+    mr?: ResponsiveValue<number | string>;
+    mb?: ResponsiveValue<number | string>;
+    ml?: ResponsiveValue<number | string>;
+    mx?: ResponsiveValue<number | string>;
+    my?: ResponsiveValue<number | string>;
+    p?: ResponsiveValue<number | string>;
+    pt?: ResponsiveValue<number | string>;
+    pr?: ResponsiveValue<number | string>;
+    pb?: ResponsiveValue<number | string>;
+    pl?: ResponsiveValue<number | string>;
+    px?: ResponsiveValue<number | string>;
+    py?: ResponsiveValue<number | string>;
+    g?: ResponsiveValue<number | string>;
+    w?: ResponsiveValue<number | string>;
+    minW?: ResponsiveValue<number | string>;
+    minWidth?: ResponsiveValue<number | string>;
+    maxW?: ResponsiveValue<number | string>;
+    maxWidth?: ResponsiveValue<number | string>;
+    size?: ResponsiveValue<number | string>;
+    h?: ResponsiveValue<number | string>;
+    minH?: ResponsiveValue<number | string>;
+    minHeight?: ResponsiveValue<number | string>;
+    maxH?: ResponsiveValue<number | string>;
+    maxHeight?: ResponsiveValue<number | string>;
     display?: CSSProperties['display'];
     position?: CSSProperties['position'];
     overflow?: CSSProperties['overflow'];
     flex?: CSSProperties['flex'];
+    flexGrow?: CSSProperties['flexGrow'];
+    flexShrink?: CSSProperties['flexShrink'];
+    flexBasis?: CSSProperties['flexBasis'];
+    alignSelf?: CSSProperties['alignSelf'];
     a?: AlignShort;
     j?: JustifyShort;
     row?: boolean;
     col?: boolean;
+    direction?: CSSProperties['flexDirection'];
     wrap?: boolean;
     nowrap?: boolean;
     inline?: boolean;
-    fs?: number | string;
+    fs?: ResponsiveValue<number | string>;
     fw?: CSSProperties['fontWeight'];
-    lh?: number | string;
+    lh?: ResponsiveValue<number | string>;
     ta?: CSSProperties['textAlign'];
     color?: CSSProperties['color'];
     r?: RadiusScale | `${RadiusScale}` | string;
@@ -67,19 +146,28 @@ const systemKeys = new Set<keyof SystemProps>([
     'g',
     'w',
     'minW',
+    'minWidth',
     'maxW',
+    'maxWidth',
     'size',
     'h',
     'minH',
+    'minHeight',
     'maxH',
+    'maxHeight',
     'display',
     'position',
     'overflow',
     'flex',
+    'flexGrow',
+    'flexShrink',
+    'flexBasis',
+    'alignSelf',
     'a',
     'j',
     'row',
     'col',
+    'direction',
     'wrap',
     'nowrap',
     'inline',
@@ -92,12 +180,28 @@ const systemKeys = new Set<keyof SystemProps>([
     'truncate',
 ]);
 
-const spacing = ['0', '4px', '8px', '12px', '16px', '20px', '24px', '32px', '40px'];
+const spacing = [
+    '0',
+    '4px',
+    '8px',
+    '12px',
+    '16px',
+    '24px',
+    '32px',
+    '40px',
+    '48px',
+    '64px',
+];
 const radiusScale = ['0', '2px', '4px', '6px', '8px', '10px', '12px', '999px'];
 
-function sizeValue(value: number | string | undefined): string | number | undefined {
+function sizeValue(value: ResponsiveValue<number | string> | undefined): string | number | undefined {
     if (value === undefined) return undefined;
+    if (typeof value === 'object') {
+        return sizeValue(value.initial ?? value.md ?? value.lg ?? value.sm ?? value.xl);
+    }
     if (typeof value === 'number') return spacing[value] ?? `${value}px`;
+    const normalized = value.trim();
+    if (/^[0-9]$/.test(normalized)) return spacing[Number(normalized)];
     return value;
 }
 
@@ -113,14 +217,19 @@ function radiusValue(
 
 function alignValue(value: AlignShort): CSSProperties['alignItems'] {
     switch (value) {
+        case 'start':
         case 's':
             return 'flex-start';
+        case 'center':
         case 'c':
             return 'center';
+        case 'end':
         case 'e':
             return 'flex-end';
+        case 'stretch':
         case 'st':
             return 'stretch';
+        case 'baseline':
         case 'b':
             return 'baseline';
     }
@@ -128,16 +237,22 @@ function alignValue(value: AlignShort): CSSProperties['alignItems'] {
 
 function justifyValue(value: JustifyShort): CSSProperties['justifyContent'] {
     switch (value) {
+        case 'start':
         case 's':
             return 'flex-start';
+        case 'center':
         case 'c':
             return 'center';
+        case 'end':
         case 'e':
             return 'flex-end';
+        case 'between':
         case 'sb':
             return 'space-between';
+        case 'around':
         case 'sa':
             return 'space-around';
+        case 'evenly':
         case 'se':
             return 'space-evenly';
     }
@@ -206,9 +321,11 @@ export function splitSystemProps<P extends Record<string, unknown>>(props: P): {
                 systemStyle.width = sizeValue(value as number | string);
                 break;
             case 'minW':
+            case 'minWidth':
                 systemStyle.minWidth = sizeValue(value as number | string);
                 break;
             case 'maxW':
+            case 'maxWidth':
                 systemStyle.maxWidth = sizeValue(value as number | string);
                 break;
             case 'size': {
@@ -221,9 +338,11 @@ export function splitSystemProps<P extends Record<string, unknown>>(props: P): {
                 systemStyle.height = sizeValue(value as number | string);
                 break;
             case 'minH':
+            case 'minHeight':
                 systemStyle.minHeight = sizeValue(value as number | string);
                 break;
             case 'maxH':
+            case 'maxHeight':
                 systemStyle.maxHeight = sizeValue(value as number | string);
                 break;
             case 'display':
@@ -238,6 +357,18 @@ export function splitSystemProps<P extends Record<string, unknown>>(props: P): {
             case 'flex':
                 systemStyle.flex = value as CSSProperties['flex'];
                 break;
+            case 'flexGrow':
+                systemStyle.flexGrow = value as CSSProperties['flexGrow'];
+                break;
+            case 'flexShrink':
+                systemStyle.flexShrink = value as CSSProperties['flexShrink'];
+                break;
+            case 'flexBasis':
+                systemStyle.flexBasis = value as CSSProperties['flexBasis'];
+                break;
+            case 'alignSelf':
+                systemStyle.alignSelf = value as CSSProperties['alignSelf'];
+                break;
             case 'a':
                 systemStyle.alignItems = alignValue(value as AlignShort);
                 break;
@@ -249,6 +380,9 @@ export function splitSystemProps<P extends Record<string, unknown>>(props: P): {
                 break;
             case 'col':
                 if (value) systemStyle.flexDirection = 'column';
+                break;
+            case 'direction':
+                systemStyle.flexDirection = value as CSSProperties['flexDirection'];
                 break;
             case 'wrap':
                 if (value) systemStyle.flexWrap = 'wrap';
@@ -292,4 +426,54 @@ export function splitSystemProps<P extends Record<string, unknown>>(props: P): {
     }
 
     return {systemStyle, restProps: restProps as Omit<P, keyof SystemProps>};
+}
+
+export function normalizeTone(value: ToneInput | undefined, fallback: Tone = 'neutral'): Tone {
+    switch (value) {
+        case undefined:
+        case 'muted':
+        case 'gray':
+        case 'mauve':
+        case 'slate':
+        case 'sage':
+        case 'olive':
+        case 'sand':
+            return value === undefined ? fallback : 'neutral';
+        default:
+            return isTone(value) ? value : fallback;
+    }
+}
+
+function isTone(value: string): value is Tone {
+    return (
+        value === 'neutral' ||
+        value === 'primary' ||
+        value === 'secondary' ||
+        value === 'success' ||
+        value === 'warning' ||
+        value === 'danger' ||
+        value === 'info' ||
+        value === 'blue' ||
+        value === 'sky' ||
+        value === 'cyan' ||
+        value === 'teal' ||
+        value === 'indigo' ||
+        value === 'violet' ||
+        value === 'purple' ||
+        value === 'iris' ||
+        value === 'green' ||
+        value === 'jade' ||
+        value === 'mint' ||
+        value === 'grass' ||
+        value === 'lime' ||
+        value === 'yellow' ||
+        value === 'amber' ||
+        value === 'orange' ||
+        value === 'brown' ||
+        value === 'red' ||
+        value === 'ruby' ||
+        value === 'crimson' ||
+        value === 'pink' ||
+        value === 'tomato'
+    );
 }
