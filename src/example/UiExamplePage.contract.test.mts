@@ -247,11 +247,14 @@ test('UI example cards show one title and keep imports only in code preview', ()
     assert.match(preview, /data-collapsible=\{collapsible \? 'true' : 'false'\}/);
     assert.doesNotMatch(preview, /onWheelCapture|handleWheelCapture|normalizedWheelDeltaY|scrollRoot\.scrollTop/);
     assert.doesNotMatch(preview, /ResizeObserver|useLayoutEffect|scrollHeight/);
+    assert.match(preview, /'--oui-code-lines': lineCount/);
     assert.match(preview, /Show code/);
     assert.match(preview, /Hide code/);
     assert.match(styles, /\.oui-ui-tile-head\s+display: none[\s\S]*?min-width: 0[\s\S]*?flex-wrap: wrap/);
-    assert.match(styles, /\.oui-code-inline-panel\s+position: relative[\s\S]*?align-self: flex-start[\s\S]*?max-height: 180px[\s\S]*?transition: max-height 180ms/);
-    assert.match(styles, /\.oui-code-inline-fade\s+position: absolute[\s\S]*?height: 92px/);
+    assert.match(styles, /\.oui-code-inline-panel\s+position: relative[\s\S]*?--oui-code-collapsed-height: 180px[\s\S]*?--oui-code-expanded-height: calc/);
+    assert.match(styles, /\.oui-code-inline-panel\s+position: relative[\s\S]*?align-self: flex-start[\s\S]*?max-height: var\(--oui-code-collapsed-height\)[\s\S]*?transition: max-height 260ms/);
+    assert.match(styles, /\.oui-code-inline-panel\[data-expanded="true"\]\s+max-height: var\(--oui-code-expanded-height\)/);
+    assert.match(styles, /\.oui-code-inline-fade\s+position: absolute[\s\S]*?height: 92px[\s\S]*?transition: opacity 180ms/);
     assert.match(preview, /<CodeBlock code=\{code\} mode='inline' \/>/);
     assert.match(styles, /\.oui-code-preview-scroll-inline\s+overflow-x: auto[\s\S]*?overflow-y: visible/);
     assert.doesNotMatch(styles, /\.oui-code-inline-panel[\s\S]*?\.oui-scroll-area-viewport\s+overflow-y: auto/);

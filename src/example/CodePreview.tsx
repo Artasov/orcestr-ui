@@ -3,6 +3,7 @@
 import {
     useMemo,
     useState,
+    type CSSProperties,
     type ReactNode,
 } from 'react';
 import {LuInfo, LuX} from 'react-icons/lu';
@@ -100,18 +101,20 @@ export function ExampleTile({
 
 export function InlineCodeBlock({code}: {code: string}) {
     const [expanded, setExpanded] = useState(false);
-    const collapsible = code.split('\n').length > 9;
+    const lineCount = code.split('\n').length;
+    const collapsible = lineCount > 9;
 
     return (
         <div
             className='oui-code-inline-panel'
             data-expanded={expanded ? 'true' : 'false'}
             data-collapsible={collapsible ? 'true' : 'false'}
+            style={{'--oui-code-lines': lineCount} as CSSProperties}
         >
             <div className='oui-code-inline-content'>
                 <CodeBlock code={code} mode='inline' />
             </div>
-            {collapsible && !expanded ? <div className='oui-code-inline-fade' aria-hidden /> : null}
+            {collapsible ? <div className='oui-code-inline-fade' aria-hidden /> : null}
             {collapsible ? (
                 <button
                     type='button'

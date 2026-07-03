@@ -861,14 +861,16 @@ body.oui-ui-document-lock
 
 .oui-code-inline-panel
     position: relative
+    --oui-code-collapsed-height: 180px
+    --oui-code-expanded-height: calc((var(--oui-code-lines, 9) * 20.15px) + 66px)
     width: min(52%, 760px)
     min-width: 0
     flex: 1 1 420px
     align-self: flex-start
-    max-height: 180px
+    max-height: var(--oui-code-collapsed-height)
     overflow: hidden
     border-radius: var(--oui-radius)
-    transition: max-height 180ms cubic-bezier(.22, 1, .36, 1), padding-bottom 180ms ease
+    transition: max-height 260ms cubic-bezier(.22, 1, .36, 1), padding-bottom 220ms ease
 
 .oui-code-inline-content
     min-width: 0
@@ -877,11 +879,11 @@ body.oui-ui-document-lock
     max-height: none
 
 .oui-code-inline-panel[data-expanded="true"]
-    max-height: none
+    max-height: var(--oui-code-expanded-height)
     padding-bottom: 38px
 
 .oui-code-inline-panel[data-collapsible="false"]
-    max-height: none
+    max-height: var(--oui-code-expanded-height)
 
 .oui-code-inline-panel[data-collapsible="false"] .oui-code-inline-toggle,
 .oui-code-inline-panel[data-collapsible="false"] .oui-code-inline-fade
@@ -894,8 +896,13 @@ body.oui-ui-document-lock
     left: 0
     z-index: 2
     height: 92px
+    opacity: 1
     pointer-events: none
     background: linear-gradient(to bottom, transparent, var(--oui-bg) 72%)
+    transition: opacity 180ms ease
+
+.oui-code-inline-panel[data-expanded="true"] .oui-code-inline-fade
+    opacity: 0
 
 .oui-code-inline-toggle
     position: absolute
