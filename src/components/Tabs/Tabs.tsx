@@ -13,11 +13,11 @@ import {
     type CSSProperties,
     type ReactNode,
 } from 'react';
-import {LuChevronLeft, LuChevronRight} from 'react-icons/lu';
+import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
-import {cn} from '../../utils/cn';
-import {Collapse} from '../Collapse/Collapse';
-import {IconButton} from '../IconButton/IconButton';
+import { cn } from '../../utils/cn';
+import { Collapse } from '../Collapse/Collapse';
+import { IconButton } from '../IconButton/IconButton';
 
 export type TabItem = {
     value: string;
@@ -90,7 +90,9 @@ function ItemTabs({
 
         setActiveRect((current) => stableTabRect(current, readRect(active?.value)));
         const nextHoverRect = readRect(hoveredValue);
-        setHoverRect((current) => (nextHoverRect ? stableTabRect(current, nextHoverRect) : current));
+        setHoverRect((current) =>
+            nextHoverRect ? stableTabRect(current, nextHoverRect) : current,
+        );
         setHoverVisible(Boolean(hoveredValue && nextHoverRect && hoveredValue !== active?.value));
     }, [active?.value, hoveredValue]);
 
@@ -128,25 +130,25 @@ function ItemTabs({
 
     return (
         <div className={cn('oui-tabs', className)} data-testid={testId}>
-            <div className='oui-tabs-shell'>
+            <div className="oui-tabs-shell">
                 <div
                     ref={listRef}
                     className={cn('oui-tabs-list', listClassName)}
-                    role='tablist'
+                    role="tablist"
                     data-testid={testId ? `${testId}-list` : undefined}
                     onMouseLeave={() => setHoveredValue(null)}
                 >
                     {activeRect ? (
                         <span
                             aria-hidden
-                            className='oui-tabs-active-indicator'
+                            className="oui-tabs-active-indicator"
                             style={indicatorStyle(activeRect)}
                         />
                     ) : null}
                     {hoverRect ? (
                         <span
                             aria-hidden
-                            className='oui-tabs-hover-indicator'
+                            className="oui-tabs-hover-indicator"
                             data-visible={hoverVisible ? 'true' : undefined}
                             style={indicatorStyle(hoverRect)}
                         />
@@ -160,10 +162,10 @@ function ItemTabs({
                                     if (element) triggerRefs.current.set(item.value, element);
                                     else triggerRefs.current.delete(item.value);
                                 }}
-                                type='button'
-                                role='tab'
+                                type="button"
+                                role="tab"
                                 aria-selected={isActive}
-                                className='oui-tabs-trigger'
+                                className="oui-tabs-trigger"
                                 data-active={isActive ? 'true' : undefined}
                                 data-testid={testId ? `${testId}-${item.value}` : undefined}
                                 onMouseEnter={() => setHoveredValue(item.value)}
@@ -190,29 +192,30 @@ function ItemTabs({
                                 onClick={() => onValueChange(item.value)}
                             >
                                 {item.icon ? (
-                                    <span className='oui-tabs-trigger-icon' aria-hidden>
+                                    <span className="oui-tabs-trigger-icon" aria-hidden>
                                         {item.icon}
                                     </span>
                                 ) : null}
-                                <span className='oui-tabs-trigger-label'>{item.label}</span>
+                                <span className="oui-tabs-trigger-label">{item.label}</span>
                                 {item.badge ? (
-                                    <span className='oui-tabs-trigger-badge'>
-                                        {item.badge}
-                                    </span>
+                                    <span className="oui-tabs-trigger-badge">{item.badge}</span>
                                 ) : null}
                             </button>
                         );
                     })}
                 </div>
             </div>
-            <div className={cn('oui-tabs-content', contentClassName)} data-testid={testId ? `${testId}-content` : undefined}>
+            <div
+                className={cn('oui-tabs-content', contentClassName)}
+                data-testid={testId ? `${testId}-content` : undefined}
+            >
                 {items.map((item) => {
                     const open = active.value === item.value;
                     return (
                         <Collapse key={item.value} open={open}>
                             <div
-                                role='tabpanel'
-                                className='oui-tabs-panel'
+                                role="tabpanel"
+                                className="oui-tabs-panel"
                                 data-active={open ? 'true' : undefined}
                                 data-testid={testId ? `${testId}-${item.value}-panel` : undefined}
                             >
@@ -249,14 +252,7 @@ type RootProps = Omit<ComponentPropsWithoutRef<'div'>, 'defaultValue' | 'onChang
     onValueChange?: (value: string) => void;
 };
 
-function Root({
-    value,
-    defaultValue,
-    onValueChange,
-    children,
-    className,
-    ...props
-}: RootProps) {
+function Root({ value, defaultValue, onValueChange, children, className, ...props }: RootProps) {
     const [uncontrolled, setUncontrolled] = useState<string | undefined>(defaultValue);
     const isControlled = value !== undefined;
     const currentValue = isControlled ? value : uncontrolled;
@@ -314,13 +310,7 @@ type ListProps = Omit<ComponentPropsWithoutRef<'div'>, 'children' | 'onWheel'> &
     indicatorPaddingY?: number;
 };
 
-function List({
-    children,
-    indicatorPaddingY = 4,
-    className,
-    style,
-    ...props
-}: ListProps) {
+function List({ children, indicatorPaddingY = 4, className, style, ...props }: ListProps) {
     const ctx = useTabsCtx();
     const listRef = useRef<HTMLDivElement>(null);
     const [hoverRect, setHoverRect] = useState<TabRect | null>(null);
@@ -370,7 +360,7 @@ function List({
         list.querySelectorAll<HTMLElement>('[data-tabs-trigger]').forEach((element) =>
             observer.observe(element),
         );
-        list.addEventListener('scroll', measure, {passive: true});
+        list.addEventListener('scroll', measure, { passive: true });
 
         return () => {
             observer.disconnect();
@@ -393,9 +383,7 @@ function List({
         if (!list || list.scrollWidth <= list.clientWidth + 1) return;
 
         const rawDelta =
-            Math.abs(event.deltaY) >= Math.abs(event.deltaX)
-                ? event.deltaY
-                : event.deltaX;
+            Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
         if (rawDelta === 0) return;
 
         const delta =
@@ -405,62 +393,61 @@ function List({
                   ? rawDelta * list.clientWidth
                   : rawDelta;
         const maxScrollLeft = list.scrollWidth - list.clientWidth;
-        const canScroll =
-            delta < 0 ? list.scrollLeft > 1 : list.scrollLeft < maxScrollLeft - 1;
+        const canScroll = delta < 0 ? list.scrollLeft > 1 : list.scrollLeft < maxScrollLeft - 1;
         if (!canScroll) return;
 
         event.preventDefault();
-        list.scrollBy({left: delta, behavior: 'smooth'});
+        list.scrollBy({ left: delta, behavior: 'smooth' });
     }, []);
 
     useEffect(() => {
         const list = listRef.current;
         if (!list) return;
-        list.addEventListener('wheel', handleWheel, {passive: false});
+        list.addEventListener('wheel', handleWheel, { passive: false });
         return () => list.removeEventListener('wheel', handleWheel);
     }, [handleWheel]);
 
     const hasOverflowControls = canScrollLeft || canScrollRight;
 
     return (
-        <div className='oui-tabs-compound-shell'>
+        <div className="oui-tabs-compound-shell">
             {canScrollLeft ? (
-                <span aria-hidden className='oui-tabs-edge oui-tabs-edge-left' />
+                <span aria-hidden className="oui-tabs-edge oui-tabs-edge-left" />
             ) : null}
             {canScrollRight ? (
-                <span aria-hidden className='oui-tabs-edge oui-tabs-edge-right' />
+                <span aria-hidden className="oui-tabs-edge oui-tabs-edge-right" />
             ) : null}
             {canScrollLeft ? (
                 <IconButton
-                    type='button'
-                    v='soft'
-                    tone='neutral'
+                    type="button"
+                    v="soft"
+                    tone="neutral"
                     round
                     size={1}
                     onClick={() => scrollList(-1)}
-                    aria-label='Scroll tabs left'
-                    className='oui-tabs-scroll-button oui-tabs-scroll-button-left'
+                    aria-label="Scroll tabs left"
+                    className="oui-tabs-scroll-button oui-tabs-scroll-button-left"
                 >
                     <LuChevronLeft size={16} />
                 </IconButton>
             ) : null}
             {canScrollRight ? (
                 <IconButton
-                    type='button'
-                    v='soft'
-                    tone='neutral'
+                    type="button"
+                    v="soft"
+                    tone="neutral"
                     round
                     size={1}
                     onClick={() => scrollList(1)}
-                    aria-label='Scroll tabs right'
-                    className='oui-tabs-scroll-button oui-tabs-scroll-button-right'
+                    aria-label="Scroll tabs right"
+                    className="oui-tabs-scroll-button oui-tabs-scroll-button-right"
                 >
                     <LuChevronRight size={16} />
                 </IconButton>
             ) : null}
             <div
                 ref={listRef}
-                role='tablist'
+                role="tablist"
                 onMouseLeave={() => ctx.setHoveredValue(null)}
                 className={cn('oui-tabs-list-scroll', className)}
                 data-overflow={hasOverflowControls ? 'true' : undefined}
@@ -470,14 +457,14 @@ function List({
                 {activeRect ? (
                     <span
                         aria-hidden
-                        className='oui-tabs-compound-active-indicator'
+                        className="oui-tabs-compound-active-indicator"
                         style={compoundIndicatorStyle(activeRect, indicatorPaddingY)}
                     />
                 ) : null}
                 {hoverRect ? (
                     <span
                         aria-hidden
-                        className='oui-tabs-compound-hover-indicator'
+                        className="oui-tabs-compound-hover-indicator"
                         data-visible={hoverVisible ? 'true' : undefined}
                         style={compoundIndicatorStyle(hoverRect, indicatorPaddingY)}
                     />
@@ -517,8 +504,8 @@ function Trigger({
     return (
         <button
             ref={ref}
-            type='button'
-            role='tab'
+            type="button"
+            role="tab"
             aria-selected={isActive}
             className={cn('oui-tabs-trigger', className)}
             data-active={isActive ? 'true' : undefined}
@@ -537,7 +524,7 @@ function Trigger({
             {...props}
         >
             {icon ? (
-                <span className='oui-tabs-trigger-icon' aria-hidden>
+                <span className="oui-tabs-trigger-icon" aria-hidden>
                     {icon}
                 </span>
             ) : null}
@@ -551,13 +538,7 @@ type ContentProps = Omit<ComponentPropsWithoutRef<'div'>, 'value'> & {
     mountOnActive?: boolean;
 };
 
-function Content({
-    value,
-    children,
-    className,
-    mountOnActive = false,
-    ...props
-}: ContentProps) {
+function Content({ value, children, className, mountOnActive = false, ...props }: ContentProps) {
     const ctx = useTabsCtx();
     const open = ctx.activeValue === value;
     const [mounted, setMounted] = useState(open);
@@ -572,14 +553,14 @@ function Content({
 
     return (
         <div
-            role='tabpanel'
+            role="tabpanel"
             className={cn('oui-tabs-compound-panel', className)}
             data-tabs-content={value}
             hidden={!open}
             {...props}
         >
             <Collapse open={open}>
-                <div className='oui-tabs-compound-panel-inner'>
+                <div className="oui-tabs-compound-panel-inner">
                     {shouldRenderChildren ? children : null}
                 </div>
             </Collapse>

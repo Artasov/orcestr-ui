@@ -8,17 +8,17 @@ import {
     type CSSProperties,
     type ReactNode,
 } from 'react';
-import {LuMenu, LuX} from 'react-icons/lu';
+import { LuMenu, LuX } from 'react-icons/lu';
 
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
-import {splitSystemProps, type SystemProps} from '../../theme/systemProps';
-import {cn} from '../../utils/cn';
-import {Badge} from '../Badge/Badge';
-import {Drawer} from '../Drawer/Drawer';
-import {IconButton} from '../IconButton/IconButton';
-import {ScrollArea} from '../ScrollArea/ScrollArea';
-import {Separator} from '../Separator/Separator';
-import {Text} from '../Text/Text';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
+import { cn } from '../../utils/cn';
+import { Badge } from '../Badge/Badge';
+import { Drawer } from '../Drawer/Drawer';
+import { IconButton } from '../IconButton/IconButton';
+import { ScrollArea } from '../ScrollArea/ScrollArea';
+import { Separator } from '../Separator/Separator';
+import { Text } from '../Text/Text';
 
 export type AppShellNavItem = {
     key: string;
@@ -74,11 +74,9 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
     ref,
 ) {
     const [autoDrawerMode, setAutoDrawerMode] = useState(false);
-    const [drawerPortalContainer, setDrawerPortalContainer] =
-        useState<HTMLDivElement | null>(null);
-    const {systemStyle, restProps} = splitSystemProps(props);
-    const drawerMode =
-        sidebarMode === 'auto' ? autoDrawerMode : sidebarMode === 'mobile';
+    const [drawerPortalContainer, setDrawerPortalContainer] = useState<HTMLDivElement | null>(null);
+    const { systemStyle, restProps } = splitSystemProps(props);
+    const drawerMode = sidebarMode === 'auto' ? autoDrawerMode : sidebarMode === 'mobile';
     const shellStyle = {
         '--oui-app-shell-sidebar-width': shellSizeValue(sidebarWidth),
         '--oui-app-shell-header-h': shellSizeValue(headerHeight),
@@ -110,11 +108,9 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
             style={shellStyle}
             {...restProps}
         >
-            <div className='oui-app-shell-frame'>
+            <div className="oui-app-shell-frame">
                 {!drawerMode ? (
-                    <div className='oui-app-shell-sidebar-desktop'>
-                        {sidebar}
-                    </div>
+                    <div className="oui-app-shell-sidebar-desktop">{sidebar}</div>
                 ) : null}
                 {drawerMode && drawerPortalContainer ? (
                     <Drawer
@@ -125,24 +121,21 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
                         lockScroll={false}
                         portalContainer={drawerPortalContainer}
                         showCloseButton={false}
-                        backdropClassName='oui-app-shell-sidebar-drawer-overlay'
-                        panelClassName='oui-app-shell-sidebar-drawer-panel'
-                        bodyClassName='oui-app-shell-sidebar-drawer-body'
+                        backdropClassName="oui-app-shell-sidebar-drawer-overlay"
+                        panelClassName="oui-app-shell-sidebar-drawer-panel"
+                        bodyClassName="oui-app-shell-sidebar-drawer-body"
                         testId={testId ? `${testId}-sidebar-drawer` : undefined}
                     >
                         {sidebar}
                     </Drawer>
                 ) : null}
-                <main className='oui-app-shell-main'>
+                <main className="oui-app-shell-main">
                     {header}
                     {children}
                 </main>
             </div>
             {drawerMode ? (
-                <div
-                    ref={setDrawerPortalContainer}
-                    className='oui-app-shell-drawer-root'
-                />
+                <div ref={setDrawerPortalContainer} className="oui-app-shell-drawer-root" />
             ) : null}
         </div>
     );
@@ -160,56 +153,53 @@ export type AppShellHeaderProps = Omit<ComponentPropsWithoutRef<'header'>, 'titl
         testId?: string;
     };
 
-export const AppShellHeader = forwardRef<HTMLElement, AppShellHeaderProps>(
-    function AppShellHeader(
-        {
-            className,
-            style,
-            title,
-            actions,
-            sidebarOpen = false,
-            onSidebarOpenChange,
-            navigationLabel,
-            navigationVisibility = 'always',
-            visibility = 'always',
-            children,
-            testId,
-            ...props
-        },
-        ref,
-    ) {
-        const {copy} = useOrcestrUiLocale();
-        const actualNavigationLabel =
-            navigationLabel ??
-            (sidebarOpen ? copy.common.closeNavigation : copy.common.openNavigation);
-        const {systemStyle, restProps} = splitSystemProps(props);
-        return (
-            <header
-                ref={ref}
-                className={cn('oui-app-shell-header', className)}
-                data-visibility={visibility}
-                data-testid={testId}
-                style={{...systemStyle, ...style}}
-                {...restProps}
-            >
-                {onSidebarOpenChange ? (
-                    <IconButton
-                        className='oui-app-shell-header-nav-button'
-                        v='pad'
-                        icon={sidebarOpen ? <LuX size={19} /> : <LuMenu size={19} />}
-                        aria-label={actualNavigationLabel}
-                        aria-expanded={sidebarOpen}
-                        data-navigation-visibility={navigationVisibility}
-                        onClick={() => onSidebarOpenChange(!sidebarOpen)}
-                    />
-                ) : null}
-                {title ? <div className='oui-app-shell-header-title'>{title}</div> : null}
-                {children}
-                {actions ? <div className='oui-app-shell-header-actions'>{actions}</div> : null}
-            </header>
-        );
+export const AppShellHeader = forwardRef<HTMLElement, AppShellHeaderProps>(function AppShellHeader(
+    {
+        className,
+        style,
+        title,
+        actions,
+        sidebarOpen = false,
+        onSidebarOpenChange,
+        navigationLabel,
+        navigationVisibility = 'always',
+        visibility = 'always',
+        children,
+        testId,
+        ...props
     },
-);
+    ref,
+) {
+    const { copy } = useOrcestrUiLocale();
+    const actualNavigationLabel =
+        navigationLabel ?? (sidebarOpen ? copy.common.closeNavigation : copy.common.openNavigation);
+    const { systemStyle, restProps } = splitSystemProps(props);
+    return (
+        <header
+            ref={ref}
+            className={cn('oui-app-shell-header', className)}
+            data-visibility={visibility}
+            data-testid={testId}
+            style={{ ...systemStyle, ...style }}
+            {...restProps}
+        >
+            {onSidebarOpenChange ? (
+                <IconButton
+                    className="oui-app-shell-header-nav-button"
+                    v="pad"
+                    icon={sidebarOpen ? <LuX size={19} /> : <LuMenu size={19} />}
+                    aria-label={actualNavigationLabel}
+                    aria-expanded={sidebarOpen}
+                    data-navigation-visibility={navigationVisibility}
+                    onClick={() => onSidebarOpenChange(!sidebarOpen)}
+                />
+            ) : null}
+            {title ? <div className="oui-app-shell-header-title">{title}</div> : null}
+            {children}
+            {actions ? <div className="oui-app-shell-header-actions">{actions}</div> : null}
+        </header>
+    );
+});
 
 export type AppShellSidebarProps = Omit<ComponentPropsWithoutRef<'aside'>, 'title'> &
     SystemProps & {
@@ -237,27 +227,27 @@ export const AppShellSidebar = forwardRef<HTMLElement, AppShellSidebarProps>(
         },
         ref,
     ) {
-        const {copy} = useOrcestrUiLocale();
-        const {systemStyle, restProps} = splitSystemProps(props);
+        const { copy } = useOrcestrUiLocale();
+        const { systemStyle, restProps } = splitSystemProps(props);
         return (
             <aside
                 ref={ref}
                 className={cn('oui-app-shell-sidebar', className)}
                 data-testid={testId}
-                style={{...systemStyle, ...style}}
+                style={{ ...systemStyle, ...style }}
                 {...restProps}
             >
                 {title || description || onClose ? (
-                    <div className='oui-app-shell-sidebar-head'>
-                        <div className='oui-app-shell-sidebar-head-main'>
+                    <div className="oui-app-shell-sidebar-head">
+                        <div className="oui-app-shell-sidebar-head-main">
                             {title ? (
-                                <div className='oui-app-shell-sidebar-title'>{title}</div>
+                                <div className="oui-app-shell-sidebar-title">{title}</div>
                             ) : null}
                             {description ? (
                                 <Text
-                                    className='oui-app-shell-sidebar-description'
-                                    color='var(--oui-muted)'
-                                    fs='13px'
+                                    className="oui-app-shell-sidebar-description"
+                                    color="var(--oui-muted)"
+                                    fs="13px"
                                     lh={1.45}
                                 >
                                     {description}
@@ -266,8 +256,8 @@ export const AppShellSidebar = forwardRef<HTMLElement, AppShellSidebarProps>(
                         </div>
                         {onClose ? (
                             <IconButton
-                                className='oui-app-shell-sidebar-close'
-                                v='ghost'
+                                className="oui-app-shell-sidebar-close"
+                                v="ghost"
                                 icon={<LuX size={18} />}
                                 aria-label={closeLabel ?? copy.common.closeNavigation}
                                 onClick={onClose}
@@ -276,13 +266,13 @@ export const AppShellSidebar = forwardRef<HTMLElement, AppShellSidebarProps>(
                     </div>
                 ) : null}
                 {(title || description) && children ? (
-                    <Separator className='oui-app-shell-sidebar-separator' />
+                    <Separator className="oui-app-shell-sidebar-separator" />
                 ) : null}
                 <ScrollArea
-                    className='oui-app-shell-sidebar-scroll'
+                    className="oui-app-shell-sidebar-scroll"
                     highlights
                     highlightH={52}
-                    highlightColor='var(--oui-app-shell-sidebar-highlight-bg)'
+                    highlightColor="var(--oui-app-shell-sidebar-highlight-bg)"
                     highlightTop={{
                         start: 50,
                         fadeDistance: 200,
@@ -294,9 +284,9 @@ export const AppShellSidebar = forwardRef<HTMLElement, AppShellSidebarProps>(
                         maxOpacity: 0.92,
                     }}
                 >
-                    <div className='oui-app-shell-sidebar-body'>{children}</div>
+                    <div className="oui-app-shell-sidebar-body">{children}</div>
                 </ScrollArea>
-                {footer ? <div className='oui-app-shell-sidebar-footer'>{footer}</div> : null}
+                {footer ? <div className="oui-app-shell-sidebar-footer">{footer}</div> : null}
             </aside>
         );
     },
@@ -309,17 +299,14 @@ export type AppShellContentProps = ComponentPropsWithoutRef<'div'> &
     };
 
 export const AppShellContent = forwardRef<HTMLDivElement, AppShellContentProps>(
-    function AppShellContent(
-        {className, style, scroll = true, children, testId, ...props},
-        ref,
-    ) {
-        const {systemStyle, restProps} = splitSystemProps(props);
+    function AppShellContent({ className, style, scroll = true, children, testId, ...props }, ref) {
+        const { systemStyle, restProps } = splitSystemProps(props);
         const content = (
             <div
                 ref={ref}
                 className={cn('oui-app-shell-content', className)}
                 data-testid={testId}
-                style={{...systemStyle, ...style}}
+                style={{ ...systemStyle, ...style }}
                 {...restProps}
             >
                 {children}
@@ -329,10 +316,10 @@ export const AppShellContent = forwardRef<HTMLDivElement, AppShellContentProps>(
         if (!scroll) return content;
         return (
             <ScrollArea
-                className='oui-app-shell-content-scroll'
+                className="oui-app-shell-content-scroll"
                 highlights
                 highlightH={52}
-                highlightColor='var(--oui-bg)'
+                highlightColor="var(--oui-bg)"
                 highlightTop={{
                     start: 50,
                     fadeDistance: 200,
@@ -358,42 +345,32 @@ export type AppShellNavProps = ComponentPropsWithoutRef<'nav'> &
         testId?: string;
     };
 
-export const AppShellNav = forwardRef<HTMLElement, AppShellNavProps>(
-    function AppShellNav(
-        {
-            className,
-            style,
-            items,
-            onNavigate,
-            label,
-            testId,
-            ...props
-        },
-        ref,
-    ) {
-        const {copy} = useOrcestrUiLocale();
-        const {systemStyle, restProps} = splitSystemProps(props);
-        return (
-            <nav
-                ref={ref}
-                className={cn('oui-app-shell-nav', className)}
-                aria-label={label ?? copy.common.primaryNavigation}
-                data-testid={testId}
-                style={{...systemStyle, ...style}}
-                {...restProps}
-            >
-                {items.map((item) => (
-                    <AppShellNavButton
-                        key={item.key}
-                        item={item}
-                        onNavigate={onNavigate}
-                        testId={testId ? `${testId}-${item.key}` : undefined}
-                    />
-                ))}
-            </nav>
-        );
-    },
-);
+export const AppShellNav = forwardRef<HTMLElement, AppShellNavProps>(function AppShellNav(
+    { className, style, items, onNavigate, label, testId, ...props },
+    ref,
+) {
+    const { copy } = useOrcestrUiLocale();
+    const { systemStyle, restProps } = splitSystemProps(props);
+    return (
+        <nav
+            ref={ref}
+            className={cn('oui-app-shell-nav', className)}
+            aria-label={label ?? copy.common.primaryNavigation}
+            data-testid={testId}
+            style={{ ...systemStyle, ...style }}
+            {...restProps}
+        >
+            {items.map((item) => (
+                <AppShellNavButton
+                    key={item.key}
+                    item={item}
+                    onNavigate={onNavigate}
+                    testId={testId ? `${testId}-${item.key}` : undefined}
+                />
+            ))}
+        </nav>
+    );
+});
 
 export type PageTitleBlockProps = ComponentPropsWithoutRef<'div'> &
     SystemProps & {
@@ -406,26 +383,26 @@ export type PageTitleBlockProps = ComponentPropsWithoutRef<'div'> &
 
 export const PageTitleBlock = forwardRef<HTMLDivElement, PageTitleBlockProps>(
     function PageTitleBlock(
-        {className, style, title, caption, action, badge, testId, ...props},
+        { className, style, title, caption, action, badge, testId, ...props },
         ref,
     ) {
-        const {systemStyle, restProps} = splitSystemProps(props);
+        const { systemStyle, restProps } = splitSystemProps(props);
         return (
             <div
                 ref={ref}
                 className={cn('oui-page-title-block', className)}
                 data-testid={testId}
-                style={{...systemStyle, ...style}}
+                style={{ ...systemStyle, ...style }}
                 {...restProps}
             >
-                <div className='oui-page-title-main'>
-                    <div className='oui-page-title-row'>
-                        <h1 className='oui-page-title'>{title}</h1>
-                        {badge ? <Badge tone='primary'>{badge}</Badge> : null}
+                <div className="oui-page-title-main">
+                    <div className="oui-page-title-row">
+                        <h1 className="oui-page-title">{title}</h1>
+                        {badge ? <Badge tone="primary">{badge}</Badge> : null}
                     </div>
-                    {caption ? <p className='oui-page-title-caption'>{caption}</p> : null}
+                    {caption ? <p className="oui-page-title-caption">{caption}</p> : null}
                 </div>
-                {action ? <div className='oui-page-title-actions'>{action}</div> : null}
+                {action ? <div className="oui-page-title-actions">{action}</div> : null}
             </div>
         );
     },
@@ -442,21 +419,21 @@ function AppShellNavButton({
 }) {
     const content = (
         <>
-            {item.icon ? <span className='oui-app-shell-nav-icon'>{item.icon}</span> : null}
-            <span className='oui-app-shell-nav-text'>
-                <span className='oui-app-shell-nav-label'>{item.label}</span>
+            {item.icon ? <span className="oui-app-shell-nav-icon">{item.icon}</span> : null}
+            <span className="oui-app-shell-nav-text">
+                <span className="oui-app-shell-nav-label">{item.label}</span>
                 {item.caption ? (
-                    <span className='oui-app-shell-nav-caption'>{item.caption}</span>
+                    <span className="oui-app-shell-nav-caption">{item.caption}</span>
                 ) : null}
             </span>
-            {item.badge ? <span className='oui-app-shell-nav-badge'>{item.badge}</span> : null}
+            {item.badge ? <span className="oui-app-shell-nav-badge">{item.badge}</span> : null}
         </>
     );
     const commonProps = {
         className: 'oui-app-shell-nav-item',
         'data-active': item.active ? 'true' : undefined,
         'data-testid': testId,
-        'aria-current': item.active ? 'page' as const : undefined,
+        'aria-current': item.active ? ('page' as const) : undefined,
         onClick: () => {
             item.onSelect?.();
             onNavigate?.(item);
@@ -472,7 +449,7 @@ function AppShellNavButton({
     }
 
     return (
-        <button type='button' disabled={item.disabled} {...commonProps}>
+        <button type="button" disabled={item.disabled} {...commonProps}>
             {content}
         </button>
     );

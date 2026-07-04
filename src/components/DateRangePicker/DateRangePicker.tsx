@@ -1,7 +1,7 @@
-import {Flex} from '../Flex/Flex';
-import {DatePicker, type DatePickerProps} from '../DatePicker/DatePicker';
+import { Flex } from '../Flex/Flex';
+import { DatePicker, type DatePickerProps } from '../DatePicker/DatePicker';
 
-export type DateRangePickerValue = {from: string; to: string};
+export type DateRangePickerValue = { from: string; to: string };
 
 export function DateRangePicker({
     value,
@@ -40,7 +40,7 @@ export function DateRangePicker({
                 disabled={disabled}
                 readOnly={readOnly}
                 testId={testId ? `${testId}-from` : undefined}
-                onValueChange={(from) => onValueChange({...value, from})}
+                onValueChange={(from) => onValueChange({ ...value, from })}
             />
             <DatePicker
                 value={value.to}
@@ -52,7 +52,7 @@ export function DateRangePicker({
                 disabled={disabled}
                 readOnly={readOnly}
                 testId={testId ? `${testId}-to` : undefined}
-                onValueChange={(to) => onValueChange({...value, to})}
+                onValueChange={(to) => onValueChange({ ...value, to })}
             />
         </Flex>
     );

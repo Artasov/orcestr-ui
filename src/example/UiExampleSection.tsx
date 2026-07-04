@@ -1,6 +1,6 @@
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 
-import {Section} from '../components/Section/Section';
+import { Section } from '../components/Section/Section';
 
 export function UiExampleSection({
     id,
@@ -14,13 +14,11 @@ export function UiExampleSection({
     children: ReactNode;
 }) {
     return (
-        <Section id={id} className='oui-ui-section'>
-            <div className='oui-ui-section-head'>
+        <Section id={id} className="oui-ui-section">
+            <div className="oui-ui-section-head">
                 <div>
-                    <h2 className='oui-ui-section-title'>{title}</h2>
-                    {description ? (
-                        <p className='oui-ui-description'>{description}</p>
-                    ) : null}
+                    <h2 className="oui-ui-section-title">{title}</h2>
+                    {description ? <p className="oui-ui-description">{description}</p> : null}
                 </div>
             </div>
             {children}

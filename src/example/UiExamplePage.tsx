@@ -1,6 +1,15 @@
 'use client';
 
-import {memo, useCallback, useEffect, useMemo, useRef, useState, type Dispatch, type SetStateAction} from 'react';
+import {
+    memo,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+    type Dispatch,
+    type SetStateAction,
+} from 'react';
 import {
     LuBell,
     LuCheck,
@@ -25,15 +34,15 @@ import {
     type OrcestrThemeOverrides,
     type OrcestrUiLocale,
 } from '..';
-import {LayoutSection, TextSection} from './ExampleBasicsSections';
-import {ActionsSection} from './ExampleActionsSection';
-import {ApplicationSection} from './ExampleApplicationSection';
-import {FieldsSection} from './ExampleFieldsSection';
-import {SelectionSection} from './ExampleSelectionSection';
-import {DataSection} from './ExampleDataSection';
-import {OverlaysSection} from './ExampleOverlaysSection';
-import {FoundationsSection} from './ExampleFoundationsSection';
-import {BadgeSection, IconTextSection, StateCardSection} from './ExampleStateSection';
+import { LayoutSection, TextSection } from './ExampleBasicsSections';
+import { ActionsSection } from './ExampleActionsSection';
+import { ApplicationSection } from './ExampleApplicationSection';
+import { FieldsSection } from './ExampleFieldsSection';
+import { SelectionSection } from './ExampleSelectionSection';
+import { DataSection } from './ExampleDataSection';
+import { OverlaysSection } from './ExampleOverlaysSection';
+import { FoundationsSection } from './ExampleFoundationsSection';
+import { BadgeSection, IconTextSection, StateCardSection } from './ExampleStateSection';
 import {
     ExampleThemePlayground,
     getThemePlaygroundPreset,
@@ -42,10 +51,10 @@ import {
     themePresetPreviewStyle,
     type ThemePresetId,
 } from './ExampleThemePlayground';
-import {CodePreviewModal} from './CodePreview';
-import {ExampleOverlays} from './ExampleOverlays';
-import {type CodeExample} from './codeSamples';
-import {navGroups, navItems, type EntityOption} from './exampleData';
+import { CodePreviewModal } from './CodePreview';
+import { ExampleOverlays } from './ExampleOverlays';
+import { type CodeExample } from './codeSamples';
+import { navGroups, navItems, type EntityOption } from './exampleData';
 
 const ORCESTR_LOGO_SRC = '/assets/orcestr/logo.png';
 const UI_EXAMPLE_SCROLL_LEAD = 50;
@@ -72,7 +81,7 @@ function scrollUiExampleSection(id: string, behavior: ScrollBehavior = 'auto') {
         '.oui-app-shell-content-scroll .oui-scroll-area-viewport',
     );
     if (!node || !scrollRoot) {
-        node?.scrollIntoView({block: 'start', behavior});
+        node?.scrollIntoView({ block: 'start', behavior });
         return;
     }
 
@@ -86,9 +95,7 @@ function uiExampleSectionScrollTop(node: HTMLElement, scrollRoot?: HTMLElement) 
     const maxTop = scrollRoot
         ? Math.max(0, scrollRoot.scrollHeight - scrollRoot.clientHeight)
         : Number.POSITIVE_INFINITY;
-    const targetTop = scrollRoot
-        ? uiExampleSectionAbsoluteTop(node, scrollRoot)
-        : node.offsetTop;
+    const targetTop = scrollRoot ? uiExampleSectionAbsoluteTop(node, scrollRoot) : node.offsetTop;
     return Math.min(maxTop, Math.max(0, targetTop - UI_EXAMPLE_SCROLL_LEAD));
 }
 
@@ -111,7 +118,7 @@ function UiExampleContent({
     locale: OrcestrUiLocale;
     onLocaleChange: (locale: OrcestrUiLocale) => void;
 }) {
-    const {theme} = useOrcestrTheme();
+    const { theme } = useOrcestrTheme();
     const toast = useToast();
     const [segment, setSegment] = useState('active');
     const [selectValue, setSelectValue] = useState<string | null>('work');
@@ -150,8 +157,8 @@ function UiExampleContent({
         const hash = window.location.hash.replace('#', '');
         const hashFrame = hash
             ? window.requestAnimationFrame(() => {
-                scrollUiExampleSection(hash);
-            })
+                  scrollUiExampleSection(hash);
+              })
             : null;
 
         return () => {
@@ -161,88 +168,86 @@ function UiExampleContent({
         };
     }, []);
 
-    const menuItems = useMemo<MenuItem[]>(
-        () => {
-            const copy = locale === 'ru'
+    const menuItems = useMemo<MenuItem[]>(() => {
+        const copy =
+            locale === 'ru'
                 ? {
-                    copy: 'Скопировать ссылку',
-                    notify: 'Уведомить команду',
-                    notifyInfo: 'Подсказка внутри пункта меню',
-                    syncing: 'Синхронизация остатков',
-                    more: 'Еще действия',
-                    duplicate: 'Дублировать',
-                    duplicateToast: 'Дублировано',
-                    archive: 'Архивировать',
-                    archiveToast: 'Архивировано',
-                    delete: 'Удалить',
-                    deleteTitle: 'Удалить элемент?',
-                    deleteMessage: 'Это действие нельзя отменить.',
-                    deletedToast: 'Удалено',
-                }
+                      copy: 'Скопировать ссылку',
+                      notify: 'Уведомить команду',
+                      notifyInfo: 'Подсказка внутри пункта меню',
+                      syncing: 'Синхронизация остатков',
+                      more: 'Еще действия',
+                      duplicate: 'Дублировать',
+                      duplicateToast: 'Дублировано',
+                      archive: 'Архивировать',
+                      archiveToast: 'Архивировано',
+                      delete: 'Удалить',
+                      deleteTitle: 'Удалить элемент?',
+                      deleteMessage: 'Это действие нельзя отменить.',
+                      deletedToast: 'Удалено',
+                  }
                 : {
-                    copy: 'Copy link',
-                    notify: 'Notify team',
-                    notifyInfo: 'Info tooltip inside a menu item',
-                    syncing: 'Syncing status',
-                    more: 'More actions',
-                    duplicate: 'Duplicate',
-                    duplicateToast: 'Duplicated',
-                    archive: 'Archive',
-                    archiveToast: 'Archived',
-                    delete: 'Delete',
-                    deleteTitle: 'Delete item?',
-                    deleteMessage: 'This action cannot be undone.',
-                    deletedToast: 'Deleted',
-                };
+                      copy: 'Copy link',
+                      notify: 'Notify team',
+                      notifyInfo: 'Info tooltip inside a menu item',
+                      syncing: 'Syncing status',
+                      more: 'More actions',
+                      duplicate: 'Duplicate',
+                      duplicateToast: 'Duplicated',
+                      archive: 'Archive',
+                      archiveToast: 'Archived',
+                      delete: 'Delete',
+                      deleteTitle: 'Delete item?',
+                      deleteMessage: 'This action cannot be undone.',
+                      deletedToast: 'Deleted',
+                  };
 
-            return [
-                {key: 'copy', label: copy.copy, icon: <LuCheck size={15} />},
-                {
-                    key: 'notify',
-                    label: copy.notify,
-                    icon: <LuBell size={15} />,
-                    info: copy.notifyInfo,
-                },
-                {
-                    key: 'syncing',
-                    label: copy.syncing,
-                    icon: <LuRefreshCw size={15} />,
-                    loading: true,
-                },
-                {
-                    key: 'more',
-                    label: copy.more,
-                    children: [
-                        {
-                            key: 'duplicate',
-                            label: copy.duplicate,
-                            onSelect: () => toast.push(copy.duplicateToast, 'success'),
-                        },
-                        {
-                            key: 'archive',
-                            label: copy.archive,
-                            onSelect: () => toast.push(copy.archiveToast, 'info'),
-                        },
-                    ],
-                },
-                {
-                    key: 'sep',
-                    label: copy.delete,
-                    icon: <LuTrash2 size={15} />,
-                    tone: 'danger',
-                    separatorBefore: true,
-                    confirm: {
-                        title: copy.deleteTitle,
-                        message: copy.deleteMessage,
-                        confirmLabel: copy.delete,
-                        tone: 'danger',
+        return [
+            { key: 'copy', label: copy.copy, icon: <LuCheck size={15} /> },
+            {
+                key: 'notify',
+                label: copy.notify,
+                icon: <LuBell size={15} />,
+                info: copy.notifyInfo,
+            },
+            {
+                key: 'syncing',
+                label: copy.syncing,
+                icon: <LuRefreshCw size={15} />,
+                loading: true,
+            },
+            {
+                key: 'more',
+                label: copy.more,
+                children: [
+                    {
+                        key: 'duplicate',
+                        label: copy.duplicate,
+                        onSelect: () => toast.push(copy.duplicateToast, 'success'),
                     },
-                    onSelect: () => toast.push(copy.deletedToast, 'warning'),
+                    {
+                        key: 'archive',
+                        label: copy.archive,
+                        onSelect: () => toast.push(copy.archiveToast, 'info'),
+                    },
+                ],
+            },
+            {
+                key: 'sep',
+                label: copy.delete,
+                icon: <LuTrash2 size={15} />,
+                tone: 'danger',
+                separatorBefore: true,
+                confirm: {
+                    title: copy.deleteTitle,
+                    message: copy.deleteMessage,
+                    confirmLabel: copy.delete,
+                    tone: 'danger',
                 },
-            ];
-        },
-        [locale, toast],
-    );
+                onSelect: () => toast.push(copy.deletedToast, 'warning'),
+            },
+        ];
+    }, [locale, toast]);
 
     return (
         <AppShell
@@ -252,7 +257,7 @@ function UiExampleContent({
                 <AppShellHeader
                     sidebarOpen={mobileNavOpen}
                     onSidebarOpenChange={setMobileNavOpen}
-                    navigationVisibility='mobile'
+                    navigationVisibility="mobile"
                     actions={
                         <UiExampleHeaderActions
                             compact
@@ -262,12 +267,10 @@ function UiExampleContent({
                     }
                 />
             }
-            sidebar={
-                <UiExampleSidebar onNavigate={() => setMobileNavOpen(false)} />
-            }
+            sidebar={<UiExampleSidebar onNavigate={() => setMobileNavOpen(false)} />}
         >
-            <div className='oui-ui-workspace'>
-                <div className='oui-ui-workspace-main'>
+            <div className="oui-ui-workspace">
+                <div className="oui-ui-workspace-main">
                     <AppShellContent>
                         <ExampleThemePlayground
                             activePresetId={activePresetId}
@@ -345,10 +348,7 @@ function UiExampleContent({
                 />
             </div>
 
-            <CodePreviewModal
-                example={codeExample}
-                onClose={() => setCodeExample(null)}
-            />
+            <CodePreviewModal example={codeExample} onClose={() => setCodeExample(null)} />
 
             <ExampleOverlays
                 locale={locale}
@@ -402,12 +402,12 @@ function UiExampleThemeRail({
     }, []);
 
     return (
-        <aside className='oui-ui-theme-rail' aria-label='Theme presets'>
-            <div className='oui-ui-theme-rail-title'>Themes</div>
+        <aside className="oui-ui-theme-rail" aria-label="Theme presets">
+            <div className="oui-ui-theme-rail-title">Themes</div>
             <ScrollArea
-                className='oui-ui-theme-rail-scroll'
+                className="oui-ui-theme-rail-scroll"
                 highlights
-                highlightColor='var(--oui-ui-theme-rail-highlight-bg)'
+                highlightColor="var(--oui-ui-theme-rail-highlight-bg)"
                 highlightTop={{
                     start: 18,
                     fadeDistance: 90,
@@ -419,21 +419,23 @@ function UiExampleThemeRail({
                     maxOpacity: 0.94,
                 }}
             >
-                <div className='oui-ui-theme-rail-list'>
+                <div className="oui-ui-theme-rail-list">
                     {presets.map((preset) => (
                         <button
                             key={preset.id}
-                            type='button'
-                            className='oui-ui-theme-rail-item'
+                            type="button"
+                            className="oui-ui-theme-rail-item"
                             data-active={activePresetId === preset.id ? 'true' : undefined}
                             style={themePresetPreviewStyle(preset)}
                             onClick={() => onThemePresetChange(preset)}
                         >
-                            <span className='oui-ui-theme-rail-preview' aria-hidden>
+                            <span className="oui-ui-theme-rail-preview" aria-hidden>
                                 <span />
                                 <span />
                             </span>
-                            <span className='oui-ui-theme-rail-name'>{themePresetLabel(preset, locale)}</span>
+                            <span className="oui-ui-theme-rail-name">
+                                {themePresetLabel(preset, locale)}
+                            </span>
                         </button>
                     ))}
                 </div>
@@ -442,7 +444,7 @@ function UiExampleThemeRail({
     );
 }
 
-function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
+function UiExampleSidebar({ onNavigate }: { onNavigate: () => void }) {
     const [activeSection, setActiveSection] = useState('theme');
     const activeSectionRef = useRef('theme');
     const scrollNavigationTargetRef = useRef<string | null>(null);
@@ -450,7 +452,7 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
 
     const setActiveSectionValue = useCallback((id: string) => {
         activeSectionRef.current = id;
-        setActiveSection((current) => current === id ? current : id);
+        setActiveSection((current) => (current === id ? current : id));
     }, []);
 
     const lockScrollNavigationTarget = useCallback((id: string) => {
@@ -498,15 +500,15 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
                 return;
             }
 
-            const bottomDistance = scrollRoot.scrollHeight
-                - scrollRoot.clientHeight
-                - scrollRoot.scrollTop;
+            const bottomDistance =
+                scrollRoot.scrollHeight - scrollRoot.clientHeight - scrollRoot.scrollTop;
             const top = scrollRoot.scrollTop + UI_EXAMPLE_ACTIVE_PROBE_OFFSET;
-            const next = bottomDistance <= 2
-                ? nodes.at(-1)?.id
-                : nodes
-                    .filter((node) => uiExampleSectionAbsoluteTop(node, scrollRoot) <= top)
-                    .at(-1)?.id ?? nodes[0]?.id;
+            const next =
+                bottomDistance <= 2
+                    ? nodes.at(-1)?.id
+                    : (nodes
+                          .filter((node) => uiExampleSectionAbsoluteTop(node, scrollRoot) <= top)
+                          .at(-1)?.id ?? nodes[0]?.id);
             if (next && next !== activeSectionRef.current) setActiveSectionValue(next);
         };
         const requestUpdateActiveSection = () => {
@@ -515,7 +517,7 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
         };
 
         updateActiveSection();
-        scrollRoot.addEventListener('scroll', requestUpdateActiveSection, {passive: true});
+        scrollRoot.addEventListener('scroll', requestUpdateActiveSection, { passive: true });
         return () => {
             if (frame !== null) window.cancelAnimationFrame(frame);
             if (scrollNavigationReleaseTimerRef.current !== null) {
@@ -525,13 +527,16 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
         };
     }, [setActiveSectionValue]);
 
-    const navigateToSection = useCallback((id: string) => {
-        setActiveSectionValue(id);
-        lockScrollNavigationTarget(id);
-        window.history.replaceState(null, '', `#${id}`);
-        scrollUiExampleSection(id, 'smooth');
-        onNavigate();
-    }, [lockScrollNavigationTarget, onNavigate, setActiveSectionValue]);
+    const navigateToSection = useCallback(
+        (id: string) => {
+            setActiveSectionValue(id);
+            lockScrollNavigationTarget(id);
+            window.history.replaceState(null, '', `#${id}`);
+            scrollUiExampleSection(id, 'smooth');
+            onNavigate();
+        },
+        [lockScrollNavigationTarget, onNavigate, setActiveSectionValue],
+    );
 
     const sidebarNavGroups = useMemo(
         () =>
@@ -549,7 +554,7 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
 
     return (
         <AppSidebar
-            className='oui-ui-main-sidebar'
+            className="oui-ui-main-sidebar"
             header={<UiExampleBrand />}
             itemH={34}
             groups={sidebarNavGroups}
@@ -557,13 +562,13 @@ function UiExampleSidebar({onNavigate}: {onNavigate: () => void}) {
     );
 }
 
-function UiExampleBrand({compact = false}: {compact?: boolean}) {
+function UiExampleBrand({ compact = false }: { compact?: boolean }) {
     return (
-        <div className='oui-ui-brand' data-compact={compact ? 'true' : undefined}>
-            <span className='oui-ui-brand-mark' aria-hidden='true'>
-                <img className='oui-ui-brand-logo' src={ORCESTR_LOGO_SRC} alt='' />
+        <div className="oui-ui-brand" data-compact={compact ? 'true' : undefined}>
+            <span className="oui-ui-brand-mark" aria-hidden="true">
+                <img className="oui-ui-brand-logo" src={ORCESTR_LOGO_SRC} alt="" />
             </span>
-            <span className='oui-ui-brand-text'>
+            <span className="oui-ui-brand-text">
                 <strong>Orcestr UI</strong>
             </span>
         </div>
@@ -598,24 +603,24 @@ function UiExampleHeaderActions({
     );
 
     return (
-        <div className='oui-ui-header-actions' data-compact={compact ? 'true' : undefined}>
+        <div className="oui-ui-header-actions" data-compact={compact ? 'true' : undefined}>
             <Menu
                 items={languageItems}
                 trigger={
                     <IconButton
-                        className='oui-ui-language-button'
+                        className="oui-ui-language-button"
                         size={2}
-                        v='pad'
+                        v="pad"
                         icon={<LuLanguages size={16} />}
                         aria-label={`Language: ${locale.toUpperCase()}`}
                     />
                 }
             />
             <a
-                className='oui-ui-header-link'
-                href='https://github.com/Artasov/orcestr'
-                target='_blank'
-                rel='noreferrer'
+                className="oui-ui-header-link"
+                href="https://github.com/Artasov/orcestr"
+                target="_blank"
+                rel="noreferrer"
             >
                 <LuExternalLink size={14} aria-hidden />
                 <span>GitHub</span>
@@ -636,7 +641,9 @@ export function UiExamplePage({
     onLocaleChange,
 }: UiExamplePageProps = {}) {
     const firstPreset = getThemePlaygroundPreset('orcestr-dark');
-    const [activePresetId, setActivePresetId] = useState<ThemePresetId>(firstPreset.id as ThemePresetId);
+    const [activePresetId, setActivePresetId] = useState<ThemePresetId>(
+        firstPreset.id as ThemePresetId,
+    );
     const [mode, setMode] = useState(firstPreset.mode);
     const [surface, setSurface] = useState(firstPreset.surface);
     const [internalLocale, setInternalLocale] = useState<OrcestrUiLocale>(defaultLocale);
@@ -645,12 +652,15 @@ export function UiExamplePage({
     );
     const locale = controlledLocale ?? internalLocale;
 
-    const handleThemePresetChange = useCallback((preset: ReturnType<typeof getThemePlaygroundPreset>) => {
-        setActivePresetId(preset.id as ThemePresetId);
-        setMode(preset.mode);
-        setSurface(preset.surface);
-        setThemeOverrides(preset.overrides ?? {});
-    }, []);
+    const handleThemePresetChange = useCallback(
+        (preset: ReturnType<typeof getThemePlaygroundPreset>) => {
+            setActivePresetId(preset.id as ThemePresetId);
+            setMode(preset.mode);
+            setSurface(preset.surface);
+            setThemeOverrides(preset.overrides ?? {});
+        },
+        [],
+    );
     const handleLocaleChange = useCallback(
         (nextLocale: OrcestrUiLocale) => {
             if (onLocaleChange) {

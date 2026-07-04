@@ -12,18 +12,18 @@ import {
     type ReactNode,
 } from 'react';
 
-import {useFocusTrap} from '../../hooks/useFocusTrap';
-import {usePresence} from '../../hooks/usePresence';
-import {OrcestrThemeContext} from '../../theme/useTheme';
-import type {ModalAnimation} from '../../theme/themeTypes';
-import {cn} from '../../utils/cn';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
+import { usePresence } from '../../hooks/usePresence';
+import { OrcestrThemeContext } from '../../theme/useTheme';
+import type { ModalAnimation } from '../../theme/themeTypes';
+import { cn } from '../../utils/cn';
 import {
     lockOverlayScroll,
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
 } from '../Overlay/OverlayProvider';
-import {Portal} from '../Portal/Portal';
+import { Portal } from '../Portal/Portal';
 
 export type ModalProps = {
     open: boolean;
@@ -45,7 +45,7 @@ export type ModalProps = {
     contentClassName?: string;
     contentStyle?: CSSProperties;
     onKeyDown?: KeyboardEventHandler<HTMLDivElement>;
-    onOpenAutoFocus?: (event: {preventDefault: () => void}) => void;
+    onOpenAutoFocus?: (event: { preventDefault: () => void }) => void;
     closeOnOverlayClick?: boolean;
     ariaLabel?: string;
     ariaLabelledBy?: string;
@@ -92,28 +92,21 @@ function ModalRoot({
     const contentRef = useRef<HTMLDivElement | null>(null);
     const actualAnimationDuration =
         animationDuration ?? themeContext?.theme.motion.modalDuration ?? '380ms';
-    const actualAnimation =
-        animation ?? themeContext?.theme.motion.modalAnimation ?? 'zoom-blur';
-    const actualMaxWidth =
-        maxWidth ?? themeContext?.theme.components.modalMaxWidth ?? 680;
+    const actualAnimation = animation ?? themeContext?.theme.motion.modalAnimation ?? 'zoom-blur';
+    const actualMaxWidth = maxWidth ?? themeContext?.theme.components.modalMaxWidth ?? 680;
     const actualOverlayColor =
         overlayColor ?? themeContext?.theme.motion.modalOverlayColor ?? 'transparent';
     const actualOverlayOpacity =
         overlayOpacity ?? themeContext?.theme.motion.modalOverlayOpacity ?? 0;
-    const actualOverlayBlur =
-        overlayBlur ?? themeContext?.theme.motion.modalOverlayBlur ?? 10;
+    const actualOverlayBlur = overlayBlur ?? themeContext?.theme.motion.modalOverlayBlur ?? 10;
     const actualAnimationMs = durationMs(actualAnimationDuration, 380);
-    const actualAnimationEase =
-        themeContext?.theme.motion.ease ?? 'cubic-bezier(0.22, 1, 0.36, 1)';
-    const {present, state} = usePresence(open, actualAnimationMs);
+    const actualAnimationEase = themeContext?.theme.motion.ease ?? 'cubic-bezier(0.22, 1, 0.36, 1)';
+    const { present, state } = usePresence(open, actualAnimationMs);
     const layerIndex = useOverlayLayerIndex(present);
     const zIndex = overlayLayerZIndex(overlayContext.zIndex, 'modal', layerIndex);
     const overlayBlurValue = cssLength(actualOverlayBlur) ?? '10px';
     const overlayBackdropFilter = `blur(${overlayBlurValue})`;
-    const overlayBackground = modalOverlayBackground(
-        actualOverlayColor,
-        actualOverlayOpacity,
-    );
+    const overlayBackground = modalOverlayBackground(actualOverlayColor, actualOverlayOpacity);
 
     useFocusTrap(contentRef, open, () => onOpenChange(false));
 
@@ -124,7 +117,7 @@ function ModalRoot({
 
     useEffect(() => {
         if (!open || !onOpenAutoFocus) return;
-        onOpenAutoFocus({preventDefault: () => undefined});
+        onOpenAutoFocus({ preventDefault: () => undefined });
     }, [onOpenAutoFocus, open]);
 
     useLayoutEffect(() => {
@@ -143,9 +136,7 @@ function ModalRoot({
             WebkitBackdropFilter: overlayBackdropFilter,
         };
         const animation = layer.animate(
-            state === 'opening'
-                ? [closedFrame, openFrame]
-                : [openFrame, closedFrame],
+            state === 'opening' ? [closedFrame, openFrame] : [openFrame, closedFrame],
             {
                 duration: actualAnimationMs,
                 easing: actualAnimationEase,
@@ -172,19 +163,19 @@ function ModalRoot({
             <div
                 ref={layerRef}
                 className={cn('oui-modal-layer', overlayClassName, className)}
-                style={{
-                    zIndex,
-                    '--oui-modal-overlay-background': overlayBackground,
-                    '--oui-modal-overlay-blur': overlayBlurValue,
-                    '--oui-modal-animation-duration': cssDuration(
-                        actualAnimationDuration,
-                    ),
-                    '--oui-modal-animation-ease': actualAnimationEase,
-                    backgroundColor: overlayBackground,
-                    backdropFilter: overlayBackdropFilter,
-                    WebkitBackdropFilter: overlayBackdropFilter,
-                    ...overlayStyle,
-                } as CSSProperties}
+                style={
+                    {
+                        zIndex,
+                        '--oui-modal-overlay-background': overlayBackground,
+                        '--oui-modal-overlay-blur': overlayBlurValue,
+                        '--oui-modal-animation-duration': cssDuration(actualAnimationDuration),
+                        '--oui-modal-animation-ease': actualAnimationEase,
+                        backgroundColor: overlayBackground,
+                        backdropFilter: overlayBackdropFilter,
+                        WebkitBackdropFilter: overlayBackdropFilter,
+                        ...overlayStyle,
+                    } as CSSProperties
+                }
                 data-state={state}
                 data-testid={testId}
                 onPointerDown={(event) => {
@@ -195,8 +186,8 @@ function ModalRoot({
             >
                 <div
                     ref={contentRef}
-                    role='dialog'
-                    aria-modal='true'
+                    role="dialog"
+                    aria-modal="true"
                     aria-label={ariaLabel}
                     aria-labelledby={ariaLabelledBy}
                     aria-describedby={ariaDescribedBy}
@@ -204,23 +195,22 @@ function ModalRoot({
                     data-state={state}
                     data-animation={actualAnimation}
                     data-testid={testId ? `${testId}-content` : undefined}
-                    style={{
-                        width:
-                            typeof actualMaxWidth === 'number'
-                                ? `min(calc(100vw - 24px), ${actualMaxWidth}px)`
-                                : `min(calc(100vw - 24px), ${actualMaxWidth})`,
-                        minHeight:
-                            typeof minHeight === 'number'
-                                ? `${minHeight}px`
-                                : minHeight,
-                        '--oui-modal-border-color': borderColor,
-                        '--oui-modal-radius': cssLength(radius),
-                        '--oui-modal-shadow': shadow,
-                        ...contentStyle,
-                    } as CSSProperties}
+                    style={
+                        {
+                            width:
+                                typeof actualMaxWidth === 'number'
+                                    ? `min(calc(100vw - 24px), ${actualMaxWidth}px)`
+                                    : `min(calc(100vw - 24px), ${actualMaxWidth})`,
+                            minHeight: typeof minHeight === 'number' ? `${minHeight}px` : minHeight,
+                            '--oui-modal-border-color': borderColor,
+                            '--oui-modal-radius': cssLength(radius),
+                            '--oui-modal-shadow': shadow,
+                            ...contentStyle,
+                        } as CSSProperties
+                    }
                     onKeyDown={onKeyDown}
                 >
-                    <ModalContext.Provider value={{onOpenChange}}>
+                    <ModalContext.Provider value={{ onOpenChange }}>
                         {children}
                     </ModalContext.Provider>
                 </div>
@@ -293,7 +283,7 @@ type ModalPartProps = {
     style?: CSSProperties;
 };
 
-function ModalHeader({children, className, style}: ModalPartProps) {
+function ModalHeader({ children, className, style }: ModalPartProps) {
     return (
         <div className={cn('oui-modal-header', className)} style={style}>
             {children}
@@ -301,7 +291,7 @@ function ModalHeader({children, className, style}: ModalPartProps) {
     );
 }
 
-function ModalBody({children, className, style}: ModalPartProps) {
+function ModalBody({ children, className, style }: ModalPartProps) {
     return (
         <div className={cn('oui-modal-body', className)} style={style}>
             {children}
@@ -309,7 +299,7 @@ function ModalBody({children, className, style}: ModalPartProps) {
     );
 }
 
-function ModalFooter({children, className, style}: ModalPartProps) {
+function ModalFooter({ children, className, style }: ModalPartProps) {
     return (
         <div className={cn('oui-modal-footer', className)} style={style}>
             {children}
@@ -321,11 +311,11 @@ type ModalCloseProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     asChild?: false;
 };
 
-function ModalClose({onClick, ...props}: ModalCloseProps) {
+function ModalClose({ onClick, ...props }: ModalCloseProps) {
     const context = useContext(ModalContext);
     return (
         <button
-            type='button'
+            type="button"
             {...props}
             onClick={(event) => {
                 onClick?.(event);

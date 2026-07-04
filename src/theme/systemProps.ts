@@ -1,13 +1,7 @@
-import type {CSSProperties} from 'react';
+import type { CSSProperties } from 'react';
 
 export type SemanticTone =
-    | 'neutral'
-    | 'primary'
-    | 'secondary'
-    | 'success'
-    | 'warning'
-    | 'danger'
-    | 'info';
+    'neutral' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
 export type ColorTone =
     | 'blue'
     | 'sky'
@@ -66,15 +60,30 @@ export type ToneInput =
     | (string & {});
 export type UiSize = 1 | 2 | 3 | 4 | '1' | '2' | '3' | '4';
 export type RadiusScale = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
-export type AlignShort = 's' | 'c' | 'e' | 'st' | 'b' | 'start' | 'center' | 'end' | 'stretch' | 'baseline';
-export type JustifyShort = 's' | 'c' | 'e' | 'sb' | 'sa' | 'se' | 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
-export type ResponsiveValue<T> = T | {
-    initial?: T;
-    sm?: T;
-    md?: T;
-    lg?: T;
-    xl?: T;
-};
+export type AlignShort =
+    's' | 'c' | 'e' | 'st' | 'b' | 'start' | 'center' | 'end' | 'stretch' | 'baseline';
+export type JustifyShort =
+    | 's'
+    | 'c'
+    | 'e'
+    | 'sb'
+    | 'sa'
+    | 'se'
+    | 'start'
+    | 'center'
+    | 'end'
+    | 'between'
+    | 'around'
+    | 'evenly';
+export type ResponsiveValue<T> =
+    | T
+    | {
+          initial?: T;
+          sm?: T;
+          md?: T;
+          lg?: T;
+          xl?: T;
+      };
 
 export type SystemProps = {
     m?: ResponsiveValue<number | string>;
@@ -180,21 +189,12 @@ const systemKeys = new Set<keyof SystemProps>([
     'truncate',
 ]);
 
-const spacing = [
-    '0',
-    '4px',
-    '8px',
-    '12px',
-    '16px',
-    '24px',
-    '32px',
-    '40px',
-    '48px',
-    '64px',
-];
+const spacing = ['0', '4px', '8px', '12px', '16px', '24px', '32px', '40px', '48px', '64px'];
 const radiusScale = ['0', '2px', '4px', '6px', '8px', '10px', '12px', '999px'];
 
-function sizeValue(value: ResponsiveValue<number | string> | undefined): string | number | undefined {
+function sizeValue(
+    value: ResponsiveValue<number | string> | undefined,
+): string | number | undefined {
     if (value === undefined) return undefined;
     if (typeof value === 'object') {
         return sizeValue(value.initial ?? value.md ?? value.lg ?? value.sm ?? value.xl);
@@ -258,7 +258,9 @@ function justifyValue(value: JustifyShort): CSSProperties['justifyContent'] {
     }
 }
 
-export function splitSystemProps<P extends Record<string, unknown>>(props: P): {
+export function splitSystemProps<P extends Record<string, unknown>>(
+    props: P,
+): {
     systemStyle: CSSProperties;
     restProps: Omit<P, keyof SystemProps>;
 } {
@@ -425,7 +427,7 @@ export function splitSystemProps<P extends Record<string, unknown>>(props: P): {
         }
     }
 
-    return {systemStyle, restProps: restProps as Omit<P, keyof SystemProps>};
+    return { systemStyle, restProps: restProps as Omit<P, keyof SystemProps> };
 }
 
 export function normalizeTone(value: ToneInput | undefined, fallback: Tone = 'neutral'): Tone {

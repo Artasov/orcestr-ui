@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, type RefObject} from 'react';
+import { useEffect, type RefObject } from 'react';
 
 export function useOutsidePointerDown(
     refs: Array<RefObject<HTMLElement | null>>,

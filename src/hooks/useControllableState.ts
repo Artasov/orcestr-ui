@@ -1,6 +1,6 @@
 'use client';
 
-import {useCallback, useState} from 'react';
+import { useCallback, useState } from 'react';
 
 export function useControllableState<T>({
     value,
@@ -18,9 +18,7 @@ export function useControllableState<T>({
     const setValue = useCallback(
         (next: T | ((current: T) => T)) => {
             const actual =
-                typeof next === 'function'
-                    ? (next as (current: T) => T)(currentValue)
-                    : next;
+                typeof next === 'function' ? (next as (current: T) => T)(currentValue) : next;
             if (!isControlled) setInternalValue(actual);
             onChange?.(actual);
         },

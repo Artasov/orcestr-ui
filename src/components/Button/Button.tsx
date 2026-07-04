@@ -1,14 +1,8 @@
 'use client';
 
-import {
-    forwardRef,
-    useContext,
-    type ButtonHTMLAttributes,
-    type Ref,
-    type ReactNode,
-} from 'react';
+import { forwardRef, useContext, type ButtonHTMLAttributes, type Ref, type ReactNode } from 'react';
 
-import {cn} from '../../utils/cn';
+import { cn } from '../../utils/cn';
 import {
     splitSystemProps,
     type SystemProps,
@@ -17,10 +11,10 @@ import {
     type UiSize,
     normalizeTone,
 } from '../../theme/systemProps';
-import {OrcestrThemeContext} from '../../theme/useTheme';
-import type {ButtonPressAnimation} from '../../theme/themeTypes';
-import {renderSlot} from '../../utils/slot';
-import {Spinner} from '../Spinner/Spinner';
+import { OrcestrThemeContext } from '../../theme/useTheme';
+import type { ButtonPressAnimation } from '../../theme/themeTypes';
+import { renderSlot } from '../../utils/slot';
+import { Spinner } from '../Spinner/Spinner';
 
 export type ButtonVariant = 'solid' | 'soft' | 'surface' | 'pad' | 'ghost' | 'outline';
 
@@ -63,7 +57,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     const themeContext = useContext(OrcestrThemeContext);
     const actualPressAnimation =
         pressAnimation ?? themeContext?.theme.motion.pressAnimation ?? 'soft';
-    const {systemStyle, restProps} = splitSystemProps(props);
+    const { systemStyle, restProps } = splitSystemProps(props);
     const commonProps = {
         className: cn('oui-button', fullWidth && 'oui-button-full', className),
         'data-size': size,
@@ -73,7 +67,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
         'data-loading': loading ? 'true' : undefined,
         'data-testid': testId,
         'aria-busy': loading || undefined,
-        style: {...systemStyle, ...style},
+        style: { ...systemStyle, ...style },
         ...restProps,
     };
 
@@ -86,14 +80,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     }
 
     return (
-        <button
-            ref={ref}
-            type={type}
-            {...commonProps}
-            disabled={disabled || loading}
-        >
+        <button ref={ref} type={type} {...commonProps} disabled={disabled || loading}>
             {loading ? <Spinner size={1} /> : leftIcon}
-            <span className='oui-button-label'>{children}</span>
+            <span className="oui-button-label">{children}</span>
             {rightIcon}
         </button>
     );

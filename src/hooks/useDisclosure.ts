@@ -1,8 +1,8 @@
 'use client';
 
-import {useCallback} from 'react';
+import { useCallback } from 'react';
 
-import {useControllableState} from './useControllableState';
+import { useControllableState } from './useControllableState';
 
 export function useDisclosure({
     open,
@@ -22,5 +22,5 @@ export function useDisclosure({
     const openLayer = useCallback(() => setIsOpen(true), [setIsOpen]);
     const toggle = useCallback(() => setIsOpen((current) => !current), [setIsOpen]);
 
-    return {open: isOpen, setOpen: setIsOpen, close, openLayer, toggle};
+    return { open: isOpen, setOpen: setIsOpen, close, openLayer, toggle };
 }

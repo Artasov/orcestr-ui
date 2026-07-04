@@ -8,7 +8,7 @@ import {
     type ReactNode,
 } from 'react';
 
-import {cn} from '../../utils/cn';
+import { cn } from '../../utils/cn';
 
 export type SwitchProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> & {
     label?: ReactNode;
@@ -49,14 +49,14 @@ export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
         >
             <input
                 ref={ref}
-                type='checkbox'
+                type="checkbox"
                 checked={actualChecked}
                 disabled={disabled}
                 onChange={handleChange}
                 {...props}
             />
-            <span className='oui-switch-track'>
-                <span className='oui-switch-thumb' />
+            <span className="oui-switch-track">
+                <span className="oui-switch-thumb" />
             </span>
             {label || children ? <span>{label ?? children}</span> : null}
         </label>

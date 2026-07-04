@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from 'react';
+import { useState } from 'react';
 import {
     LuCircleAlert,
     LuCircleCheck,
@@ -26,13 +26,13 @@ import {
     StateCard,
     Text,
 } from '..';
-import {ExampleTile} from './CodePreview';
-import {type CodeExample} from './codeSamples';
-import {UiExampleSection} from './UiExampleSection';
+import { ExampleTile } from './CodePreview';
+import { type CodeExample } from './codeSamples';
+import { UiExampleSection } from './UiExampleSection';
 
 const validationItems = [
-    {key: 'quantity', label: 'Quantity', message: 'Required value is missing'},
-    {key: 'files', label: 'Files', message: 'Add at least one document'},
+    { key: 'quantity', label: 'Quantity', message: 'Required value is missing' },
+    { key: 'files', label: 'Files', message: 'Add at least one document' },
 ] as const;
 
 const stateCardSample: CodeExample = {
@@ -143,41 +143,45 @@ import {LuCircleAlert, LuCircleCheck, LuCircleX, LuInfo, LuLoaderCircle} from 'r
 </Flex>`,
 };
 
-export function BadgeSection({
-    onOpenCode,
-}: {
-    onOpenCode: (example: CodeExample) => void;
-}) {
+export function BadgeSection({ onOpenCode }: { onOpenCode: (example: CodeExample) => void }) {
     const [status, setStatus] = useState('review');
     const statusItems = [
-        {value: 'draft', label: 'Draft'},
-        {value: 'review', label: 'Review'},
-        {value: 'accepted', label: 'Accepted'},
+        { value: 'draft', label: 'Draft' },
+        { value: 'review', label: 'Review' },
+        { value: 'accepted', label: 'Accepted' },
     ];
 
     return (
         <UiExampleSection
-            id='badges-example'
-            title='Badge'
-            description='Compact counters and statuses without a special wrapper.'
+            id="badges-example"
+            title="Badge"
+            description="Compact counters and statuses without a special wrapper."
         >
-            <ExampleTile
-                title='Badge'
-                code={badgeSample.code}
-                onOpen={onOpenCode}
-            >
+            <ExampleTile title="Badge" code={badgeSample.code} onOpen={onOpenCode}>
                 <Flex g={2} wrap>
-                    <Badge tone='neutral'>Requested <strong>43</strong></Badge>
-                    <Badge tone='info' icon={<LuClock3 />}>Ordered <strong>12</strong></Badge>
-                    <Badge tone='success' icon={<LuPackageCheck />}>Accepted <strong>8</strong></Badge>
-                    <Badge tone='warning' v='surface' icon={<LuShieldCheck />}>Review</Badge>
-                    <Badge tone='danger' v='outline'>Blocked</Badge>
-                    <Badge tone='primary' v='solid'>Primary</Badge>
+                    <Badge tone="neutral">
+                        Requested <strong>43</strong>
+                    </Badge>
+                    <Badge tone="info" icon={<LuClock3 />}>
+                        Ordered <strong>12</strong>
+                    </Badge>
+                    <Badge tone="success" icon={<LuPackageCheck />}>
+                        Accepted <strong>8</strong>
+                    </Badge>
+                    <Badge tone="warning" v="surface" icon={<LuShieldCheck />}>
+                        Review
+                    </Badge>
+                    <Badge tone="danger" v="outline">
+                        Blocked
+                    </Badge>
+                    <Badge tone="primary" v="solid">
+                        Primary
+                    </Badge>
                     <BadgeSelectMenu
                         value={status}
                         items={statusItems}
                         onValueChange={setStatus}
-                        tone='warning'
+                        tone="warning"
                     />
                 </Flex>
             </ExampleTile>
@@ -185,112 +189,99 @@ export function BadgeSection({
     );
 }
 
-export function StateCardSection({
-    onOpenCode,
-}: {
-    onOpenCode: (example: CodeExample) => void;
-}) {
+export function StateCardSection({ onOpenCode }: { onOpenCode: (example: CodeExample) => void }) {
     return (
         <UiExampleSection
-            id='state-card-example'
-            title='StateCard'
-            description='Block-level state for empty, loading, error, access and status surfaces.'
+            id="state-card-example"
+            title="StateCard"
+            description="Block-level state for empty, loading, error, access and status surfaces."
         >
-            <ExampleTile
-                title='StateCard'
-                code={stateCardSample.code}
-                onOpen={onOpenCode}
-            >
+            <ExampleTile title="StateCard" code={stateCardSample.code} onOpen={onOpenCode}>
                 <Stack g={2}>
                     <StateCard
-                        tone='info'
-                        title='General state'
-                        description='One card for informational, empty, loading and error states.'
+                        tone="info"
+                        title="General state"
+                        description="One card for informational, empty, loading and error states."
                     />
-                    <Grid columns='repeat(auto-fit, minmax(min(100%, 260px), 1fr))' g={2}>
+                    <Grid columns="repeat(auto-fit, minmax(min(100%, 260px), 1fr))" g={2}>
                         <StateCard
-                            v='surface'
-                            tone='primary'
-                            title='Surface'
-                            titleTone='primary'
-                            description='Uses the regular surface with a toned title.'
-                            descriptionTone='muted'
+                            v="surface"
+                            tone="primary"
+                            title="Surface"
+                            titleTone="primary"
+                            description="Uses the regular surface with a toned title."
+                            descriptionTone="muted"
                         />
                         <StateCard
-                            v='outline'
-                            tone='warning'
-                            title='Outline'
-                            description='Useful when the card should stay quiet.'
+                            v="outline"
+                            tone="warning"
+                            title="Outline"
+                            description="Useful when the card should stay quiet."
                         />
                         <StateCard
-                            v='ghost'
-                            tone='success'
-                            title='Ghost'
-                            description='No extra background.'
+                            v="ghost"
+                            tone="success"
+                            title="Ghost"
+                            description="No extra background."
                         />
                     </Grid>
-                    <StateCard tone='danger' title='Validation failed'>
+                    <StateCard tone="danger" title="Validation failed">
                         <Stack g={1}>
                             {validationItems.map((item) => (
-                                <Text key={item.key} fs='13px' lh={1.3}>
+                                <Text key={item.key} fs="13px" lh={1.3}>
                                     <strong>{item.label}: </strong>
                                     {item.message}
                                 </Text>
                             ))}
                         </Stack>
                     </StateCard>
-                    <Grid columns='repeat(auto-fit, minmax(min(100%, 260px), 1fr))' g={2}>
-                        <EmptyState compact description='No records yet.' />
-                        <LoadingState compact description='Loading the next page.' />
+                    <Grid columns="repeat(auto-fit, minmax(min(100%, 260px), 1fr))" g={2}>
+                        <EmptyState compact description="No records yet." />
+                        <LoadingState compact description="Loading the next page." />
                         <ErrorState
                             compact
-                            description='Request failed.'
+                            description="Request failed."
                             onRetry={() => undefined}
                         />
                     </Grid>
                     <StateCard
-                        tone='success'
-                        title='Saved'
-                        description='Changes were applied.'
-                        action={<Button size={1} v='surface'>Open</Button>}
+                        tone="success"
+                        title="Saved"
+                        description="Changes were applied."
+                        action={
+                            <Button size={1} v="surface">
+                                Open
+                            </Button>
+                        }
                     />
                 </Stack>
             </ExampleTile>
-
         </UiExampleSection>
     );
 }
 
-export function IconTextSection({
-    onOpenCode,
-}: {
-    onOpenCode: (example: CodeExample) => void;
-}) {
+export function IconTextSection({ onOpenCode }: { onOpenCode: (example: CodeExample) => void }) {
     return (
         <UiExampleSection
-            id='icon-text-example'
-            title='IconText'
-            description='Inline text primitive with an icon, text props and independent icon tone.'
+            id="icon-text-example"
+            title="IconText"
+            description="Inline text primitive with an icon, text props and independent icon tone."
         >
-            <ExampleTile
-                title='IconText'
-                code={iconTextSample.code}
-                onOpen={onOpenCode}
-            >
+            <ExampleTile title="IconText" code={iconTextSample.code} onOpen={onOpenCode}>
                 <Flex g={2} wrap>
-                    <IconText icon={<LuLoaderCircle />} iconTone='info' iconSpin>
+                    <IconText icon={<LuLoaderCircle />} iconTone="info" iconSpin>
                         Saving changes
                     </IconText>
-                    <IconText icon={<LuCircleCheck />} iconTone='success'>
+                    <IconText icon={<LuCircleCheck />} iconTone="success">
                         Saved
                     </IconText>
-                    <IconText icon={<LuCircleX />} iconTone='danger'>
+                    <IconText icon={<LuCircleX />} iconTone="danger">
                         Save failed
                     </IconText>
-                    <IconText icon={<LuCircleAlert />} iconTone='warning' fw={760}>
+                    <IconText icon={<LuCircleAlert />} iconTone="warning" fw={760}>
                         Review required
                     </IconText>
-                    <IconText icon={<LuInfo />} iconTone='info' fs='13px'>
+                    <IconText icon={<LuInfo />} iconTone="info" fs="13px">
                         Sync scheduled
                     </IconText>
                 </Flex>

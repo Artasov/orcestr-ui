@@ -1,15 +1,9 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-import {test} from 'node:test';
+import { readFileSync } from 'node:fs';
+import { test } from 'node:test';
 
-const iconButtonSource = readFileSync(
-    new URL('./IconButton.tsx', import.meta.url),
-    'utf8',
-);
-const buttonStyles = readFileSync(
-    new URL('../../styles/_buttons.sass', import.meta.url),
-    'utf8',
-);
+const iconButtonSource = readFileSync(new URL('./IconButton.tsx', import.meta.url), 'utf8');
+const buttonStyles = readFileSync(new URL('../../styles/_buttons.sass', import.meta.url), 'utf8');
 
 test('IconButton owns numeric badge placement', () => {
     assert.match(iconButtonSource, /badge\?: ReactNode/);

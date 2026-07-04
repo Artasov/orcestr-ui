@@ -1448,4 +1448,5 @@ const resetTable = () => {
     rowKey={(row) => row.name}
     rows={rows.slice(0, 4)}
     columns={columns}
-/>`,} satisfies Record<string, string>;
+/>`,
+} satisfies Record<string, string>;

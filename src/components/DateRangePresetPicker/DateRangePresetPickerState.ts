@@ -1,12 +1,12 @@
-import type {DateRangePickerValue} from '../DateRangePicker/DateRangePicker';
+import type { DateRangePickerValue } from '../DateRangePicker/DateRangePicker';
 
-import type {DateRangePreset} from './DateRangePresetPicker';
+import type { DateRangePreset } from './DateRangePresetPicker';
 
 export function resolveDateRangePreset(
     preset: DateRangePreset,
     today = new Date().toISOString().slice(0, 10),
 ): DateRangePickerValue {
-    if (preset === 'today') return {from: today, to: today};
+    if (preset === 'today') return { from: today, to: today };
 
     if (preset === 'week') {
         return {

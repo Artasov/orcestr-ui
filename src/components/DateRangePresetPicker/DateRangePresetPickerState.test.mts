@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import {resolveDateRangePreset} from './DateRangePresetPickerState.ts';
+import { resolveDateRangePreset } from './DateRangePresetPickerState.ts';
 
 test('resolveDateRangePreset resolves today', () => {
     assert.deepEqual(resolveDateRangePreset('today', '2026-06-29'), {

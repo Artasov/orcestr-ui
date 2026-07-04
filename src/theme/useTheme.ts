@@ -1,12 +1,10 @@
 'use client';
 
-import {createContext, useContext} from 'react';
+import { createContext, useContext } from 'react';
 
-import type {OrcestrThemeContextValue} from './themeTypes';
+import type { OrcestrThemeContextValue } from './themeTypes';
 
-export const OrcestrThemeContext = createContext<OrcestrThemeContextValue | null>(
-    null,
-);
+export const OrcestrThemeContext = createContext<OrcestrThemeContextValue | null>(null);
 
 export function useOrcestrTheme(): OrcestrThemeContextValue {
     const context = useContext(OrcestrThemeContext);

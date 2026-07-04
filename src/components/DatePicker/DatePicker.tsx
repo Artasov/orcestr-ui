@@ -1,13 +1,13 @@
 'use client';
 
-import {useMemo, useState, type MouseEvent, type ReactNode} from 'react';
-import {LuCalendarDays, LuChevronLeft, LuChevronRight} from 'react-icons/lu';
+import { useMemo, useState, type MouseEvent, type ReactNode } from 'react';
+import { LuCalendarDays, LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
-import {Button} from '../Button/Button';
-import {IconButton} from '../IconButton/IconButton';
-import {Popover} from '../Popover/Popover';
-import {TextField} from '../TextField/TextField';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import { Button } from '../Button/Button';
+import { IconButton } from '../IconButton/IconButton';
+import { Popover } from '../Popover/Popover';
+import { TextField } from '../TextField/TextField';
 import {
     calendarMonthState,
     clampDate,
@@ -54,7 +54,7 @@ export function DatePicker({
     locale,
     testId,
 }: DatePickerProps) {
-    const {copy, locale: contextLocale} = useOrcestrUiLocale();
+    const { copy, locale: contextLocale } = useOrcestrUiLocale();
     const actualLocale = locale ?? contextLocale;
     const [open, setOpen] = useState(false);
     const [cursorMonth, setCursorMonth] = useState(() => monthCursorForDate(value));
@@ -108,8 +108,8 @@ export function DatePicker({
                     onClear={() => onValueChange('')}
                     rightSlot={
                         <button
-                            type='button'
-                            className='oui-date-picker-trigger'
+                            type="button"
+                            className="oui-date-picker-trigger"
                             aria-label={openCalendarLabel ?? copy.common.openCalendar}
                             disabled={disabled || readOnly}
                             onClick={openCalendar}
@@ -119,14 +119,14 @@ export function DatePicker({
                     }
                 />
             }
-            className='oui-date-picker-popover'
+            className="oui-date-picker-popover"
         >
-            <div className='oui-date-picker-panel'>
-                <div className='oui-date-picker-head'>
+            <div className="oui-date-picker-panel">
+                <div className="oui-date-picker-head">
                     <IconButton
                         size={1}
-                        v='ghost'
-                        type='button'
+                        v="ghost"
+                        type="button"
                         icon={<LuChevronLeft size={16} />}
                         aria-label={previousMonthLabel ?? copy.common.previous}
                         onClick={() => setCursorMonth((current) => shiftMonth(current, -1))}
@@ -134,25 +134,25 @@ export function DatePicker({
                     <strong>{formatMonthLabel(cursorMonth, actualLocale)}</strong>
                     <IconButton
                         size={1}
-                        v='ghost'
-                        type='button'
+                        v="ghost"
+                        type="button"
                         icon={<LuChevronRight size={16} />}
                         aria-label={nextMonthLabel ?? copy.common.next}
                         onClick={() => setCursorMonth((current) => shiftMonth(current, 1))}
                     />
                 </div>
-                <div className='oui-date-picker-weekdays'>
+                <div className="oui-date-picker-weekdays">
                     {weekdays.map((weekday) => (
                         <span key={weekday}>{weekday}</span>
                     ))}
                 </div>
-                <div className='oui-date-picker-grid'>
+                <div className="oui-date-picker-grid">
                     {monthState.weeks.flatMap((week) =>
                         week.map((day) => (
                             <button
                                 key={day.date}
-                                type='button'
-                                className='oui-date-picker-day'
+                                type="button"
+                                className="oui-date-picker-day"
                                 data-outside={day.outsideMonth ? 'true' : undefined}
                                 data-selected={day.selected ? 'true' : undefined}
                                 data-today={day.today ? 'true' : undefined}
@@ -165,20 +165,22 @@ export function DatePicker({
                         )),
                     )}
                 </div>
-                <div className='oui-date-picker-foot'>
+                <div className="oui-date-picker-foot">
                     <Button
                         size={1}
-                        v='ghost'
-                        type='button'
-                        onClick={() => selectDate(clampDate(new Date().toISOString().slice(0, 10), min, max))}
+                        v="ghost"
+                        type="button"
+                        onClick={() =>
+                            selectDate(clampDate(new Date().toISOString().slice(0, 10), min, max))
+                        }
                     >
                         {todayLabel ?? copy.dates.today}
                     </Button>
                     {clearable ? (
                         <Button
                             size={1}
-                            v='ghost'
-                            type='button'
+                            v="ghost"
+                            type="button"
                             disabled={!value}
                             onClick={() => {
                                 onValueChange('');

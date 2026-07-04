@@ -1,7 +1,7 @@
-import {Button} from '../Button/Button';
-import {Flex} from '../Flex/Flex';
-import {Text} from '../Text/Text';
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
+import { Button } from '../Button/Button';
+import { Flex } from '../Flex/Flex';
+import { Text } from '../Text/Text';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
 
 export function Pagination({
     page,
@@ -14,24 +14,24 @@ export function Pagination({
     onPageChange: (page: number) => void;
     testId?: string;
 }) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     return (
-        <Flex a='c' g={2} testId={testId}>
+        <Flex a="c" g={2} testId={testId}>
             <Button
                 size={1}
-                v='soft'
+                v="soft"
                 disabled={page <= 1}
                 testId={testId ? `${testId}-previous` : undefined}
                 onClick={() => onPageChange(page - 1)}
             >
                 {copy.common.previous}
             </Button>
-            <Text fs='13px' testId={testId ? `${testId}-status` : undefined}>
+            <Text fs="13px" testId={testId ? `${testId}-status` : undefined}>
                 {page} / {pageCount}
             </Text>
             <Button
                 size={1}
-                v='soft'
+                v="soft"
                 disabled={page >= pageCount}
                 testId={testId ? `${testId}-next` : undefined}
                 onClick={() => onPageChange(page + 1)}

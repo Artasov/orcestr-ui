@@ -6,9 +6,9 @@ import {
     type ReactNode,
 } from 'react';
 
-import {splitSystemProps, type SystemProps, type UiSize} from '../../theme/systemProps';
-import {cn} from '../../utils/cn';
-import {renderSlot} from '../../utils/slot';
+import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps';
+import { cn } from '../../utils/cn';
+import { renderSlot } from '../../utils/slot';
 
 export type CardVariant = 'ghost' | 'surface' | 'soft' | 'classic';
 
@@ -22,7 +22,10 @@ export type CardProps<C extends ElementType = 'div'> = SystemProps & {
     interactive?: boolean;
     asChild?: boolean;
     testId?: string;
-} & Omit<ComponentPropsWithoutRef<C>, keyof SystemProps | 'as' | 'children' | 'className' | 'style' | 'size'>;
+} & Omit<
+        ComponentPropsWithoutRef<C>,
+        keyof SystemProps | 'as' | 'children' | 'className' | 'style' | 'size'
+    >;
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
     {
@@ -40,14 +43,14 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
     ref,
 ) {
     const Component = as ?? 'div';
-    const {systemStyle, restProps} = splitSystemProps(props);
+    const { systemStyle, restProps } = splitSystemProps(props);
     const commonProps = {
         className: cn('oui-card', className),
         'data-size': size,
         'data-variant': v,
         'data-interactive': interactive ? 'true' : undefined,
         'data-testid': testId,
-        style: {...systemStyle, ...style},
+        style: { ...systemStyle, ...style },
         ...restProps,
     };
 
@@ -59,10 +62,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
     }
 
     return (
-        <Component
-            ref={ref}
-            {...commonProps}
-        >
+        <Component ref={ref} {...commonProps}>
             {children}
         </Component>
     );

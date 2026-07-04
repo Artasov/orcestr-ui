@@ -11,10 +11,10 @@ import {
     type ReactNode,
 } from 'react';
 
-import {splitSystemProps, type SystemProps} from '../../theme/systemProps';
-import {cn} from '../../utils/cn';
-import {ScrollArea} from '../ScrollArea/ScrollArea';
-import {Separator} from '../Separator/Separator';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
+import { cn } from '../../utils/cn';
+import { ScrollArea } from '../ScrollArea/ScrollArea';
+import { Separator } from '../Separator/Separator';
 
 export type AppSidebarSide = 'left' | 'right';
 
@@ -64,10 +64,8 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
     const indicatorRef = useRef<HTMLDivElement | null>(null);
     const indicatorPlacedRef = useRef(false);
     const transitionFrameRef = useRef(0);
-    const activeKey = groups
-        .flatMap((group) => group.items)
-        .find((item) => item.active)?.key;
-    const {systemStyle, restProps} = splitSystemProps(props);
+    const activeKey = groups.flatMap((group) => group.items).find((item) => item.active)?.key;
+    const { systemStyle, restProps } = splitSystemProps(props);
     const sidebarStyle = {
         '--oui-app-sidebar-item-h': `${itemH}px`,
         ...systemStyle,
@@ -116,6 +114,10 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
             return;
         }
 
+        if (indicatorPlacedRef.current) {
+            indicator.style.transition = '';
+        }
+
         if (!indicatorPlacedRef.current) {
             updateActiveIndicator(false);
         }
@@ -144,6 +146,7 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
             cancelAnimationFrame(frame);
             cancelAnimationFrame(nextFrame);
             cancelAnimationFrame(transitionFrameRef.current);
+            indicator.style.transition = '';
             resizeObserver?.disconnect();
             window.removeEventListener('resize', scheduleUpdate);
         };
@@ -158,22 +161,18 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
             style={sidebarStyle}
             {...restProps}
         >
-            {header ? <div className='oui-app-sidebar-head'>{header}</div> : null}
+            {header ? <div className="oui-app-sidebar-head">{header}</div> : null}
 
-            <ScrollArea
-                type='auto'
-                scrollbars='vertical'
-                className='oui-app-sidebar-scroll'
-            >
-                <div ref={contentRef} className='oui-app-sidebar-content'>
-                    <div ref={indicatorRef} className='oui-app-sidebar-indicator' />
-                    <div className='oui-app-sidebar-groups'>
+            <ScrollArea type="auto" scrollbars="vertical" className="oui-app-sidebar-scroll">
+                <div ref={contentRef} className="oui-app-sidebar-content">
+                    <div ref={indicatorRef} className="oui-app-sidebar-indicator" />
+                    <div className="oui-app-sidebar-groups">
                         {groups.map((group, index) => (
-                            <div className='oui-app-sidebar-group' key={group.key}>
+                            <div className="oui-app-sidebar-group" key={group.key}>
                                 {index > 0 ? (
-                                    <Separator className='oui-app-sidebar-separator' />
+                                    <Separator className="oui-app-sidebar-separator" />
                                 ) : null}
-                                <nav className='oui-app-sidebar-nav'>
+                                <nav className="oui-app-sidebar-nav">
                                     {group.items.map((item) => (
                                         <AppSidebarNavItem
                                             key={item.key}
@@ -190,8 +189,8 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
 
             {footer ? (
                 <>
-                    <Separator className='oui-app-sidebar-footer-separator' />
-                    <div className='oui-app-sidebar-footer'>{footer}</div>
+                    <Separator className="oui-app-sidebar-footer-separator" />
+                    <div className="oui-app-sidebar-footer">{footer}</div>
                 </>
             ) : null}
         </aside>
@@ -219,14 +218,14 @@ function AppSidebarNavItem({
 }) {
     const content = (
         <>
-            {item.icon ? <span className='oui-app-sidebar-item-icon'>{item.icon}</span> : null}
-            <span className='oui-app-sidebar-item-label'>{item.label}</span>
+            {item.icon ? <span className="oui-app-sidebar-item-icon">{item.icon}</span> : null}
+            <span className="oui-app-sidebar-item-label">{item.label}</span>
         </>
     );
     const commonProps = {
         className: 'oui-app-sidebar-item',
         'data-sidebar-active': item.active ? 'true' : undefined,
-        'aria-current': item.active ? 'page' as const : undefined,
+        'aria-current': item.active ? ('page' as const) : undefined,
         onClick: () => {
             item.onSelect?.();
             onNavigate?.(item);
@@ -243,7 +242,7 @@ function AppSidebarNavItem({
     }
 
     return (
-        <button type='button' disabled={item.disabled} {...commonProps}>
+        <button type="button" disabled={item.disabled} {...commonProps}>
             {content}
         </button>
     );

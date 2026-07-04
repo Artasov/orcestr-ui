@@ -9,22 +9,22 @@ import {
     type KeyboardEvent,
     type ReactNode,
 } from 'react';
-import {LuChevronRight, LuInfo} from 'react-icons/lu';
+import { LuChevronRight, LuInfo } from 'react-icons/lu';
 
-import {useListNavigation} from '../../hooks/useListNavigation';
-import {usePresence} from '../../hooks/usePresence';
-import {useTypeahead} from '../../hooks/useTypeahead';
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
-import {cn} from '../../utils/cn';
+import { useListNavigation } from '../../hooks/useListNavigation';
+import { usePresence } from '../../hooks/usePresence';
+import { useTypeahead } from '../../hooks/useTypeahead';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import { cn } from '../../utils/cn';
 import {
     actionItemText,
     isActionItemDisabled,
     type OrcestrActionItem,
 } from '../Action/ActionTypes';
-import {ActionConfirmModal} from '../Action/ActionConfirmModal';
-import {Popover, type PopoverProps} from '../Popover/Popover';
-import {Spinner} from '../Spinner/Spinner';
-import {Tooltip} from '../Tooltip/Tooltip';
+import { ActionConfirmModal } from '../Action/ActionConfirmModal';
+import { Popover, type PopoverProps } from '../Popover/Popover';
+import { Spinner } from '../Spinner/Spinner';
+import { Tooltip } from '../Tooltip/Tooltip';
 
 export type MenuItem = OrcestrActionItem;
 
@@ -189,8 +189,8 @@ function MenuList({
     return (
         <div
             ref={listRef}
-            className='oui-menu-list'
-            role='menu'
+            className="oui-menu-list"
+            role="menu"
             tabIndex={0}
             data-testid={testId}
             onKeyDown={handleKeyDown}
@@ -238,19 +238,19 @@ function MenuRow({
 
     return (
         <div
-            className='oui-menu-row'
+            className="oui-menu-row"
             onMouseEnter={() => {
                 setHighlighted();
                 setHoverOpen(true);
             }}
             onMouseLeave={() => setHoverOpen(false)}
         >
-            {item.separatorBefore ? <div className='oui-menu-separator' /> : null}
+            {item.separatorBefore ? <div className="oui-menu-separator" /> : null}
             <button
-                type='button'
-                className='oui-menu-item oui-combobox-option'
+                type="button"
+                className="oui-menu-item oui-combobox-option"
                 data-tone={item.tone}
-                data-selected='false'
+                data-selected="false"
                 data-highlighted={highlighted ? 'true' : undefined}
                 data-submenu-state={inlineOpen || hoverOpen ? 'open' : 'closed'}
                 data-loading={item.loading ? 'true' : undefined}
@@ -273,21 +273,17 @@ function MenuRow({
                     item.onSelect?.();
                     close();
                 }}
-                role='menuitem'
+                role="menuitem"
             >
                 <MenuItemContent item={item} reserveIconSpace={reserveIconSpace} />
                 {hasChildren ? (
-                    <LuChevronRight
-                        className='oui-menu-sub-chevron'
-                        size={15}
-                        aria-hidden
-                    />
+                    <LuChevronRight className="oui-menu-sub-chevron" size={15} aria-hidden />
                 ) : null}
             </button>
             {hasChildren && item.children ? (
                 inlineState.inlineSubmenus ? (
                     <div
-                        className='oui-menu-inline-subitems'
+                        className="oui-menu-inline-subitems"
                         data-state={inlineOpen ? 'open' : 'closed'}
                     >
                         {inlineOpen ? (
@@ -304,7 +300,7 @@ function MenuRow({
                     </div>
                 ) : submenuPresence.present ? (
                     <div
-                        className='oui-menu-subcontent oui-popover-content'
+                        className="oui-menu-subcontent oui-popover-content"
                         data-state={submenuPresence.state}
                         data-testid={testId ? `${testId}-subcontent` : undefined}
                     >
@@ -331,27 +327,25 @@ function MenuItemContent({
     item: MenuItem;
     reserveIconSpace: boolean;
 }) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     return (
         <>
-            <span className='oui-menu-item-main'>
+            <span className="oui-menu-item-main">
                 {item.icon || item.loading || reserveIconSpace ? (
-                    <span className='oui-menu-icon' aria-hidden={!item.icon && !item.loading}>
+                    <span className="oui-menu-icon" aria-hidden={!item.icon && !item.loading}>
                         {item.loading ? <Spinner size={1} /> : item.icon}
                     </span>
                 ) : null}
-                <span className='oui-menu-label'>{item.label}</span>
+                <span className="oui-menu-label">{item.label}</span>
                 {item.description ? (
-                    <span className='oui-menu-description'>{item.description}</span>
+                    <span className="oui-menu-description">{item.description}</span>
                 ) : null}
             </span>
-            {item.shortcut ? (
-                <span className='oui-menu-shortcut'>{item.shortcut}</span>
-            ) : null}
+            {item.shortcut ? <span className="oui-menu-shortcut">{item.shortcut}</span> : null}
             {item.info ? (
                 <Tooltip content={item.info}>
                     <span
-                        className='oui-menu-info'
+                        className="oui-menu-info"
                         aria-label={copy.common.details}
                         onPointerDown={(event) => {
                             event.preventDefault();
@@ -379,9 +373,7 @@ type InlineSubmenuState = {
 
 function useInlineSubmenus(): InlineSubmenuState {
     const [inlineSubmenus, setInlineSubmenus] = useState(false);
-    const [openSubmenus, setOpenSubmenus] = useState<ReadonlySet<string>>(
-        () => new Set(),
-    );
+    const [openSubmenus, setOpenSubmenus] = useState<ReadonlySet<string>>(() => new Set());
 
     useEffect(() => {
         const media = window.matchMedia('(max-width: 640px), (pointer: coarse)');
@@ -407,9 +399,7 @@ function useInlineSubmenus(): InlineSubmenuState {
 }
 
 function menuHasIcons(items: ReadonlyArray<MenuItem>): boolean {
-    return items.some(
-        (item) => item.icon || (item.children && menuHasIcons(item.children)),
-    );
+    return items.some((item) => item.icon || (item.children && menuHasIcons(item.children)));
 }
 
 function menuItemText(item: MenuItem): string {

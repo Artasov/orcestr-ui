@@ -1,16 +1,11 @@
 'use client';
 
-import {
-    useMemo,
-    useState,
-    type CSSProperties,
-    type ReactNode,
-} from 'react';
-import {LuInfo, LuX} from 'react-icons/lu';
+import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { LuInfo, LuX } from 'react-icons/lu';
 
-import {CopyIconButton, Flex, IconButton, Modal, ScrollArea} from '..';
-import {cn} from '../utils/cn';
-import {type CodeExample} from './codeSamples';
+import { CopyIconButton, Flex, IconButton, Modal, ScrollArea } from '..';
+import { cn } from '../utils/cn';
+import { type CodeExample } from './codeSamples';
 
 function highlightedCode(code: string): ReactNode[] {
     const tokenPattern =
@@ -22,7 +17,11 @@ function highlightedCode(code: string): ReactNode[] {
             let className = 'oui-code-token';
             if (/^\/\//.test(part)) className += ' oui-code-comment';
             else if (/^['"`]/.test(part)) className += ' oui-code-string';
-            else if (/^(import|from|const|let|function|return|true|false|null|undefined|type|satisfies)$/.test(part)) {
+            else if (
+                /^(import|from|const|let|function|return|true|false|null|undefined|type|satisfies)$/.test(
+                    part,
+                )
+            ) {
                 className += ' oui-code-keyword';
             } else if (/^<\/?[A-Z]/.test(part)) className += ' oui-code-component';
 
@@ -34,7 +33,7 @@ function highlightedCode(code: string): ReactNode[] {
         });
 
         return [
-            <span key={`line-${lineIndex}`} className='oui-code-line'>
+            <span key={`line-${lineIndex}`} className="oui-code-line">
                 {rendered.length > 0 ? rendered : ' '}
             </span>,
         ];
@@ -50,13 +49,13 @@ export function CodeInfoButton({
 }) {
     return (
         <IconButton
-            className='oui-code-info-button'
+            className="oui-code-info-button"
             size={1}
-            v='pad'
-            tone='info'
+            v="pad"
+            tone="info"
             icon={<LuInfo size={14} />}
             aria-label={`Show ${title} code`}
-            onClick={() => onOpen({title, code})}
+            onClick={() => onOpen({ title, code })}
         />
     );
 }
@@ -69,7 +68,7 @@ export function ExampleTileHeader({
     onOpen: (example: CodeExample) => void;
 }) {
     return (
-        <Flex className='oui-ui-tile-head' a='s' g={1} wrap>
+        <Flex className="oui-ui-tile-head" a="s" g={1} wrap>
             <CodeInfoButton title={title} code={code} onOpen={onOpen} />
         </Flex>
     );
@@ -90,7 +89,7 @@ export function ExampleTile({
 }) {
     return (
         <div id={id} className={cn('oui-section oui-ui-tile', className)}>
-            <div className='oui-ui-tile-body'>
+            <div className="oui-ui-tile-body">
                 <ExampleTileHeader title={title} code={code} onOpen={onOpen} />
                 {children}
             </div>
@@ -99,26 +98,26 @@ export function ExampleTile({
     );
 }
 
-export function InlineCodeBlock({code}: {code: string}) {
+export function InlineCodeBlock({ code }: { code: string }) {
     const [expanded, setExpanded] = useState(false);
     const lineCount = code.split('\n').length;
     const collapsible = lineCount > 9;
 
     return (
         <div
-            className='oui-code-inline-panel'
+            className="oui-code-inline-panel"
             data-expanded={expanded ? 'true' : 'false'}
             data-collapsible={collapsible ? 'true' : 'false'}
-            style={{'--oui-code-lines': lineCount} as CSSProperties}
+            style={{ '--oui-code-lines': lineCount } as CSSProperties}
         >
-            <div className='oui-code-inline-content'>
-                <CodeBlock code={code} mode='inline' />
+            <div className="oui-code-inline-content">
+                <CodeBlock code={code} mode="inline" />
             </div>
-            {collapsible ? <div className='oui-code-inline-fade' aria-hidden /> : null}
+            {collapsible ? <div className="oui-code-inline-fade" aria-hidden /> : null}
             {collapsible ? (
                 <button
-                    type='button'
-                    className='oui-code-inline-toggle'
+                    type="button"
+                    className="oui-code-inline-toggle"
                     aria-expanded={expanded}
                     onClick={() => setExpanded((current) => !current)}
                 >
@@ -129,28 +128,28 @@ export function InlineCodeBlock({code}: {code: string}) {
     );
 }
 
-export function CodeBlock({code, mode = 'scroll'}: {code: string; mode?: 'scroll' | 'inline'}) {
+export function CodeBlock({ code, mode = 'scroll' }: { code: string; mode?: 'scroll' | 'inline' }) {
     const content = useMemo(() => highlightedCode(code), [code]);
     const codeNode = (
-        <pre className='oui-code-preview'>
+        <pre className="oui-code-preview">
             <code>{content}</code>
         </pre>
     );
 
     if (mode === 'inline') {
         return (
-            <div className='oui-code-preview-wrap'>
+            <div className="oui-code-preview-wrap">
                 <CopyIconButton
-                    className='oui-code-preview-copy'
+                    className="oui-code-preview-copy"
                     text={code}
-                    label='Copy code'
-                    successMessage='Code copied'
+                    label="Copy code"
+                    successMessage="Code copied"
                     size={1}
-                    v='soft'
+                    v="soft"
                 />
                 <ScrollArea
-                    className='oui-code-preview-scroll oui-code-preview-scroll-inline'
-                    scrollbars='horizontal'
+                    className="oui-code-preview-scroll oui-code-preview-scroll-inline"
+                    scrollbars="horizontal"
                 >
                     {codeNode}
                 </ScrollArea>
@@ -159,18 +158,16 @@ export function CodeBlock({code, mode = 'scroll'}: {code: string; mode?: 'scroll
     }
 
     return (
-        <div className='oui-code-preview-wrap'>
+        <div className="oui-code-preview-wrap">
             <CopyIconButton
-                className='oui-code-preview-copy'
+                className="oui-code-preview-copy"
                 text={code}
-                label='Copy code'
-                successMessage='Code copied'
+                label="Copy code"
+                successMessage="Code copied"
                 size={1}
-                v='soft'
+                v="soft"
             />
-            <ScrollArea className='oui-code-preview-scroll'>
-                {codeNode}
-            </ScrollArea>
+            <ScrollArea className="oui-code-preview-scroll">{codeNode}</ScrollArea>
         </div>
     );
 }
@@ -191,24 +188,18 @@ export function CodePreviewModal({
             maxWidth={760}
         >
             <Modal.Header>
-                <div className='oui-modal-title-wrap'>
-                    <h2 className='oui-modal-title'>
-                        {example?.title ?? 'Component code'}
-                    </h2>
-                    <p className='oui-modal-description'>
-                        Import and usage example.
-                    </p>
+                <div className="oui-modal-title-wrap">
+                    <h2 className="oui-modal-title">{example?.title ?? 'Component code'}</h2>
+                    <p className="oui-modal-description">Import and usage example.</p>
                 </div>
                 <IconButton
-                    v='ghost'
+                    v="ghost"
                     icon={<LuX size={18} />}
-                    aria-label='Close'
+                    aria-label="Close"
                     onClick={onClose}
                 />
             </Modal.Header>
-            <Modal.Body>
-                {example ? <CodeBlock code={example.code} /> : null}
-            </Modal.Body>
+            <Modal.Body>{example ? <CodeBlock code={example.code} /> : null}</Modal.Body>
         </Modal>
     );
 }

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-import {fileURLToPath} from 'node:url';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
@@ -38,7 +38,10 @@ test('UI example sidebar follows the rendered section order', () => {
     assert.match(data, /id: 'tabs-example', label: 'Tabs'/);
     assert.match(data, /id: 'state-card-example', label: 'StateCard'/);
     assert.match(data, /id: 'badges-example', label: 'Badge'/);
-    assert.match(data, /id: 'context-menu-example', label: 'Context menu'[\s\S]*?id: 'state-card-example', label: 'StateCard'[\s\S]*?id: 'badges-example', label: 'Badge'[\s\S]*?key: 'fields'/);
+    assert.match(
+        data,
+        /id: 'context-menu-example', label: 'Context menu'[\s\S]*?id: 'state-card-example', label: 'StateCard'[\s\S]*?id: 'badges-example', label: 'Badge'[\s\S]*?key: 'fields'/,
+    );
     assert.match(data, /id: 'icon-text-example', label: 'IconText'/);
     assert.match(data, /id: 'data-table-example', label: 'DataTable'/);
     assert.match(data, /id: 'table-primitives-example', label: 'Table and pagination'/);
@@ -46,10 +49,19 @@ test('UI example sidebar follows the rendered section order', () => {
     assert.match(data, /id: 'app-shell-example', label: 'AppShell'/);
     assert.match(data, /id: 'app-sidebar-example', label: 'AppSidebar'/);
     assert.match(data, /id: 'special-modal-example', label: 'SpecialModal'/);
-    assert.doesNotMatch(data, /key: 'forms'|filterbar-example|standard-table-example|inline-state-example|InlineState|workflow-example|Workflow|scroll-highlights-example|Scroll highlights|id: 'data', label: 'Tables'/);
-    assert.doesNotMatch(data, /Темы|Контракты|Типографика|Раскладка|Действия|Кнопки|Иконки|Состояния|Оверлеи/);
+    assert.doesNotMatch(
+        data,
+        /key: 'forms'|filterbar-example|standard-table-example|inline-state-example|InlineState|workflow-example|Workflow|scroll-highlights-example|Scroll highlights|id: 'data', label: 'Tables'/,
+    );
+    assert.doesNotMatch(
+        data,
+        /Темы|Контракты|Типографика|Раскладка|Действия|Кнопки|Иконки|Состояния|Оверлеи/,
+    );
 
-    assert.match(page, /<ExampleThemePlayground[\s\S]*?<MemoFoundationsSection[\s\S]*?<MemoTextSection[\s\S]*?<MemoIconTextSection[\s\S]*?<MemoLayoutSection[\s\S]*?<MemoActionsSection[\s\S]*?<MemoFieldsSection[\s\S]*?<MemoSelectionSection[\s\S]*?<MemoStateCardSection[\s\S]*?<MemoBadgeSection[\s\S]*?<MemoDataSection[\s\S]*?<MemoOverlaysSection[\s\S]*?<MemoApplicationSection/);
+    assert.match(
+        page,
+        /<ExampleThemePlayground[\s\S]*?<MemoFoundationsSection[\s\S]*?<MemoTextSection[\s\S]*?<MemoIconTextSection[\s\S]*?<MemoLayoutSection[\s\S]*?<MemoActionsSection[\s\S]*?<MemoFieldsSection[\s\S]*?<MemoSelectionSection[\s\S]*?<MemoStateCardSection[\s\S]*?<MemoBadgeSection[\s\S]*?<MemoDataSection[\s\S]*?<MemoOverlaysSection[\s\S]*?<MemoApplicationSection/,
+    );
     assert.doesNotMatch(page, /TypographySection|MemoTypographySection/);
     assert.match(page, /function UiExampleSidebar/);
     assert.match(page, /navGroups\.map/);
@@ -59,7 +71,10 @@ test('UI example sidebar follows the rendered section order', () => {
     assert.match(page, /<AppSidebar[\s\S]*?className='oui-ui-main-sidebar'/);
     assert.match(page, /<AppShellHeader[\s\S]*?navigationVisibility='mobile'[\s\S]*?actions=\{/);
     assert.doesNotMatch(page, /<AppShellHeader[\s\S]*?<UiExampleBrand compact \/>/);
-    assert.match(page, /<Menu[\s\S]*?items=\{languageItems\}[\s\S]*?<IconButton[\s\S]*?className='oui-ui-language-button'[\s\S]*?icon=\{<LuLanguages size=\{16\} \/>\}/);
+    assert.match(
+        page,
+        /<Menu[\s\S]*?items=\{languageItems\}[\s\S]*?<IconButton[\s\S]*?className='oui-ui-language-button'[\s\S]*?icon=\{<LuLanguages size=\{16\} \/>\}/,
+    );
     assert.doesNotMatch(page, /oui-ui-language-switch|oui-ui-language-option|UiExampleHeaderTitle/);
     assert.doesNotMatch(page, /className='oui-ui-main-sidebar'[\s\S]*?footer=\{\(/);
     assert.match(page, /<UiExampleSidebar onNavigate=\{\(\) => setMobileNavOpen\(false\)\} \/>/);
@@ -150,20 +165,38 @@ test('UI example exposes deep anchors for public demo sections', () => {
     assert.match(basicsSection, /Themed scroll container with optional edge highlights/);
     assert.match(basicsSection, /mode: 'static'/);
     assert.match(basicsSection, /mode: 'scroll'/);
-    assert.doesNotMatch(basicsSection, /title='Scroll highlights'|Static scroll highlights|Scroll reveal highlights/);
-    assert.doesNotMatch(samples, /scrollAreaHighlights|scrollAreaRevealHighlights|Static scroll highlights|Scroll reveal highlights/);
+    assert.doesNotMatch(
+        basicsSection,
+        /title='Scroll highlights'|Static scroll highlights|Scroll reveal highlights/,
+    );
+    assert.doesNotMatch(
+        samples,
+        /scrollAreaHighlights|scrollAreaRevealHighlights|Static scroll highlights|Scroll reveal highlights/,
+    );
     assert.match(applicationSection, /id='app-shell-example'/);
     assert.match(applicationSection, /id='app-sidebar-example'/);
     assert.match(applicationSection, /id='special-modal-example'/);
-    assert.match(applicationSection, /<AppShell[\s\S]*?<AppShellHeader[\s\S]*?<AppSidebar[\s\S]*?<AppShellContent/);
+    assert.match(
+        applicationSection,
+        /<AppShell[\s\S]*?<AppShellHeader[\s\S]*?<AppSidebar[\s\S]*?<AppShellContent/,
+    );
     assert.match(applicationSection, /onSidebarOpenChange=\{onMobileOpenChange\}/);
     assert.match(applicationSection, /navigationVisibility='mobile'/);
     assert.match(applicationSection, /const \[appShellSidebarSide, setAppShellSidebarSide\]/);
     assert.match(applicationSection, /sidebarSide=\{appShellSidebarSide\}/);
     assert.match(applicationSection, /onToggleSidebarSide=\{\(\) =>/);
-    assert.doesNotMatch(applicationSection, /<AppShellHeader[\s\S]*?<DemoShellBrand \/>[\s\S]*?<\/AppShellHeader>/);
-    assert.doesNotMatch(applicationSection, /<AppShellHeader[\s\S]*?LuArrowLeftRight[\s\S]*?<\/AppShellHeader>/);
-    assert.match(applicationSection, /<AppSidebar[\s\S]*?side=\{sidebarSide\}[\s\S]*?LuArrowLeftRight[\s\S]*?onClick=\{onToggleSidebarSide\}/);
+    assert.doesNotMatch(
+        applicationSection,
+        /<AppShellHeader[\s\S]*?<DemoShellBrand \/>[\s\S]*?<\/AppShellHeader>/,
+    );
+    assert.doesNotMatch(
+        applicationSection,
+        /<AppShellHeader[\s\S]*?LuArrowLeftRight[\s\S]*?<\/AppShellHeader>/,
+    );
+    assert.match(
+        applicationSection,
+        /<AppSidebar[\s\S]*?side=\{sidebarSide\}[\s\S]*?LuArrowLeftRight[\s\S]*?onClick=\{onToggleSidebarSide\}/,
+    );
     assert.doesNotMatch(applicationSection, /onSidebarSideChange|setShellSidebarSide/);
     assert.doesNotMatch(applicationSection, /desktopOpen|onDesktopOpenChange|setShellSidebarOpen/);
     assert.match(applicationSection, /<AppSidebar/);
@@ -171,7 +204,10 @@ test('UI example exposes deep anchors for public demo sections', () => {
     assert.match(applicationSection, /onNavigate=\{\(item\) => setSidebarActiveKey\(item\.key\)\}/);
     assert.match(applicationSection, /onNavigate=\{\(item\) => setShellActiveKey\(item\.key\)\}/);
     assert.match(applicationSection, /<SpecialModal/);
-    assert.doesNotMatch(applicationSection, /WorkflowSummaryBar|<Pipeline|<Timeline|LifecycleActionPanel/);
+    assert.doesNotMatch(
+        applicationSection,
+        /WorkflowSummaryBar|<Pipeline|<Timeline|LifecycleActionPanel/,
+    );
     assert.match(samples, /iconTextButton:/);
     assert.match(samples, /iconButtons:/);
     assert.match(samples, /badge=\{64\}/);
@@ -181,19 +217,34 @@ test('UI example exposes deep anchors for public demo sections', () => {
     assert.match(samples, /inlineEdit:/);
     assert.match(samples, /tablePagination:/);
     assert.match(samples, /appSidebar:/);
-    assert.match(samples, /appShell: `import \{useState\} from 'react';[\s\S]*?AppShellHeader[\s\S]*?AppSidebar[\s\S]*?AppShellContent/);
+    assert.match(
+        samples,
+        /appShell: `import \{useState\} from 'react';[\s\S]*?AppShellHeader[\s\S]*?AppSidebar[\s\S]*?AppShellContent/,
+    );
     assert.match(samples, /onSidebarOpenChange=\{setMobileOpen\}/);
     assert.match(samples, /navigationVisibility='mobile'/);
-    assert.doesNotMatch(samples, /<AppShellHeader[\s\S]*?LuArrowLeftRight[\s\S]*?<\/AppShellHeader>/);
+    assert.doesNotMatch(
+        samples,
+        /<AppShellHeader[\s\S]*?LuArrowLeftRight[\s\S]*?<\/AppShellHeader>/,
+    );
     assert.match(samples, /type AppShellSide/);
-    assert.match(samples, /const \[sidebarSide, setSidebarSide\] = useState<AppShellSide>\('left'\)/);
+    assert.match(
+        samples,
+        /const \[sidebarSide, setSidebarSide\] = useState<AppShellSide>\('left'\)/,
+    );
     assert.match(samples, /sidebarSide=\{sidebarSide\}/);
-    assert.match(samples, /<AppSidebar[\s\S]*?side=\{sidebarSide\}[\s\S]*?LuArrowLeftRight[\s\S]*?onClick=\{toggleSidebarSide\}/);
+    assert.match(
+        samples,
+        /<AppSidebar[\s\S]*?side=\{sidebarSide\}[\s\S]*?LuArrowLeftRight[\s\S]*?onClick=\{toggleSidebarSide\}/,
+    );
     assert.doesNotMatch(samples, /desktopOpen|setShellSidebarOpen/);
     assert.match(samples, /header=\{\(/);
     assert.doesNotMatch(samples, /AppShellNav|AppShellSidebar/);
     assert.match(samples, /specialModal:/);
-    assert.doesNotMatch(samples, /workflow:|WorkflowSummaryBar|<Pipeline|<Timeline|LifecycleActionPanel/);
+    assert.doesNotMatch(
+        samples,
+        /workflow:|WorkflowSummaryBar|<Pipeline|<Timeline|LifecycleActionPanel/,
+    );
 });
 
 test('AppSidebar exposes composable header and footer slots', () => {
@@ -215,9 +266,14 @@ test('AppSidebar exposes composable header and footer slots', () => {
     assert.match(appSidebar, /function sidebarItemOffsetTop/);
     assert.match(appSidebar, /node = node\.offsetParent as HTMLElement \| null/);
     assert.match(appSidebar, /indicator\.style\.transition = 'none'/);
+    assert.match(appSidebar, /if \(indicatorPlacedRef\.current\) \{\s+indicator\.style\.transition = '';\s+\}/);
     assert.match(appSidebar, /updateActiveIndicator\(false\)/);
     assert.match(appSidebar, /requestAnimationFrame\(\(\) => updateActiveIndicator\(\)\)/);
-    assert.match(appSidebarStyles, /\.oui-app-sidebar-head\s+display: flex[\s\S]*?flex: 0 0 var\(--oui-app-shell-header-h, 61px\)[\s\S]*?min-height: var\(--oui-app-shell-header-h, 61px\)/);
+    assert.match(appSidebar, /cancelAnimationFrame\(transitionFrameRef\.current\);[\s\S]*?indicator\.style\.transition = '';/);
+    assert.match(
+        appSidebarStyles,
+        /\.oui-app-sidebar-head\s+display: flex[\s\S]*?flex: 0 0 var\(--oui-app-shell-header-h, 61px\)[\s\S]*?min-height: var\(--oui-app-shell-header-h, 61px\)/,
+    );
     assert.match(applicationSection, /className='oui-app-sidebar-brand'/);
     assert.match(samples, /className='oui-app-sidebar-brand'/);
     assert.doesNotMatch(samples, /title='Deliveries'|logo=\{/);
@@ -227,7 +283,10 @@ test('UI example keeps forms out of the foundation demo', () => {
     const fields = read('example/ExampleFieldsSection.tsx');
     const samples = read('example/codeSamples.ts');
 
-    assert.doesNotMatch(fields, /react-hook-form|<Form|FormSection|FormActions|FormSubmitButton|FormTextField|FormSelect/);
+    assert.doesNotMatch(
+        fields,
+        /react-hook-form|<Form|FormSection|FormActions|FormSubmitButton|FormTextField|FormSelect/,
+    );
     assert.doesNotMatch(samples, /react-hook-form|FormSubmitButton|FormSection/);
     assert.match(fields, /Layout primitives group fields without owning state/);
 });
@@ -246,7 +305,10 @@ test('UI example selection data follows current locale', () => {
     assert.match(overlays, /const commandItems = getCommandItems\(locale\)/);
     assert.match(data, /const enOptionItems: ListboxItem\[\] = \[[\s\S]*?label: 'In progress'/);
     assert.match(data, /const enOwnerItems = \[[\s\S]*?label: 'Operations team'/);
-    assert.match(data, /const enEntityOptions: EntityOption\[\] = Array\.from[\s\S]*?name: `Entity \$\{index \+ 1\}`/);
+    assert.match(
+        data,
+        /const enEntityOptions: EntityOption\[\] = Array\.from[\s\S]*?name: `Entity \$\{index \+ 1\}`/,
+    );
     assert.match(data, /export function getCommandItems\(locale: OrcestrUiLocale\)/);
 });
 
@@ -258,20 +320,44 @@ test('UI example DataTable demo keeps controls compact', () => {
 
     assert.match(dataSection, /className='oui-ui-table-tile'/);
     assert.match(dataSection, /className='oui-ui-table-demo'/);
-    assert.match(dataSection, /<DataTable[\s\S]*?toolbar=\{\([\s\S]*?<TextField[\s\S]*?<Button[\s\S]*?size=\{3\}[\s\S]*?v='surface'[\s\S]*?>\s*Reset\s*<\/Button>/);
+    assert.match(
+        dataSection,
+        /<DataTable[\s\S]*?toolbar=\{\([\s\S]*?<TextField[\s\S]*?<Button[\s\S]*?size=\{3\}[\s\S]*?v='surface'[\s\S]*?>\s*Reset\s*<\/Button>/,
+    );
     assert.match(dataSection, /Plain table/);
     assert.match(dataSection, /rows=\{rows\.slice\(0, 4\)\}/);
     assert.doesNotMatch(dataSection, /Reset table|oui-ui-table-demo-toolbar|pinned: 'left'/);
-    assert.match(samples, /toolbar=\{[\s\S]*?<TextField[\s\S]*?<Button onClick=\{resetTable\}>Reset<\/Button>/);
+    assert.match(
+        samples,
+        /toolbar=\{[\s\S]*?<TextField[\s\S]*?<Button onClick=\{resetTable\}>Reset<\/Button>/,
+    );
     assert.match(samples, /rows=\{rows\.slice\(0, 4\)\}/);
-    assert.match(styles, /\.oui-ui-table-demo\s+display: flex[\s\S]*?flex-direction: column[\s\S]*?gap: 12px/);
-    assert.match(styles, /\.oui-ui-table-variants\s+display: grid[\s\S]*?grid-template-columns: minmax\(0, 1fr\)/);
+    assert.match(
+        styles,
+        /\.oui-ui-table-demo\s+display: flex[\s\S]*?flex-direction: column[\s\S]*?gap: 12px/,
+    );
+    assert.match(
+        styles,
+        /\.oui-ui-table-variants\s+display: grid[\s\S]*?grid-template-columns: minmax\(0, 1fr\)/,
+    );
     assert.match(styles, /\.oui-ui-table-variant\s+display: flex[\s\S]*?flex-direction: column/);
-    assert.match(dataStyles, /\.oui-data-table-toolbar\s+display: flex[\s\S]*?align-items: stretch[\s\S]*?gap: 8px/);
-    assert.match(dataStyles, /\.oui-data-table-toolbar-content\s+display: flex[\s\S]*?flex: 1 1 auto/);
-    assert.match(dataStyles, /\.oui-data-table-toolbar-content > \.oui-text-field\s+flex: 1 1 240px/);
+    assert.match(
+        dataStyles,
+        /\.oui-data-table-toolbar\s+display: flex[\s\S]*?align-items: stretch[\s\S]*?gap: 8px/,
+    );
+    assert.match(
+        dataStyles,
+        /\.oui-data-table-toolbar-content\s+display: flex[\s\S]*?flex: 1 1 auto/,
+    );
+    assert.match(
+        dataStyles,
+        /\.oui-data-table-toolbar-content > \.oui-text-field\s+flex: 1 1 240px/,
+    );
     assert.match(styles, /\.oui-ui-table-tile\s+align-items: flex-start/);
-    assert.match(styles, /\.oui-ui-table-tile \.oui-ui-table-demo,[\s\S]*?\.oui-ui-table-tile \.oui-data-table-wrap\s+flex: 1 1 auto/);
+    assert.match(
+        styles,
+        /\.oui-ui-table-tile \.oui-ui-table-demo,[\s\S]*?\.oui-ui-table-tile \.oui-data-table-wrap\s+flex: 1 1 auto/,
+    );
     assert.match(styles, /\.oui-ui-table-tile \.oui-code-inline-panel\s+align-self: flex-start/);
 });
 
@@ -287,32 +373,80 @@ test('UI example cards show one title and keep imports only in code preview', ()
     assert.match(page, /<MemoSelectionSection[\s\S]*?tabValue=\{tabValue\}/);
     assert.doesNotMatch(preview, /ORCESTR_UI_IMPORT_PATTERN|importedComponentNames/);
     assert.doesNotMatch(preview, /className='oui-ui-import-line'|function importStatement/);
-    assert.doesNotMatch(preview, /oui-ui-component-list|oui-ui-component-name|oui-ui-tile-title-block|oui-ui-tile-title/);
+    assert.doesNotMatch(
+        preview,
+        /oui-ui-component-list|oui-ui-component-name|oui-ui-tile-title-block|oui-ui-tile-title/,
+    );
     assert.match(preview, /export function InlineCodeBlock/);
     assert.match(preview, /data-collapsible=\{collapsible \? 'true' : 'false'\}/);
-    assert.doesNotMatch(preview, /onWheelCapture|handleWheelCapture|normalizedWheelDeltaY|scrollRoot\.scrollTop/);
+    assert.doesNotMatch(
+        preview,
+        /onWheelCapture|handleWheelCapture|normalizedWheelDeltaY|scrollRoot\.scrollTop/,
+    );
     assert.doesNotMatch(preview, /ResizeObserver|useLayoutEffect|scrollHeight/);
     assert.match(preview, /'--oui-code-lines': lineCount/);
     assert.match(preview, /Show code/);
     assert.match(preview, /Hide code/);
-    assert.match(styles, /\.oui-ui-tile-head\s+display: none[\s\S]*?min-width: 0[\s\S]*?flex-wrap: wrap/);
-    assert.match(styles, /\.oui-code-inline-panel\s+position: relative[\s\S]*?--oui-code-collapsed-height: 180px[\s\S]*?--oui-code-expanded-height: calc/);
-    assert.match(styles, /\.oui-ui-section\s+container-type: inline-size[\s\S]*?content-visibility: auto[\s\S]*?contain-intrinsic-size: auto 560px/);
-    assert.match(styles, /\.oui-code-inline-panel\s+position: relative[\s\S]*?align-self: flex-start[\s\S]*?height: var\(--oui-code-collapsed-height\)[\s\S]*?contain: layout paint style[\s\S]*?transition: height 460ms/);
+    assert.match(
+        styles,
+        /\.oui-ui-tile-head\s+display: none[\s\S]*?min-width: 0[\s\S]*?flex-wrap: wrap/,
+    );
+    assert.match(
+        styles,
+        /\.oui-code-inline-panel\s+position: relative[\s\S]*?--oui-code-collapsed-height: 180px[\s\S]*?--oui-code-expanded-height: calc/,
+    );
+    assert.match(
+        styles,
+        /\.oui-ui-section\s+container-type: inline-size[\s\S]*?content-visibility: auto[\s\S]*?contain-intrinsic-size: auto 560px/,
+    );
+    assert.match(
+        styles,
+        /\.oui-code-inline-panel\s+position: relative[\s\S]*?align-self: flex-start[\s\S]*?height: var\(--oui-code-collapsed-height\)[\s\S]*?contain: layout paint style[\s\S]*?transition: height 460ms/,
+    );
     assert.doesNotMatch(styles, /will-change: height/);
-    assert.match(styles, /\.oui-code-inline-panel\[data-expanded="true"\]\s+height: var\(--oui-code-expanded-height\)/);
-    assert.match(styles, /\.oui-code-inline-fade\s+position: absolute[\s\S]*?height: 92px[\s\S]*?transition: opacity 180ms/);
+    assert.match(
+        styles,
+        /\.oui-code-inline-panel\[data-expanded="true"\]\s+height: var\(--oui-code-expanded-height\)/,
+    );
+    assert.match(
+        styles,
+        /\.oui-code-inline-fade\s+position: absolute[\s\S]*?height: 92px[\s\S]*?transition: opacity 180ms/,
+    );
     assert.match(preview, /<CodeBlock code=\{code\} mode='inline' \/>/);
-    assert.match(preview, /<ScrollArea[\s\S]*?className='oui-code-preview-scroll oui-code-preview-scroll-inline'[\s\S]*?scrollbars='horizontal'/);
-    assert.match(styles, /\.oui-code-preview-scroll-inline \.oui-scroll-area-viewport\s+max-height: none[\s\S]*?overflow-x: auto[\s\S]*?overflow-y: hidden[\s\S]*?overscroll-behavior-x: contain[\s\S]*?overscroll-behavior-y: auto/);
+    assert.match(
+        preview,
+        /<ScrollArea[\s\S]*?className='oui-code-preview-scroll oui-code-preview-scroll-inline'[\s\S]*?scrollbars='horizontal'/,
+    );
+    assert.match(
+        styles,
+        /\.oui-code-preview-scroll-inline \.oui-scroll-area-viewport\s+max-height: none[\s\S]*?overflow-x: auto[\s\S]*?overflow-y: hidden[\s\S]*?overscroll-behavior-x: contain[\s\S]*?overscroll-behavior-y: auto/,
+    );
     assert.match(styles, /\.oui-code-inline-panel \.oui-code-preview\s+padding-bottom: 42px/);
-    assert.match(styles, /\.oui-ui-app-shell-preview-stage\[data-mode="phone"\]\s+width: min\(100%, 410px\)[\s\S]*?border-radius: 14px/);
-    assert.match(styles, /\.oui-ui-app-shell-preview-stage \.oui-app-shell\[data-has-header="true"\] \.oui-app-shell-frame\s+height: 100%/);
-    assert.match(styles, /\.oui-ui-app-shell-preview-stage \.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-app-shell-frame,[\s\S]*?\.oui-ui-app-shell-preview-stage \.oui-app-shell\[data-sidebar-mode="mobile"\]\[data-has-header="true"\] \.oui-app-shell-frame\s+height: 100%/);
-    assert.match(styles, /\.oui-ui-app-shell-preview-stage\[data-mode="phone"\] \.oui-app-shell-header\s+padding: 8px 18px 8px 10px/);
-    assert.doesNotMatch(styles, /\.oui-code-inline-panel[\s\S]*?\.oui-scroll-area-viewport\s+overflow-y: auto/);
+    assert.match(
+        styles,
+        /\.oui-ui-app-shell-preview-stage\[data-mode="phone"\]\s+width: min\(100%, 410px\)[\s\S]*?border-radius: 14px/,
+    );
+    assert.match(
+        styles,
+        /\.oui-ui-app-shell-preview-stage \.oui-app-shell\[data-has-header="true"\] \.oui-app-shell-frame\s+height: 100%/,
+    );
+    assert.match(
+        styles,
+        /\.oui-ui-app-shell-preview-stage \.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-app-shell-frame,[\s\S]*?\.oui-ui-app-shell-preview-stage \.oui-app-shell\[data-sidebar-mode="mobile"\]\[data-has-header="true"\] \.oui-app-shell-frame\s+height: 100%/,
+    );
+    assert.match(
+        styles,
+        /\.oui-ui-app-shell-preview-stage\[data-mode="phone"\] \.oui-app-shell-header\s+padding: 8px 18px 8px 10px/,
+    );
+    assert.doesNotMatch(
+        styles,
+        /\.oui-code-inline-panel[\s\S]*?\.oui-scroll-area-viewport\s+overflow-y: auto/,
+    );
     assert.match(styles, /@media \(max-width: 860px\)[\s\S]*?\.oui-ui-tile-head\s+display: flex/);
-    assert.doesNotMatch(styles, /\.oui-ui-import-line|\.oui-ui-tile-title-block|\.oui-ui-tile-title/);
+    assert.doesNotMatch(
+        styles,
+        /\.oui-ui-import-line|\.oui-ui-tile-title-block|\.oui-ui-tile-title/,
+    );
 });
 
 test('UI example starts with editable theme playground presets', () => {
@@ -367,16 +501,28 @@ test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigat
     assert.match(page, /if \(lockedTarget\)/);
     assert.match(page, /const targetTop = uiExampleSectionScrollTop\(targetNode, scrollRoot\)/);
     assert.match(page, /UI_EXAMPLE_CLICK_TARGET_TOP_TOLERANCE/);
-    assert.match(page, /const bottomDistance = scrollRoot\.scrollHeight[\s\S]*?- scrollRoot\.clientHeight[\s\S]*?- scrollRoot\.scrollTop/);
+    assert.match(
+        page,
+        /const bottomDistance = scrollRoot\.scrollHeight[\s\S]*?- scrollRoot\.clientHeight[\s\S]*?- scrollRoot\.scrollTop/,
+    );
     assert.match(page, /const top = scrollRoot\.scrollTop \+ UI_EXAMPLE_ACTIVE_PROBE_OFFSET/);
     assert.match(page, /uiExampleSectionAbsoluteTop\(node, scrollRoot\) <= top/);
     assert.match(page, /bottomDistance <= 2[\s\S]*?nodes\.at\(-1\)\?\.id/);
-    assert.match(page, /if \(next && next !== activeSectionRef\.current\) setActiveSectionValue\(next\)/);
+    assert.match(
+        page,
+        /if \(next && next !== activeSectionRef\.current\) setActiveSectionValue\(next\)/,
+    );
     assert.match(page, /requestAnimationFrame\(updateActiveSection\)/);
     assert.doesNotMatch(page, /uiExampleNavCopy/);
     assert.match(page, /scrollUiExampleSection\(id, 'smooth'\)/);
-    assert.doesNotMatch(page, /addEventListener\('wheel'|preventDefault\(\)|SMOOTH_WHEEL|normalizedUiExampleWheelDelta|clampUiExampleScrollTop/);
-    assert.match(page, /scrollRoot\.addEventListener\('scroll', requestUpdateActiveSection, \{passive: true\}\)/);
+    assert.doesNotMatch(
+        page,
+        /addEventListener\('wheel'|preventDefault\(\)|SMOOTH_WHEEL|normalizedUiExampleWheelDelta|clampUiExampleScrollTop/,
+    );
+    assert.match(
+        page,
+        /scrollRoot\.addEventListener\('scroll', requestUpdateActiveSection, \{passive: true\}\)/,
+    );
     assert.match(shell, /<Drawer/);
     assert.match(shell, /export type AppShellSide = 'left' \| 'right'/);
     assert.match(shell, /sidebarSide\?: AppShellSide/);
@@ -392,8 +538,14 @@ test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigat
     assert.match(shell, /data-sidebar-mode=\{drawerMode \? 'mobile' : 'desktop'\}/);
     assert.match(shell, /data-desktop-sidebar-open=\{desktopSidebarOpen \? 'true' : 'false'\}/);
     assert.match(shell, /data-has-header=\{header \? 'true' : undefined\}/);
-    assert.match(shell, /<main className='oui-app-shell-main'>\s*\{header\}\s*\{children\}\s*<\/main>/);
-    assert.doesNotMatch(shell, /data-testid=\{testId\}[\s\S]*?>\s*\{header\}\s*<div className='oui-app-shell-frame'/);
+    assert.match(
+        shell,
+        /<main className='oui-app-shell-main'>\s*\{header\}\s*\{children\}\s*<\/main>/,
+    );
+    assert.doesNotMatch(
+        shell,
+        /data-testid=\{testId\}[\s\S]*?>\s*\{header\}\s*<div className='oui-app-shell-frame'/,
+    );
     assert.match(shell, /const \[drawerPortalContainer, setDrawerPortalContainer\]/);
     assert.match(shell, /drawerMode && drawerPortalContainer \? \(/);
     assert.match(shell, /lockScroll=\{false\}/);
@@ -407,57 +559,186 @@ test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigat
     assert.match(drawer, /portalContainer\?: HTMLElement \| null/);
     assert.match(drawer, /<Portal container=\{portalContainer\}>/);
     assert.match(shellStyles, /\.oui-app-shell\s+position: relative[\s\S]*?isolation: isolate/);
-    assert.match(shellStyles, /\.oui-app-shell-drawer-root\s+position: absolute[\s\S]*?inset: 0[\s\S]*?overflow: hidden/);
-    assert.match(shellStyles, /\.oui-app-shell-drawer-root \.oui-drawer-layer\s+position: absolute[\s\S]*?inset: 0/);
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell-drawer-root\s+position: absolute[\s\S]*?inset: 0[\s\S]*?overflow: hidden/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell-drawer-root \.oui-drawer-layer\s+position: absolute[\s\S]*?inset: 0/,
+    );
     assert.match(shellStyles, /\.oui-app-shell-sidebar-desktop/);
-    assert.match(shellStyles, /\.oui-app-shell-main\s+display: flex[\s\S]*?grid-column: 2[\s\S]*?grid-row: 1/);
-    assert.match(shellStyles, /\.oui-app-shell-header\s+position: relative[\s\S]*?min-height: var\(--oui-app-shell-header-h, 56px\)/);
-    assert.match(shellStyles, /\.oui-app-shell-header-nav-button\[data-navigation-visibility="mobile"\]\s+display: none/);
-    assert.match(shellStyles, /\.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-app-shell-header-nav-button\[data-navigation-visibility="mobile"\]\s+display: inline-flex/);
-    assert.doesNotMatch(shellStyles, /\.oui-app-shell\[data-has-header="true"\] \.oui-app-shell-frame\s+height: calc/);
-    assert.match(shellStyles, /\.oui-app-shell-sidebar-desktop\s+grid-column: 1[\s\S]*?grid-row: 1/);
-    assert.match(shellStyles, /\.oui-app-shell-frame\s+display: grid[\s\S]*?width: 100%[\s\S]*?transition: grid-template-columns 340ms ease/);
-    assert.match(shellStyles, /\.oui-app-shell-sidebar-desktop\s+grid-column: 1[\s\S]*?width: 100%[\s\S]*?overflow: hidden[\s\S]*?transition: transform 340ms ease, opacity 220ms ease/);
-    assert.match(shellStyles, /\.oui-app-shell\[data-desktop-sidebar-open="false"\] \.oui-app-shell-frame\s+grid-template-columns: 0 minmax\(0, 1fr\)/);
-    assert.match(shellStyles, /\.oui-app-shell\[data-desktop-sidebar-open="false"\] \.oui-app-shell-sidebar-desktop\s+opacity: 0[\s\S]*?pointer-events: none[\s\S]*?transform: translateX\(calc\(var\(--oui-app-shell-sidebar-width, 260px\) \* -1\)\)/);
-    assert.match(shellStyles, /\.oui-app-shell\[data-sidebar-side="right"\] \.oui-app-shell-frame\s+grid-template-columns: minmax\(0, 1fr\) minmax\(220px, var\(--oui-app-shell-sidebar-width, 260px\)\)/);
-    assert.match(shellStyles, /\.oui-app-shell\[data-sidebar-side="right"\]\[data-desktop-sidebar-open="false"\] \.oui-app-shell-frame\s+grid-template-columns: minmax\(0, 1fr\) 0/);
-    assert.match(shellStyles, /\.oui-app-shell\[data-sidebar-side="right"\] \.oui-app-shell-sidebar-desktop\s+grid-column: 2/);
-    assert.match(shellStyles, /\.oui-app-shell\[data-sidebar-side="right"\]\[data-desktop-sidebar-open="false"\] \.oui-app-shell-sidebar-desktop\s+transform: translateX\(var\(--oui-app-shell-sidebar-width, 260px\)\)/);
-    assert.match(shellStyles, /\.oui-app-shell\[data-sidebar-side="right"\] \.oui-app-shell-main\s+grid-column: 1/);
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell-main\s+display: flex[\s\S]*?grid-column: 2[\s\S]*?grid-row: 1/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell-header\s+position: relative[\s\S]*?min-height: var\(--oui-app-shell-header-h, 56px\)/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell-header-nav-button\[data-navigation-visibility="mobile"\]\s+display: none/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-app-shell-header-nav-button\[data-navigation-visibility="mobile"\]\s+display: inline-flex/,
+    );
+    assert.doesNotMatch(
+        shellStyles,
+        /\.oui-app-shell\[data-has-header="true"\] \.oui-app-shell-frame\s+height: calc/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell-sidebar-desktop\s+grid-column: 1[\s\S]*?grid-row: 1/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell-frame\s+display: grid[\s\S]*?width: 100%[\s\S]*?transition: grid-template-columns 340ms ease/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell-sidebar-desktop\s+grid-column: 1[\s\S]*?width: 100%[\s\S]*?overflow: hidden[\s\S]*?transition: transform 340ms ease, opacity 220ms ease/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell\[data-desktop-sidebar-open="false"\] \.oui-app-shell-frame\s+grid-template-columns: 0 minmax\(0, 1fr\)/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell\[data-desktop-sidebar-open="false"\] \.oui-app-shell-sidebar-desktop\s+opacity: 0[\s\S]*?pointer-events: none[\s\S]*?transform: translateX\(calc\(var\(--oui-app-shell-sidebar-width, 260px\) \* -1\)\)/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell\[data-sidebar-side="right"\] \.oui-app-shell-frame\s+grid-template-columns: minmax\(0, 1fr\) minmax\(220px, var\(--oui-app-shell-sidebar-width, 260px\)\)/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell\[data-sidebar-side="right"\]\[data-desktop-sidebar-open="false"\] \.oui-app-shell-frame\s+grid-template-columns: minmax\(0, 1fr\) 0/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell\[data-sidebar-side="right"\] \.oui-app-shell-sidebar-desktop\s+grid-column: 2/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell\[data-sidebar-side="right"\]\[data-desktop-sidebar-open="false"\] \.oui-app-shell-sidebar-desktop\s+transform: translateX\(var\(--oui-app-shell-sidebar-width, 260px\)\)/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell\[data-sidebar-side="right"\] \.oui-app-shell-main\s+grid-column: 1/,
+    );
     assert.match(shellStyles, /\.oui-app-shell\[data-sidebar-mode="mobile"\]\s+padding: 0/);
-    assert.match(shellStyles, /\.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-app-shell-frame\s+width: 100%[\s\S]*?height: 100vh[\s\S]*?grid-template-columns: 1fr/);
-    assert.doesNotMatch(shellStyles, /\.oui-app-shell\[data-sidebar-mode="mobile"\]\[data-has-header="true"\] \.oui-app-shell-frame\s+height: calc/);
-    assert.match(shellStyles, /\.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-app-shell-main\s+grid-column: 1[\s\S]*?grid-row: 1/);
-    assert.match(shellStyles, /\.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="left"\],[\s\S]*?\.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="right"\]\s+width: min\(88vw, max\(var\(--oui-drawer-size, 300px\), 300px\)\)[\s\S]*?background: transparent[\s\S]*?border: 0[\s\S]*?box-shadow: none/);
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-app-shell-frame\s+width: 100%[\s\S]*?height: 100vh[\s\S]*?grid-template-columns: 1fr/,
+    );
+    assert.doesNotMatch(
+        shellStyles,
+        /\.oui-app-shell\[data-sidebar-mode="mobile"\]\[data-has-header="true"\] \.oui-app-shell-frame\s+height: calc/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-app-shell-main\s+grid-column: 1[\s\S]*?grid-row: 1/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="left"\],[\s\S]*?\.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="right"\]\s+width: min\(88vw, max\(var\(--oui-drawer-size, 300px\), 300px\)\)[\s\S]*?background: transparent[\s\S]*?border: 0[\s\S]*?box-shadow: none/,
+    );
     assert.match(shellStyles, /\.oui-app-shell-sidebar\s+position: relative[\s\S]*?padding: 0/);
     assert.match(shellStyles, /--oui-app-shell-sidebar-body-pad: 12px 8px 18px 18px/);
-    assert.match(shellStyles, /\.oui-app-shell-sidebar-head\s+display: flex[\s\S]*?padding: var\(--oui-app-shell-sidebar-head-pad\)/);
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell-sidebar-head\s+display: flex[\s\S]*?padding: var\(--oui-app-shell-sidebar-head-pad\)/,
+    );
     assert.match(shellStyles, /\.oui-app-shell-sidebar-scroll\s+display: flex[\s\S]*?width: 100%/);
-    assert.match(shellStyles, /\.oui-app-shell-sidebar-body\s+min-width: 0[\s\S]*?padding: var\(--oui-app-shell-sidebar-body-pad\)/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-header\s+min-height: 48px/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-header > \.oui-icon-button\s+width: 32px[\s\S]*?height: 32px[\s\S]*?min-height: 32px/);
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell-sidebar-body\s+min-width: 0[\s\S]*?padding: var\(--oui-app-shell-sidebar-body-pad\)/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-header\s+min-height: 48px/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-header > \.oui-icon-button\s+width: 32px[\s\S]*?height: 32px[\s\S]*?min-height: 32px/,
+    );
     assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?height: calc\(100vh - 48px\)/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-backdrop\.oui-app-shell-sidebar-drawer-overlay\s+background: transparent/);
-    assert.doesNotMatch(shellStyles, /calc\(100vh - \(var\(--oui-app-shell-inset, 28px\) \* 2\) - var\(--oui-app-shell-header-h, 56px\)\)/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="left"\],[\s\S]*?\.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="right"\]\s+width: min\(88vw, max\(var\(--oui-drawer-size, 300px\), 300px\)\)[\s\S]*?background: transparent[\s\S]*?border: 0[\s\S]*?box-shadow: none/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="left"\]\s+border-radius: 0 14px 14px 0/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="right"\]\s+border-radius: 14px 0 0 14px/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar-drawer-body\s+display: flex[\s\S]*?overflow: hidden[\s\S]*?background: transparent[\s\S]*?padding: 0/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar-drawer-body > \.oui-app-sidebar\s+width: 100%[\s\S]*?height: 100%[\s\S]*?border-radius: 0 14px 14px 0[\s\S]*?box-shadow: 8px 0 24px rgb\(0 0 0 \/ 8%\)/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-panel\[data-side="right"\] \.oui-app-shell-sidebar-drawer-body > \.oui-app-sidebar\s+border-radius: 14px 0 0 14px[\s\S]*?box-shadow: -8px 0 24px rgb\(0 0 0 \/ 8%\)/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar-drawer-body \.oui-app-sidebar-head\s+flex: 0 0 48px[\s\S]*?min-height: 48px[\s\S]*?border-bottom: 0[\s\S]*?padding: 0 8px/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar-drawer-body \.oui-app-sidebar-content\s+padding: 6px 8px 12px/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?--oui-app-shell-sidebar-body-pad: 6px 8px 12px[\s\S]*?background: var\(--oui-bg\)/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar::before\s+display: none/);
-    assert.doesNotMatch(shellStyles, /@media \(max-width: 860px\)[\s\S]*?backdrop-filter: blur\(24px\)/);
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-backdrop\.oui-app-shell-sidebar-drawer-overlay\s+background: transparent/,
+    );
+    assert.doesNotMatch(
+        shellStyles,
+        /calc\(100vh - \(var\(--oui-app-shell-inset, 28px\) \* 2\) - var\(--oui-app-shell-header-h, 56px\)\)/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="left"\],[\s\S]*?\.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="right"\]\s+width: min\(88vw, max\(var\(--oui-drawer-size, 300px\), 300px\)\)[\s\S]*?background: transparent[\s\S]*?border: 0[\s\S]*?box-shadow: none/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="left"\]\s+border-radius: 0 14px 14px 0/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-panel\.oui-app-shell-sidebar-drawer-panel\[data-side="right"\]\s+border-radius: 14px 0 0 14px/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar-drawer-body\s+display: flex[\s\S]*?overflow: hidden[\s\S]*?background: transparent[\s\S]*?padding: 0/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar-drawer-body > \.oui-app-sidebar\s+width: 100%[\s\S]*?height: 100%[\s\S]*?border-radius: 0 14px 14px 0[\s\S]*?box-shadow: 8px 0 24px rgb\(0 0 0 \/ 8%\)/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-panel\[data-side="right"\] \.oui-app-shell-sidebar-drawer-body > \.oui-app-sidebar\s+border-radius: 14px 0 0 14px[\s\S]*?box-shadow: -8px 0 24px rgb\(0 0 0 \/ 8%\)/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar-drawer-body \.oui-app-sidebar-head\s+flex: 0 0 48px[\s\S]*?min-height: 48px[\s\S]*?border-bottom: 0[\s\S]*?padding: 0 8px/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar-drawer-body \.oui-app-sidebar-content\s+padding: 6px 8px 12px/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?--oui-app-shell-sidebar-body-pad: 6px 8px 12px[\s\S]*?background: var\(--oui-bg\)/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-sidebar::before\s+display: none/,
+    );
+    assert.doesNotMatch(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?backdrop-filter: blur\(24px\)/,
+    );
     assert.match(shellStyles, /\.oui-app-shell-content-scroll\s+flex: 1 1 auto[\s\S]*?padding: 0/);
-    assert.match(shellStyles, /\.oui-app-shell-content-scroll > \.oui-scroll-area-viewport\s+height: 100%[\s\S]*?scroll-padding: 8px 28px 24px 22px/);
-    assert.match(shellStyles, /\.oui-app-shell-content\s+display: flex[\s\S]*?padding: 0 28px 24px 22px/);
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-content\s+padding: 12px 10px 18px/);
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell-content-scroll > \.oui-scroll-area-viewport\s+height: 100%[\s\S]*?scroll-padding: 8px 28px 24px 22px/,
+    );
+    assert.match(
+        shellStyles,
+        /\.oui-app-shell-content\s+display: flex[\s\S]*?padding: 0 28px 24px 22px/,
+    );
+    assert.match(
+        shellStyles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-content\s+padding: 12px 10px 18px/,
+    );
     assert.match(drawerStyles, /\.oui-drawer-panel\[data-side="left"\]/);
-    assert.match(drawerStyles, /\.oui-drawer-panel\[data-side="left"\]\[data-state="opening"\]\s+animation: ouiDrawerLeftIn/);
-    assert.match(drawerStyles, /@keyframes ouiDrawerLeftIn[\s\S]*?transform: translateX\(-105%\)[\s\S]*?transform: translate\(0, 0\)/);
+    assert.match(
+        drawerStyles,
+        /\.oui-drawer-panel\[data-side="left"\]\[data-state="opening"\]\s+animation: ouiDrawerLeftIn/,
+    );
+    assert.match(
+        drawerStyles,
+        /@keyframes ouiDrawerLeftIn[\s\S]*?transform: translateX\(-105%\)[\s\S]*?transform: translate\(0, 0\)/,
+    );
     assert.doesNotMatch(shellStyles, /oui-app-shell-sidebar-backdrop/);
 });
 
@@ -486,18 +767,48 @@ test('UI example and state components use container-safe layouts', () => {
 
     assert.match(styles, /\.oui-ui-section\s+container-type: inline-size/);
     assert.doesNotMatch(styles, /scroll-behavior: smooth/);
-    assert.match(styles, /@container \(max-width: 980px\)[\s\S]*?\.oui-ui-tile-body\s+flex-basis: auto/);
-    assert.match(styles, /@media \(max-width: 860px\)[\s\S]*?\.oui-ui-tile-body\s+flex-basis: auto/);
+    assert.match(
+        styles,
+        /@container \(max-width: 980px\)[\s\S]*?\.oui-ui-tile-body\s+flex-basis: auto/,
+    );
+    assert.match(
+        styles,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-ui-tile-body\s+flex-basis: auto/,
+    );
     assert.match(styles, /\.oui-theme-preview\s+display: flex[\s\S]*?overflow: hidden/);
-    assert.match(styles, /\.oui-theme-token-grid\s+display: grid[\s\S]*?repeat\(auto-fit, minmax\(min\(100%, 250px\), 1fr\)\)/);
-    assert.match(scrollAreaStyles, /\.oui-scroll-area-highlight-overlay\s+position: absolute[\s\S]*?z-index: calc\(var\(--oui-z-sticky, 20\) \+ 10\)/);
+    assert.match(
+        styles,
+        /\.oui-theme-token-grid\s+display: grid[\s\S]*?repeat\(auto-fit, minmax\(min\(100%, 250px\), 1fr\)\)/,
+    );
+    assert.match(
+        scrollAreaStyles,
+        /\.oui-scroll-area-highlight-overlay\s+position: absolute[\s\S]*?z-index: calc\(var\(--oui-z-sticky, 20\) \+ 10\)/,
+    );
     assert.doesNotMatch(styles, /oui-ui-dashboard-grid|oui-ui-media-compare-demo|oui-chat-shell/);
-    assert.match(stateStyles, /\.oui-state-card\s+display: grid[\s\S]*?grid-template-columns: minmax\(0, 1fr\) auto[\s\S]*?container-type: inline-size/);
-    assert.match(stateStyles, /\.oui-state-card\s+display: grid[\s\S]*?border: 1px solid transparent/);
-    assert.match(stateStyles, /\.oui-state-card-main\s+display: flex[\s\S]*?flex-direction: column/);
-    assert.match(iconTextStyles, /\.oui-icon-text\s+display: inline[\s\S]*?overflow-wrap: anywhere/);
-    assert.match(iconTextStyles, /\.oui-icon-text-icon\s+display: inline-flex[\s\S]*?width: 1em[\s\S]*?height: 1em/);
-    assert.match(iconTextStyles, /\.oui-icon-text-icon svg\s+display: block[\s\S]*?width: 100%[\s\S]*?height: 100%/);
+    assert.match(
+        stateStyles,
+        /\.oui-state-card\s+display: grid[\s\S]*?grid-template-columns: minmax\(0, 1fr\) auto[\s\S]*?container-type: inline-size/,
+    );
+    assert.match(
+        stateStyles,
+        /\.oui-state-card\s+display: grid[\s\S]*?border: 1px solid transparent/,
+    );
+    assert.match(
+        stateStyles,
+        /\.oui-state-card-main\s+display: flex[\s\S]*?flex-direction: column/,
+    );
+    assert.match(
+        iconTextStyles,
+        /\.oui-icon-text\s+display: inline[\s\S]*?overflow-wrap: anywhere/,
+    );
+    assert.match(
+        iconTextStyles,
+        /\.oui-icon-text-icon\s+display: inline-flex[\s\S]*?width: 1em[\s\S]*?height: 1em/,
+    );
+    assert.match(
+        iconTextStyles,
+        /\.oui-icon-text-icon svg\s+display: block[\s\S]*?width: 100%[\s\S]*?height: 100%/,
+    );
     assert.match(stateStyles, /\.oui-state-card\s+display: grid[\s\S]*?font-size: 14px/);
     assert.match(stateStyles, /\.oui-state-card-body\s+display: flex[\s\S]*?gap: 4px/);
     assert.match(stateSource, /titleFs\?: SystemProps\['fs'\]/);
@@ -507,7 +818,10 @@ test('UI example and state components use container-safe layouts', () => {
     assert.match(stateSource, /descriptionTone\?: TextProps\['tone'\]/);
     assert.match(badgeSource, /icon\?: ReactNode/);
     assert.match(badgeSource, /className='oui-badge-icon'/);
-    assert.match(badgeStyles, /\.oui-badge-icon\s+display: inline-flex[\s\S]*?width: 1em[\s\S]*?height: 1em/);
+    assert.match(
+        badgeStyles,
+        /\.oui-badge-icon\s+display: inline-flex[\s\S]*?width: 1em[\s\S]*?height: 1em/,
+    );
     assert.match(stateSource, /const actualTitleFs = titleFs \?\? \(compact \? '14px' : '15px'\)/);
     assert.match(stateSource, /<IconText[\s\S]*?fw=\{760\}[\s\S]*?fs=\{actualTitleFs\}/);
     assert.match(stateSource, /tone=\{titleTone\}/);
@@ -515,11 +829,29 @@ test('UI example and state components use container-safe layouts', () => {
     assert.match(stateStyles, /\.oui-state-card\[data-variant="surface"\]/);
     assert.match(stateStyles, /\.oui-state-card\[data-variant="outline"\]/);
     assert.match(stateStyles, /\.oui-state-card\[data-variant="ghost"\]/);
-    assert.match(stateStyles, /\.oui-state-card-description\s+display: block[\s\S]*?overflow-wrap: anywhere/);
-    assert.doesNotMatch(stateStyles, /oui-state-card-title|line-height: 1\.25|line-height: 1\.45|line-height: 1\.4/);
-    assert.match(stateSection, /<Stack g=\{1\}>[\s\S]*?<Text key=\{item\.key\} fs='13px' lh=\{1\.3\}>/);
-    assert.doesNotMatch(stateStyles, /oui-inline-state|oui-state-card-icon|oui-state-card-heading|oui-icon-text|oui-alert|oui-badge/);
+    assert.match(
+        stateStyles,
+        /\.oui-state-card-description\s+display: block[\s\S]*?overflow-wrap: anywhere/,
+    );
+    assert.doesNotMatch(
+        stateStyles,
+        /oui-state-card-title|line-height: 1\.25|line-height: 1\.45|line-height: 1\.4/,
+    );
+    assert.match(
+        stateSection,
+        /<Stack g=\{1\}>[\s\S]*?<Text key=\{item\.key\} fs='13px' lh=\{1\.3\}>/,
+    );
+    assert.doesNotMatch(
+        stateStyles,
+        /oui-inline-state|oui-state-card-icon|oui-state-card-heading|oui-icon-text|oui-alert|oui-badge/,
+    );
     assert.doesNotMatch(stateStyles, /\.oui-state-card-body\n(?:    .+\n)*    grid-column:/);
-    assert.match(stateStyles, /\.oui-state-card\[data-variant="soft"\]\[data-tone="danger"\][\s\S]*?background: var\(--oui-danger-surface\)/);
-    assert.doesNotMatch(stateStyles, /\.oui-state-card\[data-variant="soft"\]\[data-tone="danger"\]\n\s+border-color:/);
+    assert.match(
+        stateStyles,
+        /\.oui-state-card\[data-variant="soft"\]\[data-tone="danger"\][\s\S]*?background: var\(--oui-danger-surface\)/,
+    );
+    assert.doesNotMatch(
+        stateStyles,
+        /\.oui-state-card\[data-variant="soft"\]\[data-tone="danger"\]\n\s+border-color:/,
+    );
 });

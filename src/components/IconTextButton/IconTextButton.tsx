@@ -1,10 +1,10 @@
 'use client';
 
-import {forwardRef, type ReactNode, type Ref} from 'react';
+import { forwardRef, type ReactNode, type Ref } from 'react';
 
-import {cn} from '../../utils/cn';
-import {Button, type ButtonProps} from '../Button/Button';
-import {LinkButton, type LinkButtonProps} from '../LinkButton/LinkButton';
+import { cn } from '../../utils/cn';
+import { Button, type ButtonProps } from '../Button/Button';
+import { LinkButton, type LinkButtonProps } from '../LinkButton/LinkButton';
 
 type IconTextButtonOwnProps = {
     icon?: ReactNode;
@@ -47,8 +47,7 @@ export const IconTextButton = forwardRef<
     },
     ref,
 ) {
-    const startIcon =
-        iconSide === 'start' ? iconNode(icon, iconClassName) : undefined;
+    const startIcon = iconSide === 'start' ? iconNode(icon, iconClassName) : undefined;
     const finishIcon =
         endIcon !== undefined
             ? iconNode(endIcon, iconClassName)
@@ -56,9 +55,7 @@ export const IconTextButton = forwardRef<
               ? iconNode(icon, iconClassName)
               : undefined;
     const label = (
-        <span className={cn('oui-icon-text-button-label', labelClassName)}>
-            {children}
-        </span>
+        <span className={cn('oui-icon-text-button-label', labelClassName)}>{children}</span>
     );
 
     if (href !== undefined) {

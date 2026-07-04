@@ -1,4 +1,4 @@
-import type {Ref} from 'react';
+import type { Ref } from 'react';
 
 export function composeRefs<T>(...refs: Array<Ref<T> | undefined>) {
     return (node: T | null) => {

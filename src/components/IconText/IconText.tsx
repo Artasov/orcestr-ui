@@ -1,10 +1,10 @@
 'use client';
 
-import type {CSSProperties, ReactNode} from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
-import type {Tone} from '../../theme/systemProps';
-import {cn} from '../../utils/cn';
-import {Text, type TextProps} from '../Text/Text';
+import type { Tone } from '../../theme/systemProps';
+import { cn } from '../../utils/cn';
+import { Text, type TextProps } from '../Text/Text';
 
 export type IconTextProps = TextProps & {
     icon?: ReactNode;
@@ -31,7 +31,11 @@ export function IconText({
                     className={cn('oui-icon-text-icon', iconClassName)}
                     data-spin={iconSpin ? 'true' : undefined}
                     data-tone={iconTone}
-                    style={iconColor ? {'--oui-icon-text-icon-color': iconColor} as CSSProperties : undefined}
+                    style={
+                        iconColor
+                            ? ({ '--oui-icon-text-icon-color': iconColor } as CSSProperties)
+                            : undefined
+                    }
                 >
                     {icon}
                 </span>

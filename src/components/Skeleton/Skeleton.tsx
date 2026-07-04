@@ -1,7 +1,7 @@
-import {forwardRef, type ComponentPropsWithoutRef} from 'react';
+import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 
-import {cn} from '../../utils/cn';
-import {splitSystemProps, type SystemProps} from '../../theme/systemProps';
+import { cn } from '../../utils/cn';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
 
 export type SkeletonProps = ComponentPropsWithoutRef<'span'> &
     SystemProps & {
@@ -9,17 +9,17 @@ export type SkeletonProps = ComponentPropsWithoutRef<'span'> &
     };
 
 export const Skeleton = forwardRef<HTMLSpanElement, SkeletonProps>(function Skeleton(
-    {className, style, testId, ...props},
+    { className, style, testId, ...props },
     ref,
 ) {
-    const {systemStyle, restProps} = splitSystemProps(props);
+    const { systemStyle, restProps } = splitSystemProps(props);
     return (
         <span
             ref={ref}
             className={cn('oui-skeleton', className)}
             data-testid={testId}
-            style={{...systemStyle, ...style}}
-            aria-hidden='true'
+            style={{ ...systemStyle, ...style }}
+            aria-hidden="true"
             {...restProps}
         />
     );

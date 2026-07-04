@@ -56,13 +56,25 @@ export function useFloatingPosition({
         let top = triggerRect.bottom + sideOffset;
         let actualSide = side;
 
-        if (side === 'bottom' && triggerRect.bottom + contentHeight + sideOffset > viewportH - collisionPadding) {
+        if (
+            side === 'bottom' &&
+            triggerRect.bottom + contentHeight + sideOffset > viewportH - collisionPadding
+        ) {
             actualSide = 'top';
-        } else if (side === 'top' && triggerRect.top - contentHeight - sideOffset < collisionPadding) {
+        } else if (
+            side === 'top' &&
+            triggerRect.top - contentHeight - sideOffset < collisionPadding
+        ) {
             actualSide = 'bottom';
-        } else if (side === 'right' && triggerRect.right + contentWidth + sideOffset > viewportW - collisionPadding) {
+        } else if (
+            side === 'right' &&
+            triggerRect.right + contentWidth + sideOffset > viewportW - collisionPadding
+        ) {
             actualSide = 'left';
-        } else if (side === 'left' && triggerRect.left - contentWidth - sideOffset < collisionPadding) {
+        } else if (
+            side === 'left' &&
+            triggerRect.left - contentWidth - sideOffset < collisionPadding
+        ) {
             actualSide = 'right';
         }
 
@@ -78,8 +90,7 @@ export function useFloatingPosition({
         }
         if (actualSide === 'top' || actualSide === 'bottom') {
             if (align === 'center') {
-                left =
-                    triggerRect.left + triggerRect.width / 2 - contentWidth / 2;
+                left = triggerRect.left + triggerRect.width / 2 - contentWidth / 2;
             } else if (align === 'end') {
                 left = triggerRect.right - contentWidth;
             }
@@ -108,15 +119,7 @@ export function useFloatingPosition({
             visibility: 'visible',
             transformOrigin: transformOriginFor(actualSide, align),
         });
-    }, [
-        align,
-        collisionPadding,
-        contentRef,
-        matchTriggerWidth,
-        side,
-        sideOffset,
-        triggerRef,
-    ]);
+    }, [align, collisionPadding, contentRef, matchTriggerWidth, side, sideOffset, triggerRef]);
 
     const scheduleUpdate = useCallback(() => {
         if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
@@ -150,14 +153,12 @@ export function useFloatingPosition({
         };
     }, [contentRef, open, scheduleUpdate, triggerRef]);
 
-    return {style, update: scheduleUpdate};
+    return { style, update: scheduleUpdate };
 }
 
 function transformOriginFor(side: FloatingSide, align: FloatingAlign): string {
-    const cross =
-        align === 'start' ? 'left' : align === 'end' ? 'right' : 'center';
-    const vertical =
-        align === 'start' ? 'top' : align === 'end' ? 'bottom' : 'center';
+    const cross = align === 'start' ? 'left' : align === 'end' ? 'right' : 'center';
+    const vertical = align === 'start' ? 'top' : align === 'end' ? 'bottom' : 'center';
     if (side === 'bottom') return `${cross} top`;
     if (side === 'top') return `${cross} bottom`;
     if (side === 'right') return `left ${vertical}`;

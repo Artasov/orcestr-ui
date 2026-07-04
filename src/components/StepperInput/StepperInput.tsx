@@ -1,11 +1,11 @@
 'use client';
 
-import {useMemo} from 'react';
-import {LuMinus, LuPlus} from 'react-icons/lu';
+import { useMemo } from 'react';
+import { LuMinus, LuPlus } from 'react-icons/lu';
 
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
-import {IconButton} from '../IconButton/IconButton';
-import {TextField} from '../TextField/TextField';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import { IconButton } from '../IconButton/IconButton';
+import { TextField } from '../TextField/TextField';
 
 export function StepperInput({
     value,
@@ -30,7 +30,7 @@ export function StepperInput({
     increaseLabel?: string;
     testId?: string;
 }) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     const canDecrease = min === undefined || value > min;
     const canIncrease = max === undefined || value < max;
     const displayValue = useMemo(() => String(value), [value]);
@@ -40,14 +40,14 @@ export function StepperInput({
     };
 
     return (
-        <span className='oui-stepper' data-testid={testId}>
+        <span className="oui-stepper" data-testid={testId}>
             <IconButton
                 size={1}
-                v='surface'
+                v="surface"
                 icon={<LuMinus size={14} />}
                 round={false}
-                pressAnimation='none'
-                className='oui-stepper-button oui-stepper-decrease'
+                pressAnimation="none"
+                className="oui-stepper-button oui-stepper-decrease"
                 aria-label={decreaseLabel ?? copy.common.decrease}
                 testId={testId ? `${testId}-decrease` : undefined}
                 disabled={disabled || !canDecrease}
@@ -56,7 +56,7 @@ export function StepperInput({
             <TextField
                 value={displayValue}
                 disabled={disabled}
-                className='oui-stepper-field'
+                className="oui-stepper-field"
                 size={1}
                 testId={testId ? `${testId}-input` : undefined}
                 onChange={(event) => {
@@ -64,15 +64,15 @@ export function StepperInput({
                     if (Number.isFinite(next)) commit(next);
                 }}
                 rightSlot={unit ? <span>{unit}</span> : null}
-                w='86px'
+                w="86px"
             />
             <IconButton
                 size={1}
-                v='surface'
+                v="surface"
                 icon={<LuPlus size={14} />}
                 round={false}
-                pressAnimation='none'
-                className='oui-stepper-button oui-stepper-increase'
+                pressAnimation="none"
+                className="oui-stepper-button oui-stepper-increase"
                 aria-label={increaseLabel ?? copy.common.increase}
                 testId={testId ? `${testId}-increase` : undefined}
                 disabled={disabled || !canIncrease}

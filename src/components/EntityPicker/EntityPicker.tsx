@@ -1,9 +1,9 @@
 'use client';
 
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 
-import type {UiSize} from '../../theme/systemProps';
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
+import type { UiSize } from '../../theme/systemProps';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
 import {
     PaginatedCombobox,
     type PaginatedComboboxProps,
@@ -76,13 +76,13 @@ export function EntityPicker<T>({
     debounceMs,
     testId,
 }: EntityPickerProps<T>) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     const searchAction: PaginatedComboboxProps<T>['searchAction'] = createAction
         ? {
               label:
                   typeof createAction.label === 'string'
                       ? createAction.label
-                      : createAction.label ?? copy.common.selectEntity,
+                      : (createAction.label ?? copy.common.selectEntity),
               disabled: createAction.disabled,
               onClick: (search) => createAction.onCreate(search),
           }
@@ -93,10 +93,10 @@ export function EntityPicker<T>({
             loadPage={loadPage}
             getItemId={getEntityId}
             renderOption={(item) => (
-                <div className='oui-entity-picker-option'>{renderEntity(item)}</div>
+                <div className="oui-entity-picker-option">{renderEntity(item)}</div>
             )}
             renderSelectedLabel={(item) => (
-                <span className='oui-entity-picker-value'>
+                <span className="oui-entity-picker-value">
                     {renderValue?.(item) ?? renderEntity(item)}
                 </span>
             )}

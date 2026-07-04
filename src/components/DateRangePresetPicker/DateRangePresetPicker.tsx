@@ -1,12 +1,12 @@
 'use client';
 
-import {LuCalendarDays} from 'react-icons/lu';
+import { LuCalendarDays } from 'react-icons/lu';
 
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
-import {IconButton} from '../IconButton/IconButton';
-import {Menu, type MenuItem} from '../Menu/Menu';
-import type {DateRangePickerValue} from '../DateRangePicker/DateRangePicker';
-import {resolveDateRangePreset} from './DateRangePresetPickerState';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import { IconButton } from '../IconButton/IconButton';
+import { Menu, type MenuItem } from '../Menu/Menu';
+import type { DateRangePickerValue } from '../DateRangePicker/DateRangePicker';
+import { resolveDateRangePreset } from './DateRangePresetPickerState';
 
 export type DateRangePreset = 'today' | 'week' | 'month';
 
@@ -23,7 +23,7 @@ export function DateRangePresetPicker({
     today?: string;
     testId?: string;
 }) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     const items: MenuItem[] = presets.map((preset) => ({
         key: preset,
         label: presetLabel(preset, copy.dates),
@@ -35,17 +35,17 @@ export function DateRangePresetPicker({
 
     return (
         <Menu
-            side='top'
-            align='start'
+            side="top"
+            align="start"
             items={items}
             testId={testId}
             trigger={
                 <IconButton
                     size={2}
-                    v='ghost'
+                    v="ghost"
                     icon={<LuCalendarDays size={15} />}
                     aria-label={copy.dates.quickPeriods}
-                    type='button'
+                    type="button"
                     testId={testId ? `${testId}-trigger` : undefined}
                 />
             }
@@ -55,7 +55,7 @@ export function DateRangePresetPicker({
 
 function presetLabel(
     preset: DateRangePreset,
-    copy: {today: string; week: string; month: string},
+    copy: { today: string; week: string; month: string },
 ): string {
     if (preset === 'today') return copy.today;
     if (preset === 'week') return copy.week;

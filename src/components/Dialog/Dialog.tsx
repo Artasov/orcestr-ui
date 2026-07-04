@@ -9,9 +9,9 @@ import {
     type ReactNode,
 } from 'react';
 
-import {Modal, type ModalProps} from '../Modal/Modal';
-import {splitSystemProps, type SystemProps} from '../../theme/systemProps';
-import {cn} from '../../utils/cn';
+import { Modal, type ModalProps } from '../Modal/Modal';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
+import { cn } from '../../utils/cn';
 
 export type DialogProps = ModalProps;
 
@@ -38,11 +38,9 @@ type DialogRootProps = {
     children: ReactNode;
 };
 
-function DialogRoot({open, onOpenChange, children}: DialogRootProps) {
+function DialogRoot({ open, onOpenChange, children }: DialogRootProps) {
     return (
-        <DialogContext.Provider value={{open, onOpenChange}}>
-            {children}
-        </DialogContext.Provider>
+        <DialogContext.Provider value={{ open, onOpenChange }}>{children}</DialogContext.Provider>
     );
 }
 
@@ -54,11 +52,11 @@ type DialogContentProps = Omit<
     className?: string;
     style?: CSSProperties;
     onKeyDown?: KeyboardEventHandler<HTMLDivElement>;
-    onOpenAutoFocus?: (event: {preventDefault: () => void}) => void;
-    onEscapeKeyDown?: (event: {preventDefault: () => void}) => void;
+    onOpenAutoFocus?: (event: { preventDefault: () => void }) => void;
+    onEscapeKeyDown?: (event: { preventDefault: () => void }) => void;
 };
 
-function DialogContent({children, className, style, ...props}: DialogContentProps) {
+function DialogContent({ children, className, style, ...props }: DialogContentProps) {
     const context = useContext(DialogContext);
     const titleId = useId();
     const descriptionId = useId();
@@ -90,18 +88,18 @@ function DialogContent({children, className, style, ...props}: DialogContentProp
 type DialogTitleProps = {
     children: ReactNode;
 } & SystemProps & {
-    className?: string;
-    style?: CSSProperties;
-};
+        className?: string;
+        style?: CSSProperties;
+    };
 
-function DialogTitle({children, className, style, ...props}: DialogTitleProps) {
+function DialogTitle({ children, className, style, ...props }: DialogTitleProps) {
     const context = useContext(DialogContext);
-    const {systemStyle, restProps} = splitSystemProps(props);
+    const { systemStyle, restProps } = splitSystemProps(props);
     return (
         <h2
             id={context?.titleId}
             className={cn('oui-modal-title', className)}
-            style={{...systemStyle, ...style}}
+            style={{ ...systemStyle, ...style }}
             {...restProps}
         >
             {children}
@@ -113,9 +111,9 @@ type DialogDescriptionProps = {
     children: ReactNode;
     size?: number | string;
 } & SystemProps & {
-    className?: string;
-    style?: CSSProperties;
-};
+        className?: string;
+        style?: CSSProperties;
+    };
 
 function DialogDescription({
     children,
@@ -125,12 +123,12 @@ function DialogDescription({
     ...props
 }: DialogDescriptionProps) {
     const context = useContext(DialogContext);
-    const {systemStyle, restProps} = splitSystemProps(props);
+    const { systemStyle, restProps } = splitSystemProps(props);
     return (
         <p
             id={context?.descriptionId}
             className={cn('oui-modal-description', className)}
-            style={{...systemStyle, ...style}}
+            style={{ ...systemStyle, ...style }}
             {...restProps}
         >
             {children}
@@ -142,7 +140,7 @@ type DialogCloseProps = {
     children: ReactNode;
 };
 
-function DialogClose({children}: DialogCloseProps) {
+function DialogClose({ children }: DialogCloseProps) {
     const context = useContext(DialogContext);
     return (
         <span

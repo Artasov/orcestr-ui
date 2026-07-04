@@ -14,14 +14,14 @@ import {
     type ReactElement,
     type ReactNode,
 } from 'react';
-import {LuCheck, LuChevronsUpDown, LuX} from 'react-icons/lu';
+import { LuCheck, LuChevronsUpDown, LuX } from 'react-icons/lu';
 
-import {Button} from '../Button/Button';
-import {Popover} from '../Popover/Popover';
-import {splitSystemProps, type SystemProps, type UiSize} from '../../theme/systemProps';
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
-import {useListNavigation} from '../../hooks/useListNavigation';
-import {useTypeahead} from '../../hooks/useTypeahead';
+import { Button } from '../Button/Button';
+import { Popover } from '../Popover/Popover';
+import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import { useListNavigation } from '../../hooks/useListNavigation';
+import { useTypeahead } from '../../hooks/useTypeahead';
 
 export type SelectItem<V extends string = string> = {
     value: V;
@@ -67,7 +67,7 @@ export function Select<V extends string = string>({
     clearLabel?: string;
     testId?: string;
 } & SystemProps) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     const actualPlaceholder = placeholder ?? copy.common.selectValue;
     const actualEmptyText = emptyText ?? copy.common.noOptions;
     const [open, setOpen] = useState(false);
@@ -82,7 +82,7 @@ export function Select<V extends string = string>({
             })),
         [items],
     );
-    const navigation = useListNavigation(navigationItems, {value});
+    const navigation = useListNavigation(navigationItems, { value });
     const selected = useMemo(
         () => items.find((item) => item.value === value) ?? null,
         [items, value],
@@ -94,7 +94,7 @@ export function Select<V extends string = string>({
         const node = optionsRef.current?.querySelector<HTMLElement>(
             `[data-oui-select-value="${cssAttr(highlighted)}"]`,
         );
-        node?.scrollIntoView({block: 'nearest'});
+        node?.scrollIntoView({ block: 'nearest' });
     }, [highlighted, open]);
 
     const commit = useCallback(
@@ -169,7 +169,7 @@ export function Select<V extends string = string>({
     const hasSelectedValue = value !== null;
     const canClear = clearable && hasSelectedValue && !disabled;
     const triggerLabel = selected?.triggerLabel ?? selected?.label ?? selectedFallbackLabel ?? null;
-    const {systemStyle} = splitSystemProps(props);
+    const { systemStyle } = splitSystemProps(props);
 
     return (
         <Popover
@@ -180,26 +180,26 @@ export function Select<V extends string = string>({
             }}
             trigger={
                 <Button
-                    type='button'
-                    v='surface'
+                    type="button"
+                    v="surface"
                     size={size}
                     disabled={disabled}
                     fullWidth
-                    pressAnimation='none'
-                    className='oui-combobox-trigger'
+                    pressAnimation="none"
+                    className="oui-combobox-trigger"
                     data-state={open ? 'open' : 'closed'}
                     testId={testId}
-                    style={{...systemStyle, ...style}}
-                    aria-haspopup='listbox'
+                    style={{ ...systemStyle, ...style }}
+                    aria-haspopup="listbox"
                     aria-expanded={open}
                     aria-controls={listboxId}
                     onKeyDown={handleKeyDown}
                     rightIcon={
-                        <span className='oui-combobox-trigger-actions'>
+                        <span className="oui-combobox-trigger-actions">
                             {canClear ? (
                                 <span
                                     aria-label={clearLabel ?? copy.common.clear}
-                                    className='oui-combobox-clear'
+                                    className="oui-combobox-clear"
                                     onPointerDown={(event) => {
                                         event.preventDefault();
                                         event.stopPropagation();
@@ -219,30 +219,34 @@ export function Select<V extends string = string>({
                         </span>
                     }
                 >
-                    <span className={triggerLabel ? 'oui-combobox-trigger-label' : 'oui-combobox-placeholder'}>
+                    <span
+                        className={
+                            triggerLabel ? 'oui-combobox-trigger-label' : 'oui-combobox-placeholder'
+                        }
+                    >
                         {triggerLabel ?? actualPlaceholder}
                     </span>
                 </Button>
             }
             className={className ? `oui-select-content ${className}` : 'oui-select-content'}
             testId={testId ? `${testId}-popover` : undefined}
-            align='start'
+            align="start"
             sideOffset={4}
             matchTriggerWidth
             disabled={disabled}
         >
             <div
                 ref={optionsRef}
-                role='listbox'
+                role="listbox"
                 id={listboxId}
                 tabIndex={-1}
-                className='oui-combobox-scroll oui-combobox-options'
+                className="oui-combobox-scroll oui-combobox-options"
                 data-testid={testId ? `${testId}-listbox` : undefined}
-                style={{maxHeight}}
+                style={{ maxHeight }}
                 onKeyDown={handleKeyDown}
             >
                 {items.length === 0 ? (
-                    <div className='oui-combobox-empty'>{actualEmptyText}</div>
+                    <div className="oui-combobox-empty">{actualEmptyText}</div>
                 ) : (
                     items.map((item) => {
                         const isSelected = item.value === value;
@@ -250,11 +254,11 @@ export function Select<V extends string = string>({
                         return (
                             <button
                                 key={item.value}
-                                type='button'
-                                role='option'
+                                type="button"
+                                role="option"
                                 aria-selected={isSelected}
                                 disabled={item.disabled}
-                                className='oui-combobox-option'
+                                className="oui-combobox-option"
                                 data-oui-select-value={item.value}
                                 data-selected={isSelected ? 'true' : 'false'}
                                 data-highlighted={isHighlighted ? 'true' : 'false'}
@@ -267,11 +271,9 @@ export function Select<V extends string = string>({
                                     if (!item.disabled) commit(item.value);
                                 }}
                             >
-                                <span className='oui-combobox-option-main'>
-                                    {item.label}
-                                </span>
+                                <span className="oui-combobox-option-main">{item.label}</span>
                                 {isSelected ? (
-                                    <LuCheck className='oui-combobox-check' size={15} />
+                                    <LuCheck className="oui-combobox-check" size={15} />
                                 ) : null}
                             </button>
                         );
@@ -359,7 +361,7 @@ function collectSelectItems<V extends string = string>(children: ReactNode): Sel
                 disabled: props.disabled,
             });
         } else {
-            const props = (child as ReactElement<{children?: ReactNode}>).props;
+            const props = (child as ReactElement<{ children?: ReactNode }>).props;
             if (props && 'children' in props) {
                 items.push(...collectSelectItems<V>(props.children));
             }
@@ -403,7 +405,7 @@ function reactNodeText(value: ReactNode): string {
     if (typeof value === 'number') return String(value);
     if (Array.isArray(value)) return value.map(reactNodeText).join('');
     if (typeof value === 'object' && 'props' in value) {
-        const props = value.props as {children?: ReactNode};
+        const props = value.props as { children?: ReactNode };
         return reactNodeText(props.children);
     }
     return '';

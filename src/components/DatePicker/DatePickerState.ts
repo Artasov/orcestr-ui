@@ -38,7 +38,7 @@ export function calendarMonthState({
     gridStart.setUTCDate(monthStart.getUTCDate() - startOffset);
 
     const normalizedToday = today ?? todayIsoDate();
-    const days = Array.from({length: 42}, (_, index) => {
+    const days = Array.from({ length: 42 }, (_, index) => {
         const date = new Date(gridStart);
         date.setUTCDate(gridStart.getUTCDate() + index);
         const dateValue = formatDate(date);
@@ -64,7 +64,10 @@ export function calendarMonthState({
 }
 
 export function monthCursorForDate(value?: string | null, fallback?: string): string {
-    const parts = parseDateParts(value ?? '') ?? parseDateParts(fallback ?? '') ?? requiredDateParts(todayIsoDate());
+    const parts =
+        parseDateParts(value ?? '') ??
+        parseDateParts(fallback ?? '') ??
+        requiredDateParts(todayIsoDate());
     return formatMonth(parts.year, parts.monthIndex);
 }
 
@@ -99,25 +102,25 @@ export function formatMonthLabel(cursorMonth: string, locale: string): string {
 }
 
 export function weekdayLabels(locale: string): string[] {
-    return Array.from({length: 7}, (_, index) => {
+    return Array.from({ length: 7 }, (_, index) => {
         const day = new Date(Date.UTC(2026, 5, 29 + index));
-        return new Intl.DateTimeFormat(locale, {weekday: 'short'}).format(day);
+        return new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(day);
     });
 }
 
-function parseDateParts(value: string): {year: number; monthIndex: number; day: number} | null {
+function parseDateParts(value: string): { year: number; monthIndex: number; day: number } | null {
     const match = /^(\d{4})-(\d{2})(?:-(\d{2}))?$/.exec(value);
     if (!match) return null;
     const year = Number(match[1]);
     const month = Number(match[2]);
     const day = Number(match[3] ?? '01');
     if (!Number.isInteger(year) || month < 1 || month > 12 || day < 1 || day > 31) return null;
-    return {year, monthIndex: month - 1, day};
+    return { year, monthIndex: month - 1, day };
 }
 
-function requiredDateParts(value: string): {year: number; monthIndex: number; day: number} {
+function requiredDateParts(value: string): { year: number; monthIndex: number; day: number } {
     const parts = parseDateParts(value);
-    if (!parts) return {year: 1970, monthIndex: 0, day: 1};
+    if (!parts) return { year: 1970, monthIndex: 0, day: 1 };
     return parts;
 }
 

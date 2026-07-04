@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-import {test} from 'node:test';
+import { readFileSync } from 'node:fs';
+import { test } from 'node:test';
 
 const tabsSource = readFileSync(new URL('./Tabs.tsx', import.meta.url), 'utf8');
 const selectionStyles = readFileSync(
@@ -13,30 +13,60 @@ test('Tabs keep stable trigger height with badges', () => {
     assert.match(tabsSource, /className='oui-tabs-trigger-badge'/);
     assert.match(selectionStyles, /\.oui-tabs-trigger\s+position: relative[\s\S]*?height: 34px/);
     assert.match(selectionStyles, /\.oui-tabs-trigger\s+position: relative[\s\S]*?padding: 0 14px/);
-    assert.match(selectionStyles, /\.oui-tabs-trigger-badge\s+display: inline-flex[\s\S]*?min-width: 16px[\s\S]*?height: 16px[\s\S]*?font-size: 10px/);
+    assert.match(
+        selectionStyles,
+        /\.oui-tabs-trigger-badge\s+display: inline-flex[\s\S]*?min-width: 16px[\s\S]*?height: 16px[\s\S]*?font-size: 10px/,
+    );
 });
 
 test('Tabs hide hover indicator when hovering the active tab', () => {
     assert.match(tabsSource, /hoveredValue !== active\?\.value/);
-    assert.match(selectionStyles, /\.oui-tabs-active-indicator,[\s\S]*?\.oui-tabs-hover-indicator[\s\S]*?transition: left 460ms[\s\S]*?opacity 220ms ease/);
+    assert.match(
+        selectionStyles,
+        /\.oui-tabs-active-indicator,[\s\S]*?\.oui-tabs-hover-indicator[\s\S]*?transition: left 460ms[\s\S]*?opacity 220ms ease/,
+    );
     assert.match(selectionStyles, /\.oui-tabs-hover-indicator\s+z-index: 0[\s\S]*?opacity: 0/);
     assert.match(selectionStyles, /\.oui-tabs-hover-indicator\[data-visible="true"\]\s+opacity: 1/);
 });
 
 test('Tabs avoid state updates when measured rects did not change', () => {
     assert.match(tabsSource, /function stableTabRect/);
-    assert.match(tabsSource, /current\.left === next\.left[\s\S]*?current\.height === next\.height/);
-    assert.match(tabsSource, /setActiveRect\(\(current\) => stableTabRect\(current, readRect\(active\?\.value\)\)\)/);
-    assert.match(tabsSource, /setHoverRect\(\(current\) => \(nextHoverRect \? stableTabRect\(current, nextHoverRect\) : current\)\)/);
+    assert.match(
+        tabsSource,
+        /current\.left === next\.left[\s\S]*?current\.height === next\.height/,
+    );
+    assert.match(
+        tabsSource,
+        /setActiveRect\(\(current\) => stableTabRect\(current, readRect\(active\?\.value\)\)\)/,
+    );
+    assert.match(
+        tabsSource,
+        /setHoverRect\(\(current\) => \(nextHoverRect \? stableTabRect\(current, nextHoverRect\) : current\)\)/,
+    );
     assert.match(tabsSource, /setActiveRect\(\(current\) => stableTabRect\(current, active\)\)/);
-    assert.match(tabsSource, /setHoverRect\(\(current\) => \(hover \? stableTabRect\(current, hover\) : current\)\)/);
+    assert.match(
+        tabsSource,
+        /setHoverRect\(\(current\) => \(hover \? stableTabRect\(current, hover\) : current\)\)/,
+    );
 });
 
 test('Tabs use shared pad hover tokens instead of private colors', () => {
-    assert.match(selectionStyles, /\.oui-tabs-active-indicator\s+z-index: 0[\s\S]*?background: var\(--oui-border, var\(--oui-pad-hover-bg, var\(--oui-control-hover-bg, var\(--oui-gray-a3\)\)\)\)/);
-    assert.match(selectionStyles, /\.oui-tabs-hover-indicator\s+z-index: 0[\s\S]*?background: var\(--oui-border, var\(--oui-pad-hover-bg, var\(--oui-control-hover-bg, var\(--oui-gray-a3\)\)\)\)/);
-    assert.match(selectionStyles, /\.oui-tabs-compound-active-indicator\s+z-index: 0[\s\S]*?background: var\(--oui-border, var\(--oui-pad-hover-bg, var\(--oui-control-hover-bg, var\(--oui-gray-a3\)\)\)\)/);
-    assert.match(selectionStyles, /\.oui-tabs-compound-hover-indicator\s+z-index: 0[\s\S]*?background: var\(--oui-border, var\(--oui-pad-hover-bg, var\(--oui-control-hover-bg, var\(--oui-gray-a3\)\)\)\)/);
+    assert.match(
+        selectionStyles,
+        /\.oui-tabs-active-indicator\s+z-index: 0[\s\S]*?background: var\(--oui-border, var\(--oui-pad-hover-bg, var\(--oui-control-hover-bg, var\(--oui-gray-a3\)\)\)\)/,
+    );
+    assert.match(
+        selectionStyles,
+        /\.oui-tabs-hover-indicator\s+z-index: 0[\s\S]*?background: var\(--oui-border, var\(--oui-pad-hover-bg, var\(--oui-control-hover-bg, var\(--oui-gray-a3\)\)\)\)/,
+    );
+    assert.match(
+        selectionStyles,
+        /\.oui-tabs-compound-active-indicator\s+z-index: 0[\s\S]*?background: var\(--oui-border, var\(--oui-pad-hover-bg, var\(--oui-control-hover-bg, var\(--oui-gray-a3\)\)\)\)/,
+    );
+    assert.match(
+        selectionStyles,
+        /\.oui-tabs-compound-hover-indicator\s+z-index: 0[\s\S]*?background: var\(--oui-border, var\(--oui-pad-hover-bg, var\(--oui-control-hover-bg, var\(--oui-gray-a3\)\)\)\)/,
+    );
     assert.doesNotMatch(selectionStyles, /--oui-tabs-hover-indicator-bg/);
     assert.doesNotMatch(selectionStyles, /\.oui-segmented,\s*\.oui-tabs-list/);
     assert.doesNotMatch(selectionStyles, /\.oui-segmented-item,\s*\.oui-tabs-trigger/);

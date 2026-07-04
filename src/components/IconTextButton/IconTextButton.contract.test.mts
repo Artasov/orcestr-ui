@@ -1,12 +1,9 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-import {test} from 'node:test';
+import { readFileSync } from 'node:fs';
+import { test } from 'node:test';
 
 const source = readFileSync(new URL('./IconTextButton.tsx', import.meta.url), 'utf8');
-const styles = readFileSync(
-    new URL('../../styles/_buttons.sass', import.meta.url),
-    'utf8',
-);
+const styles = readFileSync(new URL('../../styles/_buttons.sass', import.meta.url), 'utf8');
 const barrel = readFileSync(new URL('../../index.ts', import.meta.url), 'utf8');
 
 test('IconTextButton owns icon and label spacing', () => {

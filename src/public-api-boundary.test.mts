@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
-import {readdirSync, readFileSync, statSync} from 'node:fs';
-import {join, relative, sep} from 'node:path';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { join, relative, sep } from 'node:path';
 import test from 'node:test';
-import {fileURLToPath} from 'node:url';
+import { fileURLToPath } from 'node:url';
 
 const sourceRoot = fileURLToPath(new URL('.', import.meta.url));
 const packageRoot = fileURLToPath(new URL('..', import.meta.url));
@@ -29,16 +29,23 @@ test('main public barrel excludes demo, legacy bridges and optional adapters', (
 
 test('Orcestr UI sources stay independent from app modules and legacy UI selectors', () => {
     const banned = [
-        {name: 'app alias imports', pattern: /@\/(?:app|modules|shared)\//},
-        {name: 'legacy mst classes', pattern: /(?:className=['"][^'"]*\bmst-|\.mst-|--mst-)/},
+        { name: 'app alias imports', pattern: /@\/(?:app|modules|shared)\// },
+        { name: 'legacy mst classes', pattern: /(?:className=['"][^'"]*\bmst-|\.mst-|--mst-)/ },
     ];
-    const violations = sourceFiles(['components', 'hooks', 'locale', 'provider', 'styles', 'theme', 'utils'])
-        .flatMap((file) => {
-            const source = readFileSync(file, 'utf8');
-            return banned
-                .filter(({pattern}) => pattern.test(source))
-                .map(({name}) => `${relativePath(file)}: ${name}`);
-        });
+    const violations = sourceFiles([
+        'components',
+        'hooks',
+        'locale',
+        'provider',
+        'styles',
+        'theme',
+        'utils',
+    ]).flatMap((file) => {
+        const source = readFileSync(file, 'utf8');
+        return banned
+            .filter(({ pattern }) => pattern.test(source))
+            .map(({ name }) => `${relativePath(file)}: ${name}`);
+    });
 
     assert.deepEqual(violations, []);
 });
@@ -49,8 +56,9 @@ test('Orcestr UI keeps runtime and example styles split', () => {
     const dataStyles = readFileSync(join(sourceRoot, 'styles/_data.sass'), 'utf8');
     const shellStyles = readFileSync(join(sourceRoot, 'styles/_shell.sass'), 'utf8');
     const stateStyles = readFileSync(join(sourceRoot, 'styles/_state.sass'), 'utf8');
-    const styleUses = [...styleIndex.matchAll(/@use '\.\/([^']+)'/g)]
-        .map((match) => match[1].replace(/^_/, '').replace(/\.sass$/, ''));
+    const styleUses = [...styleIndex.matchAll(/@use '\.\/([^']+)'/g)].map((match) =>
+        match[1].replace(/^_/, '').replace(/\.sass$/, ''),
+    );
     const emptyComponentDirs = readdirSync(join(sourceRoot, 'components'))
         .map((entry) => join(sourceRoot, 'components', entry))
         .filter((path) => statSync(path).isDirectory())
@@ -84,8 +92,14 @@ test('Orcestr UI keeps runtime and example styles split', () => {
     ]);
     assert.match(exampleStyles, /@use '\.\.\/styles\/_example\.sass'/);
     assert.deepEqual(emptyComponentDirs, []);
-    assert.doesNotMatch(dataStyles, /oui-scroll-area|oui-highlight|oui-separator|oui-spinner|oui-skeleton|oui-visually-hidden/);
-    assert.doesNotMatch(shellStyles, /oui-workflow|oui-pipeline|oui-lifecycle|oui-timeline|oui-status-badge/);
+    assert.doesNotMatch(
+        dataStyles,
+        /oui-scroll-area|oui-highlight|oui-separator|oui-spinner|oui-skeleton|oui-visually-hidden/,
+    );
+    assert.doesNotMatch(
+        shellStyles,
+        /oui-workflow|oui-pipeline|oui-lifecycle|oui-timeline|oui-status-badge/,
+    );
     assert.doesNotMatch(stateStyles, /oui-icon-text|oui-alert|oui-badge/);
 });
 

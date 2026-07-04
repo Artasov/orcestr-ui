@@ -1,16 +1,16 @@
 'use client';
 
-import type {HTMLAttributes, ReactNode} from 'react';
-import {LuLock} from 'react-icons/lu';
+import type { HTMLAttributes, ReactNode } from 'react';
+import { LuLock } from 'react-icons/lu';
 
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
-import {cn} from '../../utils/cn';
-import type {SystemProps, Tone} from '../../theme/systemProps';
-import {Button} from '../Button/Button';
-import {IconText, type IconTextProps} from '../IconText/IconText';
-import {Spinner} from '../Spinner/Spinner';
-import {Text, type TextProps} from '../Text/Text';
-import {stateIcon} from './stateIcon';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import { cn } from '../../utils/cn';
+import type { SystemProps, Tone } from '../../theme/systemProps';
+import { Button } from '../Button/Button';
+import { IconText, type IconTextProps } from '../IconText/IconText';
+import { Spinner } from '../Spinner/Spinner';
+import { Text, type TextProps } from '../Text/Text';
+import { stateIcon } from './stateIcon';
 
 export type StateCardTone = Tone;
 export type StateCardVariant = 'soft' | 'surface' | 'outline' | 'ghost';
@@ -60,7 +60,7 @@ export function StateCard({
             data-testid={testId}
             {...props}
         >
-            <div className='oui-state-card-main'>
+            <div className="oui-state-card-main">
                 <IconText
                     fw={760}
                     fs={actualTitleFs}
@@ -71,10 +71,10 @@ export function StateCard({
                     {title}
                 </IconText>
                 {hasBody ? (
-                    <div className='oui-state-card-body'>
+                    <div className="oui-state-card-body">
                         {description ? (
                             <Text
-                                className='oui-state-card-description'
+                                className="oui-state-card-description"
                                 fs={descriptionFs}
                                 tone={descriptionTone}
                             >
@@ -85,14 +85,14 @@ export function StateCard({
                     </div>
                 ) : null}
             </div>
-            {action ? <div className='oui-state-card-action'>{action}</div> : null}
+            {action ? <div className="oui-state-card-action">{action}</div> : null}
         </div>
     );
 }
 
-export function EmptyState({title, ...props}: Omit<StateCardProps, 'tone'>) {
-    const {copy} = useOrcestrUiLocale();
-    return <StateCard tone='neutral' title={title ?? copy.common.noData} {...props} />;
+export function EmptyState({ title, ...props }: Omit<StateCardProps, 'tone'>) {
+    const { copy } = useOrcestrUiLocale();
+    return <StateCard tone="neutral" title={title ?? copy.common.noData} {...props} />;
 }
 
 export function LoadingState({
@@ -100,10 +100,10 @@ export function LoadingState({
     description,
     ...props
 }: Omit<StateCardProps, 'icon' | 'tone'>) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     return (
         <StateCard
-            tone='info'
+            tone="info"
             icon={<Spinner />}
             title={title ?? copy.common.loading}
             description={description}
@@ -122,17 +122,19 @@ export function ErrorState({
     retryLabel?: ReactNode;
     onRetry?: () => void;
 }) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     return (
         <StateCard
-            tone='danger'
+            tone="danger"
             title={title ?? copy.table.unableToLoad}
             action={
                 onRetry ? (
-                    <Button size={1} v='surface' tone='danger' onClick={onRetry}>
+                    <Button size={1} v="surface" tone="danger" onClick={onRetry}>
                         {retryLabel ?? copy.common.retry}
                     </Button>
-                ) : action
+                ) : (
+                    action
+                )
             }
             {...props}
         />
@@ -140,5 +142,5 @@ export function ErrorState({
 }
 
 export function AccessDeniedState(props: Omit<StateCardProps, 'icon' | 'tone'>) {
-    return <StateCard tone='warning' icon={<LuLock />} {...props} />;
+    return <StateCard tone="warning" icon={<LuLock />} {...props} />;
 }

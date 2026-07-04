@@ -1,12 +1,12 @@
 'use client';
 
-import {useEffect, useRef, useState, type MouseEvent} from 'react';
-import {LuCheck, LuCopy} from 'react-icons/lu';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import { LuCheck, LuCopy } from 'react-icons/lu';
 
-import {cn} from '../../utils/cn';
-import {Button, type ButtonProps} from '../Button/Button';
-import {IconButton, type IconButtonProps} from '../IconButton/IconButton';
-import {useToast} from '../Toast/Toast';
+import { cn } from '../../utils/cn';
+import { Button, type ButtonProps } from '../Button/Button';
+import { IconButton, type IconButtonProps } from '../IconButton/IconButton';
+import { useToast } from '../Toast/Toast';
 
 export type CopyButtonProps = Omit<ButtonProps, 'children' | 'leftIcon' | 'loading' | 'onClick'> & {
     text: string;
@@ -19,7 +19,10 @@ export type CopyButtonProps = Omit<ButtonProps, 'children' | 'leftIcon' | 'loadi
     onCopyError?: (error: unknown) => void;
 };
 
-export type CopyIconButtonProps = Omit<IconButtonProps, 'children' | 'icon' | 'loading' | 'onClick'> & {
+export type CopyIconButtonProps = Omit<
+    IconButtonProps,
+    'children' | 'icon' | 'loading' | 'onClick'
+> & {
     text: string;
     label?: string;
     successMessage?: string;
@@ -42,7 +45,7 @@ export function CopyButton({
     disabled,
     ...props
 }: CopyButtonProps) {
-    const {copied, pending, copy} = useCopyAction({
+    const { copied, pending, copy } = useCopyAction({
         text,
         successMessage,
         errorMessage,
@@ -77,7 +80,7 @@ export function CopyIconButton({
     disabled,
     ...props
 }: CopyIconButtonProps) {
-    const {copied, pending, copy} = useCopyAction({
+    const { copied, pending, copy } = useCopyAction({
         text,
         successMessage,
         errorMessage,
@@ -119,9 +122,12 @@ function useCopyAction({
     const [pending, setPending] = useState(false);
     const [copied, setCopied] = useState(false);
 
-    useEffect(() => () => {
-        if (timerRef.current !== null) window.clearTimeout(timerRef.current);
-    }, []);
+    useEffect(
+        () => () => {
+            if (timerRef.current !== null) window.clearTimeout(timerRef.current);
+        },
+        [],
+    );
 
     async function copy(event: MouseEvent<HTMLButtonElement>) {
         event.stopPropagation();
@@ -141,7 +147,7 @@ function useCopyAction({
         }
     }
 
-    return {copied, pending, copy};
+    return { copied, pending, copy };
 }
 
 async function writeClipboardText(text: string) {

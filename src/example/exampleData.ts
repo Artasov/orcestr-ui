@@ -1,4 +1,4 @@
-import {type CommandPaletteItem, type ListboxItem, type OrcestrUiLocale} from '..';
+import { type CommandPaletteItem, type ListboxItem, type OrcestrUiLocale } from '..';
 
 export type ExampleNavItem = {
     id: string;
@@ -16,83 +16,83 @@ export const navGroups: ExampleNavGroup[] = [
         key: 'base',
         label: 'Base',
         items: [
-            {id: 'theme', label: 'Themes'},
-            {id: 'foundations', label: 'Foundations'},
-            {id: 'text', label: 'Text'},
-            {id: 'skeleton-example', label: 'Skeleton'},
-            {id: 'icon-text-example', label: 'IconText'},
+            { id: 'theme', label: 'Themes' },
+            { id: 'foundations', label: 'Foundations' },
+            { id: 'text', label: 'Text' },
+            { id: 'skeleton-example', label: 'Skeleton' },
+            { id: 'icon-text-example', label: 'IconText' },
         ],
     },
     {
         key: 'layout',
         label: 'Layout',
         items: [
-            {id: 'flex-example', label: 'Flex'},
-            {id: 'stack-example', label: 'Stack'},
-            {id: 'collapse-example', label: 'Collapse'},
-            {id: 'surfaces-example', label: 'Surfaces'},
-            {id: 'grid-example', label: 'Grid'},
-            {id: 'highlight-primitives-example', label: 'Highlights'},
-            {id: 'scroll-area-example', label: 'ScrollArea'},
-            {id: 'system-radius-example', label: 'Radius'},
+            { id: 'flex-example', label: 'Flex' },
+            { id: 'stack-example', label: 'Stack' },
+            { id: 'collapse-example', label: 'Collapse' },
+            { id: 'surfaces-example', label: 'Surfaces' },
+            { id: 'grid-example', label: 'Grid' },
+            { id: 'highlight-primitives-example', label: 'Highlights' },
+            { id: 'scroll-area-example', label: 'ScrollArea' },
+            { id: 'system-radius-example', label: 'Radius' },
         ],
     },
     {
         key: 'actions',
         label: 'Actions',
         items: [
-            {id: 'buttons-example', label: 'Buttons'},
-            {id: 'icon-text-buttons-example', label: 'Icon text buttons'},
-            {id: 'icon-buttons-example', label: 'Icon buttons'},
-            {id: 'context-menu-example', label: 'Context menu'},
-            {id: 'state-card-example', label: 'StateCard'},
-            {id: 'badges-example', label: 'Badge'},
+            { id: 'buttons-example', label: 'Buttons' },
+            { id: 'icon-text-buttons-example', label: 'Icon text buttons' },
+            { id: 'icon-buttons-example', label: 'Icon buttons' },
+            { id: 'context-menu-example', label: 'Context menu' },
+            { id: 'state-card-example', label: 'StateCard' },
+            { id: 'badges-example', label: 'Badge' },
         ],
     },
     {
         key: 'fields',
         label: 'Fields',
         items: [
-            {id: 'text-fields-example', label: 'Text fields'},
-            {id: 'grouped-fields-example', label: 'Grouped fields'},
-            {id: 'inline-edit-example', label: 'Inline edit'},
-            {id: 'number-date-fields-example', label: 'Number and date'},
-            {id: 'date-range-example', label: 'Date range'},
+            { id: 'text-fields-example', label: 'Text fields' },
+            { id: 'grouped-fields-example', label: 'Grouped fields' },
+            { id: 'inline-edit-example', label: 'Inline edit' },
+            { id: 'number-date-fields-example', label: 'Number and date' },
+            { id: 'date-range-example', label: 'Date range' },
         ],
     },
     {
         key: 'selection',
         label: 'Selection',
         items: [
-            {id: 'selects-example', label: 'Selects'},
-            {id: 'choice-controls-example', label: 'Checkbox, switch, radio'},
-            {id: 'tabs-example', label: 'Tabs'},
+            { id: 'selects-example', label: 'Selects' },
+            { id: 'choice-controls-example', label: 'Checkbox, switch, radio' },
+            { id: 'tabs-example', label: 'Tabs' },
         ],
     },
     {
         key: 'data',
         label: 'Data',
         items: [
-            {id: 'data-table-example', label: 'DataTable'},
-            {id: 'table-primitives-example', label: 'Table and pagination'},
+            { id: 'data-table-example', label: 'DataTable' },
+            { id: 'table-primitives-example', label: 'Table and pagination' },
         ],
     },
     {
         key: 'overlays',
         label: 'Overlays',
         items: [
-            {id: 'overlay-primitives-example', label: 'Overlay primitives'},
-            {id: 'toast-example', label: 'Toast'},
-            {id: 'overlay-settings-example', label: 'Overlay settings'},
+            { id: 'overlay-primitives-example', label: 'Overlay primitives' },
+            { id: 'toast-example', label: 'Toast' },
+            { id: 'overlay-settings-example', label: 'Overlay settings' },
         ],
     },
     {
         key: 'application',
         label: 'Application',
         items: [
-            {id: 'app-shell-example', label: 'AppShell'},
-            {id: 'app-sidebar-example', label: 'AppSidebar'},
-            {id: 'special-modal-example', label: 'SpecialModal'},
+            { id: 'app-shell-example', label: 'AppShell' },
+            { id: 'app-sidebar-example', label: 'AppSidebar' },
+            { id: 'special-modal-example', label: 'SpecialModal' },
         ],
     },
 ];
@@ -101,17 +101,17 @@ export const navItems: ExampleNavItem[] = navGroups.flatMap((group) => group.ite
 export const navItemLabels = navItems.map((item) => [item.id, item.label] as const);
 
 const ruOptionItems: ListboxItem[] = [
-    {value: 'new', label: 'Новая заявка'},
-    {value: 'work', label: 'В работе'},
-    {value: 'ready', label: 'Готово'},
-    {value: 'blocked', label: 'Заблокировано'},
+    { value: 'new', label: 'Новая заявка' },
+    { value: 'work', label: 'В работе' },
+    { value: 'ready', label: 'Готово' },
+    { value: 'blocked', label: 'Заблокировано' },
 ];
 
 const enOptionItems: ListboxItem[] = [
-    {value: 'new', label: 'New request'},
-    {value: 'work', label: 'In progress'},
-    {value: 'ready', label: 'Ready'},
-    {value: 'blocked', label: 'Blocked'},
+    { value: 'new', label: 'New request' },
+    { value: 'work', label: 'In progress' },
+    { value: 'ready', label: 'Ready' },
+    { value: 'blocked', label: 'Blocked' },
 ];
 
 const ruCommandItems: CommandPaletteItem[] = [
@@ -191,17 +191,17 @@ const enCommandItems: CommandPaletteItem[] = [
 ];
 
 const ruOwnerItems = [
-    {value: 'anna', label: 'Анна Петрова'},
-    {value: 'roman', label: 'Роман Соколов'},
-    {value: 'dina', label: 'Дина Волкова'},
-    {value: 'ops', label: 'Операционная команда'},
+    { value: 'anna', label: 'Анна Петрова' },
+    { value: 'roman', label: 'Роман Соколов' },
+    { value: 'dina', label: 'Дина Волкова' },
+    { value: 'ops', label: 'Операционная команда' },
 ];
 
 const enOwnerItems = [
-    {value: 'anna', label: 'Anna Petrova'},
-    {value: 'roman', label: 'Roman Sokolov'},
-    {value: 'dina', label: 'Dina Volkova'},
-    {value: 'ops', label: 'Operations team'},
+    { value: 'anna', label: 'Anna Petrova' },
+    { value: 'roman', label: 'Roman Sokolov' },
+    { value: 'dina', label: 'Dina Volkova' },
+    { value: 'ops', label: 'Operations team' },
 ];
 
 export type EntityOption = {
@@ -211,14 +211,14 @@ export type EntityOption = {
     status: number;
 };
 
-const ruEntityOptions: EntityOption[] = Array.from({length: 86}, (_, index) => ({
+const ruEntityOptions: EntityOption[] = Array.from({ length: 86 }, (_, index) => ({
     id: index + 1,
     article: `ITEM-${String(index + 1).padStart(4, '0')}`,
     name: `Объект ${index + 1}`,
     status: (index * 7) % 43,
 }));
 
-const enEntityOptions: EntityOption[] = Array.from({length: 86}, (_, index) => ({
+const enEntityOptions: EntityOption[] = Array.from({ length: 86 }, (_, index) => ({
     id: index + 1,
     article: `ITEM-${String(index + 1).padStart(4, '0')}`,
     name: `Entity ${index + 1}`,
@@ -241,11 +241,7 @@ function getEntityOptions(locale: OrcestrUiLocale) {
     return locale === 'ru' ? ruEntityOptions : enEntityOptions;
 }
 
-export async function loadEntityPage(
-    locale: OrcestrUiLocale,
-    page: number,
-    search: string,
-) {
+export async function loadEntityPage(locale: OrcestrUiLocale, page: number, search: string) {
     await new Promise((resolve) => window.setTimeout(resolve, 260));
     const pageSize = 18;
     const normalized = search.toLowerCase();

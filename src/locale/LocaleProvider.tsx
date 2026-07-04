@@ -1,11 +1,6 @@
 'use client';
 
-import {
-    createContext,
-    useContext,
-    useMemo,
-    type ReactNode,
-} from 'react';
+import { createContext, useContext, useMemo, type ReactNode } from 'react';
 
 export type OrcestrUiLocale = 'en' | 'ru';
 
@@ -264,9 +259,7 @@ export function OrcestrUiLocaleProvider({
     );
 
     return (
-        <OrcestrUiLocaleContext.Provider value={value}>
-            {children}
-        </OrcestrUiLocaleContext.Provider>
+        <OrcestrUiLocaleContext.Provider value={value}>{children}</OrcestrUiLocaleContext.Provider>
     );
 }
 
@@ -277,10 +270,10 @@ export function useOrcestrUiLocale() {
 function mergeCopy(base: OrcestrUiCopy, overrides?: PartialOrcestrUiCopy) {
     if (!overrides) return base;
     return {
-        common: {...base.common, ...overrides.common},
-        table: {...base.table, ...overrides.table},
-        filters: {...base.filters, ...overrides.filters},
-        command: {...base.command, ...overrides.command},
-        dates: {...base.dates, ...overrides.dates},
+        common: { ...base.common, ...overrides.common },
+        table: { ...base.table, ...overrides.table },
+        filters: { ...base.filters, ...overrides.filters },
+        command: { ...base.command, ...overrides.command },
+        dates: { ...base.dates, ...overrides.dates },
     };
 }

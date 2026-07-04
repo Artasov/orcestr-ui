@@ -10,17 +10,17 @@ import {
     type ReactElement,
 } from 'react';
 
-import {cn} from '../../utils/cn';
-import {ActionConfirmModal} from '../Action/ActionConfirmModal';
-import {isActionItemDisabled} from '../Action/ActionTypes';
-import type {MenuItem} from '../Menu/Menu';
+import { cn } from '../../utils/cn';
+import { ActionConfirmModal } from '../Action/ActionConfirmModal';
+import { isActionItemDisabled } from '../Action/ActionTypes';
+import type { MenuItem } from '../Menu/Menu';
 import {
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
 } from '../Overlay/OverlayProvider';
-import {Portal} from '../Portal/Portal';
-import {Spinner} from '../Spinner/Spinner';
+import { Portal } from '../Portal/Portal';
+import { Spinner } from '../Spinner/Spinner';
 
 export function ContextMenu({
     children,
@@ -28,13 +28,13 @@ export function ContextMenu({
     className,
     testId,
 }: {
-    children: ReactElement<{onContextMenu?: (event: MouseEvent) => void}>;
+    children: ReactElement<{ onContextMenu?: (event: MouseEvent) => void }>;
     items: ReadonlyArray<MenuItem>;
     className?: string;
     testId?: string;
 }) {
     const overlay = useOverlayContext();
-    const [point, setPoint] = useState<{x: number; y: number} | null>(null);
+    const [point, setPoint] = useState<{ x: number; y: number } | null>(null);
     const [confirmItem, setConfirmItem] = useState<MenuItem | null>(null);
     const layerRef = useRef<HTMLDivElement | null>(null);
     const close = useCallback(() => setPoint(null), []);
@@ -64,7 +64,7 @@ export function ContextMenu({
             childProps.onContextMenu?.(event);
             if (event.defaultPrevented) return;
             event.preventDefault();
-            setPoint({x: event.clientX, y: event.clientY});
+            setPoint({ x: event.clientX, y: event.clientY });
         },
     });
 
@@ -79,17 +79,13 @@ export function ContextMenu({
                             'oui-popover-content oui-menu oui-action-menu-content oui-context-menu-content',
                             className,
                         )}
-                        data-state='opening'
-                        data-layer='dropdown'
+                        data-state="opening"
+                        data-layer="dropdown"
                         data-testid={testId}
                         style={{
                             left: point.x,
                             top: point.y,
-                            zIndex: overlayLayerZIndex(
-                                overlay.zIndex,
-                                'dropdown',
-                                layerIndex,
-                            ),
+                            zIndex: overlayLayerZIndex(overlay.zIndex, 'dropdown', layerIndex),
                         }}
                         onClick={(event) => event.stopPropagation()}
                     >
@@ -127,16 +123,16 @@ function ContextMenuContent({
     testId?: string;
 }) {
     return (
-        <div className='oui-menu-list' role='menu' data-testid={testId}>
+        <div className="oui-menu-list" role="menu" data-testid={testId}>
             {items.map((item) => (
                 <div key={item.key}>
-                    {item.separatorBefore ? <div className='oui-menu-separator' /> : null}
+                    {item.separatorBefore ? <div className="oui-menu-separator" /> : null}
                     <button
-                        type='button'
-                        role='menuitem'
-                        className='oui-menu-item oui-combobox-option'
+                        type="button"
+                        role="menuitem"
+                        className="oui-menu-item oui-combobox-option"
                         data-tone={item.tone}
-                        data-selected='false'
+                        data-selected="false"
                         data-loading={item.loading ? 'true' : undefined}
                         data-testid={testId ? `${testId}-${item.key}` : undefined}
                         aria-busy={item.loading ? 'true' : undefined}
@@ -153,11 +149,11 @@ function ContextMenuContent({
                         }}
                     >
                         {item.icon || item.loading ? (
-                            <span className='oui-menu-icon'>
+                            <span className="oui-menu-icon">
                                 {item.loading ? <Spinner size={1} /> : item.icon}
                             </span>
                         ) : null}
-                        <span className='oui-menu-label'>{item.label}</span>
+                        <span className="oui-menu-label">{item.label}</span>
                     </button>
                 </div>
             ))}

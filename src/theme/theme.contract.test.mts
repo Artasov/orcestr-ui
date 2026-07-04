@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-import {fileURLToPath} from 'node:url';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
-import {splitSystemProps} from './systemProps.ts';
+import { splitSystemProps } from './systemProps.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 
@@ -32,7 +32,10 @@ test('theme contract includes surfaces and full token families', () => {
     assert.match(types, /regular: number/);
     assert.match(types, /medium: number/);
     assert.match(types, /bold: number/);
-    assert.doesNotMatch(types, /radii|typography|fontFamily|monoFontFamily|titleSize|headingSize|bodySize|compactSize|labelSize|lineHeight|headingLineHeight|weightRegular|weightMedium|weightBold/);
+    assert.doesNotMatch(
+        types,
+        /radii|typography|fontFamily|monoFontFamily|titleSize|headingSize|bodySize|compactSize|labelSize|lineHeight|headingLineHeight|weightRegular|weightMedium|weightBold/,
+    );
     assert.match(types, /zIndex: \{/);
     assert.match(types, /motion: \{/);
     assert.match(types, /scrollbar: \{/);
@@ -41,7 +44,7 @@ test('theme contract includes surfaces and full token families', () => {
 });
 
 test('system props accept numeric strings as spacing scale values', () => {
-    const {systemStyle, restProps} = splitSystemProps({
+    const { systemStyle, restProps } = splitSystemProps({
         p: '4',
         mt: '1',
         g: '2',
@@ -57,7 +60,7 @@ test('system props accept numeric strings as spacing scale values', () => {
     assert.equal(systemStyle.marginBottom, '24px');
     assert.equal(systemStyle.paddingBlock, '32px');
     assert.equal(systemStyle.maxWidth, 'calc(100vw - 24px)');
-    assert.deepEqual(restProps, {id: 'sample'});
+    assert.deepEqual(restProps, { id: 'sample' });
 });
 
 test('theme surface registry includes all first-party surfaces', () => {
@@ -101,11 +104,23 @@ test('theme provider exposes component tokens as CSS variables', () => {
     assert.match(styles, /color-scheme: dark/);
     assert.match(styles, /--oui-pad-bg: #00000006/);
     assert.match(styles, /--oui-pad-hover-bg: #0000000f/);
-    assert.match(styles, /--oui-scrollbar-thumb: color-mix\(in srgb, var\(--oui-bg\) 95%, var\(--oui-text\) 5%\)/);
-    assert.match(styles, /--oui-scrollbar-thumb-hover: color-mix\(in srgb, var\(--oui-bg\) 92%, var\(--oui-text\) 8%\)/);
+    assert.match(
+        styles,
+        /--oui-scrollbar-thumb: color-mix\(in srgb, var\(--oui-bg\) 95%, var\(--oui-text\) 5%\)/,
+    );
+    assert.match(
+        styles,
+        /--oui-scrollbar-thumb-hover: color-mix\(in srgb, var\(--oui-bg\) 92%, var\(--oui-text\) 8%\)/,
+    );
     assert.match(styles, /--oui-scrollbar-track: transparent/);
-    assert.match(styles, /--oui-scrollbar-thumb: color-mix\(in srgb, var\(--oui-bg\) 96%, var\(--oui-text\) 4%\)/);
-    assert.match(styles, /--oui-scrollbar-thumb-hover: color-mix\(in srgb, var\(--oui-bg\) 93%, var\(--oui-text\) 7%\)/);
+    assert.match(
+        styles,
+        /--oui-scrollbar-thumb: color-mix\(in srgb, var\(--oui-bg\) 96%, var\(--oui-text\) 4%\)/,
+    );
+    assert.match(
+        styles,
+        /--oui-scrollbar-thumb-hover: color-mix\(in srgb, var\(--oui-bg\) 93%, var\(--oui-text\) 7%\)/,
+    );
     assert.doesNotMatch(provider, /--oui-widget-radius/);
     assert.doesNotMatch(provider, /--oui-chat-bubble-radius/);
     assert.doesNotMatch(provider, /--oui-composer-min-height/);
@@ -152,17 +167,41 @@ test('default theme owns scrollbar tokens and exposes them to shared scroll surf
     const overlays = read('styles/_overlays.sass');
     const selection = read('styles/_selection.sass');
 
-    assert.match(source, /scrollbar: \{\s+thumb: 'color-mix\(in srgb, var\(--oui-bg\) 96%, var\(--oui-text\) 4%\)'/);
-    assert.match(source, /thumbHover: 'color-mix\(in srgb, var\(--oui-bg\) 93%, var\(--oui-text\) 7%\)'/);
-    assert.match(source, /scrollbar: \{\s+thumb: 'color-mix\(in srgb, var\(--oui-bg\) 95%, var\(--oui-text\) 5%\)'/);
-    assert.match(source, /thumbHover: 'color-mix\(in srgb, var\(--oui-bg\) 92%, var\(--oui-text\) 8%\)'/);
+    assert.match(
+        source,
+        /scrollbar: \{\s+thumb: 'color-mix\(in srgb, var\(--oui-bg\) 96%, var\(--oui-text\) 4%\)'/,
+    );
+    assert.match(
+        source,
+        /thumbHover: 'color-mix\(in srgb, var\(--oui-bg\) 93%, var\(--oui-text\) 7%\)'/,
+    );
+    assert.match(
+        source,
+        /scrollbar: \{\s+thumb: 'color-mix\(in srgb, var\(--oui-bg\) 95%, var\(--oui-text\) 5%\)'/,
+    );
+    assert.match(
+        source,
+        /thumbHover: 'color-mix\(in srgb, var\(--oui-bg\) 92%, var\(--oui-text\) 8%\)'/,
+    );
     assert.match(source, /track: 'transparent'/);
     assert.match(source, /scrollbar: \{\.\.\.baseTheme\.scrollbar, \.\.\.overrides\.scrollbar\}/);
-    assert.match(scrollArea, /scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/);
+    assert.match(
+        scrollArea,
+        /scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/,
+    );
     assert.match(scrollArea, /background: var\(--oui-scrollbar-track, transparent\)/);
-    assert.match(data, /scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/);
-    assert.match(overlays, /scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/);
-    assert.match(selection, /scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/);
+    assert.match(
+        data,
+        /scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/,
+    );
+    assert.match(
+        overlays,
+        /scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/,
+    );
+    assert.match(
+        selection,
+        /scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/,
+    );
 });
 
 test('theme provider mirrors active CSS variables to document root for portals', () => {
@@ -213,5 +252,8 @@ test('theme playground exposes new token families and catalog presets', () => {
     assert.match(source, /tokenSections: \{[\s\S]*?breakpoints: 'Breakpoints'/);
     assert.match(source, /tokenSections: \{[\s\S]*?scrollbar: 'Scrollbar'/);
     assert.match(source, /tokenSections: \{[\s\S]*?states: 'States'/);
-    assert.match(source, /flatTokenSections = \[[\s\S]*?'toast'[\s\S]*?'scrollbar'[\s\S]*?'states'/);
+    assert.match(
+        source,
+        /flatTokenSections = \[[\s\S]*?'toast'[\s\S]*?'scrollbar'[\s\S]*?'states'/,
+    );
 });

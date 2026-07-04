@@ -1,15 +1,15 @@
 'use client';
 
-import type {CSSProperties, ReactNode} from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 import {
     OrcestrUiLocaleProvider,
     type OrcestrUiCopy,
     type OrcestrUiLocale,
 } from '../locale/LocaleProvider';
-import {OverlayProvider, type OverlayZIndex} from '../components/Overlay/OverlayProvider';
-import {ToastProvider, type ToastPosition} from '../components/Toast/Toast';
-import {OrcestrThemeProvider} from '../theme/ThemeProvider';
+import { OverlayProvider, type OverlayZIndex } from '../components/Overlay/OverlayProvider';
+import { ToastProvider, type ToastPosition } from '../components/Toast/Toast';
+import { OrcestrThemeProvider } from '../theme/ThemeProvider';
 import type {
     OrcestrThemeMode,
     OrcestrThemeOverrides,
@@ -76,10 +76,7 @@ export function OrcestrUiProvider({
                     zIndex={zIndex}
                     testId={testId ? `${testId}-overlay-root` : undefined}
                 >
-                    <ToastProvider
-                        defaultPosition={toastPosition}
-                        maxVisible={toastMaxVisible}
-                    >
+                    <ToastProvider defaultPosition={toastPosition} maxVisible={toastMaxVisible}>
                         {children}
                     </ToastProvider>
                 </OverlayProvider>

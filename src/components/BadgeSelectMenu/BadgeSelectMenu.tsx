@@ -1,12 +1,17 @@
 'use client';
 
-import {useMemo, useState, type CSSProperties, type ReactNode} from 'react';
-import {LuCheck} from 'react-icons/lu';
+import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { LuCheck } from 'react-icons/lu';
 
-import {Badge} from '../Badge/Badge';
-import {Popover} from '../Popover/Popover';
-import {splitSystemProps, type SystemProps, type ToneInput, type UiSize} from '../../theme/systemProps';
-import {cn} from '../../utils/cn';
+import { Badge } from '../Badge/Badge';
+import { Popover } from '../Popover/Popover';
+import {
+    splitSystemProps,
+    type SystemProps,
+    type ToneInput,
+    type UiSize,
+} from '../../theme/systemProps';
+import { cn } from '../../utils/cn';
 
 export type BadgeSelectItem<V extends string = string> = {
     value: V;
@@ -44,7 +49,7 @@ export function BadgeSelectMenu<V extends string = string>({
 }: BadgeSelectMenuProps<V>) {
     const [open, setOpen] = useState(false);
     const [highlightedValue, setHighlightedValue] = useState<V | null>(null);
-    const {systemStyle, restProps} = splitSystemProps(props);
+    const { systemStyle, restProps } = splitSystemProps(props);
 
     const currentValue = value ?? items[0]?.value ?? null;
     const currentItem = useMemo(
@@ -56,11 +61,11 @@ export function BadgeSelectMenu<V extends string = string>({
     const triggerBadge = (
         <Badge
             tone={tone}
-            v='soft'
+            v="soft"
             r={7}
             size={size}
             data-state={open ? 'open' : 'closed'}
-            className='oui-badge-select-trigger'
+            className="oui-badge-select-trigger"
             testId={testId}
             style={{
                 cursor: disabled ? 'default' : 'pointer',
@@ -96,8 +101,8 @@ export function BadgeSelectMenu<V extends string = string>({
             {...restProps}
         >
             <div
-                className='oui-combobox-scroll oui-combobox-options oui-badge-select-options'
-                style={{maxHeight}}
+                className="oui-combobox-scroll oui-combobox-options oui-badge-select-options"
+                style={{ maxHeight }}
             >
                 {items.map((item) => {
                     const isSelected = item.value === currentValue;
@@ -105,8 +110,8 @@ export function BadgeSelectMenu<V extends string = string>({
                     return (
                         <button
                             key={item.value}
-                            type='button'
-                            className='oui-combobox-option oui-badge-select-option'
+                            type="button"
+                            className="oui-combobox-option oui-badge-select-option"
                             data-selected={isSelected ? 'true' : 'false'}
                             data-highlighted={isHighlighted ? 'true' : 'false'}
                             disabled={item.disabled}
@@ -123,9 +128,9 @@ export function BadgeSelectMenu<V extends string = string>({
                                 onValueChange(item.value);
                             }}
                         >
-                            <span className='oui-combobox-option-main'>{item.label}</span>
+                            <span className="oui-combobox-option-main">{item.label}</span>
                             {isSelected ? (
-                                <LuCheck className='oui-combobox-check' size={15} />
+                                <LuCheck className="oui-combobox-check" size={15} />
                             ) : null}
                         </button>
                     );

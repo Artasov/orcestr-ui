@@ -1,4 +1,4 @@
-import type {DataTableSort} from './DataTable';
+import type { DataTableSort } from './DataTable';
 
 export type DataTablePreferenceScope = {
     tableKey: string;
@@ -79,18 +79,18 @@ export function dataTableStateToSearchParams(state: DataTablePersistedState): UR
     return params;
 }
 
-export function dataTableStateFromSearchParams(
-    params: URLSearchParams,
-): DataTablePersistedState {
-    return normalizeDataTableState({
-        visibleColumnKeys: splitParam(params.get('columns')),
-        columnOrder: splitParam(params.get('column_order')),
-        columnWidths: parseColumnWidthsParam(params.get('column_widths')),
-        sort: parseSortParam(params.get('sort')),
-        page: parsePositiveInt(params.get('page')),
-        pageSize: parsePositiveInt(params.get('page_size')),
-        savedViewKey: params.get('view') || undefined,
-    }) ?? {};
+export function dataTableStateFromSearchParams(params: URLSearchParams): DataTablePersistedState {
+    return (
+        normalizeDataTableState({
+            visibleColumnKeys: splitParam(params.get('columns')),
+            columnOrder: splitParam(params.get('column_order')),
+            columnWidths: parseColumnWidthsParam(params.get('column_widths')),
+            sort: parseSortParam(params.get('sort')),
+            page: parsePositiveInt(params.get('page')),
+            pageSize: parsePositiveInt(params.get('page_size')),
+            savedViewKey: params.get('view') || undefined,
+        }) ?? {}
+    );
 }
 
 export function dataTablePaginationToSearchParams({
@@ -100,7 +100,7 @@ export function dataTablePaginationToSearchParams({
     page?: number;
     pageSize?: number;
 }): URLSearchParams {
-    return dataTableStateToSearchParams({page, pageSize});
+    return dataTableStateToSearchParams({ page, pageSize });
 }
 
 export function dataTablePaginationFromSearchParams(
@@ -154,7 +154,7 @@ export function applyDataTableSavedView(
 export function resetDataTableStateToDefault(
     defaultState: DataTablePersistedState = {},
 ): DataTablePersistedState {
-    return {...defaultState};
+    return { ...defaultState };
 }
 
 function browserStorage(): DataTableStateStorage | null {
@@ -170,7 +170,8 @@ function normalizeDataTableState(value: unknown): DataTablePersistedState | null
         columnWidths: columnWidthsRecord(value.columnWidths),
         sort: sortArray(value.sort),
         page: typeof value.page === 'number' && value.page > 0 ? value.page : undefined,
-        pageSize: typeof value.pageSize === 'number' && value.pageSize > 0 ? value.pageSize : undefined,
+        pageSize:
+            typeof value.pageSize === 'number' && value.pageSize > 0 ? value.pageSize : undefined,
         savedViewKey: typeof value.savedViewKey === 'string' ? value.savedViewKey : undefined,
     });
 }
@@ -183,7 +184,9 @@ function compactDataTableState(state: DataTablePersistedState): DataTablePersist
 
 function stringArray(value: unknown): string[] | undefined {
     if (!Array.isArray(value)) return undefined;
-    const result = value.filter((item): item is string => typeof item === 'string' && item.length > 0);
+    const result = value.filter(
+        (item): item is string => typeof item === 'string' && item.length > 0,
+    );
     return result.length ? result : undefined;
 }
 
@@ -253,8 +256,7 @@ function parsePositiveInt(value: string | null): number | undefined {
 function isSort(value: unknown): value is DataTableSort {
     if (!isRecord(value)) return false;
     return (
-        typeof value.key === 'string' &&
-        (value.direction === 'asc' || value.direction === 'desc')
+        typeof value.key === 'string' && (value.direction === 'asc' || value.direction === 'desc')
     );
 }
 

@@ -1,13 +1,8 @@
-import {
-    forwardRef,
-    type ComponentPropsWithoutRef,
-    type ElementType,
-    type Ref,
-} from 'react';
+import { forwardRef, type ComponentPropsWithoutRef, type ElementType, type Ref } from 'react';
 
-import {cn} from '../../utils/cn';
-import {splitSystemProps, type SystemProps} from '../../theme/systemProps';
-import {renderSlot} from '../../utils/slot';
+import { cn } from '../../utils/cn';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
+import { renderSlot } from '../../utils/slot';
 
 export type FlexProps = ComponentPropsWithoutRef<'div'> &
     SystemProps & {
@@ -17,14 +12,14 @@ export type FlexProps = ComponentPropsWithoutRef<'div'> &
     };
 
 export const Flex = forwardRef<HTMLDivElement, FlexProps>(function Flex(
-    {as: Component = 'div', asChild = false, className, style, testId, children, ...props},
+    { as: Component = 'div', asChild = false, className, style, testId, children, ...props },
     ref,
 ) {
-    const {systemStyle, restProps} = splitSystemProps(props);
+    const { systemStyle, restProps } = splitSystemProps(props);
     const commonProps = {
         className: cn('oui-flex', className),
         'data-testid': testId,
-        style: {...systemStyle, ...style},
+        style: { ...systemStyle, ...style },
         ...restProps,
     };
 
@@ -36,10 +31,7 @@ export const Flex = forwardRef<HTMLDivElement, FlexProps>(function Flex(
     }
 
     return (
-        <Component
-            ref={ref}
-            {...commonProps}
-        >
+        <Component ref={ref} {...commonProps}>
             {children}
         </Component>
     );

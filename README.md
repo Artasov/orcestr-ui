@@ -45,12 +45,12 @@ npm install ../../orcestr-ui
 Import the runtime styles once near the application root and wrap the app with `OrcestrUiProvider`.
 
 ```tsx
-import {Button, OrcestrUiProvider} from '@orcestr/ui';
+import { Button, OrcestrUiProvider } from '@orcestr/ui';
 import '@orcestr/ui/styles.css';
 
 export function App() {
     return (
-        <OrcestrUiProvider locale='en' defaultMode='dark'>
+        <OrcestrUiProvider locale="en" defaultMode="dark">
             <Button>Save</Button>
         </OrcestrUiProvider>
     );
@@ -60,13 +60,13 @@ export function App() {
 The React Query adapter is optional and kept outside the main entrypoint:
 
 ```ts
-import {usePaginatedComboboxQueryLoader} from '@orcestr/ui/react-query';
+import { usePaginatedComboboxQueryLoader } from '@orcestr/ui/react-query';
 ```
 
 The example page is published through a separate entrypoint, with separate demo styles:
 
 ```tsx
-import {UiExamplePage} from '@orcestr/ui/example/UiExamplePage';
+import { UiExamplePage } from '@orcestr/ui/example/UiExamplePage';
 import '@orcestr/ui/example/styles.css';
 ```
 
@@ -95,13 +95,13 @@ The design direction is quiet and functional:
 
 ## Package Entrypoints
 
-| Entrypoint | Purpose |
-| --- | --- |
-| `@orcestr/ui` | Main React components, providers, hooks and theme API. |
-| `@orcestr/ui/styles.css` | Runtime styles for the component library. |
-| `@orcestr/ui/react-query` | Optional React Query adapter for paginated combobox loaders. |
-| `@orcestr/ui/example/UiExamplePage` | Demo page for visual inspection and internal documentation. |
-| `@orcestr/ui/example/styles.css` | Styles used only by the example page. |
+| Entrypoint                          | Purpose                                                      |
+| ----------------------------------- | ------------------------------------------------------------ |
+| `@orcestr/ui`                       | Main React components, providers, hooks and theme API.       |
+| `@orcestr/ui/styles.css`            | Runtime styles for the component library.                    |
+| `@orcestr/ui/react-query`           | Optional React Query adapter for paginated combobox loaders. |
+| `@orcestr/ui/example/UiExamplePage` | Demo page for visual inspection and internal documentation.  |
+| `@orcestr/ui/example/styles.css`    | Styles used only by the example page.                        |
 
 ## Scripts
 

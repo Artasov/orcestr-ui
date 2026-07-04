@@ -1,18 +1,13 @@
-import {
-    forwardRef,
-    type ComponentPropsWithoutRef,
-    type ElementType,
-    type Ref,
-} from 'react';
+import { forwardRef, type ComponentPropsWithoutRef, type ElementType, type Ref } from 'react';
 
-import {cn} from '../../utils/cn';
+import { cn } from '../../utils/cn';
 import {
     normalizeTone,
     splitSystemProps,
     type SystemProps,
     type ToneInput,
 } from '../../theme/systemProps';
-import {renderSlot} from '../../utils/slot';
+import { renderSlot } from '../../utils/slot';
 
 export type TextProps = ComponentPropsWithoutRef<'span'> &
     SystemProps & {
@@ -27,19 +22,10 @@ export type TextProps = ComponentPropsWithoutRef<'span'> &
     };
 
 export const Text = forwardRef<HTMLElement, TextProps>(function Text(
-    {
-        as: Component = 'span',
-        className,
-        style,
-        tone,
-        asChild = false,
-        testId,
-        children,
-        ...props
-    },
+    { as: Component = 'span', className, style, tone, asChild = false, testId, children, ...props },
     ref,
 ) {
-    const {systemStyle, restProps} = splitSystemProps(props);
+    const { systemStyle, restProps } = splitSystemProps(props);
     const commonProps = {
         className: cn(
             'oui-text',
@@ -47,7 +33,7 @@ export const Text = forwardRef<HTMLElement, TextProps>(function Text(
             className,
         ),
         'data-testid': testId,
-        style: {...systemStyle, ...style},
+        style: { ...systemStyle, ...style },
         ...restProps,
     };
 
@@ -59,10 +45,7 @@ export const Text = forwardRef<HTMLElement, TextProps>(function Text(
     }
 
     return (
-        <Component
-            ref={ref}
-            {...commonProps}
-        >
+        <Component ref={ref} {...commonProps}>
             {children}
         </Component>
     );

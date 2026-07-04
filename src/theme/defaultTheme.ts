@@ -72,10 +72,8 @@ const sharedStructure = {
         wide: '1440px',
     },
     text: {
-        family:
-            'var(--font-manrope, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif)',
-        mono:
-            'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace',
+        family: 'var(--font-manrope, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif)',
+        mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace',
         title: '22px',
         heading: '18px',
         body: '14px',
@@ -614,10 +612,7 @@ const surfaceOverrides: Record<
     },
 };
 
-function mergeTheme(
-    baseTheme: OrcestrTheme,
-    overrides?: OrcestrThemeOverrides,
-): OrcestrTheme {
+function mergeTheme(baseTheme: OrcestrTheme, overrides?: OrcestrThemeOverrides): OrcestrTheme {
     if (!overrides) return baseTheme;
     return {
         ...baseTheme,
@@ -625,19 +620,19 @@ function mergeTheme(
         mode: baseTheme.mode,
         surface: baseTheme.surface,
         colors: mergeColors(baseTheme.colors, overrides.colors),
-        radius: {...baseTheme.radius, ...overrides.radius},
-        spacing: {...baseTheme.spacing, ...overrides.spacing},
-        breakpoints: {...baseTheme.breakpoints, ...overrides.breakpoints},
-        shadows: {...baseTheme.shadows, ...overrides.shadows},
-        text: {...baseTheme.text, ...overrides.text},
+        radius: { ...baseTheme.radius, ...overrides.radius },
+        spacing: { ...baseTheme.spacing, ...overrides.spacing },
+        breakpoints: { ...baseTheme.breakpoints, ...overrides.breakpoints },
+        shadows: { ...baseTheme.shadows, ...overrides.shadows },
+        text: { ...baseTheme.text, ...overrides.text },
         status: mergeStatus(baseTheme.status, overrides.status),
-        motion: {...baseTheme.motion, ...overrides.motion},
-        density: {...baseTheme.density, ...overrides.density},
-        zIndex: {...baseTheme.zIndex, ...overrides.zIndex},
-        toast: {...baseTheme.toast, ...overrides.toast},
-        scrollbar: {...baseTheme.scrollbar, ...overrides.scrollbar},
-        states: {...baseTheme.states, ...overrides.states},
-        components: {...baseTheme.components, ...overrides.components},
+        motion: { ...baseTheme.motion, ...overrides.motion },
+        density: { ...baseTheme.density, ...overrides.density },
+        zIndex: { ...baseTheme.zIndex, ...overrides.zIndex },
+        toast: { ...baseTheme.toast, ...overrides.toast },
+        scrollbar: { ...baseTheme.scrollbar, ...overrides.scrollbar },
+        states: { ...baseTheme.states, ...overrides.states },
+        components: { ...baseTheme.components, ...overrides.components },
     };
 }
 
@@ -677,13 +672,13 @@ function mergeStatus(
 ) {
     if (!overrides) return baseStatus;
     return {
-        neutral: {...baseStatus.neutral, ...overrides.neutral},
-        primary: {...baseStatus.primary, ...overrides.primary},
-        secondary: {...baseStatus.secondary, ...overrides.secondary},
-        success: {...baseStatus.success, ...overrides.success},
-        warning: {...baseStatus.warning, ...overrides.warning},
-        danger: {...baseStatus.danger, ...overrides.danger},
-        info: {...baseStatus.info, ...overrides.info},
+        neutral: { ...baseStatus.neutral, ...overrides.neutral },
+        primary: { ...baseStatus.primary, ...overrides.primary },
+        secondary: { ...baseStatus.secondary, ...overrides.secondary },
+        success: { ...baseStatus.success, ...overrides.success },
+        warning: { ...baseStatus.warning, ...overrides.warning },
+        danger: { ...baseStatus.danger, ...overrides.danger },
+        info: { ...baseStatus.info, ...overrides.info },
     };
 }
 
@@ -695,12 +690,12 @@ function mergeColors(
     return {
         ...baseColors,
         ...overrides,
-        primary: {...baseColors.primary, ...overrides.primary},
-        secondary: {...baseColors.secondary, ...overrides.secondary},
-        neutral: {...baseColors.neutral, ...overrides.neutral},
-        danger: {...baseColors.danger, ...overrides.danger},
-        success: {...baseColors.success, ...overrides.success},
-        warning: {...baseColors.warning, ...overrides.warning},
-        info: {...baseColors.info, ...overrides.info},
+        primary: { ...baseColors.primary, ...overrides.primary },
+        secondary: { ...baseColors.secondary, ...overrides.secondary },
+        neutral: { ...baseColors.neutral, ...overrides.neutral },
+        danger: { ...baseColors.danger, ...overrides.danger },
+        success: { ...baseColors.success, ...overrides.success },
+        warning: { ...baseColors.warning, ...overrides.warning },
+        info: { ...baseColors.info, ...overrides.info },
     };
 }

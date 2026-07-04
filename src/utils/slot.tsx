@@ -8,8 +8,8 @@ import {
     type Ref,
 } from 'react';
 
-import {cn} from './cn';
-import {composeRefs} from './composeRefs';
+import { cn } from './cn';
+import { composeRefs } from './composeRefs';
 
 type SlotChildProps = HTMLAttributes<HTMLElement> & {
     ref?: Ref<HTMLElement>;
@@ -26,7 +26,7 @@ export function renderSlot(
     if (!isValidElement(children)) return null;
 
     const child = children as ReactElement<SlotChildProps>;
-    const {className, style, ref, ...restProps} = props;
+    const { className, style, ref, ...restProps } = props;
 
     return cloneElement(child, {
         ...restProps,

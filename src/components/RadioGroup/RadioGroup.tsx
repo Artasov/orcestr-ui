@@ -1,6 +1,6 @@
 'use client';
 
-import {cn} from '../../utils/cn';
+import { cn } from '../../utils/cn';
 
 export type RadioGroupItem = {
     value: string;
@@ -24,28 +24,24 @@ export function RadioGroup({
     testId?: string;
 }) {
     return (
-        <div
-            className={cn('oui-radio-group', className)}
-            role='radiogroup'
-            data-testid={testId}
-        >
+        <div className={cn('oui-radio-group', className)} role="radiogroup" data-testid={testId}>
             {items.map((item) => (
                 <label
                     key={item.value}
-                    className='oui-radio'
+                    className="oui-radio"
                     data-checked={value === item.value ? 'true' : undefined}
                     data-disabled={item.disabled ? 'true' : undefined}
                     data-testid={testId ? `${testId}-${item.value}` : undefined}
                 >
                     <input
-                        type='radio'
+                        type="radio"
                         name={name}
                         value={item.value}
                         checked={value === item.value}
                         disabled={item.disabled}
                         onChange={() => onValueChange(item.value)}
                     />
-                    <span className='oui-radio-dot' />
+                    <span className="oui-radio-dot" />
                     <span>{item.label}</span>
                 </label>
             ))}

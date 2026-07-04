@@ -1,6 +1,6 @@
 'use client';
 
-import {useCallback, useMemo, useState} from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 export type ListNavigationItem = {
     value: string;
@@ -20,10 +20,7 @@ export function useListNavigation(
     const [requestedValue, setRequestedValue] = useState<string | null>(null);
 
     const highlightedValue = useMemo(() => {
-        if (
-            requestedValue !== null &&
-            enabledItems.some((item) => item.value === requestedValue)
-        ) {
+        if (requestedValue !== null && enabledItems.some((item) => item.value === requestedValue)) {
             return requestedValue;
         }
         if (value !== null && enabledItems.some((item) => item.value === value)) {
@@ -35,14 +32,11 @@ export function useListNavigation(
     const move = useCallback(
         (direction: 1 | -1) => {
             if (enabledItems.length === 0) return;
-            const currentIndex = enabledItems.findIndex(
-                (item) => item.value === highlightedValue,
-            );
+            const currentIndex = enabledItems.findIndex((item) => item.value === highlightedValue);
             const nextIndex =
                 currentIndex === -1
                     ? 0
-                    : (currentIndex + direction + enabledItems.length) %
-                      enabledItems.length;
+                    : (currentIndex + direction + enabledItems.length) % enabledItems.length;
             setRequestedValue(enabledItems[nextIndex]?.value ?? null);
         },
         [enabledItems, highlightedValue],

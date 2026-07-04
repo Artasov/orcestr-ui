@@ -1,11 +1,22 @@
 'use client';
 
-import {type ReactNode} from 'react';
-import {LuX} from 'react-icons/lu';
+import { type ReactNode } from 'react';
+import { LuX } from 'react-icons/lu';
 
-import {Button, CommandPalette, Flex, Field, IconButton, Modal, Stack, Text, TextField, type ModalProps} from '..';
-import {getCommandItems} from './exampleData';
-import {type OrcestrUiLocale} from '..';
+import {
+    Button,
+    CommandPalette,
+    Flex,
+    Field,
+    IconButton,
+    Modal,
+    Stack,
+    Text,
+    TextField,
+    type ModalProps,
+} from '..';
+import { getCommandItems } from './exampleData';
+import { type OrcestrUiLocale } from '..';
 
 type ToastTone = 'info' | 'success' | 'danger';
 type SetOpen = (open: boolean) => void;
@@ -28,16 +39,14 @@ function ExampleModal({
     return (
         <Modal {...props} onOpenChange={onOpenChange}>
             <Modal.Header>
-                <div className='oui-modal-title-wrap'>
-                    <h2 className='oui-modal-title'>{title}</h2>
-                    {description ? (
-                        <p className='oui-modal-description'>{description}</p>
-                    ) : null}
+                <div className="oui-modal-title-wrap">
+                    <h2 className="oui-modal-title">{title}</h2>
+                    {description ? <p className="oui-modal-description">{description}</p> : null}
                 </div>
                 <IconButton
-                    v='ghost'
+                    v="ghost"
                     icon={<LuX size={18} />}
-                    aria-label='Close'
+                    aria-label="Close"
                     onClick={() => onOpenChange(false)}
                 />
             </Modal.Header>
@@ -103,21 +112,24 @@ export function ExampleOverlays({
             <ExampleModal
                 open={modalOpen}
                 onOpenChange={setModalOpen}
-                title='Custom modal'
-                description='First modal layer with the default theme blur backdrop.'
+                title="Custom modal"
+                description="First modal layer with the default theme blur backdrop."
                 footer={
-                    <Flex g={2} j='e' w='100%'>
-                        <Button v='surface' onClick={() => setModalOpen(false)}>Close</Button>
+                    <Flex g={2} j="e" w="100%">
+                        <Button v="surface" onClick={() => setModalOpen(false)}>
+                            Close
+                        </Button>
                         <Button onClick={() => setNestedOpen(true)}>Open nested</Button>
                     </Flex>
                 }
             >
                 <Stack g={3}>
-                    <Text color='var(--oui-muted)' lh={1.5}>
-                        Nested modals stack above the previous layer and keep independent smooth open and close animations.
+                    <Text color="var(--oui-muted)" lh={1.5}>
+                        Nested modals stack above the previous layer and keep independent smooth
+                        open and close animations.
                     </Text>
-                    <Field label='Modal field'>
-                        <TextField placeholder='Focus stays inside modal' />
+                    <Field label="Modal field">
+                        <TextField placeholder="Focus stays inside modal" />
                     </Field>
                 </Stack>
             </ExampleModal>
@@ -125,12 +137,12 @@ export function ExampleOverlays({
             <ExampleModal
                 open={nestedOpen}
                 onOpenChange={setNestedOpen}
-                title='Nested modal'
-                description='Second layer with the same default modal animation.'
+                title="Nested modal"
+                description="Second layer with the same default modal animation."
                 maxWidth={440}
             >
                 <Stack g={3}>
-                    <Text color='var(--oui-muted)' lh={1.5}>
+                    <Text color="var(--oui-muted)" lh={1.5}>
                         This checks layer indexes, focus trap and escape handling.
                     </Text>
                     <Button onClick={() => onToast('Nested modal action completed', 'success')}>
@@ -142,28 +154,31 @@ export function ExampleOverlays({
             <ExampleModal
                 open={blurModalOpen}
                 onOpenChange={setBlurModalOpen}
-                title='Blur modal'
-                description='Default modal surface with pure backdrop blur and no overlay tint.'
+                title="Blur modal"
+                description="Default modal surface with pure backdrop blur and no overlay tint."
                 maxWidth={560}
-                overlayColor='transparent'
+                overlayColor="transparent"
                 overlayOpacity={0}
                 overlayBlur={10}
-                borderColor='color-mix(in srgb, var(--oui-primary-base) 34%, var(--oui-border))'
+                borderColor="color-mix(in srgb, var(--oui-primary-base) 34%, var(--oui-border))"
                 radius={10}
-                shadow='0 24px 90px rgb(0 0 0 / 44%)'
+                shadow="0 24px 90px rgb(0 0 0 / 44%)"
                 footer={
-                    <Flex g={2} j='e' w='100%'>
-                        <Button v='surface' onClick={() => setBlurModalOpen(false)}>Close</Button>
+                    <Flex g={2} j="e" w="100%">
+                        <Button v="surface" onClick={() => setBlurModalOpen(false)}>
+                            Close
+                        </Button>
                         <Button onClick={() => setBlurNestedOpen(true)}>Open nested blur</Button>
                     </Flex>
                 }
             >
                 <Stack g={3}>
-                    <Text color='var(--oui-muted)' lh={1.5}>
-                        This variant checks a strong backdrop blur while the overlay tint stays fully transparent.
+                    <Text color="var(--oui-muted)" lh={1.5}>
+                        This variant checks a strong backdrop blur while the overlay tint stays
+                        fully transparent.
                     </Text>
-                    <Field label='Reference'>
-                        <TextField placeholder='ORD-2048' />
+                    <Field label="Reference">
+                        <TextField placeholder="ORD-2048" />
                     </Field>
                 </Stack>
             </ExampleModal>
@@ -171,43 +186,46 @@ export function ExampleOverlays({
             <ExampleModal
                 open={blurNestedOpen}
                 onOpenChange={setBlurNestedOpen}
-                title='Nested blur modal'
-                description='Second blur layer without overlay tint.'
+                title="Nested blur modal"
+                description="Second blur layer without overlay tint."
                 maxWidth={500}
-                overlayColor='transparent'
+                overlayColor="transparent"
                 overlayOpacity={0}
                 overlayBlur={8}
-                borderColor='color-mix(in srgb, var(--oui-primary-base) 38%, var(--oui-border))'
+                borderColor="color-mix(in srgb, var(--oui-primary-base) 38%, var(--oui-border))"
                 radius={10}
                 footer={
-                    <Flex g={2} j='e' w='100%'>
-                        <Button v='surface' onClick={() => setBlurNestedOpen(false)}>Close</Button>
+                    <Flex g={2} j="e" w="100%">
+                        <Button v="surface" onClick={() => setBlurNestedOpen(false)}>
+                            Close
+                        </Button>
                         <Button onClick={() => setBlurFinalOpen(true)}>Open final blur</Button>
                     </Flex>
                 }
             >
                 <Stack g={3}>
-                    <Text color='var(--oui-muted)' lh={1.5}>
-                        This layer keeps the backdrop blur transparent while stacking above the first blur modal.
+                    <Text color="var(--oui-muted)" lh={1.5}>
+                        This layer keeps the backdrop blur transparent while stacking above the
+                        first blur modal.
                     </Text>
-                    <TextField placeholder='Nested value' />
+                    <TextField placeholder="Nested value" />
                 </Stack>
             </ExampleModal>
 
             <ExampleModal
                 open={blurFinalOpen}
                 onOpenChange={setBlurFinalOpen}
-                title='Final blur modal'
-                description='Top blur layer. Toast must appear above this modal.'
+                title="Final blur modal"
+                description="Top blur layer. Toast must appear above this modal."
                 maxWidth={440}
-                overlayColor='transparent'
+                overlayColor="transparent"
                 overlayOpacity={0}
                 overlayBlur={6}
-                borderColor='color-mix(in srgb, var(--oui-primary-base) 42%, var(--oui-border))'
+                borderColor="color-mix(in srgb, var(--oui-primary-base) 42%, var(--oui-border))"
                 radius={10}
             >
                 <Stack g={3}>
-                    <Text color='var(--oui-muted)' lh={1.5}>
+                    <Text color="var(--oui-muted)" lh={1.5}>
                         Use this modal to verify blur stacking and toast z-index.
                     </Text>
                     <Button onClick={() => onToast('Toast above nested blur modals', 'success')}>
@@ -219,17 +237,18 @@ export function ExampleOverlays({
             <ExampleModal
                 open={fastModalOpen}
                 onOpenChange={setFastModalOpen}
-                title='Fast modal'
-                description='Short animationDuration passed directly to the modal.'
+                title="Fast modal"
+                description="Short animationDuration passed directly to the modal."
                 maxWidth={460}
-                overlayColor='#0b1020'
+                overlayColor="#0b1020"
                 overlayOpacity={0.28}
                 overlayBlur={4}
-                animationDuration='160ms'
+                animationDuration="160ms"
             >
                 <Stack g={3}>
-                    <Text color='var(--oui-muted)' lh={1.5}>
-                        This variant opens and closes quickly while still animating the backdrop blur.
+                    <Text color="var(--oui-muted)" lh={1.5}>
+                        This variant opens and closes quickly while still animating the backdrop
+                        blur.
                     </Text>
                     <Button onClick={() => setFastModalOpen(false)}>Close</Button>
                 </Stack>
@@ -238,19 +257,20 @@ export function ExampleOverlays({
             <ExampleModal
                 open={slowModalOpen}
                 onOpenChange={setSlowModalOpen}
-                title='Very slow modal'
-                description='Long animationDuration for checking smooth blur ramp.'
+                title="Very slow modal"
+                description="Long animationDuration for checking smooth blur ramp."
                 maxWidth={520}
-                overlayColor='transparent'
+                overlayColor="transparent"
                 overlayOpacity={0}
                 overlayBlur={14}
-                animationDuration='1200ms'
-                borderColor='color-mix(in srgb, var(--oui-primary-base) 42%, var(--oui-border))'
+                animationDuration="1200ms"
+                borderColor="color-mix(in srgb, var(--oui-primary-base) 42%, var(--oui-border))"
                 radius={10}
             >
                 <Stack g={3}>
-                    <Text color='var(--oui-muted)' lh={1.5}>
-                        The backdrop blur should build up and fade out gradually during the whole animation.
+                    <Text color="var(--oui-muted)" lh={1.5}>
+                        The backdrop blur should build up and fade out gradually during the whole
+                        animation.
                     </Text>
                     <Button onClick={() => setSlowModalOpen(false)}>Close</Button>
                 </Stack>
@@ -259,17 +279,18 @@ export function ExampleOverlays({
             <ExampleModal
                 open={riseModalOpen}
                 onOpenChange={setRiseModalOpen}
-                title='Rise modal'
-                description='Legacy rise animation kept as an explicit modal animation variant.'
+                title="Rise modal"
+                description="Legacy rise animation kept as an explicit modal animation variant."
                 maxWidth={480}
-                overlayColor='#0b1020'
+                overlayColor="#0b1020"
                 overlayOpacity={0.28}
                 overlayBlur={4}
-                animation='rise'
+                animation="rise"
             >
                 <Stack g={3}>
-                    <Text color='var(--oui-muted)' lh={1.5}>
-                        This keeps the previous small scale and vertical movement without content blur.
+                    <Text color="var(--oui-muted)" lh={1.5}>
+                        This keeps the previous small scale and vertical movement without content
+                        blur.
                     </Text>
                     <Button onClick={() => setRiseModalOpen(false)}>Close</Button>
                 </Stack>
@@ -278,19 +299,21 @@ export function ExampleOverlays({
             <ExampleModal
                 open={dangerModalOpen}
                 onOpenChange={setDangerModalOpen}
-                title='Danger modal'
-                description='Strong colored overlay, danger border and compact radius.'
+                title="Danger modal"
+                description="Strong colored overlay, danger border and compact radius."
                 maxWidth={500}
-                overlayColor='#3b0712'
+                overlayColor="#3b0712"
                 overlayOpacity={0.48}
                 overlayBlur={3}
-                borderColor='color-mix(in srgb, var(--oui-danger-base) 46%, var(--oui-border))'
+                borderColor="color-mix(in srgb, var(--oui-danger-base) 46%, var(--oui-border))"
                 radius={8}
                 footer={
-                    <Flex g={2} j='e' w='100%'>
-                        <Button v='surface' onClick={() => setDangerModalOpen(false)}>Cancel</Button>
+                    <Flex g={2} j="e" w="100%">
+                        <Button v="surface" onClick={() => setDangerModalOpen(false)}>
+                            Cancel
+                        </Button>
                         <Button
-                            tone='danger'
+                            tone="danger"
                             onClick={() => {
                                 setDangerModalOpen(false);
                                 onToast('Danger action confirmed', 'danger');
@@ -302,10 +325,11 @@ export function ExampleOverlays({
                 }
             >
                 <Stack g={3}>
-                    <Text color='var(--oui-muted)' lh={1.5}>
-                        This variant checks a colored backdrop without a hard flash on open or close.
+                    <Text color="var(--oui-muted)" lh={1.5}>
+                        This variant checks a colored backdrop without a hard flash on open or
+                        close.
                     </Text>
-                    <TextField value='Archive selected record' readOnly />
+                    <TextField value="Archive selected record" readOnly />
                 </Stack>
             </ExampleModal>
 

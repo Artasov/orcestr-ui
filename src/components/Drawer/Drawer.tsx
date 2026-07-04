@@ -9,22 +9,22 @@ import {
     type CSSProperties,
     type ReactNode,
 } from 'react';
-import {LuX} from 'react-icons/lu';
+import { LuX } from 'react-icons/lu';
 
-import {useDisclosure} from '../../hooks/useDisclosure';
-import {useFocusTrap} from '../../hooks/useFocusTrap';
-import {usePresence} from '../../hooks/usePresence';
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
-import {OrcestrThemeContext} from '../../theme/useTheme';
-import {cn} from '../../utils/cn';
-import {IconButton} from '../IconButton/IconButton';
+import { useDisclosure } from '../../hooks/useDisclosure';
+import { useFocusTrap } from '../../hooks/useFocusTrap';
+import { usePresence } from '../../hooks/usePresence';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import { OrcestrThemeContext } from '../../theme/useTheme';
+import { cn } from '../../utils/cn';
+import { IconButton } from '../IconButton/IconButton';
 import {
     lockOverlayScroll,
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
 } from '../Overlay/OverlayProvider';
-import {Portal} from '../Portal/Portal';
+import { Portal } from '../Portal/Portal';
 
 export type DrawerSide = 'bottom' | 'left' | 'right' | 'top';
 
@@ -83,15 +83,15 @@ export function Drawer({
     backdropStyle,
     testId,
 }: DrawerProps) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     const themeContext = useContext(OrcestrThemeContext);
     const overlay = useOverlayContext();
-    const disclosure = useDisclosure({open, defaultOpen, onOpenChange});
-    const {open: isOpen, setOpen} = disclosure;
+    const disclosure = useDisclosure({ open, defaultOpen, onOpenChange });
+    const { open: isOpen, setOpen } = disclosure;
     const duration = themeContext?.theme.motion.modalDuration ?? '260ms';
     const durationMs = durationToMs(duration, 260);
     const ease = themeContext?.theme.motion.ease ?? 'cubic-bezier(0.22, 1, 0.36, 1)';
-    const {present, state} = usePresence(isOpen, durationMs);
+    const { present, state } = usePresence(isOpen, durationMs);
     const layerIndex = useOverlayLayerIndex(present);
     const zIndex = overlayLayerZIndex(overlay.zIndex, 'modal', layerIndex);
     const panelRef = useRef<HTMLDivElement | null>(null);
@@ -99,13 +99,14 @@ export function Drawer({
     const descriptionId = useId();
     const resolvedSize = cssSize(size ?? defaultDrawerSize(side));
     const drawerStyle = useMemo(
-        () => ({
-            '--oui-drawer-size': resolvedSize,
-            '--oui-drawer-duration': cssDuration(duration),
-            '--oui-drawer-ease': ease,
-            zIndex,
-            ...style,
-        }) as CSSProperties,
+        () =>
+            ({
+                '--oui-drawer-size': resolvedSize,
+                '--oui-drawer-duration': cssDuration(duration),
+                '--oui-drawer-ease': ease,
+                zIndex,
+                ...style,
+            }) as CSSProperties,
         [duration, ease, resolvedSize, style, zIndex],
     );
 
@@ -141,7 +142,7 @@ export function Drawer({
             >
                 {showBackdrop ? (
                     <button
-                        type='button'
+                        type="button"
                         aria-label={copy.common.close}
                         className={cn('oui-drawer-backdrop', backdropClassName)}
                         data-state={state}
@@ -165,25 +166,22 @@ export function Drawer({
                     style={panelStyle}
                 >
                     {title || description || showCloseButton ? (
-                        <div className='oui-drawer-header'>
-                            <div className='oui-drawer-title-wrap'>
+                        <div className="oui-drawer-header">
+                            <div className="oui-drawer-title-wrap">
                                 {title ? (
-                                    <h2 id={titleId} className='oui-drawer-title'>
+                                    <h2 id={titleId} className="oui-drawer-title">
                                         {title}
                                     </h2>
                                 ) : null}
                                 {description ? (
-                                    <p
-                                        id={descriptionId}
-                                        className='oui-drawer-description'
-                                    >
+                                    <p id={descriptionId} className="oui-drawer-description">
                                         {description}
                                     </p>
                                 ) : null}
                             </div>
                             {showCloseButton ? (
                                 <IconButton
-                                    v='ghost'
+                                    v="ghost"
                                     icon={<LuX size={18} />}
                                     aria-label={copy.common.close}
                                     onClick={() => setOpen(false)}
@@ -191,10 +189,8 @@ export function Drawer({
                             ) : null}
                         </div>
                     ) : null}
-                    <div className={cn('oui-drawer-body', bodyClassName)}>
-                        {children}
-                    </div>
-                    {footer ? <div className='oui-drawer-footer'>{footer}</div> : null}
+                    <div className={cn('oui-drawer-body', bodyClassName)}>{children}</div>
+                    {footer ? <div className="oui-drawer-footer">{footer}</div> : null}
                 </div>
             </div>
         </Portal>

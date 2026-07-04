@@ -1,12 +1,9 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-import {test} from 'node:test';
+import { readFileSync } from 'node:fs';
+import { test } from 'node:test';
 
 const source = readFileSync(new URL('./SpecialModal.tsx', import.meta.url), 'utf8');
-const styles = readFileSync(
-    new URL('../../styles/_special-modal.sass', import.meta.url),
-    'utf8',
-);
+const styles = readFileSync(new URL('../../styles/_special-modal.sass', import.meta.url), 'utf8');
 const barrel = readFileSync(new URL('../../index.ts', import.meta.url), 'utf8');
 
 test('SpecialModal is a library-owned styled modal without legacy naming', () => {

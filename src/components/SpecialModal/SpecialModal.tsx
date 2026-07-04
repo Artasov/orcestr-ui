@@ -6,10 +6,10 @@ import {
     type CSSProperties,
     type ReactNode,
 } from 'react';
-import {LuX} from 'react-icons/lu';
+import { LuX } from 'react-icons/lu';
 
-import {cn} from '../../utils/cn';
-import {Modal, type ModalProps} from '../Modal/Modal';
+import { cn } from '../../utils/cn';
+import { Modal, type ModalProps } from '../Modal/Modal';
 
 export type SpecialModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 export type SpecialModalScroll = 'body' | 'content';
@@ -70,7 +70,7 @@ export type SpecialModalHeaderProps = SpecialModalPartProps & {
 
 const SpecialModalHeader = forwardRef<HTMLDivElement, SpecialModalHeaderProps>(
     function SpecialModalHeader(
-        {className, title, meta, actions, children, testId, ...props},
+        { className, title, meta, actions, children, testId, ...props },
         ref,
     ) {
         return (
@@ -82,16 +82,12 @@ const SpecialModalHeader = forwardRef<HTMLDivElement, SpecialModalHeaderProps>(
             >
                 {children ?? (
                     <>
-                        <div className='oui-special-modal-title-wrap'>
-                            {title ? (
-                                <h2 className='oui-special-modal-title'>{title}</h2>
-                            ) : null}
-                            {meta ? (
-                                <div className='oui-special-modal-meta'>{meta}</div>
-                            ) : null}
+                        <div className="oui-special-modal-title-wrap">
+                            {title ? <h2 className="oui-special-modal-title">{title}</h2> : null}
+                            {meta ? <div className="oui-special-modal-meta">{meta}</div> : null}
                         </div>
                         {actions ? (
-                            <div className='oui-special-modal-actions'>{actions}</div>
+                            <div className="oui-special-modal-actions">{actions}</div>
                         ) : null}
                     </>
                 )}
@@ -101,7 +97,7 @@ const SpecialModalHeader = forwardRef<HTMLDivElement, SpecialModalHeaderProps>(
 );
 
 const SpecialModalBody = forwardRef<HTMLDivElement, SpecialModalPartProps>(
-    function SpecialModalBody({className, testId, ...props}, ref) {
+    function SpecialModalBody({ className, testId, ...props }, ref) {
         return (
             <div
                 ref={ref}
@@ -114,7 +110,7 @@ const SpecialModalBody = forwardRef<HTMLDivElement, SpecialModalPartProps>(
 );
 
 const SpecialModalFooter = forwardRef<HTMLDivElement, SpecialModalPartProps>(
-    function SpecialModalFooter({className, testId, ...props}, ref) {
+    function SpecialModalFooter({ className, testId, ...props }, ref) {
         return (
             <div
                 ref={ref}
@@ -126,10 +122,7 @@ const SpecialModalFooter = forwardRef<HTMLDivElement, SpecialModalPartProps>(
     },
 );
 
-type SpecialModalCloseProps = Omit<
-    ComponentPropsWithoutRef<'button'>,
-    'children'
-> & {
+type SpecialModalCloseProps = Omit<ComponentPropsWithoutRef<'button'>, 'children'> & {
     children?: ReactNode;
 };
 
@@ -144,10 +137,10 @@ function SpecialModalClose({
             {...props}
             className={cn('oui-icon-button oui-special-modal-close', className)}
             aria-label={ariaLabel}
-            data-size='2'
-            data-variant='ghost'
-            data-tone='neutral'
-            data-round='true'
+            data-size="2"
+            data-variant="ghost"
+            data-tone="neutral"
+            data-round="true"
         >
             {children ?? <LuX size={18} />}
         </Modal.Close>

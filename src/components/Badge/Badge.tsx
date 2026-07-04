@@ -1,6 +1,6 @@
-import {forwardRef, type ComponentPropsWithoutRef, type ReactNode} from 'react';
+import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 
-import {cn} from '../../utils/cn';
+import { cn } from '../../utils/cn';
 import {
     splitSystemProps,
     type SystemProps,
@@ -20,20 +20,10 @@ export type BadgeProps = ComponentPropsWithoutRef<'span'> &
     };
 
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
-    {
-        className,
-        style,
-        tone = 'neutral',
-        size = 2,
-        v = 'soft',
-        icon,
-        testId,
-        children,
-        ...props
-    },
+    { className, style, tone = 'neutral', size = 2, v = 'soft', icon, testId, children, ...props },
     ref,
 ) {
-    const {systemStyle, restProps} = splitSystemProps(props);
+    const { systemStyle, restProps } = splitSystemProps(props);
     return (
         <span
             ref={ref}
@@ -42,10 +32,10 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
             data-size={size}
             data-variant={v}
             data-testid={testId}
-            style={{...systemStyle, ...style}}
+            style={{ ...systemStyle, ...style }}
             {...restProps}
         >
-            {icon ? <span className='oui-badge-icon'>{icon}</span> : null}
+            {icon ? <span className="oui-badge-icon">{icon}</span> : null}
             {children}
         </span>
     );

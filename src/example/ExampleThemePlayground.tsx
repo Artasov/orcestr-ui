@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useState, type CSSProperties, type Dispatch, type SetStateAction} from 'react';
+import { useEffect, useState, type CSSProperties, type Dispatch, type SetStateAction } from 'react';
 
 import {
     Badge,
@@ -461,8 +461,8 @@ export const themePlaygroundPresets = [
 ] as const satisfies ReadonlyArray<ThemePreset>;
 
 const themePresetGroups = [
-    {key: 'dark', label: {ru: 'Темные', en: 'Dark'}},
-    {key: 'light', label: {ru: 'Светлые', en: 'Light'}},
+    { key: 'dark', label: { ru: 'Темные', en: 'Dark' } },
+    { key: 'light', label: { ru: 'Светлые', en: 'Light' } },
 ] as const;
 
 export type ThemePresetId = (typeof themePlaygroundPresets)[number]['id'];
@@ -498,13 +498,22 @@ const flatTokenSections = [
     'components',
 ] as const satisfies ReadonlyArray<FlatTokenSection>;
 
-const statusKeys = ['neutral', 'primary', 'secondary', 'success', 'warning', 'danger', 'info'] as const;
+const statusKeys = [
+    'neutral',
+    'primary',
+    'secondary',
+    'success',
+    'warning',
+    'danger',
+    'info',
+] as const;
 const COLOR_TOKEN_COMMIT_DELAY_MS = 180;
 
 const themePlaygroundCopy = {
     ru: {
         title: 'Песочница тем',
-        description: 'Выберите базовую тему и редактируйте токены вживую. Вся страница примеров использует текущий набор токенов.',
+        description:
+            'Выберите базовую тему и редактируйте токены вживую. Вся страница примеров использует текущий набор токенов.',
         tokenEditor: 'Редактор токенов',
         resetPreset: 'Сбросить пресет',
         primaryAction: 'Основное действие',
@@ -531,7 +540,8 @@ const themePlaygroundCopy = {
     },
     en: {
         title: 'Theme playground',
-        description: 'Choose a base theme and edit tokens live. The whole example page uses the current token set.',
+        description:
+            'Choose a base theme and edit tokens live. The whole example page uses the current token set.',
         tokenEditor: 'Token editor',
         resetPreset: 'Reset preset',
         primaryAction: 'Primary action',
@@ -556,19 +566,22 @@ const themePlaygroundCopy = {
             components: 'Components',
         },
     },
-} satisfies Record<OrcestrUiLocale, {
-    title: string;
-    description: string;
-    tokenEditor: string;
-    resetPreset: string;
-    primaryAction: string;
-    surface: string;
-    secondary: string;
-    ready: string;
-    warning: string;
-    statuses: string;
-    tokenSections: Record<FlatTokenSection, string>;
-}>;
+} satisfies Record<
+    OrcestrUiLocale,
+    {
+        title: string;
+        description: string;
+        tokenEditor: string;
+        resetPreset: string;
+        primaryAction: string;
+        surface: string;
+        secondary: string;
+        ready: string;
+        warning: string;
+        statuses: string;
+        tokenSections: Record<FlatTokenSection, string>;
+    }
+>;
 
 export function ExampleThemePlayground({
     activePresetId,
@@ -587,36 +600,32 @@ export function ExampleThemePlayground({
     const copy = themePlaygroundCopy[locale];
 
     return (
-        <section id='theme' className='oui-section oui-ui-section'>
-            <div className='oui-ui-section-head'>
+        <section id="theme" className="oui-section oui-ui-section">
+            <div className="oui-ui-section-head">
                 <div>
-                    <h2 className='oui-ui-section-title'>{copy.title}</h2>
-                    <p className='oui-ui-description'>{copy.description}</p>
+                    <h2 className="oui-ui-section-title">{copy.title}</h2>
+                    <p className="oui-ui-description">{copy.description}</p>
                 </div>
             </div>
-            <div className='oui-theme-playground'>
-                <Stack className='oui-theme-playground-presets' g={2}>
+            <div className="oui-theme-playground">
+                <Stack className="oui-theme-playground-presets" g={2}>
                     <ThemePresetSelector
                         activePresetId={activePreset.id as ThemePresetId}
                         locale={locale}
                         onPresetChange={onPresetChange}
                     />
                 </Stack>
-                <div className='oui-section oui-theme-preview'>
-                    <div className='oui-theme-preview-head'>
+                <div className="oui-section oui-theme-preview">
+                    <div className="oui-theme-preview-head">
                         <Text fw={760}>{copy.tokenEditor}</Text>
-                        <Button
-                            size={1}
-                            v='surface'
-                            onClick={() => onPresetChange(activePreset)}
-                        >
+                        <Button size={1} v="surface" onClick={() => onPresetChange(activePreset)}>
                             {copy.resetPreset}
                         </Button>
                     </div>
                     <ScrollArea
-                        className='oui-theme-preview-scroll'
+                        className="oui-theme-preview-scroll"
                         highlights
-                        highlightColor='var(--oui-section-nested-solid-bg)'
+                        highlightColor="var(--oui-section-nested-solid-bg)"
                         highlightTop={{
                             start: 2,
                             fadeDistance: 28,
@@ -628,7 +637,7 @@ export function ExampleThemePlayground({
                             maxOpacity: 0.94,
                         }}
                     >
-                        <div className='oui-theme-token-editor'>
+                        <div className="oui-theme-token-editor">
                             {flatTokenSections.map((section) => (
                                 <TokenSection
                                     key={section}
@@ -644,7 +653,7 @@ export function ExampleThemePlayground({
                                 <TokenSection
                                     key={`status-${statusKey}`}
                                     title={`${copy.statuses} / ${statusKey}`}
-                                    section='status'
+                                    section="status"
                                     statusKey={statusKey}
                                     values={theme.status[statusKey]}
                                     onTokenChange={(key, value) =>
@@ -660,10 +669,14 @@ export function ExampleThemePlayground({
                         </div>
                         <Flex g={2} wrap>
                             <Button size={1}>{copy.primaryAction}</Button>
-                            <Button size={1} v='surface'>{copy.surface}</Button>
-                            <Button size={1} v='ghost'>{copy.secondary}</Button>
-                            <Badge tone='success'>{copy.ready}</Badge>
-                            <Badge tone='warning'>{copy.warning}</Badge>
+                            <Button size={1} v="surface">
+                                {copy.surface}
+                            </Button>
+                            <Button size={1} v="ghost">
+                                {copy.secondary}
+                            </Button>
+                            <Badge tone="success">{copy.ready}</Badge>
+                            <Badge tone="warning">{copy.warning}</Badge>
                         </Flex>
                     </ScrollArea>
                 </div>
@@ -682,14 +695,14 @@ export function ThemePresetSelector({
     onPresetChange: (preset: ThemePreset) => void;
 }) {
     return (
-        <div className='oui-theme-preset-grid'>
+        <div className="oui-theme-preset-grid">
             {themePresetGroups.map((group) => (
-                <div key={group.key} className='oui-theme-preset-group'>
-                    <div className='oui-theme-preset-group-label'>{group.label[locale]}</div>
+                <div key={group.key} className="oui-theme-preset-group">
+                    <div className="oui-theme-preset-group-label">{group.label[locale]}</div>
                     <ScrollArea
-                        className='oui-theme-preset-scroll'
+                        className="oui-theme-preset-scroll"
                         highlights
-                        highlightColor='var(--oui-section-solid-bg)'
+                        highlightColor="var(--oui-section-solid-bg)"
                         highlightTop={{
                             start: 1,
                             fadeDistance: 18,
@@ -701,24 +714,26 @@ export function ThemePresetSelector({
                             maxOpacity: 0.94,
                         }}
                     >
-                        <div className='oui-theme-preset-list'>
+                        <div className="oui-theme-preset-list">
                             {themePlaygroundPresets
                                 .filter((preset) => preset.group === group.key)
                                 .map((preset) => (
                                     <button
                                         key={preset.id}
-                                        type='button'
-                                        className='oui-theme-preset-card'
-                                        data-active={activePresetId === preset.id ? 'true' : undefined}
+                                        type="button"
+                                        className="oui-theme-preset-card"
+                                        data-active={
+                                            activePresetId === preset.id ? 'true' : undefined
+                                        }
                                         style={themePresetPreviewStyle(preset)}
                                         onClick={() => onPresetChange(preset)}
                                     >
-                                        <span className='oui-theme-preset-preview'>
+                                        <span className="oui-theme-preset-preview">
                                             <span />
                                             <span />
                                             <span />
                                         </span>
-                                        <span className='oui-theme-preset-body'>
+                                        <span className="oui-theme-preset-body">
                                             <strong>{themePresetLabel(preset, locale)}</strong>
                                             <span>{themePresetDescription(preset, locale)}</span>
                                         </span>
@@ -755,9 +770,11 @@ function TokenSection({
     onTokenChange: (key: string, value: string | number | false) => void;
 }) {
     return (
-        <div className='oui-theme-token-section'>
-            <Text fs='12px' fw={760} tone='muted'>{title}</Text>
-            <div className='oui-theme-token-grid'>
+        <div className="oui-theme-token-section">
+            <Text fs="12px" fw={760} tone="muted">
+                {title}
+            </Text>
+            <div className="oui-theme-token-grid">
                 {Object.entries(values).map(([key, value]) => (
                     <ThemeTokenControl
                         key={`${title}-${key}`}
@@ -808,21 +825,21 @@ function ThemeTokenControl({
     };
 
     return (
-        <div className='oui-theme-token oui-theme-token-control'>
+        <div className="oui-theme-token oui-theme-token-control">
             <span
-                className='oui-theme-token-swatch'
+                className="oui-theme-token-swatch"
                 style={{
-                    background: visibleColorValue ?? (
-                        section === 'colors' || section === 'status'
+                    background:
+                        visibleColorValue ??
+                        (section === 'colors' || section === 'status'
                             ? valueText
-                        : 'var(--oui-primary-surface)'
-                    ),
+                            : 'var(--oui-primary-surface)'),
                 }}
             >
                 {colorInputValue ? (
                     <input
-                        className='oui-theme-token-swatch-input'
-                        type='color'
+                        className="oui-theme-token-swatch-input"
+                        type="color"
                         value={visibleColorValue ?? colorInputValue}
                         aria-label={`${label} color`}
                         onChange={(event) => setColorDraft(event.target.value)}
@@ -830,11 +847,15 @@ function ThemeTokenControl({
                     />
                 ) : null}
             </span>
-            <span className='oui-theme-token-text'>
-                <Text fs='12px' fw={700}>{label}</Text>
-                <Text fs='11px' tone='muted'>{path}</Text>
+            <span className="oui-theme-token-text">
+                <Text fs="12px" fw={700}>
+                    {label}
+                </Text>
+                <Text fs="11px" tone="muted">
+                    {path}
+                </Text>
             </span>
-            <span className='oui-theme-token-control-field'>
+            <span className="oui-theme-token-control-field">
                 {selectOptions ? (
                     <select
                         value={valueText}
@@ -842,7 +863,9 @@ function ThemeTokenControl({
                         onChange={(event) => onChange(event.target.value)}
                     >
                         {selectOptions.map((option) => (
-                            <option key={option} value={option}>{option}</option>
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
                         ))}
                     </select>
                 ) : (
@@ -851,7 +874,11 @@ function ThemeTokenControl({
                         value={valueText}
                         aria-label={label}
                         onChange={(event) =>
-                            onChange(typeof value === 'number' ? Number(event.target.value) : event.target.value)
+                            onChange(
+                                typeof value === 'number'
+                                    ? Number(event.target.value)
+                                    : event.target.value,
+                            )
                         }
                     />
                 )}
@@ -873,7 +900,9 @@ function updateFlatToken(
             colors: {
                 ...current.colors,
                 [roleKey]: {
-                    ...(current.colors?.[roleKey as keyof NonNullable<OrcestrThemeOverrides['colors']>] as Record<string, string> | undefined),
+                    ...(current.colors?.[
+                        roleKey as keyof NonNullable<OrcestrThemeOverrides['colors']>
+                    ] as Record<string, string> | undefined),
                     [slotKey]: value,
                 },
             },
@@ -896,10 +925,7 @@ function tokenSectionValues(theme: OrcestrTheme, section: FlatTokenSection): Tok
     return flattenTokenValues(values as Record<string, unknown>);
 }
 
-function flattenTokenValues(
-    values: Record<string, unknown>,
-    prefix = '',
-): TokenValueRecord {
+function flattenTokenValues(values: Record<string, unknown>, prefix = ''): TokenValueRecord {
     return Object.entries(values).reduce<TokenValueRecord>((result, [key, value]) => {
         const path = prefix ? `${prefix}.${key}` : key;
         if (typeof value === 'string' || typeof value === 'number' || value === false) {

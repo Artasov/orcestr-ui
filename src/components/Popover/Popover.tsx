@@ -18,20 +18,20 @@ import {
     type Ref,
 } from 'react';
 
-import {useDisclosure} from '../../hooks/useDisclosure';
-import {type FloatingAlign, type FloatingSide} from '../../hooks/useFloatingPosition';
-import {useFloatingLayer} from '../../hooks/useFloatingLayer';
-import {useOutsidePointerDown} from '../../hooks/useOutsidePointerDown';
-import {splitSystemProps, type SystemProps} from '../../theme/systemProps';
-import {OrcestrThemeContext} from '../../theme/useTheme';
-import {composeRefs} from '../../utils/composeRefs';
-import {cn} from '../../utils/cn';
+import { useDisclosure } from '../../hooks/useDisclosure';
+import { type FloatingAlign, type FloatingSide } from '../../hooks/useFloatingPosition';
+import { useFloatingLayer } from '../../hooks/useFloatingLayer';
+import { useOutsidePointerDown } from '../../hooks/useOutsidePointerDown';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
+import { OrcestrThemeContext } from '../../theme/useTheme';
+import { composeRefs } from '../../utils/composeRefs';
+import { cn } from '../../utils/cn';
 import {
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
 } from '../Overlay/OverlayProvider';
-import {Portal} from '../Portal/Portal';
+import { Portal } from '../Portal/Portal';
 
 type TriggerElementProps = {
     ref?: Ref<HTMLElement>;
@@ -45,24 +45,24 @@ type TriggerElementProps = {
 
 export type PopoverProps = SystemProps &
     Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
-    trigger: ReactNode;
-    children: ReactNode;
-    open?: boolean;
-    defaultOpen?: boolean;
-    onOpenChange?: (open: boolean) => void;
-    side?: FloatingSide;
-    align?: FloatingAlign;
-    sideOffset?: number;
-    collisionPadding?: number;
-    matchTriggerWidth?: boolean;
-    disabled?: boolean;
-    className?: string;
-    contentStyle?: CSSProperties;
-    contentRef?: Ref<HTMLDivElement>;
-    onOpenAutoFocus?: (event: {preventDefault: () => void}) => void;
-    onInteractOutside?: (event: Event) => void;
-    testId?: string;
-};
+        trigger: ReactNode;
+        children: ReactNode;
+        open?: boolean;
+        defaultOpen?: boolean;
+        onOpenChange?: (open: boolean) => void;
+        side?: FloatingSide;
+        align?: FloatingAlign;
+        sideOffset?: number;
+        collisionPadding?: number;
+        matchTriggerWidth?: boolean;
+        disabled?: boolean;
+        className?: string;
+        contentStyle?: CSSProperties;
+        contentRef?: Ref<HTMLDivElement>;
+        onOpenAutoFocus?: (event: { preventDefault: () => void }) => void;
+        onInteractOutside?: (event: Event) => void;
+        testId?: string;
+    };
 
 export function Popover({
     trigger,
@@ -87,16 +87,13 @@ export function Popover({
 }: PopoverProps) {
     const overlay = useOverlayContext();
     const themeContext = useContext(OrcestrThemeContext);
-    const disclosure = useDisclosure({open, defaultOpen, onOpenChange});
-    const {open: isOpen, close: closeDisclosure, toggle} = disclosure;
+    const disclosure = useDisclosure({ open, defaultOpen, onOpenChange });
+    const { open: isOpen, close: closeDisclosure, toggle } = disclosure;
     const previousFocusRef = useRef<HTMLElement | null>(null);
-    const {
-        triggerRef,
-        contentRef,
-        present,
-        state,
-        style,
-    } = useFloatingLayer<HTMLElement, HTMLDivElement>({
+    const { triggerRef, contentRef, present, state, style } = useFloatingLayer<
+        HTMLElement,
+        HTMLDivElement
+    >({
         open: isOpen,
         side,
         align,
@@ -105,7 +102,7 @@ export function Popover({
         matchTriggerWidth,
     });
     const layerIndex = useOverlayLayerIndex(present);
-    const {systemStyle, restProps} = splitSystemProps(props);
+    const { systemStyle, restProps } = splitSystemProps(props);
     const handleOutsidePointerDown = useCallback(
         (event: PointerEvent) => {
             onInteractOutside?.(event);
@@ -118,7 +115,7 @@ export function Popover({
 
     useEffect(() => {
         if (!isOpen) return;
-        onOpenAutoFocus?.({preventDefault: () => undefined});
+        onOpenAutoFocus?.({ preventDefault: () => undefined });
         previousFocusRef.current =
             document.activeElement instanceof HTMLElement ? document.activeElement : null;
         const onKeyDown = (event: KeyboardEvent) => {
@@ -141,38 +138,35 @@ export function Popover({
         [disabled, toggle],
     );
 
-    const triggerNode = isValidElement(trigger)
-        ? clonePopoverTrigger(
-            trigger as ReactElement<TriggerElementProps>,
-            {
-                ref: triggerRef,
-                open: isOpen,
-                disabled,
-                testId,
-                onClick: handleTriggerClick,
-            },
-        )
-        : (
-            <span
-                ref={triggerRef}
-                className='oui-popover-trigger'
-                data-disabled={disabled ? 'true' : undefined}
-                role='button'
-                tabIndex={disabled ? -1 : 0}
-                aria-expanded={isOpen}
-                data-testid={testId}
-                onClick={handleTriggerClick}
-                onKeyDown={(event) => {
-                    if (disabled) return;
-                    if (event.key === 'Enter' || event.key === ' ') {
-                        event.preventDefault();
-                        toggle();
-                    }
-                }}
-            >
-                {trigger}
-            </span>
-        );
+    const triggerNode = isValidElement(trigger) ? (
+        clonePopoverTrigger(trigger as ReactElement<TriggerElementProps>, {
+            ref: triggerRef,
+            open: isOpen,
+            disabled,
+            testId,
+            onClick: handleTriggerClick,
+        })
+    ) : (
+        <span
+            ref={triggerRef}
+            className="oui-popover-trigger"
+            data-disabled={disabled ? 'true' : undefined}
+            role="button"
+            tabIndex={disabled ? -1 : 0}
+            aria-expanded={isOpen}
+            data-testid={testId}
+            onClick={handleTriggerClick}
+            onKeyDown={(event) => {
+                if (disabled) return;
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    toggle();
+                }
+            }}
+        >
+            {trigger}
+        </span>
+    );
 
     return (
         <>
@@ -183,7 +177,7 @@ export function Popover({
                         ref={composeRefs(contentRef, externalContentRef)}
                         className={cn('oui-popover-content', className)}
                         data-state={state}
-                        data-layer='dropdown'
+                        data-layer="dropdown"
                         data-oui-theme={themeContext?.mode}
                         data-oui-surface={themeContext?.surface}
                         data-testid={testId ? `${testId}-content` : undefined}
@@ -193,11 +187,7 @@ export function Popover({
                             ...systemStyle,
                             ...contentStyle,
                             ...contentStyleProp,
-                            zIndex: overlayLayerZIndex(
-                                overlay.zIndex,
-                                'dropdown',
-                                layerIndex,
-                            ),
+                            zIndex: overlayLayerZIndex(overlay.zIndex, 'dropdown', layerIndex),
                         }}
                         {...restProps}
                     >
@@ -219,19 +209,19 @@ type PopoverTriggerProps = {
 
 type PopoverContentProps = SystemProps &
     Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
-    children: ReactNode;
-    width?: number | string;
-    size?: number | string;
-    align?: FloatingAlign;
-    side?: FloatingSide;
-    sideOffset?: number;
-    matchTriggerWidth?: boolean;
-    className?: string;
-    onOpenAutoFocus?: (event: {preventDefault: () => void}) => void;
-    onInteractOutside?: (event: Event) => void;
-};
+        children: ReactNode;
+        width?: number | string;
+        size?: number | string;
+        align?: FloatingAlign;
+        side?: FloatingSide;
+        sideOffset?: number;
+        matchTriggerWidth?: boolean;
+        className?: string;
+        onOpenAutoFocus?: (event: { preventDefault: () => void }) => void;
+        onInteractOutside?: (event: Event) => void;
+    };
 
-function PopoverRoot({children, ...props}: PopoverRootProps) {
+function PopoverRoot({ children, ...props }: PopoverRootProps) {
     const trigger = findPopoverChild<PopoverTriggerProps>(children, PopoverTrigger);
     const content = findPopoverChild<PopoverContentProps>(children, PopoverContent);
     if (!trigger || !content) return null;
@@ -241,7 +231,7 @@ function PopoverRoot({children, ...props}: PopoverRootProps) {
         size: _size,
         ref: contentRef,
         ...contentProps
-    } = content.props as PopoverContentProps & {ref?: Ref<HTMLDivElement>};
+    } = content.props as PopoverContentProps & { ref?: Ref<HTMLDivElement> };
 
     return (
         <Popover
@@ -266,10 +256,7 @@ const PopoverContent = forwardRef<HTMLDivElement, PopoverContentProps>(
     },
 );
 
-function findPopoverChild<P>(
-    children: ReactNode,
-    type: unknown,
-): ReactElement<P> | null {
+function findPopoverChild<P>(children: ReactNode, type: unknown): ReactElement<P> | null {
     let found: ReactElement<P> | null = null;
     Children.forEach(children, (child) => {
         if (!found && isValidElement(child) && child.type === type) {

@@ -1,4 +1,4 @@
-import type {CSSProperties, ReactNode} from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 export type OrcestrThemeMode = 'dark' | 'light';
 export type OrcestrThemeSurface = 'orcestr' | 'operations' | 'media' | 'catalog';
@@ -158,9 +158,22 @@ export type OrcestrTheme = {
 export type OrcestrThemeOverrides = Partial<
     Omit<
         OrcestrTheme,
-        'colors' | 'mode' | 'surface' | 'motion' | 'radius' | 'spacing'
-        | 'breakpoints' | 'shadows' | 'density' | 'zIndex' | 'toast'
-        | 'scrollbar' | 'text' | 'status' | 'states' | 'components'
+        | 'colors'
+        | 'mode'
+        | 'surface'
+        | 'motion'
+        | 'radius'
+        | 'spacing'
+        | 'breakpoints'
+        | 'shadows'
+        | 'density'
+        | 'zIndex'
+        | 'toast'
+        | 'scrollbar'
+        | 'text'
+        | 'status'
+        | 'states'
+        | 'components'
     >
 > & {
     colors?: PartialColorOverrides;
@@ -193,23 +206,12 @@ type PartialStatusOverrides = Partial<{
 type PartialColorOverrides = Partial<
     Omit<
         OrcestrTheme['colors'],
-        | 'primary'
-        | 'secondary'
-        | 'neutral'
-        | 'danger'
-        | 'success'
-        | 'warning'
-        | 'info'
+        'primary' | 'secondary' | 'neutral' | 'danger' | 'success' | 'warning' | 'info'
     >
 > & {
-    [K in
-        | 'primary'
-        | 'secondary'
-        | 'neutral'
-        | 'danger'
-        | 'success'
-        | 'warning'
-        | 'info']?: Partial<OrcestrThemeColorRole>;
+    [
+        K in 'primary' | 'secondary' | 'neutral' | 'danger' | 'success' | 'warning' | 'info'
+    ]?: Partial<OrcestrThemeColorRole>;
 };
 
 export type OrcestrThemeContextValue = {

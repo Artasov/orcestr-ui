@@ -9,17 +9,17 @@ import {
     type KeyboardEvent,
     type ReactNode,
 } from 'react';
-import {LuCheck, LuChevronsUpDown, LuPlus, LuX} from 'react-icons/lu';
+import { LuCheck, LuChevronsUpDown, LuPlus, LuX } from 'react-icons/lu';
 
-import {useListNavigation} from '../../hooks/useListNavigation';
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
-import type {UiSize} from '../../theme/systemProps';
-import {Button} from '../Button/Button';
-import {IconButton} from '../IconButton/IconButton';
-import {Popover} from '../Popover/Popover';
-import {Spinner} from '../Spinner/Spinner';
-import {TextField} from '../TextField/TextField';
-import {Tooltip} from '../Tooltip/Tooltip';
+import { useListNavigation } from '../../hooks/useListNavigation';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import type { UiSize } from '../../theme/systemProps';
+import { Button } from '../Button/Button';
+import { IconButton } from '../IconButton/IconButton';
+import { Popover } from '../Popover/Popover';
+import { Spinner } from '../Spinner/Spinner';
+import { TextField } from '../TextField/TextField';
+import { Tooltip } from '../Tooltip/Tooltip';
 
 export type PaginatedResult<T> = {
     items: T[];
@@ -99,7 +99,7 @@ export function PaginatedCombobox<T>({
     debounceMs = DEFAULT_DEBOUNCE_MS,
     testId,
 }: PaginatedComboboxProps<T>) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     const actualPlaceholder = placeholder ?? copy.common.selectValue;
     const actualEmptyText = emptyText ?? copy.common.noOptions;
     const actualLoadingText = loadingText ?? copy.common.loading;
@@ -123,10 +123,7 @@ export function PaginatedCombobox<T>({
     const scrollRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        const timer = window.setTimeout(
-            () => setDebouncedSearch(searchInput.trim()),
-            debounceMs,
-        );
+        const timer = window.setTimeout(() => setDebouncedSearch(searchInput.trim()), debounceMs);
         return () => window.clearTimeout(timer);
     }, [debounceMs, searchInput]);
 
@@ -154,13 +151,13 @@ export function PaginatedCombobox<T>({
             })),
         [getItemId, items],
     );
-    const navigation = useListNavigation(navigationItems, {value: selectedId});
+    const navigation = useListNavigation(navigationItems, { value: selectedId });
     const highlightedId = navigation.highlightedValue;
     const highlightedItem = useMemo(
         () =>
             highlightedId === null
                 ? null
-                : items.find((item) => String(getItemId(item)) === highlightedId) ?? null,
+                : (items.find((item) => String(getItemId(item)) === highlightedId) ?? null),
         [getItemId, highlightedId, items],
     );
 
@@ -169,7 +166,7 @@ export function PaginatedCombobox<T>({
         const node = scrollRef.current?.querySelector<HTMLElement>(
             `[data-oui-paginated-combobox-value="${cssAttr(highlightedId)}"]`,
         );
-        node?.scrollIntoView({block: 'nearest'});
+        node?.scrollIntoView({ block: 'nearest' });
     }, [highlightedId, open]);
 
     const fetchPage = useCallback(
@@ -214,7 +211,7 @@ export function PaginatedCombobox<T>({
                 const nextPage = (lastPage?.page ?? pages.length) + 1;
                 void fetchPage(nextPage, debouncedSearch);
             },
-            {threshold: 0.1},
+            { threshold: 0.1 },
         );
         observer.observe(sentinel);
         return () => observer.disconnect();
@@ -309,22 +306,22 @@ export function PaginatedCombobox<T>({
             trigger={
                 trigger ?? (
                     <Button
-                        type='button'
-                        v='surface'
+                        type="button"
+                        v="surface"
                         size={size}
                         disabled={disabled}
                         fullWidth
-                        pressAnimation='none'
-                        className='oui-combobox-trigger'
+                        pressAnimation="none"
+                        className="oui-combobox-trigger"
                         data-testid={testId}
                         data-state={open ? 'open' : 'closed'}
                         onKeyDown={handleKeyDown}
                         rightIcon={
-                            <span className='oui-combobox-trigger-actions'>
+                            <span className="oui-combobox-trigger-actions">
                                 {canClear ? (
                                     <span
                                         aria-label={clearLabel ?? copy.common.clear}
-                                        className='oui-combobox-clear'
+                                        className="oui-combobox-clear"
                                         onPointerDown={(event) => {
                                             event.preventDefault();
                                             event.stopPropagation();
@@ -342,19 +339,25 @@ export function PaginatedCombobox<T>({
                             </span>
                         }
                     >
-                        <span className={triggerLabel ? 'oui-combobox-trigger-label' : 'oui-combobox-placeholder'}>
+                        <span
+                            className={
+                                triggerLabel
+                                    ? 'oui-combobox-trigger-label'
+                                    : 'oui-combobox-placeholder'
+                            }
+                        >
                             {triggerLabel ?? actualPlaceholder}
                         </span>
                     </Button>
                 )
             }
-            className='oui-combobox-content'
-            align='start'
+            className="oui-combobox-content"
+            align="start"
             sideOffset={4}
             matchTriggerWidth
             disabled={disabled}
         >
-            <div className='oui-combobox-search-wrap'>
+            <div className="oui-combobox-search-wrap">
                 <TextField
                     autoFocus
                     size={2}
@@ -367,9 +370,9 @@ export function PaginatedCombobox<T>({
                     <Tooltip content={actualSearchActionLabel}>
                         <IconButton
                             size={2}
-                            v='soft'
+                            v="soft"
                             icon={<LuPlus size={14} />}
-                            className='oui-combobox-search-action'
+                            className="oui-combobox-search-action"
                             aria-label={actualSearchActionLabel}
                             disabled={searchAction.disabled}
                             onClick={() => {
@@ -382,63 +385,62 @@ export function PaginatedCombobox<T>({
             </div>
             <div
                 ref={scrollRef}
-                className='oui-combobox-scroll'
-                style={{maxHeight}}
+                className="oui-combobox-scroll"
+                style={{ maxHeight }}
                 tabIndex={-1}
                 onKeyDown={handleKeyDown}
             >
                 {isInitialLoading ? (
-                    <div className='oui-combobox-state'>
+                    <div className="oui-combobox-state">
                         <Spinner />
-                        <span className='oui-visually-hidden'>{actualLoadingText}</span>
+                        <span className="oui-visually-hidden">{actualLoadingText}</span>
                     </div>
                 ) : error ? (
-                    <div className='oui-combobox-state'>
+                    <div className="oui-combobox-state">
                         <span>{actualErrorText}</span>
                         <Button
                             size={1}
-                            v='surface'
+                            v="surface"
                             onClick={() => void fetchPage(1, debouncedSearch)}
                         >
                             {actualRetryLabel}
                         </Button>
                     </div>
                 ) : items.length === 0 ? (
-                    <div className='oui-combobox-empty'>{actualEmptyText}</div>
+                    <div className="oui-combobox-empty">{actualEmptyText}</div>
                 ) : (
-                    <div className='oui-combobox-options'>
+                    <div className="oui-combobox-options">
                         {items.map((item) => {
                             const id = getItemId(item);
                             const itemId = String(id);
                             const selected =
                                 isItemSelected?.(item) ??
-                                (value !== null &&
-                                    String(getItemId(value)) === itemId);
+                                (value !== null && String(getItemId(value)) === itemId);
                             const highlighted = highlightedId === itemId;
                             return (
                                 <div
                                     key={itemId}
-                                    className='oui-combobox-option'
+                                    className="oui-combobox-option"
                                     data-selected={selected ? 'true' : 'false'}
                                     data-highlighted={highlighted ? 'true' : 'false'}
                                     data-oui-paginated-combobox-value={itemId}
                                     onMouseEnter={() => navigation.setHighlightedValue(itemId)}
                                 >
                                     <button
-                                        type='button'
-                                        className='oui-combobox-option-main'
+                                        type="button"
+                                        className="oui-combobox-option-main"
                                         onClick={() => handleSelect(item)}
                                     >
                                         {renderOption(item)}
                                     </button>
                                     {selected ? (
-                                        <LuCheck className='oui-combobox-check' size={15} />
+                                        <LuCheck className="oui-combobox-check" size={15} />
                                     ) : null}
                                     {optionAction ? (
                                         <Tooltip content={optionAction.label(item)}>
                                             <button
-                                                type='button'
-                                                className='oui-combobox-option-action'
+                                                type="button"
+                                                className="oui-combobox-option-action"
                                                 aria-label={optionAction.label(item)}
                                                 disabled={optionAction.disabled?.(item)}
                                                 onPointerDown={(event) => {
@@ -459,10 +461,10 @@ export function PaginatedCombobox<T>({
                             );
                         })}
                         {hasNextPage ? (
-                            <div ref={sentinelRef} className='oui-combobox-sentinel' />
+                            <div ref={sentinelRef} className="oui-combobox-sentinel" />
                         ) : null}
                         {loadingNext ? (
-                            <div className='oui-combobox-next-loader'>
+                            <div className="oui-combobox-next-loader">
                                 <Spinner size={1} />
                             </div>
                         ) : null}

@@ -45,12 +45,12 @@ npm install ../../orcestr-ui
 Подключи runtime styles один раз рядом с корнем приложения и оберни приложение в `OrcestrUiProvider`.
 
 ```tsx
-import {Button, OrcestrUiProvider} from '@orcestr/ui';
+import { Button, OrcestrUiProvider } from '@orcestr/ui';
 import '@orcestr/ui/styles.css';
 
 export function App() {
     return (
-        <OrcestrUiProvider locale='ru' defaultMode='dark'>
+        <OrcestrUiProvider locale="ru" defaultMode="dark">
             <Button>Сохранить</Button>
         </OrcestrUiProvider>
     );
@@ -60,13 +60,13 @@ export function App() {
 React Query adapter опциональный и вынесен из основного entrypoint:
 
 ```ts
-import {usePaginatedComboboxQueryLoader} from '@orcestr/ui/react-query';
+import { usePaginatedComboboxQueryLoader } from '@orcestr/ui/react-query';
 ```
 
 Example page опубликована отдельным entrypoint, со своими demo styles:
 
 ```tsx
-import {UiExamplePage} from '@orcestr/ui/example/UiExamplePage';
+import { UiExamplePage } from '@orcestr/ui/example/UiExamplePage';
 import '@orcestr/ui/example/styles.css';
 ```
 
@@ -95,13 +95,13 @@ Orcestr UI рассчитан на операционный софт: dashboards
 
 ## Package Entrypoints
 
-| Entrypoint | Назначение |
-| --- | --- |
-| `@orcestr/ui` | Основные React components, providers, hooks и theme API. |
-| `@orcestr/ui/styles.css` | Runtime styles библиотеки компонентов. |
-| `@orcestr/ui/react-query` | Optional React Query adapter для paginated combobox loaders. |
+| Entrypoint                          | Назначение                                                   |
+| ----------------------------------- | ------------------------------------------------------------ |
+| `@orcestr/ui`                       | Основные React components, providers, hooks и theme API.     |
+| `@orcestr/ui/styles.css`            | Runtime styles библиотеки компонентов.                       |
+| `@orcestr/ui/react-query`           | Optional React Query adapter для paginated combobox loaders. |
 | `@orcestr/ui/example/UiExamplePage` | Demo page для визуальной проверки и внутренней документации. |
-| `@orcestr/ui/example/styles.css` | Styles только для example page. |
+| `@orcestr/ui/example/styles.css`    | Styles только для example page.                              |
 
 ## Скрипты
 

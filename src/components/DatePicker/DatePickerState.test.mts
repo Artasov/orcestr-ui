@@ -50,13 +50,8 @@ test('month cursor helpers are stable around year boundaries', () => {
 });
 
 test('weekday labels start from Monday', () => {
-    assert.deepEqual(weekdayLabels('en').map((label) => label.toLowerCase()), [
-        'mon',
-        'tue',
-        'wed',
-        'thu',
-        'fri',
-        'sat',
-        'sun',
-    ]);
+    assert.deepEqual(
+        weekdayLabels('en').map((label) => label.toLowerCase()),
+        ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+    );
 });

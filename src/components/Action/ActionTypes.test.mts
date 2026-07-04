@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import {createElement} from 'react';
+import { createElement } from 'react';
 
 import {
     actionItemSearchText,
@@ -13,14 +13,20 @@ import {
 test('actionItemText extracts searchable text from action labels', () => {
     assert.equal(actionItemText('Open'), 'Open');
     assert.equal(actionItemText(42), '42');
-    assert.equal(actionItemText(['Open ', createElement('strong', null, 'details')]), 'Open details');
+    assert.equal(
+        actionItemText(['Open ', createElement('strong', null, 'details')]),
+        'Open details',
+    );
     assert.equal(actionItemText(false), '');
 });
 
 test('isActionItemDisabled treats loading actions as unavailable', () => {
-    assert.equal(isActionItemDisabled({key: 'open', label: 'Open'}), false);
-    assert.equal(isActionItemDisabled({key: 'disabled', label: 'Disabled', disabled: true}), true);
-    assert.equal(isActionItemDisabled({key: 'loading', label: 'Loading', loading: true}), true);
+    assert.equal(isActionItemDisabled({ key: 'open', label: 'Open' }), false);
+    assert.equal(
+        isActionItemDisabled({ key: 'disabled', label: 'Disabled', disabled: true }),
+        true,
+    );
+    assert.equal(isActionItemDisabled({ key: 'loading', label: 'Loading', loading: true }), true);
 });
 
 test('action helpers normalize recursive action items for shared surfaces', () => {
@@ -32,10 +38,8 @@ test('action helpers normalize recursive action items for shared surfaces', () =
             shortcut: 'D',
             loading: true,
             tone: 'danger',
-            confirm: {title: 'Delete?'},
-            children: [
-                {key: 'delete-soft', label: 'Soft delete'},
-            ],
+            confirm: { title: 'Delete?' },
+            children: [{ key: 'delete-soft', label: 'Soft delete' }],
         },
     ]);
 

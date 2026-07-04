@@ -1,8 +1,8 @@
 'use client';
 
-import {type CSSProperties, type ReactNode} from 'react';
+import { type CSSProperties, type ReactNode } from 'react';
 
-import {cn} from '../../utils/cn';
+import { cn } from '../../utils/cn';
 
 export type CollapseProps = {
     open: boolean;
@@ -35,9 +35,7 @@ export function Collapse({
                 ...style,
             }}
         >
-            <div className='oui-collapse-content'>
-                {children}
-            </div>
+            <div className="oui-collapse-content">{children}</div>
         </div>
     );
 }

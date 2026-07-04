@@ -1,6 +1,6 @@
 'use client';
 
-import {useMemo, useState} from 'react';
+import { useMemo, useState } from 'react';
 
 import {
     Badge,
@@ -15,9 +15,9 @@ import {
     type DataTableColumn,
     type DataTableSort,
 } from '..';
-import {ExampleTile} from './CodePreview';
-import {codeSamples, type CodeExample} from './codeSamples';
-import {UiExampleSection} from './UiExampleSection';
+import { ExampleTile } from './CodePreview';
+import { codeSamples, type CodeExample } from './codeSamples';
+import { UiExampleSection } from './UiExampleSection';
 
 type DataSectionProps = {
     onOpenCode: (example: CodeExample) => void;
@@ -31,12 +31,12 @@ type DemoRow = {
 };
 
 const rows: DemoRow[] = [
-    {name: 'Review item', status: 'Done', owner: 'Team C', quantity: 128},
-    {name: 'Review task', status: 'Working', owner: 'Team B', quantity: 42},
-    {name: 'Complete', status: 'Blocked', owner: 'Team A', quantity: 12},
-    {name: 'Return', status: 'Working', owner: 'Team C', quantity: 7},
-    {name: 'Audit task', status: 'Done', owner: 'Team B', quantity: 64},
-    {name: 'Sync task', status: 'Blocked', owner: 'Team A', quantity: 18},
+    { name: 'Review item', status: 'Done', owner: 'Team C', quantity: 128 },
+    { name: 'Review task', status: 'Working', owner: 'Team B', quantity: 42 },
+    { name: 'Complete', status: 'Blocked', owner: 'Team A', quantity: 12 },
+    { name: 'Return', status: 'Working', owner: 'Team C', quantity: 7 },
+    { name: 'Audit task', status: 'Done', owner: 'Team B', quantity: 64 },
+    { name: 'Sync task', status: 'Blocked', owner: 'Team A', quantity: 18 },
 ];
 
 const columns: DataTableColumn<DemoRow>[] = [
@@ -80,51 +80,53 @@ const defaultVisibleColumnKeys = columns
     .map((column) => column.key);
 const defaultColumnOrder = columns.map((column) => column.key);
 
-export function DataSection({onOpenCode}: DataSectionProps) {
+export function DataSection({ onOpenCode }: DataSectionProps) {
     const [query, setQuery] = useState('');
     const [sort, setSort] = useState<DataTableSort | null>({
         key: 'name',
         direction: 'asc',
     });
     const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>(['Review item']);
-    const [visibleColumnKeys, setVisibleColumnKeys] = useState<string[]>(
-        defaultVisibleColumnKeys,
-    );
+    const [visibleColumnKeys, setVisibleColumnKeys] = useState<string[]>(defaultVisibleColumnKeys);
     const [columnOrder, setColumnOrder] = useState<string[]>(defaultColumnOrder);
     const [columnWidths, setColumnWidths] = useState<Record<string, number>>({});
     const [page, setPage] = useState(2);
     const filteredRows = useMemo(
-        () => sortRows(rows.filter((row) => rowMatches(row, query)), sort),
+        () =>
+            sortRows(
+                rows.filter((row) => rowMatches(row, query)),
+                sort,
+            ),
         [query, sort],
     );
 
     return (
         <>
             <UiExampleSection
-                id='data-table-example'
-                title='DataTable'
-                description='Reusable DataTable without CRUD or page-level entity logic.'
+                id="data-table-example"
+                title="DataTable"
+                description="Reusable DataTable without CRUD or page-level entity logic."
             >
                 <ExampleTile
-                    className='oui-ui-table-tile'
-                    title='DataTable'
+                    className="oui-ui-table-tile"
+                    title="DataTable"
                     code={codeSamples.data}
                     onOpen={onOpenCode}
                 >
-                    <div className='oui-ui-table-demo'>
+                    <div className="oui-ui-table-demo">
                         <DataTable
-                            toolbar={(
+                            toolbar={
                                 <>
                                     <TextField
                                         value={query}
-                                        placeholder='Filter rows'
+                                        placeholder="Filter rows"
                                         clearable
                                         onChange={(event) => setQuery(event.target.value)}
                                         onClear={() => setQuery('')}
                                     />
                                     <Button
                                         size={3}
-                                        v='surface'
+                                        v="surface"
                                         onClick={() => {
                                             setVisibleColumnKeys(defaultVisibleColumnKeys);
                                             setColumnOrder(defaultColumnOrder);
@@ -134,19 +136,19 @@ export function DataSection({onOpenCode}: DataSectionProps) {
                                         Reset
                                     </Button>
                                 </>
-                            )}
+                            }
                             rowKey={(row) => row.name}
                             rows={filteredRows}
                             columns={columns}
                             sort={sort}
                             onSortChange={(nextSort) =>
-                                setSort(Array.isArray(nextSort) ? nextSort[0] ?? null : nextSort)
+                                setSort(Array.isArray(nextSort) ? (nextSort[0] ?? null) : nextSort)
                             }
                             selectable
                             selectedRowKeys={selectedRowKeys}
                             onSelectedRowKeysChange={setSelectedRowKeys}
                             total={rows.length}
-                            emptyText='No rows match the filter.'
+                            emptyText="No rows match the filter."
                             columnSettings={{
                                 columns,
                                 visibleColumnKeys,
@@ -175,9 +177,9 @@ export function DataSection({onOpenCode}: DataSectionProps) {
                                 },
                             ]}
                         />
-                        <div className='oui-ui-table-variants'>
-                            <div className='oui-ui-table-variant'>
-                                <Text fs='13px' fw={760}>
+                        <div className="oui-ui-table-variants">
+                            <div className="oui-ui-table-variant">
+                                <Text fs="13px" fw={760}>
                                     Plain table
                                 </Text>
                                 <DataTable
@@ -188,12 +190,12 @@ export function DataSection({onOpenCode}: DataSectionProps) {
                                     onSortChange={(nextSort) =>
                                         setSort(
                                             Array.isArray(nextSort)
-                                                ? nextSort[0] ?? null
+                                                ? (nextSort[0] ?? null)
                                                 : nextSort,
                                         )
                                     }
                                     total={rows.length}
-                                    emptyText='No rows.'
+                                    emptyText="No rows."
                                 />
                             </div>
                         </div>
@@ -201,22 +203,22 @@ export function DataSection({onOpenCode}: DataSectionProps) {
                 </ExampleTile>
             </UiExampleSection>
             <UiExampleSection
-                id='table-primitives-example'
-                title='Table and pagination'
-                description='Low-level Table primitive and page navigation.'
+                id="table-primitives-example"
+                title="Table and pagination"
+                description="Low-level Table primitive and page navigation."
             >
                 <ExampleTile
-                    title='Table and pagination'
+                    title="Table and pagination"
                     code={codeSamples.tablePagination}
                     onOpen={onOpenCode}
                 >
                     <Stack g={3}>
-                        <Table v='surface' w='100%'>
+                        <Table v="surface" w="100%">
                             <Table.Header>
                                 <Table.Row>
                                     <Table.ColumnHeaderCell>Document</Table.ColumnHeaderCell>
                                     <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
-                                    <Table.ColumnHeaderCell align='right'>
+                                    <Table.ColumnHeaderCell align="right">
                                         Qty
                                     </Table.ColumnHeaderCell>
                                 </Table.Row>
@@ -230,20 +232,16 @@ export function DataSection({onOpenCode}: DataSectionProps) {
                                                 {row.status}
                                             </Badge>
                                         </Table.Cell>
-                                        <Table.Cell align='right'>{row.quantity}</Table.Cell>
+                                        <Table.Cell align="right">{row.quantity}</Table.Cell>
                                     </Table.Row>
                                 ))}
                             </Table.Body>
                         </Table>
-                        <Flex j='sb' a='c' wrap g={2}>
-                            <Text fs='13px' tone='muted'>
+                        <Flex j="sb" a="c" wrap g={2}>
+                            <Text fs="13px" tone="muted">
                                 Showing 25 items per page
                             </Text>
-                            <Pagination
-                                page={page}
-                                pageCount={4}
-                                onPageChange={setPage}
-                            />
+                            <Pagination page={page} pageCount={4} onPageChange={setPage} />
                         </Flex>
                     </Stack>
                 </ExampleTile>

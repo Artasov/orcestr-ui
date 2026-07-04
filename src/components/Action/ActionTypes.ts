@@ -1,6 +1,6 @@
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 
-import type {Tone} from '../../theme/systemProps';
+import type { Tone } from '../../theme/systemProps';
 
 export type OrcestrActionTone = Extract<
     Tone,
@@ -54,7 +54,7 @@ export function actionItemText(label: ReactNode): string {
     if (typeof label === 'number') return String(label);
     if (Array.isArray(label)) return label.map(actionItemText).join('');
     if (typeof label === 'object' && 'props' in label) {
-        const props = label.props as {children?: ReactNode};
+        const props = label.props as { children?: ReactNode };
         return actionItemText(props.children);
     }
     return '';

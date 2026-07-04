@@ -9,15 +9,15 @@ import {
     type KeyboardEvent,
     type ReactNode,
 } from 'react';
-import {LuCheck, LuChevronsUpDown, LuX} from 'react-icons/lu';
+import { LuCheck, LuChevronsUpDown, LuX } from 'react-icons/lu';
 
-import {useListNavigation} from '../../hooks/useListNavigation';
-import {useTypeahead} from '../../hooks/useTypeahead';
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
-import type {UiSize} from '../../theme/systemProps';
-import {Button} from '../Button/Button';
-import {Popover} from '../Popover/Popover';
-import type {SelectItem} from '../Select/Select';
+import { useListNavigation } from '../../hooks/useListNavigation';
+import { useTypeahead } from '../../hooks/useTypeahead';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import type { UiSize } from '../../theme/systemProps';
+import { Button } from '../Button/Button';
+import { Popover } from '../Popover/Popover';
+import type { SelectItem } from '../Select/Select';
 
 export function MultiSelect<V extends string = string>({
     items,
@@ -52,7 +52,7 @@ export function MultiSelect<V extends string = string>({
     renderValue?: (items: ReadonlyArray<SelectItem<V>>) => ReactNode;
     testId?: string;
 }) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     const [open, setOpen] = useState(false);
     const optionsRef = useRef<HTMLDivElement | null>(null);
     const selectedItems = useMemo(
@@ -76,19 +76,19 @@ export function MultiSelect<V extends string = string>({
     const canClear = clearable && selectedItems.length > 0 && !disabled;
     const triggerLabel =
         selectedItems.length > 0
-            ? renderValue?.(selectedItems) ?? defaultMultiSelectLabel(selectedItems)
+            ? (renderValue?.(selectedItems) ?? defaultMultiSelectLabel(selectedItems))
             : value.length > 0
               ? typeof selectedFallbackLabel === 'function'
                   ? selectedFallbackLabel(value)
                   : selectedFallbackLabel
-            : null;
+              : null;
 
     useEffect(() => {
         if (!open || highlighted === null) return;
         const node = optionsRef.current?.querySelector<HTMLElement>(
             `[data-oui-multi-select-value="${cssAttr(highlighted)}"]`,
         );
-        node?.scrollIntoView({block: 'nearest'});
+        node?.scrollIntoView({ block: 'nearest' });
     }, [highlighted, open]);
 
     const toggle = useCallback(
@@ -167,24 +167,24 @@ export function MultiSelect<V extends string = string>({
             }}
             trigger={
                 <Button
-                    type='button'
-                    v='surface'
+                    type="button"
+                    v="surface"
                     size={size}
                     disabled={disabled}
                     fullWidth
-                    pressAnimation='none'
-                    className='oui-combobox-trigger oui-multi-select-trigger'
+                    pressAnimation="none"
+                    className="oui-combobox-trigger oui-multi-select-trigger"
                     data-state={open ? 'open' : 'closed'}
                     testId={testId}
-                    aria-haspopup='listbox'
+                    aria-haspopup="listbox"
                     aria-expanded={open}
                     onKeyDown={handleKeyDown}
                     rightIcon={
-                        <span className='oui-combobox-trigger-actions'>
+                        <span className="oui-combobox-trigger-actions">
                             {canClear ? (
                                 <span
                                     aria-label={clearLabel ?? copy.common.clearSelectedValues}
-                                    className='oui-combobox-clear'
+                                    className="oui-combobox-clear"
                                     onPointerDown={(event) => {
                                         event.preventDefault();
                                         event.stopPropagation();
@@ -205,9 +205,7 @@ export function MultiSelect<V extends string = string>({
                 >
                     <span
                         className={
-                            triggerLabel
-                                ? 'oui-combobox-trigger-label'
-                                : 'oui-combobox-placeholder'
+                            triggerLabel ? 'oui-combobox-trigger-label' : 'oui-combobox-placeholder'
                         }
                     >
                         {triggerLabel ?? placeholder ?? copy.common.selectValue}
@@ -216,23 +214,23 @@ export function MultiSelect<V extends string = string>({
             }
             className={className ? `oui-select-content ${className}` : 'oui-select-content'}
             testId={testId ? `${testId}-popover` : undefined}
-            align='start'
+            align="start"
             sideOffset={4}
             matchTriggerWidth
             disabled={disabled}
         >
             <div
                 ref={optionsRef}
-                role='listbox'
-                aria-multiselectable='true'
-                className='oui-combobox-scroll oui-combobox-options'
+                role="listbox"
+                aria-multiselectable="true"
+                className="oui-combobox-scroll oui-combobox-options"
                 data-testid={testId ? `${testId}-listbox` : undefined}
-                style={{maxHeight}}
+                style={{ maxHeight }}
                 tabIndex={-1}
                 onKeyDown={handleKeyDown}
             >
                 {items.length === 0 ? (
-                    <div className='oui-combobox-empty'>{emptyText ?? copy.common.noOptions}</div>
+                    <div className="oui-combobox-empty">{emptyText ?? copy.common.noOptions}</div>
                 ) : (
                     items.map((item) => {
                         const selected = selectedSet.has(item.value);
@@ -240,11 +238,11 @@ export function MultiSelect<V extends string = string>({
                         return (
                             <button
                                 key={item.value}
-                                type='button'
-                                role='option'
+                                type="button"
+                                role="option"
                                 aria-selected={selected}
                                 disabled={item.disabled}
-                                className='oui-combobox-option oui-multi-select-option'
+                                className="oui-combobox-option oui-multi-select-option"
                                 data-oui-multi-select-value={item.value}
                                 data-selected={selected ? 'true' : 'false'}
                                 data-highlighted={isHighlighted ? 'true' : 'false'}
@@ -257,12 +255,10 @@ export function MultiSelect<V extends string = string>({
                                     if (!item.disabled) toggle(item.value);
                                 }}
                             >
-                                <span className='oui-multi-select-check'>
+                                <span className="oui-multi-select-check">
                                     {selected ? <LuCheck size={14} /> : null}
                                 </span>
-                                <span className='oui-combobox-option-main'>
-                                    {item.label}
-                                </span>
+                                <span className="oui-combobox-option-main">{item.label}</span>
                             </button>
                         );
                     })
@@ -272,9 +268,7 @@ export function MultiSelect<V extends string = string>({
     );
 }
 
-function defaultMultiSelectLabel<V extends string>(
-    items: ReadonlyArray<SelectItem<V>>,
-) {
+function defaultMultiSelectLabel<V extends string>(items: ReadonlyArray<SelectItem<V>>) {
     if (items.length <= 2) {
         return items.map((item) => selectItemText(item)).join(', ');
     }

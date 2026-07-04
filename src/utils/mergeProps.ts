@@ -4,11 +4,8 @@ function isHandler(key: string, value: unknown): value is (...args: unknown[]) =
     return /^on[A-Z]/.test(key) && typeof value === 'function';
 }
 
-export function mergeProps<T extends AnyProps, U extends AnyProps>(
-    first: T,
-    second: U,
-): T & U {
-    const result: AnyProps = {...first, ...second};
+export function mergeProps<T extends AnyProps, U extends AnyProps>(first: T, second: U): T & U {
+    const result: AnyProps = { ...first, ...second };
     for (const key of Object.keys(first)) {
         const firstValue = first[key];
         const secondValue = second[key];

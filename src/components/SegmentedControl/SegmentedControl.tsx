@@ -1,9 +1,9 @@
 'use client';
 
-import {Children, isValidElement, type ReactNode} from 'react';
+import { Children, isValidElement, type ReactNode } from 'react';
 
-import type {UiSize} from '../../theme/systemProps';
-import {cn} from '../../utils/cn';
+import type { UiSize } from '../../theme/systemProps';
+import { cn } from '../../utils/cn';
 
 export type SegmentedControlItem = {
     value: string;
@@ -31,8 +31,8 @@ export function SegmentedControl({
             {items.map((item) => (
                 <button
                     key={item.value}
-                    type='button'
-                    className='oui-segmented-item'
+                    type="button"
+                    className="oui-segmented-item"
                     data-active={value === item.value ? 'true' : undefined}
                     data-testid={testId ? `${testId}-${item.value}` : undefined}
                     disabled={item.disabled}

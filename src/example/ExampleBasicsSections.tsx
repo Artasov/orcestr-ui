@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from 'react';
+import { useState } from 'react';
 
 import {
     Alert,
@@ -20,111 +20,115 @@ import {
     TopHighlight,
     BottomHighlight,
 } from '..';
-import {ExampleTile} from './CodePreview';
-import {codeSamples, type CodeExample} from './codeSamples';
-import {UiExampleSection} from './UiExampleSection';
+import { ExampleTile } from './CodePreview';
+import { codeSamples, type CodeExample } from './codeSamples';
+import { UiExampleSection } from './UiExampleSection';
 
 type ExampleSectionProps = {
     onOpenCode: (example: CodeExample) => void;
 };
 
-export function TextSection({onOpenCode}: ExampleSectionProps) {
+export function TextSection({ onOpenCode }: ExampleSectionProps) {
     return (
         <>
-        <UiExampleSection
-            id='text'
-            title='Text'
-            description='Text and shared system props.'
-        >
-                <ExampleTile
-                        title='Text'
-                        code={codeSamples.text}
-                        onOpen={onOpenCode}
-                    >
+            <UiExampleSection id="text" title="Text" description="Text and shared system props.">
+                <ExampleTile title="Text" code={codeSamples.text} onOpen={onOpenCode}>
                     <Stack g={3}>
                         <Stack g={1}>
-                            <Text as='h1' fs='28px' fw={780} lh={1.1}>
+                            <Text as="h1" fs="28px" fw={780} lh={1.1}>
                                 Operations review
                             </Text>
-                            <Text as='h2' fs='20px' fw={720} lh={1.2}>
+                            <Text as="h2" fs="20px" fw={720} lh={1.2}>
                                 Review window and status
                             </Text>
-                            <Text tone='muted' fs='13px' lh={1.5}>
-                                Compact operational text with muted metadata and predictable line height.
+                            <Text tone="muted" fs="13px" lh={1.5}>
+                                Compact operational text with muted metadata and predictable line
+                                height.
                             </Text>
                         </Stack>
                         <Stack g={1}>
-                            <Text fs='15px' fw={700}>Body strong text</Text>
-                            <Text fs='14px' lh={1.55}>Body regular text for dense forms and tables.</Text>
-                            <Text fs='12px' tone='muted' lh={1.4}>Caption text, helper text and quiet labels.</Text>
+                            <Text fs="15px" fw={700}>
+                                Body strong text
+                            </Text>
+                            <Text fs="14px" lh={1.55}>
+                                Body regular text for dense forms and tables.
+                            </Text>
+                            <Text fs="12px" tone="muted" lh={1.4}>
+                                Caption text, helper text and quiet labels.
+                            </Text>
                         </Stack>
                         <Flex g={2} wrap>
-                            <Text tone='primary' fw={700}>Primary</Text>
-                            <Text tone='success' fw={700}>Success</Text>
-                            <Text tone='warning' fw={700}>Warning</Text>
-                            <Text tone='danger' fw={700}>Danger</Text>
-                            <Text tone='info' fw={700}>Info</Text>
+                            <Text tone="primary" fw={700}>
+                                Primary
+                            </Text>
+                            <Text tone="success" fw={700}>
+                                Success
+                            </Text>
+                            <Text tone="warning" fw={700}>
+                                Warning
+                            </Text>
+                            <Text tone="danger" fw={700}>
+                                Danger
+                            </Text>
+                            <Text tone="info" fw={700}>
+                                Info
+                            </Text>
                         </Flex>
-                        <Box w='100%' p={2} r={3} style={{background: 'var(--oui-gray-a3)'}}>
-                            <Text display='block' truncate>
-                                This is a long single line value that truncates cleanly inside a constrained row.
+                        <Box w="100%" p={2} r={3} style={{ background: 'var(--oui-gray-a3)' }}>
+                            <Text display="block" truncate>
+                                This is a long single line value that truncates cleanly inside a
+                                constrained row.
                             </Text>
                         </Box>
                         <Flex g={2} wrap>
                             <Badge>Neutral</Badge>
-                            <Badge tone='primary'>Primary</Badge>
-                            <Badge tone='success'>Success</Badge>
-                            <Badge tone='warning'>Warning</Badge>
-                            <Badge tone='danger'>Danger</Badge>
-                            <Badge tone='info'>Info</Badge>
+                            <Badge tone="primary">Primary</Badge>
+                            <Badge tone="success">Success</Badge>
+                            <Badge tone="warning">Warning</Badge>
+                            <Badge tone="danger">Danger</Badge>
+                            <Badge tone="info">Info</Badge>
                         </Flex>
                     </Stack>
                 </ExampleTile>
-        </UiExampleSection>
-        <UiExampleSection
-            id='skeleton-example'
-            title='Skeleton'
-            description='Loading placeholder primitives.'
-        >
-                <ExampleTile
-                        title='Skeleton'
-                        code={codeSamples.skeleton}
-                        onOpen={onOpenCode}
-                    >
+            </UiExampleSection>
+            <UiExampleSection
+                id="skeleton-example"
+                title="Skeleton"
+                description="Loading placeholder primitives."
+            >
+                <ExampleTile title="Skeleton" code={codeSamples.skeleton} onOpen={onOpenCode}>
                     <Stack g={2}>
-                        <Skeleton h={16} w='80%' />
-                        <Skeleton h={16} w='64%' />
+                        <Skeleton h={16} w="80%" />
+                        <Skeleton h={16} w="64%" />
                         <Skeleton h={36} />
                     </Stack>
                 </ExampleTile>
-        </UiExampleSection>
+            </UiExampleSection>
         </>
     );
 }
 
-export function LayoutSection({onOpenCode}: ExampleSectionProps) {
+export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
     const [detailsOpen, setDetailsOpen] = useState(true);
 
     return (
         <>
-        <UiExampleSection
-            id='flex-example'
-            title='Flex'
-            description='Row and column alignment primitive.'
-        >
-                <ExampleTile
-                        title='Flex'
-                        code={codeSamples.layoutFlex}
-                        onOpen={onOpenCode}
-                    >
+            <UiExampleSection
+                id="flex-example"
+                title="Flex"
+                description="Row and column alignment primitive."
+            >
+                <ExampleTile title="Flex" code={codeSamples.layoutFlex} onOpen={onOpenCode}>
                     <Flex col g={3}>
-                        <Flex row g={2} a='c' j='sb' wrap>
-                            <Flex row g={2} a='c' wrap>
-                                <Badge tone='primary'>status</Badge>
+                        <Flex row g={2} a="c" j="sb" wrap>
+                            <Flex row g={2} a="c" wrap>
+                                <Badge tone="primary">status</Badge>
                                 <Text fw={700}>Task TASK-2048</Text>
                             </Flex>
-                            <Flex row g={1} a='c'>
-                                <Button size={1} v='surface'>Cancel</Button>
+                            <Flex row g={1} a="c">
+                                <Button size={1} v="surface">
+                                    Cancel
+                                </Button>
                                 <Button size={1}>Apply</Button>
                             </Flex>
                         </Flex>
@@ -136,46 +140,52 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
                                     g={1}
                                     p={2}
                                     r={3}
-                                    flex='1 1 150px'
-                                    style={{background: 'var(--oui-gray-a3)'}}
+                                    flex="1 1 150px"
+                                    style={{ background: 'var(--oui-gray-a3)' }}
                                 >
-                                    <Text fs='12px' tone='muted'>Step {index + 1}</Text>
+                                    <Text fs="12px" tone="muted">
+                                        Step {index + 1}
+                                    </Text>
                                     <Text fw={700}>{item}</Text>
                                 </Flex>
                             ))}
                         </Flex>
                     </Flex>
                 </ExampleTile>
-        </UiExampleSection>
-        <UiExampleSection
-            id='stack-example'
-            title='Stack'
-            description='Vertical spacing primitive.'
-        >
-                <ExampleTile
-                        title='Stack'
-                        code={codeSamples.layoutStack}
-                        onOpen={onOpenCode}
-                    >
+            </UiExampleSection>
+            <UiExampleSection
+                id="stack-example"
+                title="Stack"
+                description="Vertical spacing primitive."
+            >
+                <ExampleTile title="Stack" code={codeSamples.layoutStack} onOpen={onOpenCode}>
                     <Stack g={2}>
                         {[
-                            ['/gallery/cyberpunk-rain.webp', 'Created', 'Draft created from intake'],
-                            ['/gallery/hollywood-star.webp', 'Reserved', 'Capacity is reserved for review'],
+                            [
+                                '/gallery/cyberpunk-rain.webp',
+                                'Created',
+                                'Draft created from intake',
+                            ],
+                            [
+                                '/gallery/hollywood-star.webp',
+                                'Reserved',
+                                'Capacity is reserved for review',
+                            ],
                             ['/gallery/ice-cave.webp', 'Scheduled', 'Review window is confirmed'],
                         ].map(([image, title, description]) => (
                             <Flex
                                 key={title}
                                 row
                                 g={2}
-                                a='c'
-                                w='min(100%, 360px)'
-                                p='8px 10px'
+                                a="c"
+                                w="min(100%, 360px)"
+                                p="8px 10px"
                                 r={2}
-                                style={{background: 'var(--oui-gray-a3)'}}
+                                style={{ background: 'var(--oui-gray-a3)' }}
                             >
                                 <img
                                     src={image}
-                                    alt=''
+                                    alt=""
                                     style={{
                                         width: 34,
                                         height: 34,
@@ -185,168 +195,170 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
                                     }}
                                 />
                                 <Stack g={0}>
-                                    <Text fs='13px' fw={700}>{title}</Text>
-                                    <Text fs='12px' tone='muted' lh={1.45}>{description}</Text>
+                                    <Text fs="13px" fw={700}>
+                                        {title}
+                                    </Text>
+                                    <Text fs="12px" tone="muted" lh={1.45}>
+                                        {description}
+                                    </Text>
                                 </Stack>
                             </Flex>
                         ))}
                     </Stack>
                 </ExampleTile>
-        </UiExampleSection>
-        <UiExampleSection
-            id='collapse-example'
-            title='Collapse'
-            description='Expandable content primitive.'
-        >
-                <ExampleTile
-                        title='Collapse'
-                        code={codeSamples.layoutCollapse}
-                        onOpen={onOpenCode}
-                    >
+            </UiExampleSection>
+            <UiExampleSection
+                id="collapse-example"
+                title="Collapse"
+                description="Expandable content primitive."
+            >
+                <ExampleTile title="Collapse" code={codeSamples.layoutCollapse} onOpen={onOpenCode}>
                     <Stack g={2}>
-                        <Flex row g={2} a='c' j='sb'>
+                        <Flex row g={2} a="c" j="sb">
                             <Text fw={700}>Item details</Text>
-                            <Button size={1} v='surface' onClick={() => setDetailsOpen((open) => !open)}>
+                            <Button
+                                size={1}
+                                v="surface"
+                                onClick={() => setDetailsOpen((open) => !open)}
+                            >
                                 {detailsOpen ? 'Hide' : 'Show'}
                             </Button>
                         </Flex>
                         <Collapse open={detailsOpen}>
-                            <Stack g={2} p={2} r={3} style={{background: 'var(--oui-gray-a3)'}}>
-                                <Flex row g={2} j='sb'>
-                                    <Text tone='muted'>Owner</Text>
+                            <Stack g={2} p={2} r={3} style={{ background: 'var(--oui-gray-a3)' }}>
+                                <Flex row g={2} j="sb">
+                                    <Text tone="muted">Owner</Text>
                                     <Text fw={700}>Core team</Text>
                                 </Flex>
-                                <Flex row g={2} j='sb'>
-                                    <Text tone='muted'>Window</Text>
+                                <Flex row g={2} j="sb">
+                                    <Text tone="muted">Window</Text>
                                     <Text fw={700}>09:00 - 12:00</Text>
                                 </Flex>
-                                <Flex row g={2} j='sb'>
-                                    <Text tone='muted'>Priority</Text>
-                                    <Badge tone='warning'>High</Badge>
+                                <Flex row g={2} j="sb">
+                                    <Text tone="muted">Priority</Text>
+                                    <Badge tone="warning">High</Badge>
                                 </Flex>
                             </Stack>
                         </Collapse>
                     </Stack>
                 </ExampleTile>
-        </UiExampleSection>
-        <UiExampleSection
-            id='surfaces-example'
-            title='Surfaces'
-            description='Card, Section, Separator and Alert primitives.'
-        >
-                <ExampleTile
-                        title='Surfaces'
-                        code={codeSamples.surfaces}
-                        onOpen={onOpenCode}
-                    >
+            </UiExampleSection>
+            <UiExampleSection
+                id="surfaces-example"
+                title="Surfaces"
+                description="Card, Section, Separator and Alert primitives."
+            >
+                <ExampleTile title="Surfaces" code={codeSamples.surfaces} onOpen={onOpenCode}>
                     <Section g={3}>
-                        <Grid columns='repeat(auto-fit, minmax(min(100%, 180px), 1fr))' g={2}>
-                            <Card v='surface' interactive>
+                        <Grid columns="repeat(auto-fit, minmax(min(100%, 180px), 1fr))" g={2}>
+                            <Card v="surface" interactive>
                                 <Stack g={1}>
                                     <Text fw={760}>Surface card</Text>
-                                    <Text fs='12px' tone='muted'>Default operational surface.</Text>
+                                    <Text fs="12px" tone="muted">
+                                        Default operational surface.
+                                    </Text>
                                 </Stack>
                             </Card>
-                            <Card v='soft'>
+                            <Card v="soft">
                                 <Stack g={1}>
                                     <Text fw={760}>Soft card</Text>
-                                    <Text fs='12px' tone='muted'>Quiet grouped content.</Text>
+                                    <Text fs="12px" tone="muted">
+                                        Quiet grouped content.
+                                    </Text>
                                 </Stack>
                             </Card>
-                            <Card v='classic'>
+                            <Card v="classic">
                                 <Stack g={1}>
                                     <Text fw={760}>Classic card</Text>
-                                    <Text fs='12px' tone='muted'>More explicit border and background.</Text>
+                                    <Text fs="12px" tone="muted">
+                                        More explicit border and background.
+                                    </Text>
                                 </Stack>
                             </Card>
                         </Grid>
                         <Separator />
                         <Alert
-                            title='Inventory sync delayed'
-                            action={<Button size={1} v='surface'>Retry</Button>}
+                            title="Inventory sync delayed"
+                            action={
+                                <Button size={1} v="surface">
+                                    Retry
+                                </Button>
+                            }
                         >
                             Check this status before creating the next shipment.
                         </Alert>
                     </Section>
                 </ExampleTile>
-        </UiExampleSection>
-        <UiExampleSection
-            id='grid-example'
-            title='Grid'
-            description='Grid layout primitive.'
-        >
-                <ExampleTile
-                        title='Grid'
-                        code={codeSamples.layoutGrid}
-                        onOpen={onOpenCode}
-                    >
-                    <Grid columns='repeat(3, minmax(0, 1fr))' g={2}>
+            </UiExampleSection>
+            <UiExampleSection id="grid-example" title="Grid" description="Grid layout primitive.">
+                <ExampleTile title="Grid" code={codeSamples.layoutGrid} onOpen={onOpenCode}>
+                    <Grid columns="repeat(3, minmax(0, 1fr))" g={2}>
                         {['A', 'B', 'C', 'D', 'E', 'F'].map((item) => (
                             <Box
                                 key={item}
                                 p={2}
                                 r={3}
-                                ta='center'
-                                style={{background: 'var(--oui-gray-a3)'}}
+                                ta="center"
+                                style={{ background: 'var(--oui-gray-a3)' }}
                             >
-                                <Text fs='13px' fw={700}>{item}</Text>
+                                <Text fs="13px" fw={700}>
+                                    {item}
+                                </Text>
                             </Box>
                         ))}
                     </Grid>
                 </ExampleTile>
-        </UiExampleSection>
-        <UiExampleSection
-            id='highlight-primitives-example'
-            title='Highlight primitives'
-            description='Standalone edge mask primitives.'
-        >
+            </UiExampleSection>
+            <UiExampleSection
+                id="highlight-primitives-example"
+                title="Highlight primitives"
+                description="Standalone edge mask primitives."
+            >
                 <ExampleTile
-                        title='Highlight primitives'
-                        code={codeSamples.highlights}
-                        onOpen={onOpenCode}
-                    >
+                    title="Highlight primitives"
+                    code={codeSamples.highlights}
+                    onOpen={onOpenCode}
+                >
                     <div
-                        className='oui-highlight-demo-surface'
-                        style={{background: 'var(--oui-section-nested-solid-bg)'}}
+                        className="oui-highlight-demo-surface"
+                        style={{ background: 'var(--oui-section-nested-solid-bg)' }}
                     >
                         <TopHighlight
                             h={32}
-                            color='var(--oui-section-nested-solid-bg)'
-                            position='absolute'
+                            color="var(--oui-section-nested-solid-bg)"
+                            position="absolute"
                         />
-                        <Text fs='13px' fw={700}>Top and bottom highlights</Text>
-                        <Text fs='12px' tone='muted'>
+                        <Text fs="13px" fw={700}>
+                            Top and bottom highlights
+                        </Text>
+                        <Text fs="12px" tone="muted">
                             One surface shows both edge masks at the same time.
                         </Text>
                         <BottomHighlight
                             h={32}
-                            color='var(--oui-section-nested-solid-bg)'
-                            position='absolute'
+                            color="var(--oui-section-nested-solid-bg)"
+                            position="absolute"
                         />
                     </div>
                 </ExampleTile>
-        </UiExampleSection>
-        <UiExampleSection
-            id='scroll-area-example'
-            title='ScrollArea'
-            description='Themed scroll container with optional edge highlights.'
-        >
-                <ExampleTile
-                        title='ScrollArea'
-                        code={codeSamples.scrollArea}
-                        onOpen={onOpenCode}
-                    >
+            </UiExampleSection>
+            <UiExampleSection
+                id="scroll-area-example"
+                title="ScrollArea"
+                description="Themed scroll container with optional edge highlights."
+            >
+                <ExampleTile title="ScrollArea" code={codeSamples.scrollArea} onOpen={onOpenCode}>
                     <Stack g={2}>
                         <ScrollArea h={116} pr={1}>
                             <Stack g={1}>
-                                {Array.from({length: 10}, (_, index) => (
+                                {Array.from({ length: 10 }, (_, index) => (
                                     <Box
                                         key={index}
                                         p={2}
                                         r={3}
-                                        style={{background: 'var(--oui-gray-a3)'}}
+                                        style={{ background: 'var(--oui-gray-a3)' }}
                                     >
-                                        <Text fs='13px'>Scroll row {index + 1}</Text>
+                                        <Text fs="13px">Scroll row {index + 1}</Text>
                                     </Box>
                                 ))}
                             </Stack>
@@ -355,19 +367,19 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
                             h={112}
                             pr={1}
                             highlights
-                            highlightColor='var(--oui-section-nested-solid-bg)'
-                            highlightTop={{h: 28, mode: 'static', maxOpacity: 0.96}}
-                            highlightBottom={{h: 28, mode: 'static', maxOpacity: 0.96}}
+                            highlightColor="var(--oui-section-nested-solid-bg)"
+                            highlightTop={{ h: 28, mode: 'static', maxOpacity: 0.96 }}
+                            highlightBottom={{ h: 28, mode: 'static', maxOpacity: 0.96 }}
                         >
                             <Stack g={1}>
-                                {Array.from({length: 8}, (_, index) => (
+                                {Array.from({ length: 8 }, (_, index) => (
                                     <Box
                                         key={index}
                                         p={2}
                                         r={3}
-                                        style={{background: 'var(--oui-gray-a3)'}}
+                                        style={{ background: 'var(--oui-gray-a3)' }}
                                     >
-                                        <Text fs='13px'>Both edges row {index + 1}</Text>
+                                        <Text fs="13px">Both edges row {index + 1}</Text>
                                     </Box>
                                 ))}
                             </Stack>
@@ -376,7 +388,7 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
                             h={176}
                             pr={1}
                             highlights
-                            highlightColor='var(--oui-section-nested-solid-bg)'
+                            highlightColor="var(--oui-section-nested-solid-bg)"
                             highlightTop={{
                                 h: 42,
                                 mode: 'scroll',
@@ -409,15 +421,19 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
                                         g={2}
                                         p={2}
                                         r={3}
-                                        a='c'
-                                        style={{background: 'var(--oui-gray-a3)'}}
+                                        a="c"
+                                        style={{ background: 'var(--oui-gray-a3)' }}
                                     >
                                         <Badge tone={index < 3 ? 'primary' : 'info'}>
                                             {index + 1}
                                         </Badge>
                                         <Stack g={0}>
-                                            <Text fs='13px' fw={700}>{title}</Text>
-                                            <Text fs='12px' tone='muted'>{description}</Text>
+                                            <Text fs="13px" fw={700}>
+                                                {title}
+                                            </Text>
+                                            <Text fs="12px" tone="muted">
+                                                {description}
+                                            </Text>
                                         </Stack>
                                     </Flex>
                                 ))}
@@ -425,37 +441,39 @@ export function LayoutSection({onOpenCode}: ExampleSectionProps) {
                         </ScrollArea>
                     </Stack>
                 </ExampleTile>
-        </UiExampleSection>
-        <UiExampleSection
-            id='system-radius-example'
-            title='System radius'
-            description='Radius system prop scale.'
-        >
+            </UiExampleSection>
+            <UiExampleSection
+                id="system-radius-example"
+                title="System radius"
+                description="Radius system prop scale."
+            >
                 <ExampleTile
-                        title='System radius'
-                        code={codeSamples.systemRadius}
-                        onOpen={onOpenCode}
-                    >
-                    <Flex g={2} a='c' wrap>
+                    title="System radius"
+                    code={codeSamples.systemRadius}
+                    onOpen={onOpenCode}
+                >
+                    <Flex g={2} a="c" wrap>
                         {([0, 2, 4, 6, 7] as const).map((radius) => (
                             <Box
                                 key={radius}
                                 size={32}
                                 r={radius}
-                                display='flex'
-                                a='c'
-                                j='c'
-                                style={{background: 'var(--oui-gray-a3)'}}
+                                display="flex"
+                                a="c"
+                                j="c"
+                                style={{ background: 'var(--oui-gray-a3)' }}
                             >
-                                <Text fs='12px' fw={700}>{radius}</Text>
+                                <Text fs="12px" fw={700}>
+                                    {radius}
+                                </Text>
                             </Box>
                         ))}
                     </Flex>
-                    <Button mt={2} v='pad' r={7}>
+                    <Button mt={2} v="pad" r={7}>
                         Button r=7
                     </Button>
                 </ExampleTile>
-        </UiExampleSection>
+            </UiExampleSection>
         </>
     );
 }

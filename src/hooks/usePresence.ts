@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function usePresence(open: boolean, durationMs = 220) {
     const [present, setPresent] = useState(open);
@@ -41,5 +41,5 @@ export function usePresence(open: boolean, durationMs = 220) {
         };
     }, [durationMs, open]);
 
-    return {present, state};
+    return { present, state };
 }

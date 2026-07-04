@@ -1,7 +1,7 @@
-import {forwardRef, type CSSProperties, type ComponentPropsWithoutRef} from 'react';
+import { forwardRef, type CSSProperties, type ComponentPropsWithoutRef } from 'react';
 
-import {cn} from '../../utils/cn';
-import {splitSystemProps, type SystemProps} from '../../theme/systemProps';
+import { cn } from '../../utils/cn';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
 
 export type GridProps = ComponentPropsWithoutRef<'div'> &
     SystemProps & {
@@ -13,18 +13,18 @@ export type GridColumns =
     | number
     | string
     | {
-        initial?: number | string;
-        sm?: number | string;
-        md?: number | string;
-        lg?: number | string;
-        xl?: number | string;
-    };
+          initial?: number | string;
+          sm?: number | string;
+          md?: number | string;
+          lg?: number | string;
+          xl?: number | string;
+      };
 
 export const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
-    {className, style, columns, testId, ...props},
+    { className, style, columns, testId, ...props },
     ref,
 ) {
-    const {systemStyle, restProps} = splitSystemProps(props);
+    const { systemStyle, restProps } = splitSystemProps(props);
     const columnStyle = gridColumnStyle(columns);
     return (
         <div
@@ -44,7 +44,7 @@ export const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
 function gridColumnStyle(columns: GridColumns | undefined): CSSProperties {
     if (columns === undefined) return {};
     if (typeof columns === 'number' || typeof columns === 'string') {
-        return {'--oui-grid-columns': columnValue(columns)} as CSSProperties;
+        return { '--oui-grid-columns': columnValue(columns) } as CSSProperties;
     }
     return {
         '--oui-grid-columns': columnValue(columns.initial ?? 1),

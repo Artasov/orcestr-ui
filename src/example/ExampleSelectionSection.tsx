@@ -1,7 +1,7 @@
 'use client';
 
-import {useCallback} from 'react';
-import {LuHistory, LuListChecks, LuPlus} from 'react-icons/lu';
+import { useCallback } from 'react';
+import { LuHistory, LuListChecks, LuPlus } from 'react-icons/lu';
 
 import {
     Checkbox,
@@ -17,15 +17,10 @@ import {
     Text,
     type OrcestrUiLocale,
 } from '..';
-import {ExampleTile} from './CodePreview';
-import {codeSamples, type CodeExample} from './codeSamples';
-import {
-    getOptionItems,
-    getOwnerItems,
-    loadEntityPage,
-    type EntityOption,
-} from './exampleData';
-import {UiExampleSection} from './UiExampleSection';
+import { ExampleTile } from './CodePreview';
+import { codeSamples, type CodeExample } from './codeSamples';
+import { getOptionItems, getOwnerItems, loadEntityPage, type EntityOption } from './exampleData';
+import { UiExampleSection } from './UiExampleSection';
 
 type ToastTone = 'info' | 'success' | 'danger';
 
@@ -90,16 +85,16 @@ export function SelectionSection({
 
     return (
         <>
-        <UiExampleSection
-            id='selects-example'
-            title='Selects'
-            description='Select, Combobox, MultiSelect, EntityPicker wrapper, lower-level PaginatedCombobox and SegmentedControl.'
-        >
+            <UiExampleSection
+                id="selects-example"
+                title="Selects"
+                description="Select, Combobox, MultiSelect, EntityPicker wrapper, lower-level PaginatedCombobox and SegmentedControl."
+            >
                 <ExampleTile
-                        title='Selects and comboboxes'
-                        code={codeSamples.selection}
-                        onOpen={onOpenCode}
-                    >
+                    title="Selects and comboboxes"
+                    code={codeSamples.selection}
+                    onOpen={onOpenCode}
+                >
                     <Select
                         items={optionItems}
                         value={selectValue}
@@ -112,7 +107,7 @@ export function SelectionSection({
                         onValueChange={onSelectNoChevronValueChange}
                         clearable
                         showChevron={false}
-                        placeholder='Clearable without chevron'
+                        placeholder="Clearable without chevron"
                     />
                     <Select
                         items={optionItems}
@@ -120,13 +115,13 @@ export function SelectionSection({
                         onValueChange={onSelectPlainValueChange}
                         clearable={false}
                         showChevron={false}
-                        placeholder='Plain select'
+                        placeholder="Plain select"
                     />
                     <Combobox
                         items={optionItems}
                         value={comboValue}
                         onValueChange={onComboValueChange}
-                        placeholder='Find status'
+                        placeholder="Find status"
                     />
                     <MultiSelect
                         items={ownerItems}
@@ -148,31 +143,23 @@ export function SelectionSection({
                         renderValue={(item) => item.article}
                         renderEntity={(item) => (
                             <>
-                                <span className='oui-entity-option-main'>
-                                    <span className='oui-entity-option-code'>
-                                        {item.article}
-                                    </span>
-                                    <span className='oui-entity-option-meta'>
-                                        {item.name}
-                                    </span>
+                                <span className="oui-entity-option-main">
+                                    <span className="oui-entity-option-code">{item.article}</span>
+                                    <span className="oui-entity-option-meta">{item.name}</span>
                                 </span>
-                                <span className='oui-entity-option-badge'>
-                                    {item.status}
-                                </span>
+                                <span className="oui-entity-option-badge">{item.status}</span>
                             </>
                         )}
                         placeholder={copy.entityPicker}
                         clearable
                         createAction={{
                             label: copy.createEntityFromSearch,
-                            onCreate: (search) =>
-                                onToast(copy.createEntityToast(search), 'info'),
+                            onCreate: (search) => onToast(copy.createEntityToast(search), 'info'),
                         }}
                         optionAction={{
                             icon: <LuPlus size={14} />,
                             label: (item) => copy.addEntity(item.article),
-                            onClick: (item) =>
-                                onToast(copy.entityAction(item.article), 'success'),
+                            onClick: (item) => onToast(copy.entityAction(item.article), 'success'),
                         }}
                     />
                     <PaginatedCombobox<EntityOption>
@@ -182,50 +169,44 @@ export function SelectionSection({
                         getItemId={(item) => item.id}
                         renderSelectedLabel={(item) => item.article}
                         renderOption={(item) => (
-                            <span className='oui-entity-option-main'>
-                                <span className='oui-entity-option-code'>
-                                    {item.article}
-                                </span>
-                                <span className='oui-entity-option-meta'>
-                                    {item.name}
-                                </span>
+                            <span className="oui-entity-option-main">
+                                <span className="oui-entity-option-code">{item.article}</span>
+                                <span className="oui-entity-option-meta">{item.name}</span>
                             </span>
                         )}
-                        placeholder='Paginated combobox'
+                        placeholder="Paginated combobox"
                         clearable
                         searchAction={{
                             label: copy.createEntityFromSearch,
-                            onClick: (search) =>
-                                onToast(copy.createEntityToast(search), 'info'),
+                            onClick: (search) => onToast(copy.createEntityToast(search), 'info'),
                         }}
                         optionAction={{
                             icon: <LuPlus size={14} />,
                             label: (item) => copy.addEntity(item.article),
-                            onClick: (item) =>
-                                onToast(copy.entityAction(item.article), 'success'),
+                            onClick: (item) => onToast(copy.entityAction(item.article), 'success'),
                         }}
                     />
                     <SegmentedControl
                         items={[
-                            {value: 'active', label: 'Active'},
-                            {value: 'drafts', label: 'Drafts'},
-                            {value: 'archive', label: 'Archive'},
+                            { value: 'active', label: 'Active' },
+                            { value: 'drafts', label: 'Drafts' },
+                            { value: 'archive', label: 'Archive' },
                         ]}
                         value={segment}
                         onValueChange={onSegmentChange}
                     />
                 </ExampleTile>
-        </UiExampleSection>
-        <UiExampleSection
-            id='choice-controls-example'
-            title='Checkbox, switch and radio'
-            description='Binary and single-choice controls.'
-        >
+            </UiExampleSection>
+            <UiExampleSection
+                id="choice-controls-example"
+                title="Checkbox, switch and radio"
+                description="Binary and single-choice controls."
+            >
                 <ExampleTile
-                        title='Checkbox, switch and radio'
-                        code={codeSamples.selectionGroup}
-                        onOpen={onOpenCode}
-                    >
+                    title="Checkbox, switch and radio"
+                    code={codeSamples.selectionGroup}
+                    onOpen={onOpenCode}
+                >
                     <Checkbox defaultChecked>Confirmed</Checkbox>
                     <Checkbox>Needs review</Checkbox>
                     <Checkbox disabled>Locked option</Checkbox>
@@ -235,24 +216,20 @@ export function SelectionSection({
                     <RadioGroup
                         value={radioValue}
                         onValueChange={onRadioValueChange}
-                        name='oui-example-mode'
+                        name="oui-example-mode"
                         items={[
-                            {value: 'manual', label: 'Manual'},
-                            {value: 'auto', label: 'Automatic'},
+                            { value: 'manual', label: 'Manual' },
+                            { value: 'auto', label: 'Automatic' },
                         ]}
                     />
                 </ExampleTile>
-        </UiExampleSection>
-        <UiExampleSection
-            id='tabs-example'
-            title='Tabs'
-            description='Segmented content navigation with icons, badges and controlled value.'
-        >
-                <ExampleTile
-                        title='Tabs'
-                        code={codeSamples.tabs}
-                        onOpen={onOpenCode}
-                    >
+            </UiExampleSection>
+            <UiExampleSection
+                id="tabs-example"
+                title="Tabs"
+                description="Segmented content navigation with icons, badges and controlled value."
+            >
+                <ExampleTile title="Tabs" code={codeSamples.tabs} onOpen={onOpenCode}>
                     <Tabs
                         value={tabValue}
                         onValueChange={onTabValueChange}
@@ -262,18 +239,18 @@ export function SelectionSection({
                                 label: 'Overview',
                                 icon: <LuListChecks size={16} />,
                                 badge: '12',
-                                content: <Text color='var(--oui-muted)'>Main summary tab.</Text>,
+                                content: <Text color="var(--oui-muted)">Main summary tab.</Text>,
                             },
                             {
                                 value: 'history',
                                 label: 'History',
                                 icon: <LuHistory size={16} />,
-                                content: <Text color='var(--oui-muted)'>History and changes.</Text>,
+                                content: <Text color="var(--oui-muted)">History and changes.</Text>,
                             },
                         ]}
                     />
                 </ExampleTile>
-        </UiExampleSection>
+            </UiExampleSection>
         </>
     );
 }
@@ -297,12 +274,15 @@ const selectionCopy = {
         addEntity: (article: string) => `Add ${article}`,
         entityAction: (article: string) => `Action: ${article}`,
     },
-} satisfies Record<OrcestrUiLocale, {
-    responsibleUsers: string;
-    responsibleCount: (count: number) => string;
-    entityPicker: string;
-    createEntityFromSearch: string;
-    createEntityToast: (search: string) => string;
-    addEntity: (article: string) => string;
-    entityAction: (article: string) => string;
-}>;
+} satisfies Record<
+    OrcestrUiLocale,
+    {
+        responsibleUsers: string;
+        responsibleCount: (count: number) => string;
+        entityPicker: string;
+        createEntityFromSearch: string;
+        createEntityToast: (search: string) => string;
+        addEntity: (article: string) => string;
+        entityAction: (article: string) => string;
+    }
+>;

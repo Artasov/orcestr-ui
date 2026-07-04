@@ -1,13 +1,13 @@
 'use client';
 
-import {useMemo, useState, type ReactNode} from 'react';
-import {LuChevronsUpDown, LuX} from 'react-icons/lu';
+import { useMemo, useState, type ReactNode } from 'react';
+import { LuChevronsUpDown, LuX } from 'react-icons/lu';
 
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
-import {Button} from '../Button/Button';
-import {Listbox, type ListboxItem} from '../Listbox/Listbox';
-import {Popover} from '../Popover/Popover';
-import {TextField} from '../TextField/TextField';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import { Button } from '../Button/Button';
+import { Listbox, type ListboxItem } from '../Listbox/Listbox';
+import { Popover } from '../Popover/Popover';
+import { TextField } from '../TextField/TextField';
 
 export function Combobox({
     items,
@@ -36,15 +36,12 @@ export function Combobox({
     showChevron?: boolean;
     testId?: string;
 }) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState('');
     const selected = items.find((item) => item.value === value);
     const filtered = useMemo(
-        () =>
-            items.filter((item) =>
-                item.label.toLowerCase().includes(query.toLowerCase()),
-            ),
+        () => items.filter((item) => item.label.toLowerCase().includes(query.toLowerCase())),
         [items, query],
     );
 
@@ -57,19 +54,19 @@ export function Combobox({
             }}
             trigger={
                 <Button
-                    v='surface'
+                    v="surface"
                     fullWidth
                     disabled={disabled}
-                    pressAnimation='none'
-                    className='oui-combobox-trigger'
+                    pressAnimation="none"
+                    className="oui-combobox-trigger"
                     data-state={open ? 'open' : 'closed'}
                     testId={testId}
                     rightIcon={
-                        <span className='oui-combobox-trigger-actions'>
+                        <span className="oui-combobox-trigger-actions">
                             {clearable && selected ? (
                                 <span
                                     aria-label={clearLabel ?? copy.common.clear}
-                                    className='oui-combobox-clear'
+                                    className="oui-combobox-clear"
                                     onPointerDown={(event) => {
                                         event.preventDefault();
                                         event.stopPropagation();
@@ -87,19 +84,28 @@ export function Combobox({
                         </span>
                     }
                 >
-                    <span className={selected || selectedFallbackLabel ? 'oui-combobox-trigger-label' : 'oui-combobox-placeholder'}>
-                        {selected?.label ?? selectedFallbackLabel ?? placeholder ?? copy.common.selectValue}
+                    <span
+                        className={
+                            selected || selectedFallbackLabel
+                                ? 'oui-combobox-trigger-label'
+                                : 'oui-combobox-placeholder'
+                        }
+                    >
+                        {selected?.label ??
+                            selectedFallbackLabel ??
+                            placeholder ??
+                            copy.common.selectValue}
                     </span>
                 </Button>
             }
-            className='oui-combobox-content'
+            className="oui-combobox-content"
             testId={testId ? `${testId}-popover` : undefined}
-            align='start'
+            align="start"
             sideOffset={4}
             matchTriggerWidth
             disabled={disabled}
         >
-            <div className='oui-combobox-search-wrap'>
+            <div className="oui-combobox-search-wrap">
                 <TextField
                     autoFocus
                     size={1}
@@ -110,10 +116,10 @@ export function Combobox({
                 />
             </div>
             {filtered.length === 0 ? (
-                <div className='oui-combobox-empty'>{emptyText ?? copy.common.noOptions}</div>
+                <div className="oui-combobox-empty">{emptyText ?? copy.common.noOptions}</div>
             ) : (
                 <Listbox
-                    className='oui-combobox-options'
+                    className="oui-combobox-options"
                     items={filtered}
                     value={value}
                     testId={testId ? `${testId}-listbox` : undefined}

@@ -1,10 +1,10 @@
 'use client';
 
-import {useCallback, useEffect, useMemo, useRef, type KeyboardEvent} from 'react';
+import { useCallback, useEffect, useMemo, useRef, type KeyboardEvent } from 'react';
 
-import {useListNavigation} from '../../hooks/useListNavigation';
-import {useTypeahead} from '../../hooks/useTypeahead';
-import {cn} from '../../utils/cn';
+import { useListNavigation } from '../../hooks/useListNavigation';
+import { useTypeahead } from '../../hooks/useTypeahead';
+import { cn } from '../../utils/cn';
 
 export type ListboxItem = {
     value: string;
@@ -35,7 +35,7 @@ export function Listbox({
             })),
         [items],
     );
-    const navigation = useListNavigation(navigationItems, {value});
+    const navigation = useListNavigation(navigationItems, { value });
     const highlighted = navigation.highlightedValue;
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export function Listbox({
         const node = listboxRef.current?.querySelector<HTMLElement>(
             `[data-oui-listbox-value="${cssAttr(highlighted)}"]`,
         );
-        node?.scrollIntoView({block: 'nearest'});
+        node?.scrollIntoView({ block: 'nearest' });
     }, [highlighted]);
 
     const commit = useCallback(
@@ -97,7 +97,7 @@ export function Listbox({
         <div
             ref={listboxRef}
             className={cn('oui-listbox', className)}
-            role='listbox'
+            role="listbox"
             tabIndex={0}
             data-testid={testId}
             onKeyDown={handleKeyDown}
@@ -108,10 +108,10 @@ export function Listbox({
                 return (
                     <button
                         key={item.value}
-                        type='button'
-                        role='option'
+                        type="button"
+                        role="option"
                         aria-selected={isSelected}
-                        className='oui-listbox-item'
+                        className="oui-listbox-item"
                         data-oui-listbox-value={item.value}
                         data-selected={isSelected ? 'true' : undefined}
                         data-highlighted={isHighlighted ? 'true' : undefined}

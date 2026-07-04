@@ -48,20 +48,10 @@ function emitLayerChange() {
     for (const listener of listeners) listener();
 }
 
-export function OverlayProvider({
-    children,
-    container,
-    zIndex,
-    testId,
-}: OverlayProviderProps) {
+export function OverlayProvider({ children, container, zIndex, testId }: OverlayProviderProps) {
     const fallbackRef = useRef<HTMLDivElement | null>(null);
-    const [fallbackContainer, setFallbackContainer] = useState<HTMLElement | null>(
-        null,
-    );
-    const resolvedZIndex = useMemo(
-        () => ({...defaultZIndex, ...zIndex}),
-        [zIndex],
-    );
+    const [fallbackContainer, setFallbackContainer] = useState<HTMLElement | null>(null);
+    const resolvedZIndex = useMemo(() => ({ ...defaultZIndex, ...zIndex }), [zIndex]);
     const value = useMemo(
         () => ({
             portalContainer: container ?? fallbackContainer,
@@ -78,11 +68,7 @@ export function OverlayProvider({
         <OverlayContext.Provider value={value}>
             {children}
             {container === undefined ? (
-                <div
-                    ref={fallbackRef}
-                    className='oui-overlay-root'
-                    data-testid={testId}
-                />
+                <div ref={fallbackRef} className="oui-overlay-root" data-testid={testId} />
             ) : null}
         </OverlayContext.Provider>
     );
@@ -96,11 +82,7 @@ export function useOverlayLayerIndex(active: boolean) {
     const [id] = useState(() => Symbol('oui-layer'));
     const [index, setIndex] = useState(0);
     const currentIndex = layerIds.indexOf(id);
-    const optimisticIndex = active
-        ? currentIndex === -1
-            ? layerIds.length
-            : currentIndex
-        : index;
+    const optimisticIndex = active ? (currentIndex === -1 ? layerIds.length : currentIndex) : index;
 
     useEffect(() => {
         if (!active) return;

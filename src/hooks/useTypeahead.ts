@@ -1,11 +1,8 @@
 'use client';
 
-import {useCallback, useEffect, useRef} from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
-export function useTypeahead(
-    onMatch: (query: string) => void,
-    timeoutMs = 650,
-) {
+export function useTypeahead(onMatch: (query: string) => void, timeoutMs = 650) {
     const bufferRef = useRef('');
     const timerRef = useRef<number | null>(null);
 

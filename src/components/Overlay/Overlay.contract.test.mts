@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-import {fileURLToPath} from 'node:url';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 const root = fileURLToPath(new URL('../..', import.meta.url));
@@ -46,8 +46,7 @@ test('Modal root stays layout-free and renders only explicit children', () => {
 
 test('Dialog content stays layout-free and renders only explicit children', () => {
     const source = read('components/Dialog/Dialog.tsx');
-    const contentBody =
-        source.match(/function DialogContent\([\s\S]*?\n\}/)?.[0] ?? '';
+    const contentBody = source.match(/function DialogContent\([\s\S]*?\n\}/)?.[0] ?? '';
 
     assert.doesNotMatch(contentBody, /DialogTitle|DialogDescription|DialogClose/);
     assert.doesNotMatch(contentBody, /Modal\.Header|Modal\.Footer|Modal\.Close/);
@@ -60,7 +59,10 @@ test('Floating layer keeps dropdowns mounted for exit animation and positions fr
     assert.match(source, /usePresence\(open, presenceDuration\)/);
     assert.match(source, /useFloatingPosition/);
     assert.match(source, /matchTriggerWidth/);
-    assert.match(positionSource, /contentWidth = matchTriggerWidth[\s\S]*?Math\.max\(contentRect\.width, triggerRect\.width\)/);
+    assert.match(
+        positionSource,
+        /contentWidth = matchTriggerWidth[\s\S]*?Math\.max\(contentRect\.width, triggerRect\.width\)/,
+    );
     assert.match(positionSource, /minWidth: matchTriggerWidth \? contentWidth : undefined/);
 });
 
@@ -78,7 +80,10 @@ test('ScrollArea applies requested scrollbar axis and exposes overflow state', (
     assert.match(styles, /data-scrollbars="vertical"/);
     assert.match(styles, /overflow-x: hidden/);
     assert.match(styles, /scrollbar-color: var\(--oui-scrollbar-thumb/);
-    assert.match(styles, /scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/);
+    assert.match(
+        styles,
+        /scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/,
+    );
     assert.match(styles, /background: var\(--oui-scrollbar-track, transparent\)/);
     assert.match(styles, /background-color: var\(--oui-scrollbar-thumb,/);
     assert.match(styles, /transition: background-color 180ms ease/);
@@ -108,7 +113,10 @@ test('Popover lets content veto outside interaction close', () => {
     const source = read('components/Popover/Popover.tsx');
     assert.match(source, /onInteractOutside\?\.\(event\)/);
     assert.match(source, /event\.defaultPrevented/);
-    assert.match(source, /useOutsidePointerDown\(\[triggerRef, contentRef\], isOpen, handleOutsidePointerDown\)/);
+    assert.match(
+        source,
+        /useOutsidePointerDown\(\[triggerRef, contentRef\], isOpen, handleOutsidePointerDown\)/,
+    );
 });
 
 test('Focus trap returns focus and handles Escape and Tab loops', () => {

@@ -1,6 +1,6 @@
-import {cn} from '../../utils/cn';
-import type {UiSize} from '../../theme/systemProps';
-import type {CSSProperties} from 'react';
+import { cn } from '../../utils/cn';
+import type { UiSize } from '../../theme/systemProps';
+import type { CSSProperties } from 'react';
 
 export function Spinner({
     size = 2,
@@ -13,5 +13,12 @@ export function Spinner({
     style?: CSSProperties;
     testId?: string;
 }) {
-    return <span className={cn('oui-spinner', className)} data-size={size} data-testid={testId} style={style} />;
+    return (
+        <span
+            className={cn('oui-spinner', className)}
+            data-size={size}
+            data-testid={testId}
+            style={style}
+        />
+    );
 }

@@ -1,7 +1,7 @@
-import {forwardRef, type CSSProperties} from 'react';
+import { forwardRef, type CSSProperties } from 'react';
 
-import {cn} from '../../utils/cn';
-import {Flex, type FlexProps} from '../Flex/Flex';
+import { cn } from '../../utils/cn';
+import { Flex, type FlexProps } from '../Flex/Flex';
 
 export type SectionProps = FlexProps & {
     sectionColor?: string;
@@ -21,16 +21,10 @@ function opacityValue(value: number | string): string {
 }
 
 export const Section = forwardRef<HTMLDivElement, SectionProps>(function Section(
-    {
-        className,
-        style,
-        sectionColor,
-        sectionOpacity,
-        ...props
-    },
+    { className, style, sectionColor, sectionOpacity, ...props },
     ref,
 ) {
-    const sectionStyle: SectionStyle = {...style};
+    const sectionStyle: SectionStyle = { ...style };
     if (sectionColor !== undefined) sectionStyle['--oui-section-bg'] = sectionColor;
     if (sectionOpacity !== undefined) {
         sectionStyle['--oui-section-opacity'] = opacityValue(sectionOpacity);

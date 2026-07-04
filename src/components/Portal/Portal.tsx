@@ -1,9 +1,9 @@
 'use client';
 
-import {useSyncExternalStore, type ReactNode} from 'react';
-import {createPortal} from 'react-dom';
+import { useSyncExternalStore, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 
-import {useOverlayContext} from '../Overlay/OverlayProvider';
+import { useOverlayContext } from '../Overlay/OverlayProvider';
 
 export function Portal({
     children,

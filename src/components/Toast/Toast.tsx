@@ -11,22 +11,17 @@ import {
     type CSSProperties,
     type ReactNode,
 } from 'react';
-import {LuCircleAlert, LuCircleCheck, LuCircleX, LuInfo, LuX} from 'react-icons/lu';
+import { LuCircleAlert, LuCircleCheck, LuCircleX, LuInfo, LuX } from 'react-icons/lu';
 
-import {useOrcestrUiLocale} from '../../locale/LocaleProvider';
-import {Button} from '../Button/Button';
-import {IconButton} from '../IconButton/IconButton';
-import {useOverlayContext} from '../Overlay/OverlayProvider';
-import {Portal} from '../Portal/Portal';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import { Button } from '../Button/Button';
+import { IconButton } from '../IconButton/IconButton';
+import { useOverlayContext } from '../Overlay/OverlayProvider';
+import { Portal } from '../Portal/Portal';
 
 export type ToastTone = 'info' | 'success' | 'warning' | 'danger';
 export type ToastPosition =
-    | 'top-left'
-    | 'top-center'
-    | 'top-right'
-    | 'bottom-left'
-    | 'bottom-center'
-    | 'bottom-right';
+    'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
 
 export type ToastAction = {
     label: string;
@@ -158,25 +153,29 @@ export function ToastProvider({
         }
     }, []);
 
-    const removeToast = useCallback((id: number) => {
-        clearTimer(id);
-        clearRemovalTimer(id);
-        setToastItems((current) => current.filter((item) => item.id !== id));
-    }, [clearRemovalTimer, clearTimer, setToastItems]);
+    const removeToast = useCallback(
+        (id: number) => {
+            clearTimer(id);
+            clearRemovalTimer(id);
+            setToastItems((current) => current.filter((item) => item.id !== id));
+        },
+        [clearRemovalTimer, clearTimer, setToastItems],
+    );
 
-    const dismiss = useCallback((id: number) => {
-        clearTimer(id);
-        setToastItems((current) =>
-            current.map((item) =>
-                item.id === id ? {...item, state: 'closing'} : item,
-            ),
-        );
-        clearRemovalTimer(id);
-        const removalId = window.setTimeout(() => {
-            removeToast(id);
-        }, TOAST_EXIT_FALLBACK_MS);
-        removalIds.current.set(id, removalId);
-    }, [clearRemovalTimer, clearTimer, removeToast, setToastItems]);
+    const dismiss = useCallback(
+        (id: number) => {
+            clearTimer(id);
+            setToastItems((current) =>
+                current.map((item) => (item.id === id ? { ...item, state: 'closing' } : item)),
+            );
+            clearRemovalTimer(id);
+            const removalId = window.setTimeout(() => {
+                removeToast(id);
+            }, TOAST_EXIT_FALLBACK_MS);
+            removalIds.current.set(id, removalId);
+        },
+        [clearRemovalTimer, clearTimer, removeToast, setToastItems],
+    );
 
     const clear = useCallback(() => {
         timeoutIds.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
@@ -187,73 +186,79 @@ export function ToastProvider({
         setToastItems(() => []);
     }, [setToastItems]);
 
-    const scheduleDismiss = useCallback((item: ToastItem, remainingMs?: number) => {
-        stopTimer(item.id);
-        if (item.duration === null) {
-            timers.current.delete(item.id);
-            return;
-        }
-        const duration = remainingMs ?? item.duration ?? DEFAULT_TOAST_DURATION;
-        if (duration <= 0) {
-            dismiss(item.id);
-            return;
-        }
-        timers.current.set(item.id, {
-            startedAt: Date.now(),
-            remaining: duration,
-        });
-        const timeoutId = window.setTimeout(() => dismiss(item.id), duration);
-        timeoutIds.current.set(item.id, timeoutId);
-    }, [dismiss, stopTimer]);
+    const scheduleDismiss = useCallback(
+        (item: ToastItem, remainingMs?: number) => {
+            stopTimer(item.id);
+            if (item.duration === null) {
+                timers.current.delete(item.id);
+                return;
+            }
+            const duration = remainingMs ?? item.duration ?? DEFAULT_TOAST_DURATION;
+            if (duration <= 0) {
+                dismiss(item.id);
+                return;
+            }
+            timers.current.set(item.id, {
+                startedAt: Date.now(),
+                remaining: duration,
+            });
+            const timeoutId = window.setTimeout(() => dismiss(item.id), duration);
+            timeoutIds.current.set(item.id, timeoutId);
+        },
+        [dismiss, stopTimer],
+    );
 
-    const pauseDismiss = useCallback((id: number) => {
-        const timer = timers.current.get(id);
-        if (!timer || !timeoutIds.current.has(id)) return;
-        stopTimer(id);
-        timers.current.set(id, {
-            startedAt: timer.startedAt,
-            remaining: Math.max(0, timer.remaining - (Date.now() - timer.startedAt)),
-        });
-    }, [stopTimer]);
+    const pauseDismiss = useCallback(
+        (id: number) => {
+            const timer = timers.current.get(id);
+            if (!timer || !timeoutIds.current.has(id)) return;
+            stopTimer(id);
+            timers.current.set(id, {
+                startedAt: timer.startedAt,
+                remaining: Math.max(0, timer.remaining - (Date.now() - timer.startedAt)),
+            });
+        },
+        [stopTimer],
+    );
 
-    const resumeDismiss = useCallback((id: number) => {
-        if (timeoutIds.current.has(id)) return;
-        const item = itemsRef.current.find((currentItem) => currentItem.id === id);
-        const timer = timers.current.get(id);
-        if (!item || !timer || item.state === 'closing') return;
-        scheduleDismiss(item, timer.remaining);
-    }, [scheduleDismiss]);
+    const resumeDismiss = useCallback(
+        (id: number) => {
+            if (timeoutIds.current.has(id)) return;
+            const item = itemsRef.current.find((currentItem) => currentItem.id === id);
+            const timer = timers.current.get(id);
+            if (!item || !timer || item.state === 'closing') return;
+            scheduleDismiss(item, timer.remaining);
+        },
+        [scheduleDismiss],
+    );
 
-    const push = useCallback((input: ToastInput, tone?: ToastTone) => {
-        const normalized = normalizeToast(input, tone, defaultPosition);
-        const existingItem = normalized.dedupeKey
-            ? itemsRef.current.find((item) => item.dedupeKey === normalized.dedupeKey)
-            : null;
-        if (existingItem) clearRemovalTimer(existingItem.id);
-        const item = {
-            ...normalized,
-            id: existingItem?.id ?? nextId.current++,
-            createdAt: Date.now(),
-            state: 'open' as const,
-        };
+    const push = useCallback(
+        (input: ToastInput, tone?: ToastTone) => {
+            const normalized = normalizeToast(input, tone, defaultPosition);
+            const existingItem = normalized.dedupeKey
+                ? itemsRef.current.find((item) => item.dedupeKey === normalized.dedupeKey)
+                : null;
+            if (existingItem) clearRemovalTimer(existingItem.id);
+            const item = {
+                ...normalized,
+                id: existingItem?.id ?? nextId.current++,
+                createdAt: Date.now(),
+                state: 'open' as const,
+            };
 
-        setToastItems((current) => {
-            const nextItems = existingItem
-                ? current.map((currentItem) =>
-                    currentItem.id === existingItem.id ? item : currentItem,
-                )
-                : [...current, item];
-            return limitToastItems(nextItems, maxVisible);
-        });
-        scheduleDismiss(item);
-        return item.id;
-    }, [
-        clearRemovalTimer,
-        defaultPosition,
-        maxVisible,
-        scheduleDismiss,
-        setToastItems,
-    ]);
+            setToastItems((current) => {
+                const nextItems = existingItem
+                    ? current.map((currentItem) =>
+                          currentItem.id === existingItem.id ? item : currentItem,
+                      )
+                    : [...current, item];
+                return limitToastItems(nextItems, maxVisible);
+            });
+            scheduleDismiss(item);
+            return item.id;
+        },
+        [clearRemovalTimer, defaultPosition, maxVisible, scheduleDismiss, setToastItems],
+    );
 
     const value = useMemo(
         () => ({
@@ -275,19 +280,17 @@ export function ToastProvider({
             {children}
             <Portal>
                 {toastPositions.map((position) => {
-                    const positionItems = items.filter(
-                        (item) => item.position === position,
-                    );
+                    const positionItems = items.filter((item) => item.position === position);
                     if (positionItems.length === 0) return null;
                     return (
                         <div
                             key={position}
-                            className='oui-toast-stack'
+                            className="oui-toast-stack"
                             data-position={position}
                             data-testid={testId ? `${testId}-${position}` : undefined}
-                            aria-live='polite'
-                            aria-relevant='additions text'
-                            style={{zIndex: overlay.zIndex.toast}}
+                            aria-live="polite"
+                            aria-relevant="additions text"
+                            style={{ zIndex: overlay.zIndex.toast }}
                         >
                             {positionItems.map((item) => (
                                 <ToastCard
@@ -331,16 +334,16 @@ function ToastCard({
     onExited: (id: number) => void;
     testId?: string;
 }) {
-    const {copy} = useOrcestrUiLocale();
+    const { copy } = useOrcestrUiLocale();
     const duration = toastDuration(item);
     const hasProgress = item.duration !== null && duration > 0;
-    const icon = item.icon === false ? null : item.icon ?? toastIcon(item.tone);
+    const icon = item.icon === false ? null : (item.icon ?? toastIcon(item.tone));
     const style = {
-        ...(item.progressColor ? {'--oui-toast-progress-color': item.progressColor} : null),
+        ...(item.progressColor ? { '--oui-toast-progress-color': item.progressColor } : null),
     } as CSSProperties;
     return (
         <div
-            className='oui-toast-viewport oui-toast-frame'
+            className="oui-toast-viewport oui-toast-frame"
             data-position={item.position}
             data-state={item.state}
             style={style}
@@ -351,7 +354,7 @@ function ToastCard({
             }}
         >
             <div
-                className='oui-toast'
+                className="oui-toast"
                 data-tone={item.tone}
                 data-state={item.state}
                 data-position={item.position}
@@ -364,22 +367,22 @@ function ToastCard({
                     if (item.dismissible !== false) onDismiss(item.id);
                 }}
             >
-                <div className='oui-toast-content'>
+                <div className="oui-toast-content">
                     {icon ? (
-                        <span className='oui-toast-icon' data-tone={item.tone}>
+                        <span className="oui-toast-icon" data-tone={item.tone}>
                             {icon}
                         </span>
                     ) : null}
-                    <div className='oui-toast-main'>
-                        <div className='oui-toast-title'>{item.title}</div>
+                    <div className="oui-toast-main">
+                        <div className="oui-toast-title">{item.title}</div>
                         {item.message ? (
-                            <div className='oui-toast-message'>{item.message}</div>
+                            <div className="oui-toast-message">{item.message}</div>
                         ) : null}
                         {item.action ? (
                             <Button
-                                className='oui-toast-action'
+                                className="oui-toast-action"
                                 size={1}
-                                v='surface'
+                                v="surface"
                                 tone={item.tone}
                                 onClick={(event) => {
                                     event.stopPropagation();
@@ -396,9 +399,9 @@ function ToastCard({
                 </div>
                 {item.closeButton ? (
                     <IconButton
-                        className='oui-toast-close'
+                        className="oui-toast-close"
                         size={1}
-                        v='ghost'
+                        v="ghost"
                         icon={<LuX size={14} />}
                         aria-label={copy.common.dismissNotification}
                         onClick={(event) => {
@@ -410,8 +413,8 @@ function ToastCard({
                 {hasProgress ? (
                     <span
                         key={item.createdAt}
-                        className='oui-toast-progress'
-                        style={{'--oui-toast-duration': `${duration}ms`} as CSSProperties}
+                        className="oui-toast-progress"
+                        style={{ '--oui-toast-duration': `${duration}ms` } as CSSProperties}
                     />
                 ) : null}
             </div>

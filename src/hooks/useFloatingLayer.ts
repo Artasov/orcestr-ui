@@ -1,13 +1,9 @@
 'use client';
 
-import {useRef} from 'react';
+import { useRef } from 'react';
 
-import {
-    useFloatingPosition,
-    type FloatingAlign,
-    type FloatingSide,
-} from './useFloatingPosition';
-import {usePresence} from './usePresence';
+import { useFloatingPosition, type FloatingAlign, type FloatingSide } from './useFloatingPosition';
+import { usePresence } from './usePresence';
 
 type UseFloatingLayerOptions = {
     open: boolean;
@@ -19,10 +15,7 @@ type UseFloatingLayerOptions = {
     matchTriggerWidth?: boolean;
 };
 
-export function useFloatingLayer<
-    TTrigger extends HTMLElement,
-    TContent extends HTMLElement,
->({
+export function useFloatingLayer<TTrigger extends HTMLElement, TContent extends HTMLElement>({
     open,
     presenceDuration = 180,
     side = 'bottom',
@@ -33,8 +26,8 @@ export function useFloatingLayer<
 }: UseFloatingLayerOptions) {
     const triggerRef = useRef<TTrigger | null>(null);
     const contentRef = useRef<TContent | null>(null);
-    const {present, state} = usePresence(open, presenceDuration);
-    const {style} = useFloatingPosition({
+    const { present, state } = usePresence(open, presenceDuration);
+    const { style } = useFloatingPosition({
         triggerRef,
         contentRef,
         open: present,

@@ -12,16 +12,16 @@ import {
     type Ref,
 } from 'react';
 
-import {type FloatingAlign, type FloatingSide} from '../../hooks/useFloatingPosition';
-import {useFloatingLayer} from '../../hooks/useFloatingLayer';
-import {composeRefs} from '../../utils/composeRefs';
-import {cn} from '../../utils/cn';
+import { type FloatingAlign, type FloatingSide } from '../../hooks/useFloatingPosition';
+import { useFloatingLayer } from '../../hooks/useFloatingLayer';
+import { composeRefs } from '../../utils/composeRefs';
+import { cn } from '../../utils/cn';
 import {
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
 } from '../Overlay/OverlayProvider';
-import {Portal} from '../Portal/Portal';
+import { Portal } from '../Portal/Portal';
 
 type TooltipTriggerProps = {
     ref?: Ref<HTMLElement>;
@@ -72,13 +72,10 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
         if (open === undefined) setInternalOpen(nextOpen);
         onOpenChange?.(nextOpen);
     };
-    const {
-        triggerRef,
-        contentRef,
-        present,
-        state,
-        style,
-    } = useFloatingLayer<HTMLSpanElement, HTMLDivElement>({
+    const { triggerRef, contentRef, present, state, style } = useFloatingLayer<
+        HTMLSpanElement,
+        HTMLDivElement
+    >({
         open: actualOpen,
         presenceDuration: 140,
         side,
@@ -94,22 +91,22 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
         },
         onBlur: () => setOpen(false),
     };
-    const trigger = isValidElement(children)
-        ? cloneTooltipTrigger(children as ReactElement<TooltipTriggerProps>, {
+    const trigger = isValidElement(children) ? (
+        cloneTooltipTrigger(children as ReactElement<TooltipTriggerProps>, {
             ref: composeRefs(triggerRef, ref),
             testId,
             ...triggerHandlers,
         })
-        : (
-            <span
-                ref={composeRefs(triggerRef, ref)}
-                className='oui-tooltip-trigger'
-                data-testid={testId}
-                {...triggerHandlers}
-            >
-                {children}
-            </span>
-        );
+    ) : (
+        <span
+            ref={composeRefs(triggerRef, ref)}
+            className="oui-tooltip-trigger"
+            data-testid={testId}
+            {...triggerHandlers}
+        >
+            {children}
+        </span>
+    );
 
     return (
         <>
@@ -118,18 +115,14 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
                 <Portal>
                     <div
                         ref={contentRef}
-                        role='tooltip'
+                        role="tooltip"
                         className={cn('oui-tooltip-content', className)}
                         data-state={state}
-                        data-layer='dropdown'
+                        data-layer="dropdown"
                         data-testid={testId ? `${testId}-content` : undefined}
                         style={{
                             ...style,
-                            zIndex: overlayLayerZIndex(
-                                overlay.zIndex,
-                                'dropdown',
-                                layerIndex,
-                            ),
+                            zIndex: overlayLayerZIndex(overlay.zIndex, 'dropdown', layerIndex),
                         }}
                     >
                         {content}
@@ -149,7 +142,7 @@ function cloneTooltipTrigger(
         onMouseLeave,
         onFocus,
         onBlur,
-    }: TooltipTriggerProps & {testId?: string},
+    }: TooltipTriggerProps & { testId?: string },
 ) {
     return cloneElement(trigger, {
         ref: composeRefs(trigger.props.ref, ref),
