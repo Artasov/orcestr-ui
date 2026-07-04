@@ -10,12 +10,14 @@ const sourceExtensions = new Set(['.ts', '.tsx', '.sass']);
 
 test('package manifest exposes runtime, styles, demo and optional adapters explicitly', () => {
     const manifest = readFileSync(join(packageRoot, 'package.json'), 'utf8');
+    const lockfile = readFileSync(join(packageRoot, 'package-lock.json'), 'utf8');
 
     assert.match(manifest, /"name": "@orcestr\/ui"/);
     assert.match(manifest, /"\.\/styles\.css": "\.\/dist\/styles\/orcestr-ui\.css"/);
     assert.match(manifest, /"\.\/example\/styles\.css": "\.\/dist\/example\/styles\.css"/);
     assert.match(manifest, /"\.\/react-query": \{/);
     assert.match(manifest, /"@tanstack\/react-query": \{\s+"optional": true\s+\}/);
+    assert.doesNotMatch(`${manifest}\n${lockfile}`, /@radix-ui|radix|Radix/);
 });
 
 test('main public barrel excludes demo, legacy bridges and optional adapters', () => {
@@ -56,6 +58,8 @@ test('Orcestr UI keeps runtime and example styles split', () => {
     const dataStyles = readFileSync(join(sourceRoot, 'styles/_data.sass'), 'utf8');
     const shellStyles = readFileSync(join(sourceRoot, 'styles/_shell.sass'), 'utf8');
     const stateStyles = readFileSync(join(sourceRoot, 'styles/_state.sass'), 'utf8');
+    const tableStyles = readFileSync(join(sourceRoot, 'styles/_table.sass'), 'utf8');
+    const alertStyles = readFileSync(join(sourceRoot, 'styles/_alert.sass'), 'utf8');
     const styleUses = [...styleIndex.matchAll(/@use '\.\/([^']+)'/g)].map((match) =>
         match[1].replace(/^_/, '').replace(/\.sass$/, ''),
     );
@@ -101,6 +105,12 @@ test('Orcestr UI keeps runtime and example styles split', () => {
         /oui-workflow|oui-pipeline|oui-lifecycle|oui-timeline|oui-status-badge/,
     );
     assert.doesNotMatch(stateStyles, /oui-icon-text|oui-alert|oui-badge/);
+    assert.match(tableStyles, /\.oui-table\s+[\s\S]*border: 0[\s\S]*box-shadow: none/);
+    assert.match(alertStyles, /\.oui-alert\s+[\s\S]*box-shadow: none/);
+    assert.match(
+        alertStyles,
+        /\.oui-alert\[data-variant="soft"\]\s+[\s\S]*background: var\(--oui-subtle\)/,
+    );
 });
 
 function sourceFiles(dirs: string[]): string[] {

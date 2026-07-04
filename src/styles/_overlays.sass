@@ -122,7 +122,7 @@
     overflow: auto
     padding-right: 2px
     scrollbar-width: thin
-    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-gray-a8, var(--oui-border-strong))) var(--oui-scrollbar-track, transparent)
+    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-border-strong)) var(--oui-scrollbar-track, transparent)
 
 .oui-command-palette-results::-webkit-scrollbar
     width: 8px
@@ -133,7 +133,7 @@
 .oui-command-palette-results::-webkit-scrollbar-thumb
     border: 2px solid transparent
     border-radius: 999px
-    background-color: var(--oui-scrollbar-thumb, var(--oui-gray-a8, var(--oui-border-strong)))
+    background-color: var(--oui-scrollbar-thumb, var(--oui-border-strong))
     background-clip: content-box
 
 .oui-command-palette-results::-webkit-scrollbar-thumb:hover
@@ -188,8 +188,8 @@
 .oui-command-palette-item:hover,
 .oui-command-palette-item:focus-visible,
 .oui-command-palette-item[data-selected="true"]
-    border-color: color-mix(in srgb, var(--oui-gray-a8) 42%, transparent)
-    background: var(--oui-control-hover-bg, var(--oui-gray-a4))
+    border-color: color-mix(in srgb, var(--oui-border-strong) 42%, transparent)
+    background: var(--oui-control-hover-bg)
     outline: none
 
 .oui-command-palette-item:disabled
@@ -232,7 +232,7 @@
     min-width: 34px
     min-height: 22px
     flex: 0 0 auto
-    border: 1px solid color-mix(in srgb, var(--oui-gray-a8) 36%, transparent)
+    border: 1px solid color-mix(in srgb, var(--oui-border-strong) 36%, transparent)
     border-radius: 5px
     padding: 0 6px
     color: var(--oui-muted)
@@ -592,7 +592,7 @@
 
 .oui-popover-content,
 .oui-tooltip-content
-    border-color: var(--oui-gray-a8)
+    border-color: var(--oui-border-strong)
     background: var(--oui-floating-bg, var(--oui-bg))
     box-shadow: var(--oui-floating-shadow, 0 8px 20px var(--oui-shadow-soft, rgb(0 0 0 / 32%)))
 
@@ -657,14 +657,14 @@
 
 .oui-menu-info:hover,
 .oui-menu-info:focus-visible
-    background: var(--oui-gray-a4)
+    background: var(--oui-control-hover-bg)
     color: var(--oui-text)
     outline: none
 
 .oui-menu-separator
     height: 1px
     margin: 3px 2px
-    background: var(--oui-gray-a5)
+    background: var(--oui-border)
 
 .oui-menu-sub-chevron
     flex: 0 0 auto
@@ -759,7 +759,7 @@
 .oui-combobox-content,
 .oui-select-content
     background: var(--oui-floating-bg, var(--oui-bg))
-    border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border-color: color-mix(in srgb, var(--oui-border-strong) 48%, transparent)
 
 .oui-combobox-content,
 .oui-select-content,
@@ -792,7 +792,7 @@
 
 .oui-menu-subcontent
     left: calc(100% + 4px)
-    border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border-color: color-mix(in srgb, var(--oui-border-strong) 48%, transparent)
     border-radius: 6px
     opacity: 0
     pointer-events: none

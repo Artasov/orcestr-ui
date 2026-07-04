@@ -74,7 +74,7 @@ export function TextSection({ onOpenCode }: ExampleSectionProps) {
                                 Info
                             </Text>
                         </Flex>
-                        <Box w="100%" p={2} r={3} style={{ background: 'var(--oui-gray-a3)' }}>
+                        <Box w="100%" p={2} r={3} style={{ background: 'var(--oui-pad-bg)' }}>
                             <Text display="block" truncate>
                                 This is a long single line value that truncates cleanly inside a
                                 constrained row.
@@ -141,7 +141,7 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                                     p={2}
                                     r={3}
                                     flex="1 1 150px"
-                                    style={{ background: 'var(--oui-gray-a3)' }}
+                                    style={{ background: 'var(--oui-pad-bg)' }}
                                 >
                                     <Text fs="12px" tone="muted">
                                         Step {index + 1}
@@ -181,7 +181,7 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                                 w="min(100%, 360px)"
                                 p="8px 10px"
                                 r={2}
-                                style={{ background: 'var(--oui-gray-a3)' }}
+                                style={{ background: 'var(--oui-pad-bg)' }}
                             >
                                 <img
                                     src={image}
@@ -225,7 +225,7 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                             </Button>
                         </Flex>
                         <Collapse open={detailsOpen}>
-                            <Stack g={2} p={2} r={3} style={{ background: 'var(--oui-gray-a3)' }}>
+                            <Stack g={2} p={2} r={3} style={{ background: 'var(--oui-pad-bg)' }}>
                                 <Flex row g={2} j="sb">
                                     <Text tone="muted">Owner</Text>
                                     <Text fw={700}>Core team</Text>
@@ -299,7 +299,7 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                                 p={2}
                                 r={3}
                                 ta="center"
-                                style={{ background: 'var(--oui-gray-a3)' }}
+                                style={{ background: 'var(--oui-pad-bg)' }}
                             >
                                 <Text fs="13px" fw={700}>
                                     {item}
@@ -356,7 +356,7 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                                         key={index}
                                         p={2}
                                         r={3}
-                                        style={{ background: 'var(--oui-gray-a3)' }}
+                                        style={{ background: 'var(--oui-pad-bg)' }}
                                     >
                                         <Text fs="13px">Scroll row {index + 1}</Text>
                                     </Box>
@@ -377,7 +377,7 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                                         key={index}
                                         p={2}
                                         r={3}
-                                        style={{ background: 'var(--oui-gray-a3)' }}
+                                        style={{ background: 'var(--oui-pad-bg)' }}
                                     >
                                         <Text fs="13px">Both edges row {index + 1}</Text>
                                     </Box>
@@ -422,7 +422,7 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                                         p={2}
                                         r={3}
                                         a="c"
-                                        style={{ background: 'var(--oui-gray-a3)' }}
+                                        style={{ background: 'var(--oui-pad-bg)' }}
                                     >
                                         <Badge tone={index < 3 ? 'primary' : 'info'}>
                                             {index + 1}
@@ -461,7 +461,7 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                                 display="flex"
                                 a="c"
                                 j="c"
-                                style={{ background: 'var(--oui-gray-a3)' }}
+                                style={{ background: 'var(--oui-pad-bg)' }}
                             >
                                 <Text fs="12px" fw={700}>
                                     {radius}

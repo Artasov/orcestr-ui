@@ -83,7 +83,13 @@
     opacity: 0
     pointer-events: none
     transform: translateY(0)
-    transition: transform 600ms cubic-bezier(.22, 1, .36, 1), opacity 180ms ease
+    transition: transform 600ms cubic-bezier(.22, 1, .36, 1), height 600ms cubic-bezier(.22, 1, .36, 1), opacity 180ms ease
+
+.oui-app-sidebar-indicator:not([data-ready="true"])
+    transition: none
+
+.oui-app-sidebar-indicator[data-ready="true"]
+    opacity: 1
 
 .oui-app-sidebar-groups
     position: relative

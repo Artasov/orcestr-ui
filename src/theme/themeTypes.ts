@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 export type OrcestrThemeMode = 'dark' | 'light';
-export type OrcestrThemeSurface = 'orcestr' | 'operations' | 'media' | 'catalog';
+export type OrcestrThemeSurface = 'orcestr' | 'deliveries' | 'beauty' | 'jewelry';
 export type ButtonPressAnimation = 'translate' | 'scale' | 'soft' | 'none';
 export type ModalAnimation = 'zoom-blur' | 'rise' | 'fade';
 export type OrcestrThemeColorRole = {

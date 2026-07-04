@@ -33,7 +33,7 @@ export const codeSamples = {
         <Text tone='info' fw={700}>Info</Text>
     </Flex>
 
-    <Box w='100%' p={2} r={3} style={{background: 'var(--oui-gray-a3)'}}>
+    <Box w='100%' p={2} r={3} style={{background: 'var(--oui-pad-bg)'}}>
         <Text display='block' truncate>
             This is a long single line value that truncates cleanly inside a constrained row.
         </Text>
@@ -95,7 +95,7 @@ const groups = [
         ],
     },
     {
-        key: 'operations',
+        key: 'inventory',
         items: [
             {key: 'products', label: 'Products', icon: <LuBox />, active: activeKey === 'products'},
             {key: 'calendar', label: 'Calendar', icon: <LuCalendar />, active: activeKey === 'calendar'},
@@ -208,7 +208,7 @@ const languageItems: MenuItem[] = [
                 p={2}
                 r={3}
                 flex='1 1 150px'
-                style={{background: 'var(--oui-gray-a3)'}}
+                style={{background: 'var(--oui-pad-bg)'}}
             >
                 <Text fs='12px' tone='muted'>Step {index + 1}</Text>
                 <Text fw={700}>{item}</Text>
@@ -232,7 +232,7 @@ const languageItems: MenuItem[] = [
             w='min(100%, 360px)'
             p='8px 10px'
             r={2}
-            style={{background: 'var(--oui-gray-a3)'}}
+            style={{background: 'var(--oui-pad-bg)'}}
         >
             <img
                 src={image}
@@ -265,7 +265,7 @@ const [detailsOpen, setDetailsOpen] = useState(true);
         </Button>
     </Flex>
     <Collapse open={detailsOpen}>
-        <Stack g={2} p={2} r={3} style={{background: 'var(--oui-gray-a3)'}}>
+        <Stack g={2} p={2} r={3} style={{background: 'var(--oui-pad-bg)'}}>
             <Flex row g={2} j='sb'>
                 <Text tone='muted'>Owner</Text>
                 <Text fw={700}>Core team</Text>
@@ -285,7 +285,7 @@ const [detailsOpen, setDetailsOpen] = useState(true);
 
 <Grid columns='repeat(3, minmax(0, 1fr))' g={2}>
     {['A', 'B', 'C', 'D', 'E', 'F'].map((item) => (
-        <Box key={item} p={2} r={3} ta='center' style={{background: 'var(--oui-gray-a3)'}}>
+        <Box key={item} p={2} r={3} ta='center' style={{background: 'var(--oui-pad-bg)'}}>
             <Text fs='13px' fw={700}>{item}</Text>
         </Box>
     ))}
@@ -329,7 +329,7 @@ const richRows = [
     <ScrollArea h={116} pr={1}>
         <Stack g={1}>
             {scrollRows.map((row) => (
-                <Box key={row} p={2} r={3} style={{background: 'var(--oui-gray-a3)'}}>
+                <Box key={row} p={2} r={3} style={{background: 'var(--oui-pad-bg)'}}>
                     <Text fs='13px'>Scroll row {row}</Text>
                 </Box>
             ))}
@@ -346,7 +346,7 @@ const richRows = [
     >
         <Stack g={1}>
             {scrollRows.slice(0, 8).map((row) => (
-                <Box key={row} p={2} r={3} style={{background: 'var(--oui-gray-a3)'}}>
+                <Box key={row} p={2} r={3} style={{background: 'var(--oui-pad-bg)'}}>
                     <Text fs='13px'>Both edges row {row}</Text>
                 </Box>
             ))}
@@ -382,7 +382,7 @@ const richRows = [
                     p={2}
                     r={3}
                     a='c'
-                    style={{background: 'var(--oui-gray-a3)'}}
+                    style={{background: 'var(--oui-pad-bg)'}}
                 >
                     <Badge tone={index < 3 ? 'primary' : 'info'}>
                         {index + 1}
@@ -407,7 +407,7 @@ const richRows = [
             display='flex'
             a='c'
             j='c'
-            style={{background: 'var(--oui-gray-a3)'}}
+            style={{background: 'var(--oui-pad-bg)'}}
         >
             <Text fs='12px' fw={700}>{radius}</Text>
         </Box>

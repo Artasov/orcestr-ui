@@ -17,7 +17,7 @@ test('DatePicker calendar icon is an interactive trigger', () => {
     assert.match(source, /setOpen\(true\)/);
     assert.match(
         source,
-        /<button[\s\S]*?className='oui-date-picker-trigger'[\s\S]*?onClick=\{openCalendar\}/,
+        /<button[\s\S]*?className=["\']oui-date-picker-trigger["\'][\s\S]*?onClick=\{openCalendar\}/,
     );
-    assert.doesNotMatch(source, /className='oui-date-picker-trigger'[\s\S]*?aria-hidden/);
+    assert.doesNotMatch(source, /className=["\']oui-date-picker-trigger["\'][\s\S]*?aria-hidden/);
 });

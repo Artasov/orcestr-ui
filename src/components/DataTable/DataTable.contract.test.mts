@@ -38,10 +38,10 @@ test('DataTable settings and pinned cells use shared UI primitives', () => {
         /useEffect\(\(\) => \(\) => cancelHorizontalScrollAnimation\(\), \[cancelHorizontalScrollAnimation\]\)/,
     );
     assert.doesNotMatch(source, /node\.scrollLeft \+= event\.deltaY/);
-    assert.match(source, /className='oui-data-table-sort-label'/);
+    assert.match(source, /className=["\']oui-data-table-sort-label["\']/);
     assert.match(
         source,
-        /\{toolbar \|\| columnSettings \? \([\s\S]*?<div className='oui-data-table-toolbar'>[\s\S]*?oui-data-table-toolbar-content[\s\S]*?<ColumnSettingsPanel/,
+        /\{toolbar \|\| columnSettings \? \([\s\S]*?<div className=["\']oui-data-table-toolbar["\']>[\s\S]*?oui-data-table-toolbar-content[\s\S]*?<ColumnSettingsPanel/,
     );
     assert.match(
         styles,
@@ -66,7 +66,10 @@ test('DataTable settings and pinned cells use shared UI primitives', () => {
         styles,
         /\.oui-data-table-select-cell\s+width: 42px[\s\S]*?padding-inline: 0 !important[\s\S]*?text-align: center/,
     );
-    assert.equal((source.match(/className='oui-data-table-select-control'/g) ?? []).length, 2);
+    assert.equal(
+        (source.match(/className=["\']oui-data-table-select-control["\']/g) ?? []).length,
+        2,
+    );
     assert.match(
         styles,
         /\.oui-data-table-select-control\s+display: inline-flex[\s\S]*?width: 100%[\s\S]*?justify-content: center/,
@@ -78,11 +81,11 @@ test('DataTable settings and pinned cells use shared UI primitives', () => {
     );
     assert.match(
         source,
-        /<Button\s+className='oui-data-table-settings-reset'[\s\S]*?size=\{1\}[\s\S]*?v='ghost'[\s\S]*?leftIcon=\{<LuRotateCcw size=\{13\} \/>\}/,
+        /<Button\s+className=["']oui-data-table-settings-reset["'][\s\S]*?size=\{1\}[\s\S]*?v=["']ghost["'][\s\S]*?leftIcon=\{<LuRotateCcw size=\{13\} \/>\}/,
     );
     assert.doesNotMatch(
         source,
-        /<button\s+type='button'\s+className='oui-data-table-settings-reset'/,
+        /<button\s+type=["']button["']\s+className=["']oui-data-table-settings-reset["']/,
     );
     assert.match(styles, /\.oui-data-table-wrap\s+--oui-data-table-row-base-bg:/);
     assert.match(

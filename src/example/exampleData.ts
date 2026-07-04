@@ -137,7 +137,7 @@ const ruCommandItems: CommandPaletteItem[] = [
         group: 'Навигация',
     },
     {
-        key: 'open-operations',
+        key: 'open-queue',
         label: 'Открыть очередь',
         description: 'Перейти к рабочей очереди.',
         shortcut: 'G D',
@@ -175,7 +175,7 @@ const enCommandItems: CommandPaletteItem[] = [
         group: 'Navigation',
     },
     {
-        key: 'open-operations',
+        key: 'open-queue',
         label: 'Open queue',
         description: 'Go to the work queue.',
         shortcut: 'G D',

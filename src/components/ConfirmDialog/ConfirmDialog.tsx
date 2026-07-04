@@ -11,10 +11,7 @@ import { IconButton } from '../IconButton/IconButton';
 import { Modal, type ModalProps } from '../Modal/Modal';
 import { Text } from '../Text/Text';
 
-export type ConfirmDialogTone = Extract<
-    Tone,
-    'danger' | 'info' | 'neutral' | 'success' | 'warning'
->;
+export type ConfirmDialogTone = Tone;
 
 export type ConfirmDialogProps = {
     open: boolean;

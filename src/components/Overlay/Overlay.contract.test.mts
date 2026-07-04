@@ -27,7 +27,7 @@ test('Modal uses focus trap, Escape close, outside click and scroll lock', () =>
     assert.match(source, /lockOverlayScroll/);
     assert.match(source, /closeOnOverlayClick/);
     assert.match(source, /onPointerDown/);
-    assert.match(source, /aria-modal='true'/);
+    assert.match(source, /aria-modal=["\']true["\']/);
     assert.match(source, /useOverlayLayerIndex\(present\)/);
 });
 
@@ -95,7 +95,7 @@ test('Popover uses the passed React trigger without nested interactive wrappers'
     assert.match(source, /cloneElement/);
     assert.match(source, /isValidElement\(trigger\)/);
     assert.match(source, /clonePopoverTrigger/);
-    assert.match(source, /role='button'[\s\S]*?\{trigger\}/);
+    assert.match(source, /role=["\']button["\'][\s\S]*?\{trigger\}/);
     assert.match(source, /matchTriggerWidth\?: boolean/);
 });
 

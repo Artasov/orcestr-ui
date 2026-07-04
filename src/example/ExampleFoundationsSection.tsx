@@ -10,7 +10,7 @@ const providerSample: CodeExample = {
     code: `import {OrcestrUiProvider} from '@orcestr/ui';
 
 <OrcestrUiProvider
-    surface='operations'
+    surface='deliveries'
     locale='ru'
 >
     <App />

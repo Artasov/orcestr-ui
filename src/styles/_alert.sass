@@ -1,3 +1,5 @@
+@use 'tones'
+
 .oui-alert
     display: flex
     min-width: 0
@@ -8,6 +10,10 @@
     background: var(--oui-pad-bg)
     padding: 10px 12px
     color: var(--oui-text)
+    box-shadow: none
+
+.oui-alert[data-variant="soft"]
+    background: var(--oui-subtle)
 
 .oui-alert[data-tone="success"]
     border-color: color-mix(in srgb, var(--oui-success-base) 42%, var(--oui-border))
@@ -25,12 +31,7 @@
     border-color: color-mix(in srgb, var(--oui-info-base) 42%, var(--oui-border))
     background: var(--oui-info-surface)
 
-$oui-color-tones: 'blue' 'sky' 'cyan' 'teal' 'indigo' 'violet' 'purple' 'iris' 'green' 'jade' 'mint' 'grass' 'lime' 'yellow' 'amber' 'orange' 'brown' 'red' 'ruby' 'crimson' 'pink' 'tomato'
-
-@each $tone in $oui-color-tones
-    .oui-alert[data-tone="#{$tone}"]
-        border-color: color-mix(in srgb, var(--#{$tone}-9, var(--oui-info-base)) 42%, var(--oui-border))
-        background: var(--#{$tone}-a3, var(--oui-info-surface))
+@include tones.alert-classes
 
 .oui-alert-icon,
 .oui-alert-action

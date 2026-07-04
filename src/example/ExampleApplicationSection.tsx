@@ -88,7 +88,7 @@ export function ApplicationSection({ onOpenCode }: ExampleSectionProps) {
             ],
         },
         {
-            key: 'operations',
+            key: 'inventory',
             items: [
                 {
                     key: 'products',

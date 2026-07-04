@@ -13,7 +13,7 @@ function read(path: string): string {
 
 test('theme contract includes surfaces and full token families', () => {
     const types = read('theme/themeTypes.ts');
-    assert.match(types, /OrcestrThemeSurface = 'orcestr' \| 'operations' \| 'media' \| 'catalog'/);
+    assert.match(types, /OrcestrThemeSurface = 'orcestr' \| 'deliveries' \| 'beauty' \| 'jewelry'/);
     assert.match(types, /colors: \{/);
     assert.match(types, /primary: OrcestrThemeColorRole/);
     assert.match(types, /secondary: OrcestrThemeColorRole/);
@@ -67,9 +67,9 @@ test('theme surface registry includes all first-party surfaces', () => {
     const source = read('theme/defaultTheme.ts');
     assert.match(source, /orcestrThemeSurfaceRegistry/);
     assert.match(source, /orcestrThemeSurfaceRegistry\.orcestr/);
-    assert.match(source, /orcestrThemeSurfaceRegistry\.operations/);
-    assert.match(source, /orcestrThemeSurfaceRegistry\.media/);
-    assert.match(source, /orcestrThemeSurfaceRegistry\.catalog/);
+    assert.match(source, /orcestrThemeSurfaceRegistry\.deliveries/);
+    assert.match(source, /orcestrThemeSurfaceRegistry\.beauty/);
+    assert.match(source, /orcestrThemeSurfaceRegistry\.jewelry/);
 });
 
 test('theme contract keeps only active component tokens', () => {
@@ -102,6 +102,8 @@ test('theme provider exposes component tokens as CSS variables', () => {
     assert.match(provider, /function relativeLuminance/);
     assert.match(styles, /color-scheme: light/);
     assert.match(styles, /color-scheme: dark/);
+    assert.doesNotMatch(provider, /--oui-gray/);
+    assert.doesNotMatch(styles, /--oui-gray/);
     assert.match(styles, /--oui-pad-bg: #00000006/);
     assert.match(styles, /--oui-pad-hover-bg: #0000000f/);
     assert.match(
@@ -125,6 +127,49 @@ test('theme provider exposes component tokens as CSS variables', () => {
     assert.doesNotMatch(provider, /--oui-chat-bubble-radius/);
     assert.doesNotMatch(provider, /--oui-composer-min-height/);
     assert.doesNotMatch(provider, /--oui-media-preview-bg/);
+});
+
+test('color tone styles use Orcestr tone contract instead of external palette names', () => {
+    const systemProps = read('theme/systemProps.ts');
+    const styles = [
+        read('styles/_alert.sass'),
+        read('styles/_badge.sass'),
+        read('styles/_buttons.sass'),
+        read('styles/_theme.sass'),
+        read('styles/_tones.sass'),
+    ].join('\n');
+
+    assert.match(styles, /@include tones\.badge-classes/);
+    assert.match(styles, /@include tones\.icon-button-badge-classes/);
+    assert.match(styles, /@include tones\.button-tone-classes/);
+    assert.match(styles, /@include tones\.text-classes/);
+    assert.match(
+        systemProps,
+        /export type ColorTone = 'gray' \| 'blue' \| 'cyan' \| 'green' \| 'yellow' \| 'orange' \| 'red' \| 'purple'/,
+    );
+    const allowedTones = new Set([
+        'neutral',
+        'primary',
+        'secondary',
+        'success',
+        'warning',
+        'danger',
+        'info',
+        'gray',
+        'blue',
+        'cyan',
+        'green',
+        'yellow',
+        'orange',
+        'red',
+        'purple',
+    ]);
+    const dataTones = [...styles.matchAll(/data-tone="#([^"]+)"/g)]
+        .map((match) => match[1])
+        .filter((tone) => /^[a-z]+$/.test(tone));
+    for (const tone of dataTones) {
+        assert.equal(allowedTones.has(tone), true, `Unexpected tone: ${tone}`);
+    }
 });
 
 test('default toast theme matches compact glass notification defaults', () => {
@@ -184,7 +229,10 @@ test('default theme owns scrollbar tokens and exposes them to shared scroll surf
         /thumbHover: 'color-mix\(in srgb, var\(--oui-bg\) 92%, var\(--oui-text\) 8%\)'/,
     );
     assert.match(source, /track: 'transparent'/);
-    assert.match(source, /scrollbar: \{\.\.\.baseTheme\.scrollbar, \.\.\.overrides\.scrollbar\}/);
+    assert.match(
+        source,
+        /scrollbar: \{\s+\.\.\.baseTheme\.scrollbar,\s+\.\.\.overrides\.scrollbar\s+\}/,
+    );
     assert.match(
         scrollArea,
         /scrollbar-color: var\(--oui-scrollbar-thumb[\s\S]*?var\(--oui-scrollbar-track, transparent\)/,
@@ -231,17 +279,26 @@ test('theme provider can be controlled by playground state', () => {
 
 test('default themes include module surface overrides', () => {
     const source = read('theme/defaultTheme.ts');
-    assert.match(source, /operations: \{/);
-    assert.match(source, /media: \{/);
-    assert.match(source, /catalog: \{/);
+    assert.match(source, /deliveries: \{/);
+    assert.match(source, /beauty: \{/);
+    assert.match(source, /jewelry: \{/);
+    assert.match(
+        source,
+        /deliveries: \{[\s\S]*?status: \{[\s\S]*?primary: \{[\s\S]*?color: '#f76b15'/,
+    );
+    assert.match(source, /beauty: \{[\s\S]*?status: \{[\s\S]*?primary: \{[\s\S]*?color: '#d86d8f'/);
+    assert.match(
+        source,
+        /jewelry: \{[\s\S]*?status: \{[\s\S]*?primary: \{[\s\S]*?color: '#ffc53d'/,
+    );
     assert.doesNotMatch(source, /chatBubbleRadius/);
     assert.doesNotMatch(source, /mediaPreviewBackground/);
 });
 
-test('theme playground exposes new token families and catalog presets', () => {
+test('theme playground exposes new token families and jewelry presets', () => {
     const source = read('example/ExampleThemePlayground.tsx');
-    assert.match(source, /id: 'catalog-dark'/);
-    assert.match(source, /id: 'catalog-light'/);
+    assert.match(source, /id: 'jewelry-dark'/);
+    assert.match(source, /id: 'jewelry-light'/);
     assert.match(source, /'radius'/);
     assert.match(source, /'text'/);
     assert.doesNotMatch(source, /'radii'|'typography'/);

@@ -1,3 +1,5 @@
+@use 'tones'
+
 :root[data-oui-theme="light"],
 .oui-root
     --oui-bg: #ffffff
@@ -89,12 +91,6 @@
     --oui-state-loading-opacity: .78
     --oui-state-selected-opacity: .15
     --oui-state-focus-ring-width: 3px
-    --oui-panel-solid: #ffffff
-    --oui-gray-3: #f0f0f0
-    --oui-gray-a3: #0000000f
-    --oui-gray-a4: #00000017
-    --oui-gray-a5: #0000001f
-    --oui-gray-a8: #00000044
     --oui-shadow-soft: rgb(0 0 0 / 12%)
     color: var(--oui-text)
     color-scheme: light
@@ -171,12 +167,6 @@
     --oui-shadow-sm: inset 0 -1px 1px 0 #ffffff12, inset 0 0 0 1px #ffffff12, inset 0 3px 4px 0 rgb(0 0 0 / 30%), inset 0 0 0 1px #ffffff1b
     --oui-shadow-md: 0 0 0 1px #ffffff2c, 0 2px 3px -2px rgb(0 0 0 / 15%), 0 3px 8px -2px rgb(0 0 0 / 40%), 0 4px 12px -4px rgb(0 0 0 / 50%)
     --oui-ring: 0 0 0 3px #0075ff57
-    --oui-panel-solid: var(--oui-panel)
-    --oui-gray-3: #222222
-    --oui-gray-a3: #ffffff12
-    --oui-gray-a4: #ffffff1b
-    --oui-gray-a5: #ffffff22
-    --oui-gray-a8: #ffffff55
     --oui-shadow-soft: rgb(0 0 0 / 48%)
     color-scheme: dark
 
@@ -239,8 +229,4 @@
 .oui-muted
     color: var(--oui-muted)
 
-$oui-color-tones: 'blue' 'sky' 'cyan' 'teal' 'indigo' 'violet' 'purple' 'iris' 'green' 'jade' 'mint' 'grass' 'lime' 'yellow' 'amber' 'orange' 'brown' 'red' 'ruby' 'crimson' 'pink' 'tomato'
-
-@each $tone in $oui-color-tones
-    .oui-text-#{$tone}
-        color: var(--#{$tone}-11, var(--oui-text))
+@include tones.text-classes

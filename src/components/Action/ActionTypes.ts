@@ -2,10 +2,7 @@ import type { ReactNode } from 'react';
 
 import type { Tone } from '../../theme/systemProps';
 
-export type OrcestrActionTone = Extract<
-    Tone,
-    'danger' | 'info' | 'neutral' | 'success' | 'warning'
->;
+export type OrcestrActionTone = Tone;
 
 export type OrcestrActionConfirmation = {
     title?: ReactNode;

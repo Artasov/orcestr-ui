@@ -117,7 +117,7 @@
 
 .oui-segmented-item[data-active="true"]
     color: var(--oui-text)
-    background: var(--oui-control-hover-bg, var(--oui-gray-a4, var(--oui-soft)))
+    background: var(--oui-control-hover-bg)
     box-shadow: var(--oui-shadow-sm)
 
 .oui-tabs
@@ -133,14 +133,14 @@
 .oui-button[data-variant="surface"],
 .oui-icon-button[data-variant="surface"]
     background-color: var(--oui-control-bg, transparent)
-    border-color: color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border-color: color-mix(in srgb, var(--oui-border-strong) 48%, transparent)
     box-shadow: none
     font-weight: 400
 
 .oui-button[data-variant="surface"]:not(:disabled):hover,
 .oui-icon-button[data-variant="surface"]:not(:disabled):hover
-    border-color: var(--oui-gray-a8)
-    background-color: var(--oui-control-hover-bg, var(--oui-gray-a4))
+    border-color: var(--oui-border-strong)
+    background-color: var(--oui-control-hover-bg)
 
 .oui-combobox-trigger .oui-button-label
     flex: 1 1 auto
@@ -224,7 +224,7 @@
     overflow-y: auto
     overscroll-behavior: contain
     scrollbar-width: thin
-    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-gray-a8)) var(--oui-scrollbar-track, transparent)
+    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-border-strong)) var(--oui-scrollbar-track, transparent)
 
 .oui-combobox-options,
 .oui-listbox.oui-combobox-options
@@ -324,7 +324,7 @@
 
 .oui-combobox-option-action:hover,
 .oui-combobox-option-action:focus-visible
-    background: var(--oui-gray-a4)
+    background: var(--oui-control-hover-bg)
     color: var(--oui-text)
     outline: none
 
@@ -428,7 +428,7 @@
     width: 16px
     height: 16px
     flex: 0 0 16px
-    border: 1px solid color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border: 1px solid color-mix(in srgb, var(--oui-border-strong) 48%, transparent)
     border-radius: 4px
     color: #ffffff
     background: var(--oui-control-bg, transparent)
@@ -499,7 +499,7 @@
     height: 16px
     min-width: 16px
     min-height: 16px
-    border: 1px solid color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border: 1px solid color-mix(in srgb, var(--oui-border-strong) 48%, transparent)
     background: var(--oui-control-bg, transparent)
     color: #ffffff
     box-shadow: none
@@ -521,7 +521,7 @@
 
 .oui-checkbox:hover .oui-checkbox-box,
 .oui-radio:hover .oui-radio-dot
-    border-color: var(--oui-gray-a8)
+    border-color: var(--oui-border-strong)
 
 .oui-checkbox[data-checked="true"] .oui-checkbox-box,
 .oui-checkbox[data-indeterminate="true"] .oui-checkbox-box
@@ -547,14 +547,14 @@
     position: relative
     width: 36px
     height: 20px
-    border: 1px solid color-mix(in srgb, var(--oui-gray-a8) 48%, transparent)
+    border: 1px solid color-mix(in srgb, var(--oui-border-strong) 48%, transparent)
     border-radius: 999px
     background: var(--oui-control-bg, transparent)
     box-shadow: none
     transition: background-color 180ms ease, border-color 220ms ease
 
 .oui-switch:hover .oui-switch-track
-    border-color: var(--oui-gray-a8)
+    border-color: var(--oui-border-strong)
 
 .oui-switch-thumb
     position: absolute
@@ -640,11 +640,11 @@
 
 .oui-tabs-active-indicator
     z-index: 0
-    background: var(--oui-border, var(--oui-pad-hover-bg, var(--oui-control-hover-bg, var(--oui-gray-a3))))
+    background: var(--oui-border, var(--oui-pad-hover-bg, var(--oui-control-hover-bg)))
 
 .oui-tabs-hover-indicator
     z-index: 0
-    background: var(--oui-border, var(--oui-pad-hover-bg, var(--oui-control-hover-bg, var(--oui-gray-a3))))
+    background: var(--oui-border, var(--oui-pad-hover-bg, var(--oui-control-hover-bg)))
     opacity: 0
 
 .oui-tabs-hover-indicator[data-visible="true"]
@@ -702,7 +702,7 @@
     border-radius: 999px
     padding: 0 5px
     color: var(--oui-muted)
-    background: var(--oui-gray-a4)
+    background: var(--oui-control-hover-bg)
     font-size: 10px
     font-weight: 650
     line-height: 1
@@ -782,11 +782,11 @@
 
 .oui-tabs-compound-active-indicator
     z-index: 0
-    background: var(--oui-border, var(--oui-pad-hover-bg, var(--oui-control-hover-bg, var(--oui-gray-a3))))
+    background: var(--oui-border, var(--oui-pad-hover-bg, var(--oui-control-hover-bg)))
 
 .oui-tabs-compound-hover-indicator
     z-index: 0
-    background: var(--oui-border, var(--oui-pad-hover-bg, var(--oui-control-hover-bg, var(--oui-gray-a3))))
+    background: var(--oui-border, var(--oui-pad-hover-bg, var(--oui-control-hover-bg)))
     opacity: 0
 
 .oui-tabs-compound-hover-indicator[data-visible="true"]

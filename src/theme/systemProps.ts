@@ -2,62 +2,9 @@ import type { CSSProperties } from 'react';
 
 export type SemanticTone =
     'neutral' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
-export type ColorTone =
-    | 'blue'
-    | 'sky'
-    | 'cyan'
-    | 'teal'
-    | 'indigo'
-    | 'violet'
-    | 'purple'
-    | 'iris'
-    | 'green'
-    | 'jade'
-    | 'mint'
-    | 'grass'
-    | 'lime'
-    | 'yellow'
-    | 'amber'
-    | 'orange'
-    | 'brown'
-    | 'red'
-    | 'ruby'
-    | 'crimson'
-    | 'pink'
-    | 'tomato';
+export type ColorTone = 'gray' | 'blue' | 'cyan' | 'green' | 'yellow' | 'orange' | 'red' | 'purple';
 export type Tone = SemanticTone | ColorTone;
-export type ToneInput =
-    | Tone
-    | 'muted'
-    | 'gray'
-    | 'mauve'
-    | 'slate'
-    | 'sage'
-    | 'olive'
-    | 'sand'
-    | 'blue'
-    | 'sky'
-    | 'cyan'
-    | 'teal'
-    | 'indigo'
-    | 'violet'
-    | 'purple'
-    | 'iris'
-    | 'green'
-    | 'jade'
-    | 'mint'
-    | 'grass'
-    | 'lime'
-    | 'yellow'
-    | 'amber'
-    | 'orange'
-    | 'brown'
-    | 'red'
-    | 'ruby'
-    | 'crimson'
-    | 'pink'
-    | 'tomato'
-    | (string & {});
+export type ToneInput = Tone | 'muted';
 export type UiSize = 1 | 2 | 3 | 4 | '1' | '2' | '3' | '4';
 export type RadiusScale = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 export type AlignShort =
@@ -434,13 +381,7 @@ export function normalizeTone(value: ToneInput | undefined, fallback: Tone = 'ne
     switch (value) {
         case undefined:
         case 'muted':
-        case 'gray':
-        case 'mauve':
-        case 'slate':
-        case 'sage':
-        case 'olive':
-        case 'sand':
-            return value === undefined ? fallback : 'neutral';
+            return fallback;
         default:
             return isTone(value) ? value : fallback;
     }
@@ -455,27 +396,13 @@ function isTone(value: string): value is Tone {
         value === 'warning' ||
         value === 'danger' ||
         value === 'info' ||
+        value === 'gray' ||
         value === 'blue' ||
-        value === 'sky' ||
         value === 'cyan' ||
-        value === 'teal' ||
-        value === 'indigo' ||
-        value === 'violet' ||
-        value === 'purple' ||
-        value === 'iris' ||
         value === 'green' ||
-        value === 'jade' ||
-        value === 'mint' ||
-        value === 'grass' ||
-        value === 'lime' ||
         value === 'yellow' ||
-        value === 'amber' ||
         value === 'orange' ||
-        value === 'brown' ||
         value === 'red' ||
-        value === 'ruby' ||
-        value === 'crimson' ||
-        value === 'pink' ||
-        value === 'tomato'
+        value === 'purple'
     );
 }

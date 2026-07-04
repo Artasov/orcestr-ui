@@ -1,0 +1,92 @@
+$oui-neutral-tones: 'gray'
+$oui-success-tones: 'green'
+$oui-warning-tones: 'yellow' 'orange'
+$oui-danger-tones: 'red'
+$oui-info-tones: 'blue' 'cyan'
+$oui-primary-tones: 'purple'
+
+@mixin text-classes
+    @include text-tone($oui-neutral-tones, neutral)
+    @include text-tone($oui-success-tones, success)
+    @include text-tone($oui-warning-tones, warning)
+    @include text-tone($oui-danger-tones, danger)
+    @include text-tone($oui-info-tones, info)
+    @include text-tone($oui-primary-tones, primary)
+
+@mixin badge-classes
+    @include badge-tone($oui-neutral-tones, neutral)
+    @include badge-tone($oui-success-tones, success)
+    @include badge-tone($oui-warning-tones, warning)
+    @include badge-tone($oui-danger-tones, danger)
+    @include badge-tone($oui-info-tones, info)
+    @include badge-tone($oui-primary-tones, primary)
+
+@mixin icon-button-badge-classes
+    @include icon-button-badge-tone($oui-neutral-tones, neutral)
+    @include icon-button-badge-tone($oui-success-tones, success)
+    @include icon-button-badge-tone($oui-warning-tones, warning)
+    @include icon-button-badge-tone($oui-danger-tones, danger)
+    @include icon-button-badge-tone($oui-info-tones, info)
+    @include icon-button-badge-tone($oui-primary-tones, primary)
+
+@mixin button-tone-classes
+    @include button-tone($oui-neutral-tones, neutral)
+    @include button-tone($oui-success-tones, success)
+    @include button-tone($oui-warning-tones, warning)
+    @include button-tone($oui-danger-tones, danger)
+    @include button-tone($oui-info-tones, info)
+    @include button-tone($oui-primary-tones, primary)
+
+@mixin alert-classes
+    @include alert-tone($oui-success-tones, success)
+    @include alert-tone($oui-warning-tones, warning)
+    @include alert-tone($oui-danger-tones, danger)
+    @include alert-tone($oui-info-tones, info)
+    @include alert-tone($oui-primary-tones, primary)
+
+@mixin text-tone($tones, $semantic)
+    @each $tone in $tones
+        .oui-text-#{$tone}
+            color: var(--oui-#{$semantic}-text)
+
+@mixin badge-tone($tones, $semantic)
+    @each $tone in $tones
+        .oui-badge[data-tone="#{$tone}"]
+            color: var(--oui-status-#{$semantic}-text, var(--oui-#{$semantic}-text))
+            background: var(--oui-#{$semantic}-surface)
+
+        .oui-badge[data-tone="#{$tone}"][data-variant="solid"]
+            color: var(--oui-#{$semantic}-contrast)
+            background: var(--oui-#{$semantic}-base)
+            border-color: var(--oui-#{$semantic}-base)
+
+        .oui-badge[data-tone="#{$tone}"][data-variant="outline"]
+            color: var(--oui-status-#{$semantic}-text, var(--oui-#{$semantic}-text))
+            background: transparent
+            border-color: var(--oui-status-#{$semantic}-border, var(--oui-#{$semantic}-border))
+
+        .oui-badge[data-tone="#{$tone}"][data-variant="surface"]
+            color: var(--oui-status-#{$semantic}-text, var(--oui-#{$semantic}-text))
+            background: var(--oui-#{$semantic}-surface)
+            border-color: var(--oui-status-#{$semantic}-border, var(--oui-#{$semantic}-border))
+
+@mixin icon-button-badge-tone($tones, $semantic)
+    @each $tone in $tones
+        .oui-icon-button-badge[data-tone="#{$tone}"]
+            color: var(--oui-#{$semantic}-text)
+            background: var(--oui-#{$semantic}-surface)
+
+@mixin button-tone($tones, $semantic)
+    @each $tone in $tones
+        .oui-button[data-tone="#{$tone}"],
+        .oui-icon-button[data-tone="#{$tone}"]
+            --oui-primary-base: var(--oui-#{$semantic}-base)
+            --oui-primary-text: var(--oui-#{$semantic}-text)
+            --oui-primary-surface: var(--oui-#{$semantic}-surface)
+            --oui-primary-contrast: var(--oui-#{$semantic}-contrast)
+
+@mixin alert-tone($tones, $semantic)
+    @each $tone in $tones
+        .oui-alert[data-tone="#{$tone}"]
+            border-color: color-mix(in srgb, var(--oui-#{$semantic}-base) 42%, var(--oui-border))
+            background: var(--oui-#{$semantic}-surface)

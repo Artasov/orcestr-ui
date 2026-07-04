@@ -63,8 +63,7 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
     const contentRef = useRef<HTMLDivElement | null>(null);
     const indicatorRef = useRef<HTMLDivElement | null>(null);
     const indicatorPlacedRef = useRef(false);
-    const transitionFrameRef = useRef(0);
-    const activeKey = groups.flatMap((group) => group.items).find((item) => item.active)?.key;
+    const activeKey = appSidebarActiveKey(groups);
     const { systemStyle, restProps } = splitSystemProps(props);
     const sidebarStyle = {
         '--oui-app-sidebar-item-h': `${itemH}px`,
@@ -77,32 +76,32 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
         const indicator = indicatorRef.current;
         const activeItem = root?.querySelector<HTMLElement>('[data-sidebar-active="true"]');
         if (!root || !indicator || !activeItem) {
-            if (indicator) indicator.style.opacity = '0';
+            if (indicator) indicator.dataset.ready = 'false';
             return;
         }
 
         const itemHeight = activeItem.offsetHeight;
         if (itemHeight <= 0) {
-            indicator.style.opacity = '0';
+            indicator.dataset.ready = 'false';
             return;
         }
 
         const skipTransition = !indicatorPlacedRef.current || !animate;
         if (skipTransition) {
-            cancelAnimationFrame(transitionFrameRef.current);
-            indicator.style.transition = 'none';
+            indicator.dataset.ready = 'false';
         }
 
         indicator.style.height = `${itemHeight}px`;
         indicator.style.transform = `translateY(${sidebarItemOffsetTop(root, activeItem)}px)`;
-        indicator.style.opacity = '1';
 
         if (skipTransition) {
             indicatorPlacedRef.current = true;
             indicator.getBoundingClientRect();
-            transitionFrameRef.current = requestAnimationFrame(() => {
-                indicator.style.transition = '';
+            requestAnimationFrame(() => {
+                indicator.dataset.ready = 'true';
             });
+        } else {
+            indicator.dataset.ready = 'true';
         }
     }, []);
 
@@ -110,12 +109,8 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
         const root = contentRef.current;
         const indicator = indicatorRef.current;
         if (!root || !indicator) {
-            if (indicator) indicator.style.opacity = '0';
+            if (indicator) indicator.dataset.ready = 'false';
             return;
-        }
-
-        if (indicatorPlacedRef.current) {
-            indicator.style.transition = '';
         }
 
         if (!indicatorPlacedRef.current) {
@@ -145,12 +140,10 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
         return () => {
             cancelAnimationFrame(frame);
             cancelAnimationFrame(nextFrame);
-            cancelAnimationFrame(transitionFrameRef.current);
-            indicator.style.transition = '';
             resizeObserver?.disconnect();
             window.removeEventListener('resize', scheduleUpdate);
         };
-    }, [activeKey, groups, updateActiveIndicator]);
+    }, [activeKey, updateActiveIndicator]);
 
     return (
         <aside
@@ -207,6 +200,15 @@ function sidebarItemOffsetTop(root: HTMLElement, item: HTMLElement) {
     }
 
     return node === root ? top : item.offsetTop;
+}
+
+function appSidebarActiveKey(groups: readonly AppSidebarGroup[]) {
+    for (const group of groups) {
+        const activeItem = group.items.find((item) => item.active);
+        if (activeItem) return activeItem.key;
+    }
+
+    return '';
 }
 
 function AppSidebarNavItem({

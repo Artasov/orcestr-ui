@@ -22,28 +22,28 @@ export const orcestrThemeSurfaceRegistry: Record<
         label: 'Orcestr',
         description: 'Neutral platform base for shared entity surfaces.',
     },
-    operations: {
-        value: 'operations',
-        label: 'Operations',
-        description: 'Dense theme for repeated operational work.',
+    deliveries: {
+        value: 'deliveries',
+        label: 'Deliveries',
+        description: 'Dense theme for deliveries workflows.',
     },
-    media: {
-        value: 'media',
-        label: 'Media',
-        description: 'Softer visual theme for content-heavy flows.',
+    beauty: {
+        value: 'beauty',
+        label: 'Beauty',
+        description: 'Soft visual theme for beauty workflows.',
     },
-    catalog: {
-        value: 'catalog',
-        label: 'Catalog',
-        description: 'Precise catalog theme for structured index surfaces.',
+    jewelry: {
+        value: 'jewelry',
+        label: 'Jewelry',
+        description: 'Warm precise theme for jewelry workflows.',
     },
 };
 
 export const orcestrThemeSurfaces: OrcestrThemeSurfaceDefinition[] = [
     orcestrThemeSurfaceRegistry.orcestr,
-    orcestrThemeSurfaceRegistry.operations,
-    orcestrThemeSurfaceRegistry.media,
-    orcestrThemeSurfaceRegistry.catalog,
+    orcestrThemeSurfaceRegistry.deliveries,
+    orcestrThemeSurfaceRegistry.beauty,
+    orcestrThemeSurfaceRegistry.jewelry,
 ];
 
 const sharedStructure = {
@@ -422,16 +422,73 @@ const surfaceOverrides: Record<
     Record<OrcestrThemeMode, OrcestrThemeOverrides>
 > = {
     orcestr: {
-        dark: {},
-        light: {},
+        dark: {
+            colors: {
+                primary: {
+                    base: '#6e56cf',
+                    text: '#baa7ff',
+                    surface: '#8354fe36',
+                    border: '#8f6cfd6d',
+                    contrast: '#ffffff',
+                },
+                selected: '#8354fe36',
+                focusRing: '0 0 0 3px #7d51fd50',
+            },
+            status: {
+                primary: {
+                    color: '#6e56cf',
+                    text: '#baa7ff',
+                    soft: '#8354fe36',
+                    border: '#8f6cfd6d',
+                },
+            },
+        },
+        light: {
+            colors: {
+                primary: {
+                    base: '#6e56cf',
+                    text: '#6550b9',
+                    surface: '#4400ee0f',
+                    border: '#3100fb35',
+                    contrast: '#ffffff',
+                },
+                selected: '#4400ee0f',
+                focusRing: '0 0 0 3px #4300ff1b',
+            },
+            status: {
+                primary: {
+                    color: '#6e56cf',
+                    text: '#6550b9',
+                    soft: '#4400ee0f',
+                    border: '#3100fb35',
+                },
+            },
+        },
     },
-    operations: {
+    deliveries: {
         dark: {
             colors: {
                 bg: '#09090b',
                 panel: '#0c0c0f',
                 panelSoft: '#222222',
                 floating: '#0c0c0f',
+                primary: {
+                    base: '#f76b15',
+                    text: '#ffa057',
+                    surface: '#fb6a0025',
+                    border: '#fd75045c',
+                    contrast: '#ffffff',
+                },
+                selected: '#fb6a0025',
+                focusRing: '0 0 0 3px #ff590039',
+            },
+            status: {
+                primary: {
+                    color: '#f76b15',
+                    text: '#ffa057',
+                    soft: '#fb6a0025',
+                    border: '#fd75045c',
+                },
             },
             toast: {
                 background: 'rgb(12 12 15 / 5%)',
@@ -448,6 +505,23 @@ const surfaceOverrides: Record<
                 panel: '#ffffff',
                 panelSoft: '#f9f9f9',
                 floating: '#ffffff',
+                primary: {
+                    base: '#f76b15',
+                    text: '#cc4e00',
+                    surface: '#ff9c0029',
+                    border: '#ff81007d',
+                    contrast: '#ffffff',
+                },
+                selected: '#ff9c0029',
+                focusRing: '0 0 0 3px #ff91014a',
+            },
+            status: {
+                primary: {
+                    color: '#f76b15',
+                    text: '#cc4e00',
+                    soft: '#ff9c0029',
+                    border: '#ff81007d',
+                },
             },
             toast: {
                 background: 'rgb(255 255 255 / 5%)',
@@ -459,22 +533,22 @@ const surfaceOverrides: Record<
             },
         },
     },
-    media: {
+    beauty: {
         dark: {
             colors: {
-                bg: '#141116',
-                panel: '#1d1820',
-                panelSoft: '#29212d',
-                floating: '#1d1820',
+                bg: '#09090b',
+                panel: '#0c0c0f',
+                panelSoft: '#222222',
+                floating: '#0c0c0f',
                 primary: {
-                    base: '#a84486',
-                    text: '#ffc1e7',
-                    surface: 'rgb(240 166 216 / 17%)',
-                    border: 'rgb(255 193 231 / 28%)',
+                    base: '#d86d8f',
+                    text: '#f7d7e2',
+                    surface: '#f2a8bf29',
+                    border: '#f2a8bf5f',
                     contrast: '#ffffff',
                 },
-                selected: 'rgb(240 166 216 / 16%)',
-                focusRing: '0 0 0 3px rgb(240 166 216 / 24%)',
+                selected: '#f2a8bf29',
+                focusRing: '0 0 0 3px #f2a8bf3f',
                 warning: {
                     base: '#ffd079',
                     text: '#ffd079',
@@ -490,6 +564,14 @@ const surfaceOverrides: Record<
                     contrast: '#202020',
                 },
             },
+            status: {
+                primary: {
+                    color: '#d86d8f',
+                    text: '#f7d7e2',
+                    soft: '#f2a8bf29',
+                    border: '#f2a8bf5f',
+                },
+            },
             toast: {
                 background: 'rgb(29 24 32 / 5%)',
                 shadow: '0 12px 32px rgb(0 0 0 / 22%)',
@@ -501,18 +583,18 @@ const surfaceOverrides: Record<
         },
         light: {
             colors: {
-                bg: '#fff8fc',
+                bg: '#ffffff',
                 panel: '#ffffff',
-                panelSoft: '#fff0f8',
+                panelSoft: '#fff0f5',
                 primary: {
-                    base: '#c0267f',
-                    text: '#a21d6c',
-                    surface: 'rgb(192 38 127 / 12%)',
-                    border: 'rgb(192 38 127 / 24%)',
+                    base: '#b84c70',
+                    text: '#8f3654',
+                    surface: '#fff0f5',
+                    border: '#b84c7047',
                     contrast: '#ffffff',
                 },
-                selected: 'rgb(192 38 127 / 10%)',
-                focusRing: '0 0 0 3px rgb(192 38 127 / 16%)',
+                selected: '#fff0f5',
+                focusRing: '0 0 0 3px #b84c7023',
                 warning: {
                     base: '#b96b00',
                     text: '#b96b00',
@@ -528,6 +610,14 @@ const surfaceOverrides: Record<
                     contrast: '#ffffff',
                 },
             },
+            status: {
+                primary: {
+                    color: '#b84c70',
+                    text: '#8f3654',
+                    soft: '#fff0f5',
+                    border: '#b84c7047',
+                },
+            },
             toast: {
                 background: 'rgb(255 255 255 / 5%)',
             },
@@ -537,7 +627,7 @@ const surfaceOverrides: Record<
             },
         },
     },
-    catalog: {
+    jewelry: {
         dark: {
             colors: {
                 bg: '#11100d',
@@ -545,14 +635,14 @@ const surfaceOverrides: Record<
                 panelSoft: '#242017',
                 floating: '#191712',
                 primary: {
-                    base: '#9b6f12',
-                    text: '#f1d990',
-                    surface: 'rgb(230 194 106 / 16%)',
-                    border: 'rgb(241 217 144 / 28%)',
-                    contrast: '#ffffff',
+                    base: '#ffc53d',
+                    text: '#ffca16',
+                    surface: '#fa820022',
+                    border: '#fd9b0051',
+                    contrast: '#111111',
                 },
-                selected: 'rgb(230 194 106 / 14%)',
-                focusRing: '0 0 0 3px rgb(230 194 106 / 22%)',
+                selected: '#fa820022',
+                focusRing: '0 0 0 3px #fc820032',
                 warning: {
                     base: '#f4c95d',
                     text: '#f4c95d',
@@ -566,6 +656,14 @@ const surfaceOverrides: Record<
                     surface: '#1a314f',
                     border: 'rgb(159 197 255 / 32%)',
                     contrast: '#202020',
+                },
+            },
+            status: {
+                primary: {
+                    color: '#ffc53d',
+                    text: '#ffca16',
+                    soft: '#fa820022',
+                    border: '#fd9b0051',
                 },
             },
             toast: {
@@ -582,14 +680,14 @@ const surfaceOverrides: Record<
                 panel: '#ffffff',
                 panelSoft: '#f3efe4',
                 primary: {
-                    base: '#9b6f12',
-                    text: '#79570e',
-                    surface: 'rgb(155 111 18 / 12%)',
-                    border: 'rgb(155 111 18 / 24%)',
-                    contrast: '#ffffff',
+                    base: '#ffc53d',
+                    text: '#ab6400',
+                    surface: '#ffde003d',
+                    border: '#eab5008c',
+                    contrast: '#111111',
                 },
-                selected: 'rgb(155 111 18 / 10%)',
-                focusRing: '0 0 0 3px rgb(155 111 18 / 16%)',
+                selected: '#ffde003d',
+                focusRing: '0 0 0 3px #ffd40063',
                 warning: {
                     base: '#a16207',
                     text: '#a16207',
@@ -603,6 +701,14 @@ const surfaceOverrides: Record<
                     surface: '#e9f1ff',
                     border: 'rgb(37 99 235 / 24%)',
                     contrast: '#ffffff',
+                },
+            },
+            status: {
+                primary: {
+                    color: '#ffc53d',
+                    text: '#ab6400',
+                    soft: '#ffde003d',
+                    border: '#eab5008c',
                 },
             },
             toast: {

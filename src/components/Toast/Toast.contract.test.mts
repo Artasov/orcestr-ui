@@ -12,13 +12,13 @@ function read(path: string): string {
 test('Toast dismisses from the card and keeps close button optional', () => {
     const source = read('components/Toast/Toast.tsx');
     assert.match(source, /closeButton\?: boolean/);
-    assert.match(source, /className='oui-toast-stack'/);
-    assert.match(source, /className='oui-toast-viewport oui-toast-frame'/);
+    assert.match(source, /className=["\']oui-toast-stack["\']/);
+    assert.match(source, /className=["\']oui-toast-viewport oui-toast-frame["\']/);
     assert.match(source, /data-position=\{item\.position\}/);
     assert.match(source, /data-state=\{item\.state\}/);
     assert.doesNotMatch(
         source,
-        /background\?: string|blur\?:|shadow\?: string|effectiveBlur|cssLength|className='oui-toast-backdrop'/,
+        /background\?: string|blur\?:|shadow\?: string|effectiveBlur|cssLength|className=["\']oui-toast-backdrop["\']/,
     );
     assert.match(source, /event\.animationName === 'ouiToastOut'/);
     assert.match(source, /data-clickable=\{item\.dismissible === false \? undefined : 'true'\}/);

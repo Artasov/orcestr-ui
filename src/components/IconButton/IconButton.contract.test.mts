@@ -9,7 +9,7 @@ test('IconButton owns numeric badge placement', () => {
     assert.match(iconButtonSource, /badge\?: ReactNode/);
     assert.match(iconButtonSource, /badgeTone\?: ToneInput/);
     assert.match(iconButtonSource, /badgeMax\?: number/);
-    assert.match(iconButtonSource, /className='oui-icon-button-badge'/);
+    assert.match(iconButtonSource, /className=["\']oui-icon-button-badge["\']/);
     assert.match(iconButtonSource, /withBadge\(children, badgeNode\)/);
 
     assert.match(buttonStyles, /\.oui-icon-button-badge/);

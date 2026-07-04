@@ -22,10 +22,10 @@ test('Copy buttons own clipboard action and toast feedback', () => {
 });
 
 test('Code preview exposes a hover copy icon without vertical scroll ownership', () => {
-    assert.match(preview, /<CopyIconButton[\s\S]*?className='oui-code-preview-copy'/);
+    assert.match(preview, /<CopyIconButton[\s\S]*?className=["\']oui-code-preview-copy["\']/);
     assert.match(
         preview,
-        /<ScrollArea[\s\S]*?className='oui-code-preview-scroll oui-code-preview-scroll-inline'[\s\S]*?scrollbars='horizontal'/,
+        /<ScrollArea[\s\S]*?className=["\']oui-code-preview-scroll oui-code-preview-scroll-inline["\'][\s\S]*?scrollbars=["\']horizontal["\']/,
     );
     assert.match(styles, /\.oui-code-preview-wrap\s+position: relative/);
     assert.match(styles, /\.oui-code-preview-copy\s+position: absolute[\s\S]*?opacity: 0/);

@@ -24,7 +24,7 @@ test('InlineEdit exposes busy state, action slot and multi layout', () => {
     assert.match(source, /onOpen\?: \(\) => void/);
     assert.match(source, /data-clickable=\{onOpen && !disabled \? 'true' : undefined\}/);
     assert.match(source, /event\.key === 'Enter' \|\| event\.key === ' '/);
-    assert.match(source, /className='oui-inline-edit-actions'/);
+    assert.match(source, /className=["\']oui-inline-edit-actions["\']/);
     assert.match(styles, /grid-template-areas: "label extra actions"/);
     assert.match(styles, /\.oui-inline-edit-compact[\s\S]*"label actions" "extra extra"/);
     assert.doesNotMatch(styles, /\.oui-inline-edit:hover,[\s\S]*background:/);

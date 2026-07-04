@@ -1,3 +1,5 @@
+@use 'tones'
+
 .oui-badge
     display: inline-flex
     align-items: center
@@ -45,7 +47,7 @@
 
 .oui-badge[data-tone="neutral"]
     color: var(--oui-text)
-    background: var(--oui-gray-a3, var(--oui-soft))
+    background: var(--oui-pad-bg)
 
 .oui-badge[data-tone="neutral"][data-variant="solid"]
     color: #ffffff
@@ -55,12 +57,12 @@
 .oui-badge[data-tone="neutral"][data-variant="outline"]
     color: var(--oui-text)
     background: transparent
-    border-color: var(--oui-gray-a8, var(--oui-border-strong))
+    border-color: var(--oui-border-strong)
 
 .oui-badge[data-tone="neutral"][data-variant="surface"]
     color: var(--oui-text)
-    background: var(--oui-gray-a3, var(--oui-soft))
-    border-color: var(--oui-gray-a8, var(--oui-border))
+    background: var(--oui-pad-bg)
+    border-color: var(--oui-border)
 
 .oui-badge[data-tone="primary"]
     color: var(--oui-status-primary-text, var(--oui-primary-text))
@@ -86,24 +88,4 @@
     color: var(--oui-status-info-text, var(--oui-info-base))
     background: var(--oui-info-surface)
 
-$oui-color-tones: 'blue' 'sky' 'cyan' 'teal' 'indigo' 'violet' 'purple' 'iris' 'green' 'jade' 'mint' 'grass' 'lime' 'yellow' 'amber' 'orange' 'brown' 'red' 'ruby' 'crimson' 'pink' 'tomato'
-
-@each $tone in $oui-color-tones
-    .oui-badge[data-tone="#{$tone}"]
-        color: var(--#{$tone}-11, var(--oui-text))
-        background: var(--#{$tone}-a3, var(--oui-soft))
-
-    .oui-badge[data-tone="#{$tone}"][data-variant="solid"]
-        color: #ffffff
-        background: var(--#{$tone}-9, var(--oui-primary-base))
-        border-color: var(--#{$tone}-9, var(--oui-primary-base))
-
-    .oui-badge[data-tone="#{$tone}"][data-variant="outline"]
-        color: var(--#{$tone}-11, var(--oui-text))
-        background: transparent
-        border-color: var(--#{$tone}-a7, var(--oui-border-strong))
-
-    .oui-badge[data-tone="#{$tone}"][data-variant="surface"]
-        color: var(--#{$tone}-11, var(--oui-text))
-        background: var(--#{$tone}-a3, var(--oui-soft))
-        border-color: var(--#{$tone}-a7, var(--oui-border))
+@include tones.badge-classes
