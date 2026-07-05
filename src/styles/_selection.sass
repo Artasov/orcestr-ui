@@ -182,9 +182,9 @@
 .oui-select-content
     --oui-selection-content-text: var(--oui-text, #202020)
     --oui-selection-content-bg: var(--oui-floating-bg, var(--oui-bg, #ffffff))
-    --oui-selection-option-hover-bg: var(--oui-control-hover-bg, color-mix(in srgb, var(--oui-selection-content-text) 8%, transparent))
+    --oui-selection-option-hover-bg: var(--oui-pad-hover-bg, color-mix(in srgb, var(--oui-selection-content-text) 8%, transparent))
     --oui-selection-option-selected-bg: var(--oui-selected-bg, color-mix(in srgb, var(--oui-selection-content-text) 10%, transparent))
-    --oui-selection-option-selected-hover-bg: var(--oui-control-hover-bg, color-mix(in srgb, var(--oui-selection-content-text) 13%, transparent))
+    --oui-selection-option-selected-hover-bg: color-mix(in srgb, var(--oui-selection-option-selected-bg) 76%, var(--oui-selection-option-hover-bg))
     --oui-selection-check-color: var(--oui-primary-text, #0d74ce)
     min-width: 280px
     max-width: min(420px, calc(100vw - 24px))
@@ -192,24 +192,6 @@
     overflow: hidden
     color: var(--oui-selection-content-text)
     background: var(--oui-selection-content-bg)
-
-.oui-combobox-content[data-oui-theme="light"],
-.oui-select-content[data-oui-theme="light"]
-    --oui-selection-content-text: #202020
-    --oui-selection-content-bg: #ffffff
-    --oui-selection-option-hover-bg: #0000000f
-    --oui-selection-option-selected-bg: #008ff519
-    --oui-selection-option-selected-hover-bg: #008ff526
-    --oui-selection-check-color: #0d74ce
-
-.oui-combobox-content[data-oui-theme="dark"],
-.oui-select-content[data-oui-theme="dark"]
-    --oui-selection-content-text: #eeeeee
-    --oui-selection-content-bg: #0c0c0f
-    --oui-selection-option-hover-bg: #ffffff12
-    --oui-selection-option-selected-bg: #0077ff3a
-    --oui-selection-option-selected-hover-bg: #0077ff52
-    --oui-selection-check-color: #70b8ff
 
 .oui-combobox-search-wrap
     display: flex

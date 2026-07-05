@@ -130,9 +130,8 @@ function ContextMenuContent({
                     <button
                         type="button"
                         role="menuitem"
-                        className="oui-menu-item oui-combobox-option"
+                        className="oui-menu-item"
                         data-tone={item.tone}
-                        data-selected="false"
                         data-loading={item.loading ? 'true' : undefined}
                         data-testid={testId ? `${testId}-${item.key}` : undefined}
                         aria-busy={item.loading ? 'true' : undefined}

@@ -11,8 +11,10 @@ export type ListNavigationItem = {
 export function useListNavigation(
     items: ReadonlyArray<ListNavigationItem>,
     {
+        highlightFirst = true,
         value = null,
     }: {
+        highlightFirst?: boolean;
         value?: string | null;
     } = {},
 ) {
@@ -26,8 +28,8 @@ export function useListNavigation(
         if (value !== null && enabledItems.some((item) => item.value === value)) {
             return value;
         }
-        return enabledItems[0]?.value ?? null;
-    }, [enabledItems, requestedValue, value]);
+        return highlightFirst ? (enabledItems[0]?.value ?? null) : null;
+    }, [enabledItems, highlightFirst, requestedValue, value]);
 
     const move = useCallback(
         (direction: 1 | -1) => {

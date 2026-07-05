@@ -32,31 +32,31 @@ test('selection dropdown surfaces use themed floating background', () => {
     );
     assert.match(
         selectionStyles,
-        /\.oui-combobox-content\[data-oui-theme="light"\],[\s\S]*?--oui-selection-content-text: #202020/,
+        /--oui-selection-option-hover-bg: var\(--oui-pad-hover-bg, color-mix\(in srgb, var\(--oui-selection-content-text\) 8%, transparent\)\)/,
     );
     assert.match(
         selectionStyles,
-        /\.oui-combobox-content\[data-oui-theme="light"\],[\s\S]*?--oui-selection-option-hover-bg: #0000000f/,
+        /--oui-selection-option-selected-bg: var\(--oui-selected-bg, color-mix\(in srgb, var\(--oui-selection-content-text\) 10%, transparent\)\)/,
     );
     assert.match(
         selectionStyles,
-        /\.oui-combobox-content\[data-oui-theme="light"\],[\s\S]*?--oui-selection-option-selected-bg: #008ff519/,
+        /--oui-selection-option-selected-hover-bg: color-mix\(in srgb, var\(--oui-selection-option-selected-bg\) 76%, var\(--oui-selection-option-hover-bg\)\)/,
     );
-    assert.match(
+    assert.doesNotMatch(
         selectionStyles,
-        /\.oui-combobox-content\[data-oui-theme="light"\],[\s\S]*?--oui-selection-option-selected-hover-bg: #008ff526/,
+        /\.oui-combobox-content\[data-oui-theme="light"\]/,
     );
-    assert.match(
+    assert.doesNotMatch(
         selectionStyles,
-        /\.oui-combobox-content\[data-oui-theme="light"\],[\s\S]*?--oui-selection-check-color: #0d74ce/,
+        /\.oui-combobox-content\[data-oui-theme="dark"\]/,
     );
-    assert.match(
+    assert.doesNotMatch(
         selectionStyles,
-        /\.oui-combobox-content\[data-oui-theme="dark"\],[\s\S]*?--oui-selection-content-text: #eeeeee/,
+        /--oui-selection-option-selected-bg: #008ff519/,
     );
-    assert.match(
+    assert.doesNotMatch(
         selectionStyles,
-        /\.oui-combobox-content\[data-oui-theme="dark"\],[\s\S]*?--oui-selection-option-selected-bg: #0077ff3a/,
+        /--oui-selection-option-selected-bg: #0077ff3a/,
     );
     assert.match(
         selectionStyles,

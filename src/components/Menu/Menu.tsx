@@ -118,7 +118,7 @@ function MenuList({
             })),
         [items],
     );
-    const navigation = useListNavigation(navigationItems);
+    const navigation = useListNavigation(navigationItems, { highlightFirst: false });
     const highlightedKey = navigation.highlightedValue;
 
     useEffect(() => {
@@ -205,6 +205,7 @@ function MenuList({
                     requestConfirmation={requestConfirmation}
                     highlighted={highlightedKey === item.key}
                     setHighlighted={() => navigation.setHighlightedValue(item.key)}
+                    clearHighlighted={navigation.reset}
                     testId={testId ? `${testId}-${item.key}` : undefined}
                 />
             ))}
@@ -220,6 +221,7 @@ function MenuRow({
     requestConfirmation,
     highlighted,
     setHighlighted,
+    clearHighlighted,
     testId,
 }: {
     item: MenuItem;
@@ -229,6 +231,7 @@ function MenuRow({
     requestConfirmation: (item: MenuItem) => void;
     highlighted: boolean;
     setHighlighted: () => void;
+    clearHighlighted: () => void;
     testId?: string;
 }) {
     const [hoverOpen, setHoverOpen] = useState(false);
@@ -243,14 +246,16 @@ function MenuRow({
                 setHighlighted();
                 setHoverOpen(true);
             }}
-            onMouseLeave={() => setHoverOpen(false)}
+            onMouseLeave={() => {
+                setHoverOpen(false);
+                clearHighlighted();
+            }}
         >
             {item.separatorBefore ? <div className="oui-menu-separator" /> : null}
             <button
                 type="button"
-                className="oui-menu-item oui-combobox-option"
+                className="oui-menu-item"
                 data-tone={item.tone}
-                data-selected="false"
                 data-highlighted={highlighted ? 'true' : undefined}
                 data-submenu-state={inlineOpen || hoverOpen ? 'open' : 'closed'}
                 data-loading={item.loading ? 'true' : undefined}
