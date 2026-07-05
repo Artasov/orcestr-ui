@@ -42,22 +42,10 @@ test('selection dropdown surfaces use themed floating background', () => {
         selectionStyles,
         /--oui-selection-option-selected-hover-bg: color-mix\(in srgb, var\(--oui-selection-option-selected-bg\) 76%, var\(--oui-selection-option-hover-bg\)\)/,
     );
-    assert.doesNotMatch(
-        selectionStyles,
-        /\.oui-combobox-content\[data-oui-theme="light"\]/,
-    );
-    assert.doesNotMatch(
-        selectionStyles,
-        /\.oui-combobox-content\[data-oui-theme="dark"\]/,
-    );
-    assert.doesNotMatch(
-        selectionStyles,
-        /--oui-selection-option-selected-bg: #008ff519/,
-    );
-    assert.doesNotMatch(
-        selectionStyles,
-        /--oui-selection-option-selected-bg: #0077ff3a/,
-    );
+    assert.doesNotMatch(selectionStyles, /\.oui-combobox-content\[data-oui-theme="light"\]/);
+    assert.doesNotMatch(selectionStyles, /\.oui-combobox-content\[data-oui-theme="dark"\]/);
+    assert.doesNotMatch(selectionStyles, /--oui-selection-option-selected-bg: #008ff519/);
+    assert.doesNotMatch(selectionStyles, /--oui-selection-option-selected-bg: #0077ff3a/);
     assert.match(
         selectionStyles,
         /\.oui-button\.oui-combobox-trigger\s+background-color: var\(--oui-control-bg, transparent\)[\s\S]*?border-color: var\(--oui-field-border-color, var\(--oui-border\)\)/,

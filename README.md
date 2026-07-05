@@ -10,6 +10,9 @@
 
 # Orcestr UI
 
+[![npm](https://img.shields.io/npm/v/@orcestr/ui)](https://www.npmjs.com/package/@orcestr/ui)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
 ## [Demo](https://orcestr.com/ui)
 
 Open the live example page to inspect Orcestr UI components and patterns in context.
@@ -141,6 +144,16 @@ git push origin ui-v0.0.2
 For the first `0.0.1` release, commit the prepared package and push tag `ui-v0.0.1`.
 
 The workflow runs typecheck, tests, build and `npm pack --dry-run` before publishing `@orcestr/ui` to NPM.
+
+## Contributing
+
+Read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a pull request.
+
+Security issues should be reported privately according to [SECURITY.md](./SECURITY.md).
+
+## License
+
+MIT. See [LICENSE](./LICENSE).
 
 ## Ecosystem
 
