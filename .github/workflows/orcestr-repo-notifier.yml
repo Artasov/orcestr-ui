@@ -44,6 +44,12 @@ jobs:
                       For automatic push updates: output exactly ORCESTR_NOTIFY_SKIP only when the whole push is formatting-only: Ruff/Prettier autofix, import sorting, whitespace cleanup, generated file reformatting, or equivalent mechanical cleanup with no semantic, configuration, documentation, workflow, or behavior change.
                       Do not skip meaningful CI/CD, workflow, repo notifier, docs, internal tooling, reliability, or maintenance changes. Mention them concretely as project progress when they matter.
                       If many changes are one repeated type of work, group them into one concise bullet instead of spreading the same idea across multiple bullets.
+                      Be more technical than promotional: name the changed components, package files, scripts, workflows, entrypoints, tokens, exports, or docs when the context shows them.
+                      If package.json, package-lock.json, npm metadata, peerDependencies, devDependencies, exports, scripts, release files, or lockfiles changed, mention the exact dependency/package/script/version changes that are visible in the diff. Do not hide dependency work behind generic "maintenance" wording.
+                      For UI changes, name the concrete component or state that changed, for example Select hover state, Tabs active indicator, Toast viewport blur, AppShell mobile sidebar, package exports, or theme token names. Explain the technical mechanism or visible result in one short phrase.
+                      Avoid vague claims such as "cleaner", "more consistent", "more predictable", "better", "polished", or "refined" unless the same bullet also says exactly what changed and where.
+                      Do not infer behavior that the diff does not prove. If the context only shows configuration, docs, package metadata, tests, or release tooling, describe that technical change directly instead of inventing product UX impact.
+                      Prefer factual bullets like "Updated package metadata to MIT and included LICENSE in npm files" over abstract bullets like "Improved project readiness".
                       Use exactly this message structure:
                       First line: DEV UPDATE <b>Orcestr UI</b>:
                       For automatic push updates, second line: Stats: <commit_count> commits, +<added_lines>/-<deleted_lines> lines.

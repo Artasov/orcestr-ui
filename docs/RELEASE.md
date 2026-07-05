@@ -12,6 +12,7 @@
 - В NPM должен быть настроен Trusted Publishing для GitHub Actions workflow `release.yml`.
 
 Текущий workflow использует `id-token: write`, поэтому `NPM_TOKEN` не нужен, если Trusted Publishing настроен корректно.
+Для создания GitHub Release используется стандартный `GITHUB_TOKEN` с правом `contents: write`.
 
 ## Перед релизом
 
@@ -130,14 +131,23 @@ Job `publish` запускается только для tag refs `refs/tags/ui-
 npm publish --access public
 ```
 
+5. После успешной публикации создает GitHub Release для того же tag:
+
+```bash
+gh release create "$GITHUB_REF_NAME" --verify-tag --latest --generate-notes
+```
+
+Release получает заголовок вида `@orcestr/ui vX.Y.Z`, ссылку на опубликованную npm-версию и auto-generated notes из GitHub.
+
 Если tag `ui-v0.0.1`, то `package.json` обязан содержать `"version": "0.0.1"`. Иначе workflow упадет до публикации.
 
 ## После публикации
 
 1. Проверь package page в NPM.
-2. В продуктовых репозиториях обнови зависимость `@orcestr/ui` до новой версии.
-3. Для основного Orcestr repo обнови `frontend/package.json` и `frontend/package-lock.json`.
-4. Если локально нужно снова работать с соседним checkout `../orcestr-ui`, используй в основном проекте:
+2. Проверь GitHub Release в репозитории.
+3. В продуктовых репозиториях обнови зависимость `@orcestr/ui` до новой версии.
+4. Для основного Orcestr repo обнови `frontend/package.json` и `frontend/package-lock.json`.
+5. Если локально нужно снова работать с соседним checkout `../orcestr-ui`, используй в основном проекте:
 
 ```powershell
 cd F:\dev\orcestr\frontend
