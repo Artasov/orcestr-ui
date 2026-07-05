@@ -13,12 +13,13 @@
 [![npm](https://img.shields.io/npm/v/@orcestr/ui)](https://www.npmjs.com/package/@orcestr/ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
+## [Live Demo](https://orcestr.com/ui)
+
 Accessible React components and styles for application interfaces.
 
 Includes layout primitives, controls, fields, overlays, data views, workflow states, theme tokens and utility hooks.
 
 Main website: [orcestr.com](https://orcestr.com)
-Demo: [orcestr.com/ui](https://orcestr.com/ui)
 
 ## Status
 

@@ -13,12 +13,13 @@
 [![npm](https://img.shields.io/npm/v/@orcestr/ui)](https://www.npmjs.com/package/@orcestr/ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
+## [Live Demo](https://orcestr.com/ui)
+
 Доступные React-компоненты и стили для интерфейсов приложений.
 
 В пакете есть layout primitives, контролы, поля, overlays, data views, workflow-состояния, theme tokens и utility hooks.
 
 Основной сайт: [orcestr.com](https://orcestr.com)
-Demo: [orcestr.com/ui](https://orcestr.com/ui)
 
 ## Статус
 
