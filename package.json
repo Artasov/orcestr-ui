@@ -1,7 +1,7 @@
 {
   "name": "@orcestr/ui",
   "version": "0.2.3",
-  "description": "Shared React UI package for Orcestr products.",
+  "description": "Accessible React components and styles for application interfaces.",
   "license": "MIT",
   "type": "module",
   "repository": {

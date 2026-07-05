@@ -13,23 +13,36 @@
 [![npm](https://img.shields.io/npm/v/@orcestr/ui)](https://www.npmjs.com/package/@orcestr/ui)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-## [Demo](https://orcestr.com/ui)
+Accessible React components and styles for application interfaces.
 
-Open the live example page to inspect Orcestr UI components and patterns in context.
+Includes layout primitives, controls, fields, overlays, data views, workflow states, theme tokens and utility hooks.
 
-Shared React UI foundation for Orcestr products.
-
-Orcestr UI is a public component library extracted from real Orcestr product work. It collects the interface primitives we reuse across product surfaces: app shell patterns, dense operational controls, workflow states, overlays, form fields, data views, design tokens and theme infrastructure.
-
-The goal is practical reuse, not a showcase-only design system. Components are built for product screens where people scan data, make decisions, confirm actions, navigate workflows and return to the same tools every day.
-
-Part of the [Orcestr](https://orcestr.com) ecosystem.
+Main website: [orcestr.com](https://orcestr.com)
+Demo: [orcestr.com/ui](https://orcestr.com/ui)
 
 ## Status
 
-Status: early public UI layer.
+| Item    | Value                                     |
+| ------- | ----------------------------------------- |
+| Package | `@orcestr/ui`                             |
+| Version | `0.2.3`                                   |
+| Status  | Dev / Beta                                |
+| Runtime | React 19                                  |
+| Styling | bundled CSS from `@orcestr/ui/styles.css` |
 
-The package is already used as the shared UI base for Orcestr development. The public API is intentionally small enough to stay understandable, but broad enough to cover real application screens: buttons, fields, pickers, overlays, tables, command surfaces, app shell, workflow components, theme and locale providers.
+The public API is still being shaped while the package is in beta.
+
+## What Is Inside
+
+| Area       | Includes                                                                       |
+| ---------- | ------------------------------------------------------------------------------ |
+| App layout | shell, navigation patterns, page surfaces                                      |
+| Actions    | buttons, icon buttons, menus, command surfaces                                 |
+| Inputs     | fields, selects, comboboxes, pickers, switches, checkboxes, segmented controls |
+| Overlays   | dialogs, drawers, modals, popovers, tooltips, context menus, confirm flows     |
+| Data views | tables, pagination, empty/error/loading states, badges, alerts                 |
+| Workflows  | lifecycle and status components for operational screens                        |
+| Foundation | provider, locale, theme tokens, CSS variables, utility hooks                   |
 
 ## Install
 
@@ -37,7 +50,7 @@ The package is already used as the shared UI base for Orcestr development. The p
 npm install @orcestr/ui
 ```
 
-For local development from an Orcestr product repository:
+For local Orcestr development:
 
 ```bash
 npm install ../../orcestr-ui
@@ -45,7 +58,7 @@ npm install ../../orcestr-ui
 
 ## Usage
 
-Import the runtime styles once near the application root and wrap the app with `OrcestrUiProvider`.
+Import the CSS once near the app root and wrap the app with `OrcestrUiProvider`.
 
 ```tsx
 import { Button, OrcestrUiProvider } from '@orcestr/ui';
@@ -60,51 +73,28 @@ export function App() {
 }
 ```
 
-The React Query adapter is optional and kept outside the main entrypoint:
+React Query integration is optional:
 
 ```ts
 import { usePaginatedComboboxQueryLoader } from '@orcestr/ui/react-query';
 ```
 
-The example page is published through a separate entrypoint, with separate demo styles:
+The demo page is exported separately:
 
 ```tsx
 import { UiExamplePage } from '@orcestr/ui/example/UiExamplePage';
 import '@orcestr/ui/example/styles.css';
 ```
 
-## What Is Included
+## Entrypoints
 
-- Application shell primitives for product layouts.
-- Theme, tokens, system props and locale provider.
-- Actions, buttons, icon buttons, menus and command surfaces.
-- Fields, selects, comboboxes, pickers, switches, checkboxes and segmented controls.
-- Dialogs, drawers, modals, popovers, tooltips, context menus and confirm flows.
-- Tables, pagination, state views, badges, alerts, skeletons and spinners.
-- Workflow components for lifecycle, status and operational process screens.
-- Utility hooks for disclosure, floating layers, focus, keyboard navigation and controlled state.
-
-## Design Direction
-
-Orcestr UI is tuned for operational software: dashboards, catalogs, workflows, review screens, finance tools, procurement flows and internal product surfaces.
-
-The design direction is quiet and functional:
-
-- dense but readable information;
-- predictable controls;
-- clear states and confirmations;
-- reusable theme tokens;
-- components that survive real product usage before becoming public API.
-
-## Package Entrypoints
-
-| Entrypoint                          | Purpose                                                      |
-| ----------------------------------- | ------------------------------------------------------------ |
-| `@orcestr/ui`                       | Main React components, providers, hooks and theme API.       |
-| `@orcestr/ui/styles.css`            | Runtime styles for the component library.                    |
-| `@orcestr/ui/react-query`           | Optional React Query adapter for paginated combobox loaders. |
-| `@orcestr/ui/example/UiExamplePage` | Demo page for visual inspection and internal documentation.  |
-| `@orcestr/ui/example/styles.css`    | Styles used only by the example page.                        |
+| Entrypoint                          | Purpose                                    |
+| ----------------------------------- | ------------------------------------------ |
+| `@orcestr/ui`                       | Components, providers, hooks and theme API |
+| `@orcestr/ui/styles.css`            | Runtime styles for the UI kit              |
+| `@orcestr/ui/react-query`           | Optional React Query adapter               |
+| `@orcestr/ui/example/UiExamplePage` | Demo page component                        |
+| `@orcestr/ui/example/styles.css`    | Demo page styles                           |
 
 ## Scripts
 
@@ -115,18 +105,18 @@ npm test
 npm run pack:dry-run
 ```
 
-- `npm run build` emits `dist` JavaScript, declarations and CSS.
-- `npm run typecheck` checks TypeScript without emitting files.
-- `npm test` runs contract and state tests.
-- `npm run pack:dry-run` checks the published package contents.
+| Script                 | What it checks                          |
+| ---------------------- | --------------------------------------- |
+| `npm run build`        | TypeScript output, declarations and CSS |
+| `npm run typecheck`    | TypeScript without emit                 |
+| `npm test`             | Contract and state tests                |
+| `npm run pack:dry-run` | Published package contents              |
 
 ## Release
 
-NPM publishing is handled by GitHub Actions on tags matching `ui-v*`.
+NPM publishing runs through GitHub Actions on tags matching `ui-v*`.
 
-Full release guide: [docs/RELEASE.md](./docs/RELEASE.md).
-
-Local release helpers:
+Local helpers:
 
 ```bash
 npm run release:patch
@@ -134,35 +124,21 @@ npm run release:minor
 npm run release:major
 ```
 
-Each helper bumps `package.json` and `package-lock.json`, creates a release commit and creates a tag such as `ui-v0.0.2`. Push the commit and tag to start the release workflow:
+Each helper updates `package.json` and `package-lock.json`, creates a release commit and creates a tag such as `ui-v0.2.3`.
 
 ```bash
 git push
-git push origin ui-v0.0.2
+git push origin ui-v0.2.3
 ```
 
-For the first `0.0.1` release, commit the prepared package and push tag `ui-v0.0.1`.
+The workflow runs typecheck, tests, build and `npm pack --dry-run` before publishing.
 
-The workflow runs typecheck, tests, build and `npm pack --dry-run` before publishing `@orcestr/ui` to NPM.
+Full release guide: [docs/RELEASE.md](./docs/RELEASE.md).
 
-## Contributing
+## Maintainer
 
-Read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a pull request.
-
-Security issues should be reported privately according to [SECURITY.md](./SECURITY.md).
+Public updates are maintained by [@Artasov](https://github.com/Artasov).
 
 ## License
 
 MIT. See [LICENSE](./LICENSE).
-
-## Ecosystem
-
-Orcestr UI is one of the first public pieces of the Orcestr ecosystem.
-
-- [Orcestr](https://orcestr.com) - main website and product entry point.
-- [Orcestr Overview](https://github.com/Artasov/orcestr-overview) - public product and ecosystem description.
-- [Orcestr Repo Notifier](https://github.com/Artasov/orcestr-repo-notifier) - GitHub Action for Codex-generated Telegram development updates.
-
-## Maintainer
-
-Public updates are currently maintained by [@Artasov](https://github.com/Artasov).
