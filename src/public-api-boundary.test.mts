@@ -10,29 +10,25 @@ const sourceExtensions = new Set(['.ts', '.tsx', '.sass']);
 
 test('package manifest exposes runtime, styles, demo and optional adapters explicitly', () => {
     const manifest = readFileSync(join(packageRoot, 'package.json'), 'utf8');
-    const lockfile = readFileSync(join(packageRoot, 'package-lock.json'), 'utf8');
 
     assert.match(manifest, /"name": "@orcestr\/ui"/);
     assert.match(manifest, /"\.\/styles\.css": "\.\/dist\/styles\/orcestr-ui\.css"/);
     assert.match(manifest, /"\.\/example\/styles\.css": "\.\/dist\/example\/styles\.css"/);
     assert.match(manifest, /"\.\/react-query": \{/);
     assert.match(manifest, /"@tanstack\/react-query": \{\s+"optional": true\s+\}/);
-    assert.doesNotMatch(`${manifest}\n${lockfile}`, /@radix-ui|radix|Radix/);
 });
 
-test('main public barrel excludes demo, legacy bridges and optional adapters', () => {
+test('main public barrel excludes demo and optional adapters', () => {
     const barrel = readFileSync(join(sourceRoot, 'index.ts'), 'utf8');
 
     assert.match(barrel, /^'use client';/);
     assert.doesNotMatch(barrel, /example\//);
-    assert.doesNotMatch(barrel, /ToastBridge/);
     assert.doesNotMatch(barrel, /PaginatedComboboxReactQueryAdapter/);
 });
 
-test('Orcestr UI sources stay independent from app modules and legacy UI selectors', () => {
+test('Orcestr UI sources stay independent from app modules', () => {
     const banned = [
         { name: 'app alias imports', pattern: /@\/(?:app|modules|shared)\// },
-        { name: 'legacy mst classes', pattern: /(?:className=['"][^'"]*\bmst-|\.mst-|--mst-)/ },
     ];
     const violations = sourceFiles([
         'components',

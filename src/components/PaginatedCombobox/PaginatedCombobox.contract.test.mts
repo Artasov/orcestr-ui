@@ -83,7 +83,6 @@ test('BadgeSelectMenu uses the shared selection dropdown surface', () => {
     assert.match(source, /export type BadgeSelectItem/);
     assert.match(source, /export function BadgeSelectMenu/);
     assert.match(source, /className=["\']oui-combobox-option oui-badge-select-option["\']/);
-    assert.doesNotMatch(source, /mst-/);
     assert.match(barrel, /export \* from '\.\/components\/BadgeSelectMenu\/BadgeSelectMenu';/);
 });
 

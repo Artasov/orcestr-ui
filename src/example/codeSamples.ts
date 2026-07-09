@@ -1051,7 +1051,7 @@ import {LuChevronDown} from 'react-icons/lu';
     open={riseModalOpen}
     onOpenChange={setRiseModalOpen}
     title='Rise modal'
-    description='Legacy rise animation kept as an explicit modal animation variant.'
+    description='Explicit rise animation variant with scale and vertical movement.'
     maxWidth={480}
     overlayColor='#0b1020'
     overlayOpacity={0.28}

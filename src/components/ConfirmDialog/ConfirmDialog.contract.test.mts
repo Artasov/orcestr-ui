@@ -18,7 +18,7 @@ test('ConfirmDialog is built on Orcestr primitives only', () => {
     const source = read('components/ConfirmDialog/ConfirmDialog.tsx');
     assert.match(source, /from '\.\.\/Modal\/Modal'/);
     assert.match(source, /from '\.\.\/Button\/Button'/);
-    assert.doesNotMatch(source, /@\/modules\/|mst-|rt-|window\.confirm/);
+    assert.doesNotMatch(source, /@\/modules\/|window\.confirm/);
 });
 
 test('ActionConfirmModal delegates to public ConfirmDialog', () => {

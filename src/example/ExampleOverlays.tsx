@@ -280,7 +280,7 @@ export function ExampleOverlays({
                 open={riseModalOpen}
                 onOpenChange={setRiseModalOpen}
                 title="Rise modal"
-                description="Legacy rise animation kept as an explicit modal animation variant."
+                description="Explicit rise animation variant with scale and vertical movement."
                 maxWidth={480}
                 overlayColor="#0b1020"
                 overlayOpacity={0.28}
@@ -289,8 +289,7 @@ export function ExampleOverlays({
             >
                 <Stack g={3}>
                     <Text color="var(--oui-muted)" lh={1.5}>
-                        This keeps the previous small scale and vertical movement without content
-                        blur.
+                        This variant uses a small scale and vertical movement without content blur.
                     </Text>
                     <Button onClick={() => setRiseModalOpen(false)}>Close</Button>
                 </Stack>
