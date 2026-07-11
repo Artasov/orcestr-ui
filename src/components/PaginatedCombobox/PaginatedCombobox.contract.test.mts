@@ -133,3 +133,28 @@ test('PaginatedCombobox and EntityPicker share the public option action contract
         /export type EntityPickerOptionAction<T> = PaginatedComboboxOptionAction<T>/,
     );
 });
+
+test('PaginatedCombobox keeps its search row compact', () => {
+    const source = read('components/PaginatedCombobox/PaginatedCombobox.tsx');
+    const styles = read('styles/_selection.sass');
+
+    assert.match(source, /oui-paginated-combobox-search-wrap/);
+    assert.match(source, /<TextField[\s\S]*?size=\{1\}/);
+    assert.match(source, /const handleOpenChange = useCallback/);
+    assert.match(source, /onOpenChange=\{handleOpenChange\}/);
+    assert.match(styles, /\.oui-paginated-combobox-search-wrap[\s\S]*?min-height: 28px/);
+    assert.match(styles, /\.oui-paginated-combobox-search-wrap[\s\S]*?padding: 0 4px 3px/);
+});
+
+test('PaginatedCombobox exposes opt-in search autofocus', () => {
+    const source = read('components/PaginatedCombobox/PaginatedCombobox.tsx');
+    const entityPickerSource = read('components/EntityPicker/EntityPicker.tsx');
+
+    assert.match(source, /autoFocusSearch\?: boolean/);
+    assert.match(source, /autoFocusSearch = false/);
+    assert.match(source, /const setSearchInputRef = useCallback/);
+    assert.match(source, /node\.focus\(\{ preventScroll: true \}\)/);
+    assert.match(source, /ref=\{setSearchInputRef\}/);
+    assert.match(entityPickerSource, /autoFocusSearch\?: boolean/);
+    assert.match(entityPickerSource, /autoFocusSearch=\{autoFocusSearch\}/);
+});

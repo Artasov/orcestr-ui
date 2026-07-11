@@ -31,6 +31,7 @@ export type EntityPickerProps<T> = {
     loadingText?: ReactNode;
     errorText?: ReactNode;
     retryLabel?: ReactNode;
+    autoFocusSearch?: boolean;
     disabled?: boolean;
     clearable?: boolean;
     showChevron?: boolean;
@@ -58,6 +59,7 @@ export function EntityPicker<T>({
     loadingText,
     errorText,
     retryLabel,
+    autoFocusSearch = false,
     disabled = false,
     clearable = true,
     showChevron = true,
@@ -103,6 +105,7 @@ export function EntityPicker<T>({
             loadingText={loadingText}
             errorText={errorText}
             retryLabel={retryLabel}
+            autoFocusSearch={autoFocusSearch}
             disabled={disabled}
             clearable={clearable}
             showChevron={showChevron}

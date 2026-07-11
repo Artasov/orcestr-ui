@@ -55,6 +55,7 @@ export type PaginatedComboboxProps<T> = {
     errorText?: ReactNode;
     retryLabel?: ReactNode;
     searchPlaceholder?: string;
+    autoFocusSearch?: boolean;
     clearLabel?: string;
     disabled?: boolean;
     clearable?: boolean;
@@ -86,6 +87,7 @@ export function PaginatedCombobox<T>({
     errorText,
     retryLabel,
     searchPlaceholder,
+    autoFocusSearch = false,
     clearLabel,
     disabled = false,
     clearable = false,
@@ -123,6 +125,24 @@ export function PaginatedCombobox<T>({
     const requestIdRef = useRef(0);
     const sentinelRef = useRef<HTMLDivElement | null>(null);
     const scrollRef = useRef<HTMLDivElement | null>(null);
+    const searchInputRef = useRef<HTMLInputElement | null>(null);
+    const shouldAutoFocusSearchRef = useRef(false);
+    shouldAutoFocusSearchRef.current = open && autoFocusSearch;
+    const setSearchInputRef = useCallback(
+        (node: HTMLInputElement | null) => {
+            searchInputRef.current = node;
+            if (!node || !open || !autoFocusSearch) return;
+            window.requestAnimationFrame(() => {
+                if (
+                    searchInputRef.current === node &&
+                    shouldAutoFocusSearchRef.current
+                ) {
+                    node.focus({ preventScroll: true });
+                }
+            });
+        },
+        [autoFocusSearch, open],
+    );
 
     useEffect(() => {
         const timer = window.setTimeout(() => setDebouncedSearch(searchInput.trim()), debounceMs);
@@ -295,16 +315,18 @@ export function PaginatedCombobox<T>({
     const triggerLabel = value ? renderSelectedLabel(value) : null;
     const canClear = clearable && value !== null && !disabled;
     const isInitialLoading = loadingInitial && items.length === 0;
+    const handleOpenChange = useCallback(
+        (next: boolean) => {
+            setOpen(next);
+            if (!next) navigation.reset();
+        },
+        [navigation.reset],
+    );
 
     return (
         <Popover
             open={open}
-            onOpenChange={(next) => {
-                setOpen(next);
-                if (!next) {
-                    navigation.reset();
-                }
-            }}
+            onOpenChange={handleOpenChange}
             trigger={
                 trigger ?? (
                     <Button
@@ -359,10 +381,10 @@ export function PaginatedCombobox<T>({
             matchTriggerWidth
             disabled={disabled}
         >
-            <div className="oui-combobox-search-wrap">
+            <div className="oui-combobox-search-wrap oui-paginated-combobox-search-wrap">
                 <TextField
-                    autoFocus
-                    size={2}
+                    ref={setSearchInputRef}
+                    size={1}
                     placeholder={actualSearchPlaceholder}
                     value={searchInput}
                     onChange={(event) => setSearchInput(event.target.value)}
@@ -371,9 +393,9 @@ export function PaginatedCombobox<T>({
                 {searchAction ? (
                     <Tooltip content={actualSearchActionLabel}>
                         <IconButton
-                            size={2}
+                            size={1}
                             v="soft"
-                            icon={<LuPlus size={14} />}
+                            icon={<LuPlus size={12} />}
                             className="oui-combobox-search-action"
                             aria-label={actualSearchActionLabel}
                             disabled={searchAction.disabled}
