@@ -35,6 +35,13 @@ export type PaginatedComboboxSearchAction = {
     disabled?: boolean;
 };
 
+export type PaginatedComboboxOptionAction<T> = {
+    label: (item: T) => string;
+    icon: ReactNode;
+    onClick: (item: T, close?: () => void) => void;
+    disabled?: (item: T) => boolean;
+};
+
 export type PaginatedComboboxProps<T> = {
     loadPage: (page: number, search: string) => Promise<PaginatedResult<T>>;
     getItemId: (item: T) => string | number;
@@ -58,12 +65,7 @@ export type PaginatedComboboxProps<T> = {
     closeOnSelect?: boolean;
     isItemSelected?: (item: T) => boolean;
     searchAction?: PaginatedComboboxSearchAction;
-    optionAction?: {
-        label: (item: T) => string;
-        icon: ReactNode;
-        onClick: (item: T, close?: () => void) => void;
-        disabled?: (item: T) => boolean;
-    };
+    optionAction?: PaginatedComboboxOptionAction<T>;
     resetKey?: unknown;
     debounceMs?: number;
     testId?: string;

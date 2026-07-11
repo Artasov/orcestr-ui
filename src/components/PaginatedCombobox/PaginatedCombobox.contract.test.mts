@@ -107,8 +107,29 @@ test('EntityPicker forwards paginated loading error and retry labels', () => {
 
 test('PaginatedCombobox react-query adapter stays public', () => {
     const adapterEntry = read('react-query.ts');
+    const adapterSource = read(
+        'components/PaginatedCombobox/PaginatedComboboxReactQueryAdapter.tsx',
+    );
     assert.match(
         adapterEntry,
         /export \* from '\.\/components\/PaginatedCombobox\/PaginatedComboboxReactQueryAdapter';/,
+    );
+    assert.match(adapterSource, /queryKey: TQueryKey \| \(\(params:/);
+    assert.match(adapterSource, /const optionsRef = useRef/);
+    assert.match(adapterSource, /\[queryClient\]/);
+    assert.match(adapterSource, /export function ReactQueryPaginatedCombobox<T>/);
+    assert.match(adapterSource, /ReactQueryPaginatedCombobox as PaginatedCombobox/);
+    assert.match(adapterSource, /pageSize \?\? null/);
+});
+
+test('PaginatedCombobox and EntityPicker share the public option action contract', () => {
+    const comboboxSource = read('components/PaginatedCombobox/PaginatedCombobox.tsx');
+    const entityPickerSource = read('components/EntityPicker/EntityPicker.tsx');
+
+    assert.match(comboboxSource, /export type PaginatedComboboxOptionAction<T>/);
+    assert.match(comboboxSource, /optionAction\?: PaginatedComboboxOptionAction<T>/);
+    assert.match(
+        entityPickerSource,
+        /export type EntityPickerOptionAction<T> = PaginatedComboboxOptionAction<T>/,
     );
 });

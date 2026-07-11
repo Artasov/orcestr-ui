@@ -6,6 +6,7 @@ import type { UiSize } from '../../theme/systemProps';
 import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
 import {
     PaginatedCombobox,
+    type PaginatedComboboxOptionAction,
     type PaginatedComboboxProps,
     type PaginatedResult,
 } from '../PaginatedCombobox/PaginatedCombobox';
@@ -16,12 +17,7 @@ export type EntityPickerCreateAction = {
     disabled?: boolean;
 };
 
-export type EntityPickerOptionAction<T> = {
-    label: (item: T) => string;
-    icon: ReactNode;
-    onClick: (item: T, close?: () => void) => void;
-    disabled?: (item: T) => boolean;
-};
+export type EntityPickerOptionAction<T> = PaginatedComboboxOptionAction<T>;
 
 export type EntityPickerProps<T> = {
     loadPage: (page: number, search: string) => Promise<PaginatedResult<T>>;
