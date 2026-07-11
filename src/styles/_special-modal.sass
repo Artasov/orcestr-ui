@@ -21,10 +21,18 @@
 
 .oui-special-modal-scroll-body .oui-special-modal-body
     min-height: 0
-    overflow: auto
+    overflow-x: hidden
+    overflow-y: auto
+    overscroll-behavior: contain
+    scrollbar-width: thin
+    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-border-strong)) var(--oui-scrollbar-track, transparent)
 
 .oui-special-modal-scroll-content
-    overflow: auto
+    overflow-x: hidden
+    overflow-y: auto
+    overscroll-behavior: contain
+    scrollbar-width: thin
+    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-border-strong)) var(--oui-scrollbar-track, transparent)
 
 .oui-special-modal-scroll-content .oui-special-modal-body
     overflow: visible
@@ -45,14 +53,17 @@
     padding: 10px 14px 12px
 
 .oui-special-modal-body
+    box-sizing: border-box
+    width: 100%
     min-width: 0
-    padding: 10px 14px 12px
+    max-width: 100%
+    padding: 0 14px 12px
 
 .oui-special-modal-density-compact .oui-special-modal-header
     padding: 10px 12px 6px
 
 .oui-special-modal-density-compact .oui-special-modal-body
-    padding: 8px 12px 10px
+    padding: 0 12px 10px
 
 .oui-special-modal-density-compact .oui-special-modal-footer
     padding: 8px 12px 10px
