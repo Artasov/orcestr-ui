@@ -12,6 +12,7 @@ test('SpecialModal is a library-owned styled modal', () => {
     assert.match(source, /SpecialModalBody/);
     assert.match(source, /SpecialModalFooter/);
     assert.match(source, /SpecialModalClose/);
+    assert.match(source, /Omit<ComponentPropsWithoutRef<'div'>, 'title'>/);
     assert.match(styles, /\.oui-special-modal/);
     assert.match(barrel, /components\/SpecialModal\/SpecialModal/);
 });

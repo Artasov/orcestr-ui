@@ -58,7 +58,7 @@ function SpecialModalRoot({
     );
 }
 
-type SpecialModalPartProps = ComponentPropsWithoutRef<'div'> & {
+type SpecialModalPartProps = Omit<ComponentPropsWithoutRef<'div'>, 'title'> & {
     testId?: string;
 };
 
