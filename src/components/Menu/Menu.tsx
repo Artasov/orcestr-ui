@@ -47,8 +47,6 @@ export function Menu({
 }) {
     const [open, setOpen] = useState(false);
     const [confirmItem, setConfirmItem] = useState<MenuItem | null>(null);
-    const inlineState = useInlineSubmenus();
-    const reserveIconSpace = useMemo(() => menuHasIcons(items), [items]);
 
     if (items.length === 0) return trigger;
 
@@ -56,10 +54,7 @@ export function Menu({
         <>
             <Popover
                 open={open}
-                onOpenChange={(next) => {
-                    setOpen(next);
-                    if (!next) inlineState.reset();
-                }}
+                onOpenChange={setOpen}
                 trigger={trigger}
                 className={cn('oui-menu oui-action-menu-content', className)}
                 align={align}
@@ -68,13 +63,10 @@ export function Menu({
                 collisionPadding={12}
                 testId={testId}
             >
-                <MenuList
+                <MenuContent
                     items={items}
-                    reserveIconSpace={reserveIconSpace}
-                    inlineState={inlineState}
                     close={() => setOpen(false)}
                     requestConfirmation={setConfirmItem}
-                    autoFocus
                     testId={testId ? `${testId}-list` : undefined}
                 />
             </Popover>
@@ -88,6 +80,34 @@ export function Menu({
                 }}
             />
         </>
+    );
+}
+
+export function MenuContent({
+    items,
+    close,
+    requestConfirmation,
+    autoFocus = true,
+    testId,
+}: {
+    items: ReadonlyArray<MenuItem>;
+    close: () => void;
+    requestConfirmation: (item: MenuItem) => void;
+    autoFocus?: boolean;
+    testId?: string;
+}) {
+    const inlineState = useInlineSubmenus();
+    const reserveIconSpace = useMemo(() => menuHasIcons(items), [items]);
+    return (
+        <MenuList
+            items={items}
+            reserveIconSpace={reserveIconSpace}
+            inlineState={inlineState}
+            close={close}
+            requestConfirmation={requestConfirmation}
+            autoFocus={autoFocus}
+            testId={testId}
+        />
     );
 }
 

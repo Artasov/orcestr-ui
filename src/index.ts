@@ -1,5 +1,3 @@
-'use client';
-
 export * from './components/Action/ActionTypes';
 export * from './components/ActionMenu/ActionMenu';
 export * from './components/Alert/Alert';
@@ -71,3 +69,4 @@ export * from './theme/ThemeProvider';
 export * from './theme/systemProps';
 export * from './theme/themeTypes';
 export * from './theme/useTheme';
+export * from './hooks/useReducedMotion';

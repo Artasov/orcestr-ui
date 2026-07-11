@@ -80,6 +80,12 @@ React Query integration is optional:
 import { usePaginatedComboboxQueryLoader } from '@orcestr/ui/react-query';
 ```
 
+Server Components can import render-only primitives without crossing a client boundary:
+
+```tsx
+import { Box, Flex, Table, Text } from '@orcestr/ui/server';
+```
+
 The demo page is exported separately:
 
 ```tsx
@@ -92,6 +98,7 @@ import '@orcestr/ui/example/styles.css';
 | Entrypoint                          | Purpose                                    |
 | ----------------------------------- | ------------------------------------------ |
 | `@orcestr/ui`                       | Components, providers, hooks and theme API |
+| `@orcestr/ui/server`                | Server-safe render-only primitives         |
 | `@orcestr/ui/styles.css`            | Runtime styles for the UI kit              |
 | `@orcestr/ui/react-query`           | Optional React Query adapter               |
 | `@orcestr/ui/example/UiExamplePage` | Demo page component                        |

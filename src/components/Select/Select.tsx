@@ -47,6 +47,7 @@ export function Select<V extends string = string>({
     style,
     showChevron = true,
     clearLabel,
+    ariaLabel,
     testId,
     ...props
 }: {
@@ -65,6 +66,7 @@ export function Select<V extends string = string>({
     style?: CSSProperties;
     showChevron?: boolean;
     clearLabel?: string;
+    ariaLabel?: string;
     testId?: string;
 } & SystemProps) {
     const { copy } = useOrcestrUiLocale();
@@ -169,7 +171,7 @@ export function Select<V extends string = string>({
     const hasSelectedValue = value !== null;
     const canClear = clearable && hasSelectedValue && !disabled;
     const triggerLabel = selected?.triggerLabel ?? selected?.label ?? selectedFallbackLabel ?? null;
-    const { systemStyle } = splitSystemProps(props);
+    const { systemStyle, restProps } = splitSystemProps(props);
 
     return (
         <Popover
@@ -180,7 +182,7 @@ export function Select<V extends string = string>({
             }}
             trigger={
                 <Button
-                    type="button"
+                    asChild
                     v="surface"
                     size={size}
                     disabled={disabled}
@@ -190,16 +192,36 @@ export function Select<V extends string = string>({
                     data-state={open ? 'open' : 'closed'}
                     testId={testId}
                     style={{ ...systemStyle, ...style }}
-                    aria-haspopup="listbox"
-                    aria-expanded={open}
-                    aria-controls={listboxId}
-                    onKeyDown={handleKeyDown}
-                    rightIcon={
+                    {...restProps}
+                    {...restProps}
+                >
+                    <div
+                        role="combobox"
+                        tabIndex={disabled ? -1 : 0}
+                        aria-haspopup="listbox"
+                        aria-label={ariaLabel ?? reactNodeText(triggerLabel ?? actualPlaceholder)}
+                        aria-expanded={open}
+                        aria-controls={listboxId}
+                        onKeyDown={handleKeyDown}
+                    >
+                        <span className="oui-button-label">
+                            <span
+                                className={
+                                    triggerLabel
+                                        ? 'oui-combobox-trigger-label'
+                                        : 'oui-combobox-placeholder'
+                                }
+                            >
+                                {triggerLabel ?? actualPlaceholder}
+                            </span>
+                        </span>
                         <span className="oui-combobox-trigger-actions">
                             {canClear ? (
-                                <span
+                                <button
+                                    type="button"
                                     aria-label={clearLabel ?? copy.common.clear}
                                     className="oui-combobox-clear"
+                                    onKeyDown={(event) => event.stopPropagation()}
                                     onPointerDown={(event) => {
                                         event.preventDefault();
                                         event.stopPropagation();
@@ -213,19 +235,11 @@ export function Select<V extends string = string>({
                                     }}
                                 >
                                     <LuX size={14} />
-                                </span>
+                                </button>
                             ) : null}
                             {showChevron ? <LuChevronsUpDown size={15} /> : null}
                         </span>
-                    }
-                >
-                    <span
-                        className={
-                            triggerLabel ? 'oui-combobox-trigger-label' : 'oui-combobox-placeholder'
-                        }
-                    >
-                        {triggerLabel ?? actualPlaceholder}
-                    </span>
+                    </div>
                 </Button>
             }
             className={className ? `oui-select-content ${className}` : 'oui-select-content'}

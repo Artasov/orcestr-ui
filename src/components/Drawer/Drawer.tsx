@@ -19,7 +19,6 @@ import { OrcestrThemeContext } from '../../theme/useTheme';
 import { cn } from '../../utils/cn';
 import { IconButton } from '../IconButton/IconButton';
 import {
-    lockOverlayScroll,
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
@@ -110,7 +109,11 @@ export function Drawer({
         [duration, ease, resolvedSize, style, zIndex],
     );
 
-    useFocusTrap(panelRef, present && trapFocus);
+    useFocusTrap(
+        panelRef,
+        present && trapFocus && (portalContainer !== undefined || overlay.portalReady),
+        { modal },
+    );
 
     useEffect(() => {
         if (!present || !closeOnEscape) return;
@@ -125,8 +128,8 @@ export function Drawer({
 
     useEffect(() => {
         if (!present || !lockScroll) return;
-        return lockOverlayScroll();
-    }, [lockScroll, present]);
+        return overlay.lockScroll(panelRef.current?.ownerDocument);
+    }, [lockScroll, overlay, present]);
 
     if (!present) return null;
 
@@ -137,6 +140,7 @@ export function Drawer({
                 data-state={state}
                 data-side={side}
                 data-modal={modal ? 'true' : undefined}
+                data-oui-layer-index={layerIndex}
                 data-testid={testId}
                 style={drawerStyle}
             >

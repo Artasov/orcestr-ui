@@ -12,13 +12,13 @@ import {
     type ReactNode,
 } from 'react';
 
-import { useFocusTrap } from '../../hooks/useFocusTrap';
+import { useFocusTrap, type OpenAutoFocusEvent } from '../../hooks/useFocusTrap';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 import { usePresence } from '../../hooks/usePresence';
 import { OrcestrThemeContext } from '../../theme/useTheme';
 import type { ModalAnimation } from '../../theme/themeTypes';
 import { cn } from '../../utils/cn';
 import {
-    lockOverlayScroll,
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
@@ -45,7 +45,7 @@ export type ModalProps = {
     contentClassName?: string;
     contentStyle?: CSSProperties;
     onKeyDown?: KeyboardEventHandler<HTMLDivElement>;
-    onOpenAutoFocus?: (event: { preventDefault: () => void }) => void;
+    onOpenAutoFocus?: (event: OpenAutoFocusEvent) => void;
     closeOnOverlayClick?: boolean;
     ariaLabel?: string;
     ariaLabelledBy?: string;
@@ -87,6 +87,7 @@ function ModalRoot({
     testId,
 }: ModalProps) {
     const themeContext = useContext(OrcestrThemeContext);
+    const reducedMotion = useReducedMotion();
     const overlayContext = useOverlayContext();
     const layerRef = useRef<HTMLDivElement | null>(null);
     const contentRef = useRef<HTMLDivElement | null>(null);
@@ -99,7 +100,7 @@ function ModalRoot({
     const actualOverlayOpacity =
         overlayOpacity ?? themeContext?.theme.motion.modalOverlayOpacity ?? 0;
     const actualOverlayBlur = overlayBlur ?? themeContext?.theme.motion.modalOverlayBlur ?? 10;
-    const actualAnimationMs = durationMs(actualAnimationDuration, 380);
+    const actualAnimationMs = reducedMotion ? 0 : durationMs(actualAnimationDuration, 380);
     const actualAnimationEase = themeContext?.theme.motion.ease ?? 'cubic-bezier(0.22, 1, 0.36, 1)';
     const { present, state } = usePresence(open, actualAnimationMs);
     const layerIndex = useOverlayLayerIndex(present);
@@ -108,21 +109,19 @@ function ModalRoot({
     const overlayBackdropFilter = `blur(${overlayBlurValue})`;
     const overlayBackground = modalOverlayBackground(actualOverlayColor, actualOverlayOpacity);
 
-    useFocusTrap(contentRef, open, () => onOpenChange(false));
+    useFocusTrap(contentRef, open && overlayContext.portalReady, {
+        onEscape: () => onOpenChange(false),
+        onOpenAutoFocus,
+    });
 
     useEffect(() => {
         if (!open) return;
-        return lockOverlayScroll();
-    }, [open]);
-
-    useEffect(() => {
-        if (!open || !onOpenAutoFocus) return;
-        onOpenAutoFocus({ preventDefault: () => undefined });
-    }, [onOpenAutoFocus, open]);
+        return overlayContext.lockScroll(contentRef.current?.ownerDocument);
+    }, [open, overlayContext]);
 
     useLayoutEffect(() => {
         const layer = layerRef.current;
-        if (!present || !layer || !layer.animate) return;
+        if (reducedMotion || !present || !layer || !layer.animate) return;
         if (state !== 'opening' && state !== 'closing') return;
 
         const closedFrame = {
@@ -153,6 +152,7 @@ function ModalRoot({
         overlayBackdropFilter,
         overlayBackground,
         present,
+        reducedMotion,
         state,
     ]);
 
@@ -177,6 +177,7 @@ function ModalRoot({
                     } as CSSProperties
                 }
                 data-state={state}
+                data-oui-layer-index={layerIndex}
                 data-testid={testId}
                 onPointerDown={(event) => {
                     if (event.target === event.currentTarget) {

@@ -3,6 +3,8 @@
 import {
     useCallback,
     useEffect,
+    useId,
+    useLayoutEffect,
     useMemo,
     useRef,
     useState,
@@ -43,7 +45,11 @@ export type PaginatedComboboxOptionAction<T> = {
 };
 
 export type PaginatedComboboxProps<T> = {
-    loadPage: (page: number, search: string) => Promise<PaginatedResult<T>>;
+    loadPage: (
+        page: number,
+        search: string,
+        options: { signal: AbortSignal; pageSize?: number },
+    ) => Promise<PaginatedResult<T>>;
     getItemId: (item: T) => string | number;
     renderOption: (item: T) => ReactNode;
     renderSelectedLabel: (item: T) => ReactNode;
@@ -57,6 +63,7 @@ export type PaginatedComboboxProps<T> = {
     searchPlaceholder?: string;
     autoFocusSearch?: boolean;
     clearLabel?: string;
+    ariaLabel?: string;
     disabled?: boolean;
     clearable?: boolean;
     showChevron?: boolean;
@@ -69,6 +76,10 @@ export type PaginatedComboboxProps<T> = {
     optionAction?: PaginatedComboboxOptionAction<T>;
     resetKey?: unknown;
     debounceMs?: number;
+    pageSize?: number;
+    virtualizeThreshold?: number;
+    estimatedItemHeight?: number;
+    virtualOverscan?: number;
     testId?: string;
 };
 
@@ -89,6 +100,7 @@ export function PaginatedCombobox<T>({
     searchPlaceholder,
     autoFocusSearch = false,
     clearLabel,
+    ariaLabel,
     disabled = false,
     clearable = false,
     showChevron = true,
@@ -101,6 +113,10 @@ export function PaginatedCombobox<T>({
     optionAction,
     resetKey,
     debounceMs = DEFAULT_DEBOUNCE_MS,
+    pageSize,
+    virtualizeThreshold = 80,
+    estimatedItemHeight = 40,
+    virtualOverscan = 6,
     testId,
 }: PaginatedComboboxProps<T>) {
     const { copy } = useOrcestrUiLocale();
@@ -111,6 +127,7 @@ export function PaginatedCombobox<T>({
     const actualRetryLabel = retryLabel ?? copy.common.retry;
     const actualSearchPlaceholder = searchPlaceholder ?? copy.common.search;
     const [open, setOpen] = useState(false);
+    const listboxId = useId();
     const [searchInput, setSearchInput] = useState('');
     const actualSearchActionLabel = searchAction
         ? typeof searchAction.label === 'function'
@@ -123,8 +140,12 @@ export function PaginatedCombobox<T>({
     const [loadingNext, setLoadingNext] = useState(false);
     const [error, setError] = useState<unknown>(null);
     const requestIdRef = useRef(0);
+    const requestControllerRef = useRef<AbortController | null>(null);
     const sentinelRef = useRef<HTMLDivElement | null>(null);
     const scrollRef = useRef<HTMLDivElement | null>(null);
+    const rowHeightsRef = useRef(new Map<string, number>());
+    const [measurementVersion, setMeasurementVersion] = useState(0);
+    const [viewport, setViewport] = useState({ top: 0, height: maxHeight });
     const searchInputRef = useRef<HTMLInputElement | null>(null);
     const shouldAutoFocusSearchRef = useRef(false);
     shouldAutoFocusSearchRef.current = open && autoFocusSearch;
@@ -133,10 +154,7 @@ export function PaginatedCombobox<T>({
             searchInputRef.current = node;
             if (!node || !open || !autoFocusSearch) return;
             window.requestAnimationFrame(() => {
-                if (
-                    searchInputRef.current === node &&
-                    shouldAutoFocusSearchRef.current
-                ) {
+                if (searchInputRef.current === node && shouldAutoFocusSearchRef.current) {
                     node.focus({ preventScroll: true });
                 }
             });
@@ -182,17 +200,118 @@ export function PaginatedCombobox<T>({
                 : (items.find((item) => String(getItemId(item)) === highlightedId) ?? null),
         [getItemId, highlightedId, items],
     );
+    const virtualModel = useMemo(() => {
+        const offsets = [0];
+        for (const item of items) {
+            const id = String(getItemId(item));
+            offsets.push(offsets.at(-1)! + (rowHeightsRef.current.get(id) ?? estimatedItemHeight));
+        }
+        const enabled = items.length >= virtualizeThreshold;
+        if (!enabled) {
+            return {
+                enabled,
+                start: 0,
+                end: items.length,
+                before: 0,
+                after: 0,
+                offsets,
+                items,
+            };
+        }
+
+        let firstVisible = 0;
+        while (firstVisible < items.length && offsets[firstVisible + 1]! < viewport.top) {
+            firstVisible += 1;
+        }
+        let lastVisible = firstVisible;
+        while (
+            lastVisible < items.length &&
+            offsets[lastVisible]! < viewport.top + viewport.height
+        ) {
+            lastVisible += 1;
+        }
+        const start = Math.max(0, firstVisible - virtualOverscan);
+        const end = Math.min(items.length, lastVisible + virtualOverscan);
+        const totalHeight = offsets.at(-1) ?? 0;
+        return {
+            enabled,
+            start,
+            end,
+            before: offsets[start] ?? 0,
+            after: Math.max(0, totalHeight - (offsets[end] ?? totalHeight)),
+            offsets,
+            items: items.slice(start, end),
+        };
+    }, [
+        estimatedItemHeight,
+        getItemId,
+        items,
+        measurementVersion,
+        viewport.height,
+        viewport.top,
+        virtualizeThreshold,
+        virtualOverscan,
+    ]);
 
     useEffect(() => {
         if (!open || highlightedId === null) return;
         const node = scrollRef.current?.querySelector<HTMLElement>(
             `[data-oui-paginated-combobox-value="${cssAttr(highlightedId)}"]`,
         );
-        node?.scrollIntoView({ block: 'nearest' });
-    }, [highlightedId, open]);
+        if (node) {
+            node.scrollIntoView({ block: 'nearest' });
+            return;
+        }
+        const index = items.findIndex((item) => String(getItemId(item)) === highlightedId);
+        const scrollNode = scrollRef.current;
+        if (index !== -1 && scrollNode) {
+            scrollNode.scrollTop = virtualModel.offsets[index] ?? 0;
+        }
+    }, [getItemId, highlightedId, items, open, virtualModel.offsets]);
+
+    useLayoutEffect(() => {
+        if (!open || !scrollRef.current) return;
+        const scrollNode = scrollRef.current;
+        const ResizeObserverCtor = scrollNode.ownerDocument.defaultView?.ResizeObserver;
+        const updateViewport = () => {
+            setViewport({
+                top: scrollNode.scrollTop,
+                height: scrollNode.clientHeight || maxHeight,
+            });
+        };
+        updateViewport();
+        if (!ResizeObserverCtor) return;
+        const observer = new ResizeObserverCtor((entries) => {
+            let measurementsChanged = false;
+            for (const entry of entries) {
+                if (entry.target === scrollNode) {
+                    updateViewport();
+                    continue;
+                }
+                if (!(entry.target instanceof HTMLElement)) continue;
+                const id = entry.target.dataset.ouiPaginatedComboboxValue;
+                if (!id) continue;
+                const height = entry.borderBoxSize[0]?.blockSize ?? entry.target.offsetHeight;
+                if (height <= 0 || rowHeightsRef.current.get(id) === height) continue;
+                rowHeightsRef.current.set(id, height);
+                measurementsChanged = true;
+            }
+            if (measurementsChanged) setMeasurementVersion((current) => current + 1);
+        });
+        observer.observe(scrollNode);
+        for (const row of scrollNode.querySelectorAll<HTMLElement>(
+            '[data-oui-paginated-combobox-value]',
+        )) {
+            observer.observe(row);
+        }
+        return () => observer.disconnect();
+    }, [maxHeight, open, virtualModel.end, virtualModel.start]);
 
     const fetchPage = useCallback(
         async (page: number, search: string) => {
+            requestControllerRef.current?.abort();
+            const controller = new AbortController();
+            requestControllerRef.current = controller;
             const requestId = ++requestIdRef.current;
             if (page === 1) {
                 setLoadingInitial(true);
@@ -202,21 +321,46 @@ export function PaginatedCombobox<T>({
             }
             setError(null);
             try {
-                const result = await loadPage(page, search);
+                const result = await loadPage(page, search, {
+                    signal: controller.signal,
+                    pageSize,
+                });
                 if (requestId !== requestIdRef.current) return;
                 setPages((current) => (page === 1 ? [result] : [...current, result]));
             } catch (nextError) {
                 if (requestId !== requestIdRef.current) return;
+                if (controller.signal.aborted) return;
                 setError(nextError);
                 if (page === 1) setPages([]);
             } finally {
                 if (requestId !== requestIdRef.current) return;
+                if (requestControllerRef.current === controller) {
+                    requestControllerRef.current = null;
+                }
                 setLoadingInitial(false);
                 setLoadingNext(false);
             }
         },
-        [loadPage],
+        [loadPage, pageSize],
     );
+
+    useEffect(
+        () => () => {
+            requestControllerRef.current?.abort();
+            requestControllerRef.current = null;
+            requestIdRef.current += 1;
+        },
+        [],
+    );
+
+    useEffect(() => {
+        if (open) return;
+        requestControllerRef.current?.abort();
+        requestControllerRef.current = null;
+        requestIdRef.current += 1;
+        setLoadingInitial(false);
+        setLoadingNext(false);
+    }, [open]);
 
     useEffect(() => {
         if (!open) return;
@@ -330,7 +474,7 @@ export function PaginatedCombobox<T>({
             trigger={
                 trigger ?? (
                     <Button
-                        type="button"
+                        asChild
                         v="surface"
                         size={size}
                         disabled={disabled}
@@ -339,13 +483,41 @@ export function PaginatedCombobox<T>({
                         className="oui-combobox-trigger"
                         data-testid={testId}
                         data-state={open ? 'open' : 'closed'}
-                        onKeyDown={handleKeyDown}
-                        rightIcon={
+                    >
+                        <div
+                            role="combobox"
+                            tabIndex={disabled ? -1 : 0}
+                            aria-haspopup="listbox"
+                            aria-label={
+                                ariaLabel ?? reactNodeText(triggerLabel ?? actualPlaceholder)
+                            }
+                            aria-expanded={open}
+                            aria-controls={listboxId}
+                            aria-activedescendant={
+                                highlightedId === null
+                                    ? undefined
+                                    : `${listboxId}-option-${domId(highlightedId)}`
+                            }
+                            onKeyDown={handleKeyDown}
+                        >
+                            <span className="oui-button-label">
+                                <span
+                                    className={
+                                        triggerLabel
+                                            ? 'oui-combobox-trigger-label'
+                                            : 'oui-combobox-placeholder'
+                                    }
+                                >
+                                    {triggerLabel ?? actualPlaceholder}
+                                </span>
+                            </span>
                             <span className="oui-combobox-trigger-actions">
                                 {canClear ? (
-                                    <span
+                                    <button
+                                        type="button"
                                         aria-label={clearLabel ?? copy.common.clear}
                                         className="oui-combobox-clear"
+                                        onKeyDown={(event) => event.stopPropagation()}
                                         onPointerDown={(event) => {
                                             event.preventDefault();
                                             event.stopPropagation();
@@ -357,21 +529,11 @@ export function PaginatedCombobox<T>({
                                         }}
                                     >
                                         <LuX size={14} />
-                                    </span>
+                                    </button>
                                 ) : null}
                                 {showChevron ? <LuChevronsUpDown size={15} /> : null}
                             </span>
-                        }
-                    >
-                        <span
-                            className={
-                                triggerLabel
-                                    ? 'oui-combobox-trigger-label'
-                                    : 'oui-combobox-placeholder'
-                            }
-                        >
-                            {triggerLabel ?? actualPlaceholder}
-                        </span>
+                        </div>
                     </Button>
                 )
             }
@@ -389,6 +551,15 @@ export function PaginatedCombobox<T>({
                     value={searchInput}
                     onChange={(event) => setSearchInput(event.target.value)}
                     onKeyDown={handleKeyDown}
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-expanded={open}
+                    aria-controls={listboxId}
+                    aria-activedescendant={
+                        highlightedId === null
+                            ? undefined
+                            : `${listboxId}-option-${domId(highlightedId)}`
+                    }
                 />
                 {searchAction ? (
                     <Tooltip content={actualSearchActionLabel}>
@@ -409,10 +580,18 @@ export function PaginatedCombobox<T>({
             </div>
             <div
                 ref={scrollRef}
+                id={listboxId}
+                role="listbox"
                 className="oui-combobox-scroll"
                 style={{ maxHeight }}
                 tabIndex={-1}
                 onKeyDown={handleKeyDown}
+                onScroll={(event) =>
+                    setViewport({
+                        top: event.currentTarget.scrollTop,
+                        height: event.currentTarget.clientHeight || maxHeight,
+                    })
+                }
             >
                 {isInitialLoading ? (
                     <div className="oui-combobox-state">
@@ -434,9 +613,13 @@ export function PaginatedCombobox<T>({
                     <div className="oui-combobox-empty">{actualEmptyText}</div>
                 ) : (
                     <div className="oui-combobox-options">
-                        {items.map((item) => {
+                        {virtualModel.before > 0 ? (
+                            <div aria-hidden="true" style={{ height: virtualModel.before }} />
+                        ) : null}
+                        {virtualModel.items.map((item, renderedIndex) => {
                             const id = getItemId(item);
                             const itemId = String(id);
+                            const itemIndex = virtualModel.start + renderedIndex;
                             const selected =
                                 isItemSelected?.(item) ??
                                 (value !== null && String(getItemId(value)) === itemId);
@@ -452,6 +635,11 @@ export function PaginatedCombobox<T>({
                                 >
                                     <button
                                         type="button"
+                                        id={`${listboxId}-option-${domId(itemId)}`}
+                                        role="option"
+                                        aria-selected={selected}
+                                        aria-posinset={itemIndex + 1}
+                                        aria-setsize={items.length}
                                         className="oui-combobox-option-main"
                                         onClick={() => handleSelect(item)}
                                     >
@@ -484,6 +672,9 @@ export function PaginatedCombobox<T>({
                                 </div>
                             );
                         })}
+                        {virtualModel.after > 0 ? (
+                            <div aria-hidden="true" style={{ height: virtualModel.after }} />
+                        ) : null}
                         {hasNextPage ? (
                             <div ref={sentinelRef} className="oui-combobox-sentinel" />
                         ) : null}
@@ -501,4 +692,18 @@ export function PaginatedCombobox<T>({
 
 function cssAttr(value: string): string {
     return value.replace(/"/g, '\\"');
+}
+
+function domId(value: string) {
+    return encodeURIComponent(value).replace(/%/g, '_');
+}
+
+function reactNodeText(value: ReactNode): string {
+    if (value === null || value === undefined || value === false) return '';
+    if (typeof value === 'string' || typeof value === 'number') return String(value);
+    if (Array.isArray(value)) return value.map(reactNodeText).join('');
+    if (typeof value === 'object' && 'props' in value) {
+        return reactNodeText((value.props as { children?: ReactNode }).children);
+    }
+    return '';
 }

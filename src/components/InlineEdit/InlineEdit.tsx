@@ -12,6 +12,8 @@ import {
 import { LuX } from 'react-icons/lu';
 
 import { cn } from '../../utils/cn';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
 import { composeRefs } from '../../utils/composeRefs';
 import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
 import { IconButton } from '../IconButton/IconButton';
@@ -46,7 +48,7 @@ export const InlineEditField = forwardRef<HTMLDivElement, InlineEditFieldProps>(
             clearable = false,
             onClear,
             onOpen,
-            clearLabel = 'Clear',
+            clearLabel,
             flash = 0,
             className,
             style,
@@ -56,17 +58,23 @@ export const InlineEditField = forwardRef<HTMLDivElement, InlineEditFieldProps>(
         ref,
     ) {
         const innerRef = useRef<HTMLDivElement | null>(null);
+        const { copy } = useOrcestrUiLocale();
         const labelRef = useRef<HTMLButtonElement | null>(null);
         const extraRef = useRef<HTMLSpanElement | null>(null);
         const actionsRef = useRef<HTMLSpanElement | null>(null);
         const [compact, setCompact] = useState(false);
+        const reducedMotion = useReducedMotion();
         const { systemStyle, restProps } = splitSystemProps(props);
 
         useEffect(() => {
             if (!flash) return;
             const element = innerRef.current;
             if (!element) return;
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.scrollIntoView({
+                behavior: reducedMotion ? 'auto' : 'smooth',
+                block: 'center',
+            });
+            if (reducedMotion) return;
             element.animate(
                 [
                     {
@@ -92,7 +100,7 @@ export const InlineEditField = forwardRef<HTMLDivElement, InlineEditFieldProps>(
                 ],
                 { duration: 1400, easing: 'ease-in-out' },
             );
-        }, [flash]);
+        }, [flash, reducedMotion]);
 
         const showActions = editable && (!disabled || busy);
 
@@ -158,7 +166,7 @@ export const InlineEditField = forwardRef<HTMLDivElement, InlineEditFieldProps>(
                                         v="ghost"
                                         tone="neutral"
                                         size={1}
-                                        aria-label={clearLabel}
+                                        aria-label={clearLabel ?? copy.common.clear}
                                         className="oui-inline-edit-action"
                                         onClick={onClear}
                                     >
@@ -209,13 +217,18 @@ export const InlineEditMultiField = forwardRef<HTMLDivElement, InlineEditMultiFi
         ref,
     ) {
         const innerRef = useRef<HTMLDivElement | null>(null);
+        const reducedMotion = useReducedMotion();
         const { systemStyle, restProps } = splitSystemProps(props);
 
         useEffect(() => {
             if (!flash) return;
             const element = innerRef.current;
             if (!element) return;
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.scrollIntoView({
+                behavior: reducedMotion ? 'auto' : 'smooth',
+                block: 'center',
+            });
+            if (reducedMotion) return;
             element.animate(
                 [
                     {
@@ -233,7 +246,7 @@ export const InlineEditMultiField = forwardRef<HTMLDivElement, InlineEditMultiFi
                 ],
                 { duration: 1000, easing: 'ease-in-out' },
             );
-        }, [flash]);
+        }, [flash, reducedMotion]);
 
         const showActions = editable && (!disabled || busy);
 

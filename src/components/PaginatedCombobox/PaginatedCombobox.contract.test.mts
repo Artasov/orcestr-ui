@@ -119,7 +119,9 @@ test('PaginatedCombobox react-query adapter stays public', () => {
     assert.match(adapterSource, /\[queryClient\]/);
     assert.match(adapterSource, /export function ReactQueryPaginatedCombobox<T>/);
     assert.match(adapterSource, /ReactQueryPaginatedCombobox as PaginatedCombobox/);
-    assert.match(adapterSource, /pageSize \?\? null/);
+    assert.match(adapterSource, /requestedPageSize \?\? null/);
+    assert.match(adapterSource, /queryFn: \(\{ signal \}\)/);
+    assert.match(adapterSource, /loadPage\(page, search, \{ signal, pageSize:/);
 });
 
 test('PaginatedCombobox and EntityPicker share the public option action contract', () => {

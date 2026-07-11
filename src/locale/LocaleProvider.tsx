@@ -37,6 +37,9 @@ export type OrcestrUiCopy = {
         compare: string;
         from: string;
         to: string;
+        scrollTabsLeft: string;
+        scrollTabsRight: string;
+        selectedCount: (count: number) => string;
     };
     table: {
         selectAllRows: string;
@@ -124,6 +127,9 @@ const ruCopy: OrcestrUiCopy = {
         compare: 'Сравнить',
         from: 'От',
         to: 'До',
+        scrollTabsLeft: 'Прокрутить вкладки влево',
+        scrollTabsRight: 'Прокрутить вкладки вправо',
+        selectedCount: (count) => `Выбрано: ${count}`,
     },
     table: {
         selectAllRows: 'Выбрать все строки',
@@ -196,6 +202,9 @@ const enCopy: OrcestrUiCopy = {
         compare: 'Compare',
         from: 'From',
         to: 'To',
+        scrollTabsLeft: 'Scroll tabs left',
+        scrollTabsRight: 'Scroll tabs right',
+        selectedCount: (count) => `${count} selected`,
     },
     table: {
         selectAllRows: 'Select all rows',

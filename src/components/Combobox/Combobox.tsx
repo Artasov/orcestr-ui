@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, type ReactNode } from 'react';
+import { useId, useMemo, useState, type ReactNode } from 'react';
 import { LuChevronsUpDown, LuX } from 'react-icons/lu';
 
 import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
@@ -18,6 +18,7 @@ export function Combobox({
     searchPlaceholder,
     emptyText,
     clearLabel,
+    ariaLabel,
     disabled = false,
     clearable = true,
     showChevron = true,
@@ -31,6 +32,7 @@ export function Combobox({
     searchPlaceholder?: string;
     emptyText?: string;
     clearLabel?: string;
+    ariaLabel?: string;
     disabled?: boolean;
     clearable?: boolean;
     showChevron?: boolean;
@@ -39,6 +41,7 @@ export function Combobox({
     const { copy } = useOrcestrUiLocale();
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState('');
+    const listboxId = useId();
     const selected = items.find((item) => item.value === value);
     const filtered = useMemo(
         () => items.filter((item) => item.label.toLowerCase().includes(query.toLowerCase())),
@@ -54,6 +57,7 @@ export function Combobox({
             }}
             trigger={
                 <Button
+                    asChild
                     v="surface"
                     fullWidth
                     disabled={disabled}
@@ -61,12 +65,44 @@ export function Combobox({
                     className="oui-combobox-trigger"
                     data-state={open ? 'open' : 'closed'}
                     testId={testId}
-                    rightIcon={
+                >
+                    <div
+                        role="combobox"
+                        tabIndex={disabled ? -1 : 0}
+                        aria-haspopup="listbox"
+                        aria-label={
+                            ariaLabel ??
+                            reactNodeText(
+                                selected?.label ??
+                                    selectedFallbackLabel ??
+                                    placeholder ??
+                                    copy.common.selectValue,
+                            )
+                        }
+                        aria-expanded={open}
+                        aria-controls={listboxId}
+                    >
+                        <span className="oui-button-label">
+                            <span
+                                className={
+                                    selected || selectedFallbackLabel
+                                        ? 'oui-combobox-trigger-label'
+                                        : 'oui-combobox-placeholder'
+                                }
+                            >
+                                {selected?.label ??
+                                    selectedFallbackLabel ??
+                                    placeholder ??
+                                    copy.common.selectValue}
+                            </span>
+                        </span>
                         <span className="oui-combobox-trigger-actions">
                             {clearable && selected ? (
-                                <span
+                                <button
+                                    type="button"
                                     aria-label={clearLabel ?? copy.common.clear}
                                     className="oui-combobox-clear"
+                                    onKeyDown={(event) => event.stopPropagation()}
                                     onPointerDown={(event) => {
                                         event.preventDefault();
                                         event.stopPropagation();
@@ -78,24 +114,11 @@ export function Combobox({
                                     }}
                                 >
                                     <LuX size={14} />
-                                </span>
+                                </button>
                             ) : null}
                             {showChevron ? <LuChevronsUpDown size={15} /> : null}
                         </span>
-                    }
-                >
-                    <span
-                        className={
-                            selected || selectedFallbackLabel
-                                ? 'oui-combobox-trigger-label'
-                                : 'oui-combobox-placeholder'
-                        }
-                    >
-                        {selected?.label ??
-                            selectedFallbackLabel ??
-                            placeholder ??
-                            copy.common.selectValue}
-                    </span>
+                    </div>
                 </Button>
             }
             className="oui-combobox-content"
@@ -119,6 +142,7 @@ export function Combobox({
                 <div className="oui-combobox-empty">{emptyText ?? copy.common.noOptions}</div>
             ) : (
                 <Listbox
+                    id={listboxId}
                     className="oui-combobox-options"
                     items={filtered}
                     value={value}
@@ -132,4 +156,14 @@ export function Combobox({
             )}
         </Popover>
     );
+}
+
+function reactNodeText(value: ReactNode): string {
+    if (value === null || value === undefined || value === false) return '';
+    if (typeof value === 'string' || typeof value === 'number') return String(value);
+    if (Array.isArray(value)) return value.map(reactNodeText).join('');
+    if (typeof value === 'object' && 'props' in value) {
+        return reactNodeText((value.props as { children?: ReactNode }).children);
+    }
+    return '';
 }

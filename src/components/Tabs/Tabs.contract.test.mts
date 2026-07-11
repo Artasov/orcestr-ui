@@ -20,7 +20,7 @@ test('Tabs keep stable trigger height with badges', () => {
 });
 
 test('Tabs hide hover indicator when hovering the active tab', () => {
-    assert.match(tabsSource, /hoveredValue !== active\?\.value/);
+    assert.match(tabsSource, /hoveredValueRef\.current !== activeValueRef\.current/);
     assert.match(
         selectionStyles,
         /\.oui-tabs-active-indicator,[\s\S]*?\.oui-tabs-hover-indicator[\s\S]*?transition: left 460ms[\s\S]*?opacity 220ms ease/,
@@ -35,19 +35,8 @@ test('Tabs avoid state updates when measured rects did not change', () => {
         tabsSource,
         /current\.left === next\.left[\s\S]*?current\.height === next\.height/,
     );
-    assert.match(
-        tabsSource,
-        /setActiveRect\(\(current\) => stableTabRect\(current, readRect\(active\?\.value\)\)\)/,
-    );
-    assert.match(
-        tabsSource,
-        /setHoverRect\(\(current\) =>[\s\S]*?nextHoverRect \? stableTabRect\(current, nextHoverRect\) : current,[\s\S]*?\)/,
-    );
     assert.match(tabsSource, /setActiveRect\(\(current\) => stableTabRect\(current, active\)\)/);
-    assert.match(
-        tabsSource,
-        /setHoverRect\(\(current\) =>[\s\S]*?hover \? stableTabRect\(current, hover\) : current,?[\s\S]*?\)/,
-    );
+    assert.match(tabsSource, /hover \? stableTabRect\(current, hover\) : current/);
 });
 
 test('Tabs use shared pad hover tokens instead of private colors', () => {

@@ -23,7 +23,10 @@ test('DataTable column resize does not call controlled handlers inside setState 
 });
 
 test('DataTable settings and pinned cells use shared UI primitives', () => {
-    const source = read('components/DataTable/DataTable.tsx');
+    const source = [
+        read('components/DataTable/DataTable.tsx'),
+        read('components/DataTable/DataTableColumnSettings.tsx'),
+    ].join('\n');
     const styles = read('styles/_data.sass');
 
     assert.match(source, /toolbar\?: ReactNode/);
@@ -41,7 +44,7 @@ test('DataTable settings and pinned cells use shared UI primitives', () => {
     assert.match(source, /className=["\']oui-data-table-sort-label["\']/);
     assert.match(
         source,
-        /\{toolbar \|\| columnSettings \? \([\s\S]*?<div className=["\']oui-data-table-toolbar["\']>[\s\S]*?oui-data-table-toolbar-content[\s\S]*?<ColumnSettingsPanel/,
+        /\{toolbar \|\| columnSettings \? \([\s\S]*?<div className=["\']oui-data-table-toolbar["\']>[\s\S]*?oui-data-table-toolbar-content[\s\S]*?<DataTableColumnSettingsPanel/,
     );
     assert.match(
         styles,

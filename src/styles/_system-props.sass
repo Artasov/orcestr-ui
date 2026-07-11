@@ -1,0 +1,59 @@
+$responsive-system-props: (
+    m: margin,
+    mt: margin-top,
+    mr: margin-right,
+    mb: margin-bottom,
+    ml: margin-left,
+    mx: margin-inline,
+    my: margin-block,
+    p: padding,
+    pt: padding-top,
+    pr: padding-right,
+    pb: padding-bottom,
+    pl: padding-left,
+    px: padding-inline,
+    py: padding-block,
+    g: gap,
+    size: (width, height),
+    w: width,
+    minW: min-width,
+    minWidth: min-width,
+    maxW: max-width,
+    maxWidth: max-width,
+    h: height,
+    minH: min-height,
+    minHeight: min-height,
+    maxH: max-height,
+    maxHeight: max-height,
+    fs: font-size,
+    lh: line-height,
+)
+
+[data-oui-responsive]
+    @each $key, $properties in $responsive-system-props
+        @each $property in $properties
+            #{$property}: var(--oui-sp-#{$key}-initial)
+
+@media (min-width: 560px)
+    [data-oui-responsive]
+        @each $key, $properties in $responsive-system-props
+            @each $property in $properties
+                #{$property}: var(--oui-sp-#{$key}-sm, var(--oui-sp-#{$key}-initial))
+
+@media (min-width: 720px)
+    [data-oui-responsive]
+        @each $key, $properties in $responsive-system-props
+            @each $property in $properties
+                #{$property}: var(--oui-sp-#{$key}-md, var(--oui-sp-#{$key}-sm, var(--oui-sp-#{$key}-initial)))
+
+@media (min-width: 1024px)
+    [data-oui-responsive]
+        @each $key, $properties in $responsive-system-props
+            @each $property in $properties
+                #{$property}: var(--oui-sp-#{$key}-lg, var(--oui-sp-#{$key}-md, var(--oui-sp-#{$key}-sm, var(--oui-sp-#{$key}-initial))))
+
+@media (min-width: 1440px)
+    [data-oui-responsive]
+        @each $key, $properties in $responsive-system-props
+            @each $property in $properties
+                #{$property}: var(--oui-sp-#{$key}-xl, var(--oui-sp-#{$key}-lg, var(--oui-sp-#{$key}-md, var(--oui-sp-#{$key}-sm, var(--oui-sp-#{$key}-initial)))))

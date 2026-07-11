@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, type KeyboardEvent } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, type KeyboardEvent } from 'react';
 
 import { useListNavigation } from '../../hooks/useListNavigation';
 import { useTypeahead } from '../../hooks/useTypeahead';
@@ -18,13 +18,17 @@ export function Listbox({
     onValueChange,
     className,
     testId,
+    id,
 }: {
     items: ReadonlyArray<ListboxItem>;
     value?: string | null;
     onValueChange: (value: string) => void;
     className?: string;
     testId?: string;
+    id?: string;
 }) {
+    const generatedId = useId();
+    const listboxId = id ?? generatedId;
     const listboxRef = useRef<HTMLDivElement | null>(null);
     const navigationItems = useMemo(
         () =>
@@ -97,7 +101,11 @@ export function Listbox({
         <div
             ref={listboxRef}
             className={cn('oui-listbox', className)}
+            id={listboxId}
             role="listbox"
+            aria-activedescendant={
+                highlighted === null ? undefined : `${listboxId}-option-${domId(highlighted)}`
+            }
             tabIndex={0}
             data-testid={testId}
             onKeyDown={handleKeyDown}
@@ -108,6 +116,7 @@ export function Listbox({
                 return (
                     <button
                         key={item.value}
+                        id={`${listboxId}-option-${domId(item.value)}`}
                         type="button"
                         role="option"
                         aria-selected={isSelected}
@@ -135,4 +144,8 @@ export function Listbox({
 
 function cssAttr(value: string): string {
     return value.replace(/"/g, '\\"');
+}
+
+function domId(value: string) {
+    return encodeURIComponent(value).replace(/%/g, '_');
 }

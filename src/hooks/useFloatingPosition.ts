@@ -9,6 +9,8 @@ import {
     type RefObject,
 } from 'react';
 
+import { scheduleFloatingUpdates, subscribeFloatingUpdates } from './floatingScheduler';
+
 export type FloatingSide = 'top' | 'right' | 'bottom' | 'left';
 export type FloatingAlign = 'start' | 'center' | 'end';
 
@@ -21,6 +23,7 @@ export function useFloatingPosition({
     sideOffset = 8,
     collisionPadding = 8,
     matchTriggerWidth = false,
+    avoidCollisions = true,
 }: {
     triggerRef: RefObject<HTMLElement | null>;
     contentRef: RefObject<HTMLElement | null>;
@@ -30,6 +33,7 @@ export function useFloatingPosition({
     sideOffset?: number;
     collisionPadding?: number;
     matchTriggerWidth?: boolean;
+    avoidCollisions?: boolean;
 }) {
     const [style, setStyle] = useState<CSSProperties>({
         position: 'fixed',
@@ -37,7 +41,7 @@ export function useFloatingPosition({
         top: -9999,
         visibility: 'hidden',
     });
-    const frameRef = useRef<number | null>(null);
+    const updateRef = useRef<() => void>(() => undefined);
 
     const update = useCallback(() => {
         const trigger = triggerRef.current;
@@ -45,35 +49,40 @@ export function useFloatingPosition({
         if (!trigger || !content) return;
         const triggerRect = trigger.getBoundingClientRect();
         const contentRect = content.getBoundingClientRect();
-        const viewportW = window.innerWidth;
-        const viewportH = window.innerHeight;
+        const ownerWindow = trigger.ownerDocument.defaultView ?? window;
+        const clippingRect = getClippingRect(trigger, ownerWindow);
         const contentWidth = matchTriggerWidth
             ? Math.max(contentRect.width, triggerRect.width)
             : contentRect.width;
         const contentHeight = contentRect.height;
+        const isRtl = window.getComputedStyle(trigger).direction === 'rtl';
 
         let left = triggerRect.left;
         let top = triggerRect.bottom + sideOffset;
         let actualSide = side;
 
         if (
+            avoidCollisions &&
             side === 'bottom' &&
-            triggerRect.bottom + contentHeight + sideOffset > viewportH - collisionPadding
+            triggerRect.bottom + contentHeight + sideOffset > clippingRect.bottom - collisionPadding
         ) {
             actualSide = 'top';
         } else if (
+            avoidCollisions &&
             side === 'top' &&
-            triggerRect.top - contentHeight - sideOffset < collisionPadding
+            triggerRect.top - contentHeight - sideOffset < clippingRect.top + collisionPadding
         ) {
             actualSide = 'bottom';
         } else if (
+            avoidCollisions &&
             side === 'right' &&
-            triggerRect.right + contentWidth + sideOffset > viewportW - collisionPadding
+            triggerRect.right + contentWidth + sideOffset > clippingRect.right - collisionPadding
         ) {
             actualSide = 'left';
         } else if (
+            avoidCollisions &&
             side === 'left' &&
-            triggerRect.left - contentWidth - sideOffset < collisionPadding
+            triggerRect.left - contentWidth - sideOffset < clippingRect.left + collisionPadding
         ) {
             actualSide = 'right';
         }
@@ -92,7 +101,9 @@ export function useFloatingPosition({
             if (align === 'center') {
                 left = triggerRect.left + triggerRect.width / 2 - contentWidth / 2;
             } else if (align === 'end') {
-                left = triggerRect.right - contentWidth;
+                left = isRtl ? triggerRect.left : triggerRect.right - contentWidth;
+            } else {
+                left = isRtl ? triggerRect.right - contentWidth : triggerRect.left;
             }
         } else if (align === 'center') {
             top = triggerRect.top + triggerRect.height / 2 - contentHeight / 2;
@@ -100,67 +111,108 @@ export function useFloatingPosition({
             top = triggerRect.bottom - contentHeight;
         }
 
-        left = Math.min(
-            Math.max(collisionPadding, left),
-            Math.max(collisionPadding, viewportW - contentWidth - collisionPadding),
-        );
-        top = Math.min(
-            Math.max(collisionPadding, top),
-            Math.max(collisionPadding, viewportH - contentHeight - collisionPadding),
-        );
+        if (avoidCollisions) {
+            left = Math.min(
+                Math.max(clippingRect.left + collisionPadding, left),
+                Math.max(
+                    clippingRect.left + collisionPadding,
+                    clippingRect.right - contentWidth - collisionPadding,
+                ),
+            );
+            top = Math.min(
+                Math.max(clippingRect.top + collisionPadding, top),
+                Math.max(
+                    clippingRect.top + collisionPadding,
+                    clippingRect.bottom - contentHeight - collisionPadding,
+                ),
+            );
+        }
 
         setStyle({
             position: 'fixed',
             left,
             top,
             minWidth: matchTriggerWidth ? contentWidth : undefined,
-            maxWidth: `calc(100vw - ${collisionPadding * 2}px)`,
-            maxHeight: `calc(100vh - ${collisionPadding * 2}px)`,
-            visibility: 'visible',
-            transformOrigin: transformOriginFor(actualSide, align),
+            maxWidth: avoidCollisions
+                ? Math.max(0, clippingRect.right - clippingRect.left - collisionPadding * 2)
+                : undefined,
+            maxHeight: avoidCollisions
+                ? Math.max(0, clippingRect.bottom - clippingRect.top - collisionPadding * 2)
+                : undefined,
+            visibility: rectsIntersect(triggerRect, clippingRect) ? 'visible' : 'hidden',
+            transformOrigin: transformOriginFor(actualSide, align, isRtl),
         });
-    }, [align, collisionPadding, contentRef, matchTriggerWidth, side, sideOffset, triggerRef]);
+    }, [
+        align,
+        avoidCollisions,
+        collisionPadding,
+        contentRef,
+        matchTriggerWidth,
+        side,
+        sideOffset,
+        triggerRef,
+    ]);
+    updateRef.current = update;
 
     const scheduleUpdate = useCallback(() => {
-        if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
-        frameRef.current = window.requestAnimationFrame(() => {
-            frameRef.current = null;
-            update();
-        });
-    }, [update]);
+        const ownerDocument =
+            triggerRef.current?.ownerDocument ?? contentRef.current?.ownerDocument;
+        if (ownerDocument) scheduleFloatingUpdates(ownerDocument);
+        else updateRef.current();
+    }, [contentRef, triggerRef]);
 
     useLayoutEffect(() => {
         if (!open) return;
-        scheduleUpdate();
         const trigger = triggerRef.current;
         const content = contentRef.current;
-        const observer =
-            typeof ResizeObserver === 'undefined'
-                ? null
-                : new ResizeObserver(() => scheduleUpdate());
-        if (trigger) observer?.observe(trigger);
-        if (content) observer?.observe(content);
-        window.addEventListener('resize', scheduleUpdate);
-        window.addEventListener('scroll', scheduleUpdate, true);
-        return () => {
-            if (frameRef.current !== null) {
-                window.cancelAnimationFrame(frameRef.current);
-                frameRef.current = null;
-            }
-            observer?.disconnect();
-            window.removeEventListener('resize', scheduleUpdate);
-            window.removeEventListener('scroll', scheduleUpdate, true);
-        };
-    }, [contentRef, open, scheduleUpdate, triggerRef]);
+        if (!trigger || !content) return;
+        return subscribeFloatingUpdates(trigger.ownerDocument, [trigger, content], () =>
+            updateRef.current(),
+        );
+    }, [contentRef, open, triggerRef]);
 
     return { style, update: scheduleUpdate };
 }
 
-function transformOriginFor(side: FloatingSide, align: FloatingAlign): string {
-    const cross = align === 'start' ? 'left' : align === 'end' ? 'right' : 'center';
+function transformOriginFor(side: FloatingSide, align: FloatingAlign, isRtl: boolean): string {
+    const leftAligned = (align === 'start' && !isRtl) || (align === 'end' && isRtl);
+    const cross = align === 'center' ? 'center' : leftAligned ? 'left' : 'right';
     const vertical = align === 'start' ? 'top' : align === 'end' ? 'bottom' : 'center';
     if (side === 'bottom') return `${cross} top`;
     if (side === 'top') return `${cross} bottom`;
     if (side === 'right') return `left ${vertical}`;
     return `right ${vertical}`;
+}
+
+function getClippingRect(element: HTMLElement, view: Window) {
+    const rect = { left: 0, top: 0, right: view.innerWidth, bottom: view.innerHeight };
+    let ancestor = element.parentElement;
+    while (ancestor && ancestor !== element.ownerDocument.body) {
+        const style = view.getComputedStyle(ancestor);
+        if (clipsOverflow(style.overflowX) || clipsOverflow(style.overflowY)) {
+            const ancestorRect = ancestor.getBoundingClientRect();
+            rect.left = Math.max(rect.left, ancestorRect.left);
+            rect.top = Math.max(rect.top, ancestorRect.top);
+            rect.right = Math.min(rect.right, ancestorRect.right);
+            rect.bottom = Math.min(rect.bottom, ancestorRect.bottom);
+        }
+        ancestor = ancestor.parentElement;
+    }
+    return rect;
+}
+
+function clipsOverflow(value: string) {
+    return value === 'auto' || value === 'scroll' || value === 'hidden' || value === 'clip';
+}
+
+function rectsIntersect(
+    rect: Pick<DOMRect, 'bottom' | 'left' | 'right' | 'top'>,
+    clippingRect: { bottom: number; left: number; right: number; top: number },
+) {
+    return (
+        rect.right > clippingRect.left &&
+        rect.left < clippingRect.right &&
+        rect.bottom > clippingRect.top &&
+        rect.top < clippingRect.bottom
+    );
 }

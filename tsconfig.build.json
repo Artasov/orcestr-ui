@@ -10,5 +10,5 @@
     "allowImportingTsExtensions": false
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["src/**/*.test.mts", "dist", "node_modules"]
+  "exclude": ["src/**/*.test.mts", "src/**/*.test.tsx", "dist", "node_modules"]
 }

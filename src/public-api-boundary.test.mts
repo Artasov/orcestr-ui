@@ -20,16 +20,16 @@ test('package manifest exposes runtime, styles, demo and optional adapters expli
 
 test('main public barrel excludes demo and optional adapters', () => {
     const barrel = readFileSync(join(sourceRoot, 'index.ts'), 'utf8');
+    const manifest = readFileSync(join(packageRoot, 'package.json'), 'utf8');
 
-    assert.match(barrel, /^'use client';/);
+    assert.doesNotMatch(barrel, /^'use client';/);
+    assert.match(manifest, /"\.\/server": \{/);
     assert.doesNotMatch(barrel, /example\//);
     assert.doesNotMatch(barrel, /PaginatedComboboxReactQueryAdapter/);
 });
 
 test('Orcestr UI sources stay independent from app modules', () => {
-    const banned = [
-        { name: 'app alias imports', pattern: /@\/(?:app|modules|shared)\// },
-    ];
+    const banned = [{ name: 'app alias imports', pattern: /@\/(?:app|modules|shared)\// }];
     const violations = sourceFiles([
         'components',
         'hooks',
@@ -67,6 +67,7 @@ test('Orcestr UI keeps runtime and example styles split', () => {
 
     assert.deepEqual(styleUses, [
         'theme',
+        'system-props',
         'shell',
         'app-sidebar',
         'buttons',

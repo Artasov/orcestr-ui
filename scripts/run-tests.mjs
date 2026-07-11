@@ -12,7 +12,9 @@ function walk(dir) {
         const stat = statSync(path);
 
         if (stat.isDirectory()) return walk(path);
-        if (stat.isFile() && path.endsWith('.test.mts')) return [path];
+        if (stat.isFile() && (path.endsWith('.test.mts') || path.endsWith('.test.tsx'))) {
+            return [path];
+        }
         return [];
     });
 }
@@ -26,7 +28,7 @@ if (testFiles.length === 0) {
     process.exit(1);
 }
 
-const result = spawnSync(process.execPath, ['--test', ...testFiles], {
+const result = spawnSync(process.execPath, ['--import', 'tsx', '--test', ...testFiles], {
     cwd: rootDir,
     stdio: 'inherit',
 });

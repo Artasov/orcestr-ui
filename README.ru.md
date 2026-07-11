@@ -80,6 +80,12 @@ React Query integration опциональная:
 import { usePaginatedComboboxQueryLoader } from '@orcestr/ui/react-query';
 ```
 
+В Server Components можно импортировать render-only primitives без client boundary:
+
+```tsx
+import { Box, Flex, Table, Text } from '@orcestr/ui/server';
+```
+
 Demo page экспортируется отдельно:
 
 ```tsx
@@ -92,6 +98,7 @@ import '@orcestr/ui/example/styles.css';
 | Entrypoint                          | Назначение                               |
 | ----------------------------------- | ---------------------------------------- |
 | `@orcestr/ui`                       | Components, providers, hooks и theme API |
+| `@orcestr/ui/server`                | Server-safe render-only primitives       |
 | `@orcestr/ui/styles.css`            | Runtime styles UI kit                    |
 | `@orcestr/ui/react-query`           | Optional React Query adapter             |
 | `@orcestr/ui/example/UiExamplePage` | Demo page component                      |

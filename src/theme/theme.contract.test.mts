@@ -63,6 +63,28 @@ test('system props accept numeric strings as spacing scale values', () => {
     assert.deepEqual(restProps, { id: 'sample' });
 });
 
+test('responsive system props emit breakpoint CSS variables instead of collapsing values', () => {
+    const { systemStyle, restProps } = splitSystemProps({
+        p: { initial: '2', md: '4', xl: '6' },
+        fs: { initial: '4', lg: '5' },
+        lh: { initial: 1.2, md: 1.5 },
+    });
+    const style = systemStyle as Record<string, string | number>;
+
+    assert.equal(style['--oui-sp-p-initial'], '8px');
+    assert.equal(style['--oui-sp-p-md'], '16px');
+    assert.equal(style['--oui-sp-p-xl'], '32px');
+    assert.equal(style['--oui-sp-fs-lg'], '24px');
+    assert.equal(style['--oui-sp-lh-initial'], 1.2);
+    assert.equal(style['--oui-sp-lh-md'], 1.5);
+    assert.equal((restProps as Record<string, unknown>)['data-oui-responsive'], '');
+    assert.equal(systemStyle.padding, undefined);
+
+    const responsiveStyles = read('styles/_system-props.sass');
+    assert.match(responsiveStyles, /@media \(min-width: 720px\)/);
+    assert.match(responsiveStyles, /--oui-sp-#\{\$key\}-md/);
+});
+
 test('theme surface registry includes all first-party surfaces', () => {
     const source = read('theme/defaultTheme.ts');
     assert.match(source, /orcestrThemeSurfaceRegistry/);

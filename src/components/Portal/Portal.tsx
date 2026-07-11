@@ -17,7 +17,10 @@ export function Portal({
 
     if (!mounted) return null;
 
-    const target = container ?? overlay.portalContainer ?? document.body;
+    const target =
+        container !== undefined
+            ? (container ?? document.body)
+            : (overlay.portalContainer ?? (overlay.portalToBody ? document.body : null));
     if (!target) return null;
     return createPortal(children, target);
 }

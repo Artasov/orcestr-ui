@@ -4,6 +4,7 @@ import {
     useCallback,
     useEffect,
     useMemo,
+    useId,
     useRef,
     useState,
     type KeyboardEvent,
@@ -29,6 +30,7 @@ export function MultiSelect<V extends string = string>({
     showChevron = true,
     emptyText,
     clearLabel,
+    ariaLabel,
     selectedFallbackLabel,
     size = 3,
     maxHeight = 280,
@@ -45,6 +47,7 @@ export function MultiSelect<V extends string = string>({
     showChevron?: boolean;
     emptyText?: ReactNode;
     clearLabel?: string;
+    ariaLabel?: string;
     selectedFallbackLabel?: ReactNode | ((values: ReadonlyArray<V>) => ReactNode);
     size?: UiSize;
     maxHeight?: number;
@@ -54,6 +57,7 @@ export function MultiSelect<V extends string = string>({
 }) {
     const { copy } = useOrcestrUiLocale();
     const [open, setOpen] = useState(false);
+    const listboxId = useId();
     const optionsRef = useRef<HTMLDivElement | null>(null);
     const selectedItems = useMemo(
         () => items.filter((item) => value.includes(item.value)),
@@ -76,7 +80,8 @@ export function MultiSelect<V extends string = string>({
     const canClear = clearable && selectedItems.length > 0 && !disabled;
     const triggerLabel =
         selectedItems.length > 0
-            ? (renderValue?.(selectedItems) ?? defaultMultiSelectLabel(selectedItems))
+            ? (renderValue?.(selectedItems) ??
+              defaultMultiSelectLabel(selectedItems, copy.common.selectedCount))
             : value.length > 0
               ? typeof selectedFallbackLabel === 'function'
                   ? selectedFallbackLabel(value)
@@ -167,7 +172,7 @@ export function MultiSelect<V extends string = string>({
             }}
             trigger={
                 <Button
-                    type="button"
+                    asChild
                     v="surface"
                     size={size}
                     disabled={disabled}
@@ -176,15 +181,37 @@ export function MultiSelect<V extends string = string>({
                     className="oui-combobox-trigger oui-multi-select-trigger"
                     data-state={open ? 'open' : 'closed'}
                     testId={testId}
-                    aria-haspopup="listbox"
-                    aria-expanded={open}
-                    onKeyDown={handleKeyDown}
-                    rightIcon={
+                >
+                    <div
+                        role="combobox"
+                        tabIndex={disabled ? -1 : 0}
+                        aria-haspopup="listbox"
+                        aria-label={
+                            ariaLabel ??
+                            reactNodeText(triggerLabel ?? placeholder ?? copy.common.selectValue)
+                        }
+                        aria-expanded={open}
+                        aria-controls={listboxId}
+                        onKeyDown={handleKeyDown}
+                    >
+                        <span className="oui-button-label">
+                            <span
+                                className={
+                                    triggerLabel
+                                        ? 'oui-combobox-trigger-label'
+                                        : 'oui-combobox-placeholder'
+                                }
+                            >
+                                {triggerLabel ?? placeholder ?? copy.common.selectValue}
+                            </span>
+                        </span>
                         <span className="oui-combobox-trigger-actions">
                             {canClear ? (
-                                <span
+                                <button
+                                    type="button"
                                     aria-label={clearLabel ?? copy.common.clearSelectedValues}
                                     className="oui-combobox-clear"
+                                    onKeyDown={(event) => event.stopPropagation()}
                                     onPointerDown={(event) => {
                                         event.preventDefault();
                                         event.stopPropagation();
@@ -197,19 +224,11 @@ export function MultiSelect<V extends string = string>({
                                     }}
                                 >
                                     <LuX size={14} />
-                                </span>
+                                </button>
                             ) : null}
                             {showChevron ? <LuChevronsUpDown size={15} /> : null}
                         </span>
-                    }
-                >
-                    <span
-                        className={
-                            triggerLabel ? 'oui-combobox-trigger-label' : 'oui-combobox-placeholder'
-                        }
-                    >
-                        {triggerLabel ?? placeholder ?? copy.common.selectValue}
-                    </span>
+                    </div>
                 </Button>
             }
             className={className ? `oui-select-content ${className}` : 'oui-select-content'}
@@ -221,6 +240,7 @@ export function MultiSelect<V extends string = string>({
         >
             <div
                 ref={optionsRef}
+                id={listboxId}
                 role="listbox"
                 aria-multiselectable="true"
                 className="oui-combobox-scroll oui-combobox-options"
@@ -268,12 +288,15 @@ export function MultiSelect<V extends string = string>({
     );
 }
 
-function defaultMultiSelectLabel<V extends string>(items: ReadonlyArray<SelectItem<V>>) {
+function defaultMultiSelectLabel<V extends string>(
+    items: ReadonlyArray<SelectItem<V>>,
+    selectedCount: (count: number) => string,
+) {
     if (items.length <= 2) {
         return items.map((item) => selectItemText(item)).join(', ');
     }
 
-    return `${items.length} selected`;
+    return selectedCount(items.length);
 }
 
 function selectItemText(item: SelectItem) {
@@ -285,4 +308,14 @@ function selectItemText(item: SelectItem) {
 
 function cssAttr(value: string): string {
     return value.replace(/"/g, '\\"');
+}
+
+function reactNodeText(value: ReactNode): string {
+    if (value === null || value === undefined || value === false) return '';
+    if (typeof value === 'string' || typeof value === 'number') return String(value);
+    if (Array.isArray(value)) return value.map(reactNodeText).join('');
+    if (typeof value === 'object' && 'props' in value) {
+        return reactNodeText((value.props as { children?: ReactNode }).children);
+    }
+    return '';
 }

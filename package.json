@@ -31,6 +31,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
+    },
     "./styles.css": "./dist/styles/orcestr-ui.css",
     "./example/styles.css": "./dist/example/styles.css",
     "./example/UiExamplePage": {
@@ -45,7 +49,8 @@
   "scripts": {
     "clean": "node -e \"require('fs').rmSync('dist', {recursive: true, force: true})\"",
     "build": "npm run clean && tsc -p tsconfig.build.json && npm run build:styles",
-    "build:styles": "sass src/styles/orcestr-ui.sass dist/styles/orcestr-ui.css --no-source-map && sass src/example/styles.sass dist/example/styles.css --no-source-map",
+    "build:styles": "sass src/styles/orcestr-ui.sass dist/styles/orcestr-ui.css --style=compressed --no-source-map && sass src/example/styles.sass dist/example/styles.css --style=compressed --no-source-map",
+    "check:bundle": "node scripts/check-bundle-size.mjs",
     "check": "npm run typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,json,md,yml,yaml}\"",
@@ -69,14 +74,20 @@
   },
   "devDependencies": {
     "@tanstack/react-query": "5.99.2",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jsdom": "^28.0.3",
     "@types/node": "25.6.0",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
+    "axe-core": "^4.12.1",
+    "jsdom": "^29.1.1",
     "prettier": "^3.9.4",
     "react": "19.2.5",
     "react-dom": "19.2.5",
     "react-icons": "5.6.0",
     "sass": "^1.101.0",
+    "tsx": "^4.23.0",
     "typescript": "5.9.3"
   }
 }

@@ -16,15 +16,19 @@ test('OverlayProvider exposes portal container, z-index stack and scroll lock', 
     assert.match(source, /overlayLayerZIndex/);
     assert.match(source, /DROPDOWN_LAYER_OFFSET/);
     assert.match(source, /optimisticIndex/);
-    assert.match(source, /layerIds/);
+    assert.match(source, /function createOverlayManager/);
+    assert.match(source, /manager\.layers/);
+    assert.doesNotMatch(source, /const layerIds|let scrollLockCount/);
     assert.match(source, /lockOverlayScroll/);
-    assert.match(source, /scrollLockCount/);
+    assert.match(source, /scrollLocks: Map<Document/);
+    assert.match(source, /paddingRight/);
+    assert.match(source, /function isIOS/);
 });
 
 test('Modal uses focus trap, Escape close, outside click and scroll lock', () => {
     const source = read('components/Modal/Modal.tsx');
-    assert.match(source, /useFocusTrap\(contentRef, open/);
-    assert.match(source, /lockOverlayScroll/);
+    assert.match(source, /useFocusTrap\(contentRef, open && overlayContext\.portalReady/);
+    assert.match(source, /overlayContext\.lockScroll/);
     assert.match(source, /closeOnOverlayClick/);
     assert.match(source, /onPointerDown/);
     assert.match(source, /aria-modal=["\']true["\']/);
@@ -75,8 +79,9 @@ test('ScrollArea applies requested scrollbar axis and exposes overflow state', (
     assert.match(source, /data-scrollbars=\{scrollbars\}/);
     assert.match(source, /data-type=\{type\}/);
     assert.match(source, /data-overflow-y=\{overflow\.y \? 'true' : undefined\}/);
-    assert.match(source, /new MutationObserver\(scheduleUpdate\)/);
-    assert.match(source, /mutationObserver\?\.observe\(node/);
+    assert.match(source, /className="oui-scroll-area-content"/);
+    assert.match(source, /observer\?\.observe\(contentRef\.current\)/);
+    assert.doesNotMatch(source, /MutationObserver/);
     assert.match(styles, /data-scrollbars="vertical"/);
     assert.match(styles, /overflow-x: hidden/);
     assert.match(styles, /scrollbar-color: var\(--oui-scrollbar-thumb/);
@@ -121,9 +126,11 @@ test('Popover lets content veto outside interaction close', () => {
 
 test('Focus trap returns focus and handles Escape and Tab loops', () => {
     const source = read('hooks/useFocusTrap.ts');
-    assert.match(source, /document.activeElement/);
-    assert.match(source, /previous\?\.focus/);
+    assert.match(source, /ownerDocument\.activeElement/);
+    assert.match(source, /previous\.focus/);
     assert.match(source, /event.key === 'Escape'/);
     assert.match(source, /event.key !== 'Tab'/);
     assert.match(source, /lastNode.focus/);
+    assert.match(source, /addEventListener\('focusin'/);
+    assert.match(source, /makeOverlayBackgroundInert/);
 });

@@ -19,6 +19,7 @@ import {
 } from 'react';
 
 import { useDisclosure } from '../../hooks/useDisclosure';
+import type { OpenAutoFocusEvent } from '../../hooks/useFocusTrap';
 import { type FloatingAlign, type FloatingSide } from '../../hooks/useFloatingPosition';
 import { useFloatingLayer } from '../../hooks/useFloatingLayer';
 import { useOutsidePointerDown } from '../../hooks/useOutsidePointerDown';
@@ -59,7 +60,7 @@ export type PopoverProps = SystemProps &
         className?: string;
         contentStyle?: CSSProperties;
         contentRef?: Ref<HTMLDivElement>;
-        onOpenAutoFocus?: (event: { preventDefault: () => void }) => void;
+        onOpenAutoFocus?: (event: OpenAutoFocusEvent) => void;
         onInteractOutside?: (event: Event) => void;
         testId?: string;
     };
@@ -114,12 +115,23 @@ export function Popover({
     useOutsidePointerDown([triggerRef, contentRef], isOpen, handleOutsidePointerDown);
 
     useEffect(() => {
-        if (!isOpen) return;
-        onOpenAutoFocus?.({ preventDefault: () => undefined });
+        if (!isOpen || !overlay.portalReady) return;
         previousFocusRef.current =
             document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        let prevented = false;
+        onOpenAutoFocus?.({
+            preventDefault: () => {
+                prevented = true;
+            },
+        });
+        if (!prevented) {
+            const first = contentRef.current?.querySelector<HTMLElement>(
+                'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+            );
+            (first ?? contentRef.current)?.focus({ preventScroll: true });
+        }
         const onKeyDown = (event: KeyboardEvent) => {
-            if (event.key !== 'Escape') return;
+            if (event.key !== 'Escape' || event.defaultPrevented) return;
             event.preventDefault();
             closeDisclosure();
         };
@@ -128,7 +140,7 @@ export function Popover({
             document.removeEventListener('keydown', onKeyDown, true);
             previousFocusRef.current?.focus?.();
         };
-    }, [closeDisclosure, isOpen, onOpenAutoFocus]);
+    }, [closeDisclosure, isOpen, onOpenAutoFocus, overlay.portalReady]);
 
     const handleTriggerClick = useCallback(
         (event: ReactMouseEvent<HTMLElement>) => {
@@ -178,6 +190,7 @@ export function Popover({
                         className={cn('oui-popover-content', className)}
                         data-state={state}
                         data-layer="dropdown"
+                        data-oui-layer-index={layerIndex}
                         data-oui-theme={themeContext?.mode}
                         data-oui-surface={themeContext?.surface}
                         data-testid={testId ? `${testId}-content` : undefined}
@@ -190,6 +203,7 @@ export function Popover({
                             zIndex: overlayLayerZIndex(overlay.zIndex, 'dropdown', layerIndex),
                         }}
                         {...restProps}
+                        tabIndex={-1}
                     >
                         {children}
                     </div>
@@ -217,7 +231,7 @@ type PopoverContentProps = SystemProps &
         sideOffset?: number;
         matchTriggerWidth?: boolean;
         className?: string;
-        onOpenAutoFocus?: (event: { preventDefault: () => void }) => void;
+        onOpenAutoFocus?: (event: OpenAutoFocusEvent) => void;
         onInteractOutside?: (event: Event) => void;
     };
 

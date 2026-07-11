@@ -6,6 +6,7 @@ import {
     useCallback,
     useContext,
     useEffect,
+    useId,
     useLayoutEffect,
     useMemo,
     useRef,
@@ -16,6 +17,9 @@ import {
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
 import { cn } from '../../utils/cn';
+import { useControllableState } from '../../hooks/useControllableState';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
 import { Collapse } from '../Collapse/Collapse';
 import { IconButton } from '../IconButton/IconButton';
 
@@ -65,184 +69,89 @@ function ItemTabs({
     testId?: string;
 }) {
     const active = items.find((item) => item.value === value) ?? items[0];
-    const listRef = useRef<HTMLDivElement | null>(null);
-    const triggerRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
-    const [hoveredValue, setHoveredValue] = useState<string | null>(null);
-    const [activeRect, setActiveRect] = useState<TabRect | null>(null);
-    const [hoverRect, setHoverRect] = useState<TabRect | null>(null);
-    const [hoverVisible, setHoverVisible] = useState(false);
-
-    const measure = useCallback(() => {
-        const list = listRef.current;
-        if (!list) return;
-
-        const readRect = (nextValue: string | null | undefined): TabRect | null => {
-            if (!nextValue) return null;
-            const trigger = triggerRefs.current.get(nextValue);
-            if (!trigger) return null;
-            return {
-                left: trigger.offsetLeft,
-                top: trigger.offsetTop,
-                width: trigger.offsetWidth,
-                height: trigger.offsetHeight,
-            };
-        };
-
-        setActiveRect((current) => stableTabRect(current, readRect(active?.value)));
-        const nextHoverRect = readRect(hoveredValue);
-        setHoverRect((current) =>
-            nextHoverRect ? stableTabRect(current, nextHoverRect) : current,
-        );
-        setHoverVisible(Boolean(hoveredValue && nextHoverRect && hoveredValue !== active?.value));
-    }, [active?.value, hoveredValue]);
-
-    const moveFocus = (currentValue: string, direction: 1 | -1) => {
-        const currentIndex = items.findIndex((item) => item.value === currentValue);
-        if (currentIndex === -1) return;
-        const nextIndex = (currentIndex + direction + items.length) % items.length;
-        const next = items[nextIndex];
-        if (!next) return;
-        triggerRefs.current.get(next.value)?.focus();
-        onValueChange(next.value);
-    };
-
-    const focusEdge = (edge: 'first' | 'last') => {
-        const next = edge === 'first' ? items[0] : items[items.length - 1];
-        if (!next) return;
-        triggerRefs.current.get(next.value)?.focus();
-        onValueChange(next.value);
-    };
-
-    useLayoutEffect(() => {
-        measure();
-    }, [items, measure]);
-
-    useLayoutEffect(() => {
-        const list = listRef.current;
-        if (!list || typeof ResizeObserver === 'undefined') return;
-        const observer = new ResizeObserver(() => measure());
-        observer.observe(list);
-        triggerRefs.current.forEach((trigger) => observer.observe(trigger));
-        return () => observer.disconnect();
-    }, [items, measure]);
 
     if (!active) return null;
 
     return (
-        <div className={cn('oui-tabs', className)} data-testid={testId}>
-            <div className="oui-tabs-shell">
-                <div
-                    ref={listRef}
-                    className={cn('oui-tabs-list', listClassName)}
-                    role="tablist"
-                    data-testid={testId ? `${testId}-list` : undefined}
-                    onMouseLeave={() => setHoveredValue(null)}
-                >
-                    {activeRect ? (
-                        <span
-                            aria-hidden
-                            className="oui-tabs-active-indicator"
-                            style={indicatorStyle(activeRect)}
-                        />
-                    ) : null}
-                    {hoverRect ? (
-                        <span
-                            aria-hidden
-                            className="oui-tabs-hover-indicator"
-                            data-visible={hoverVisible ? 'true' : undefined}
-                            style={indicatorStyle(hoverRect)}
-                        />
-                    ) : null}
-                    {items.map((item) => {
-                        const isActive = active.value === item.value;
-                        return (
-                            <button
-                                key={item.value}
-                                ref={(element) => {
-                                    if (element) triggerRefs.current.set(item.value, element);
-                                    else triggerRefs.current.delete(item.value);
-                                }}
-                                type="button"
-                                role="tab"
-                                aria-selected={isActive}
-                                className="oui-tabs-trigger"
-                                data-active={isActive ? 'true' : undefined}
-                                data-testid={testId ? `${testId}-${item.value}` : undefined}
-                                onMouseEnter={() => setHoveredValue(item.value)}
-                                onFocus={() => setHoveredValue(item.value)}
-                                onBlur={() => setHoveredValue(null)}
-                                onKeyDown={(event) => {
-                                    if (event.key === 'ArrowRight') {
-                                        event.preventDefault();
-                                        moveFocus(item.value, 1);
-                                    }
-                                    if (event.key === 'ArrowLeft') {
-                                        event.preventDefault();
-                                        moveFocus(item.value, -1);
-                                    }
-                                    if (event.key === 'Home') {
-                                        event.preventDefault();
-                                        focusEdge('first');
-                                    }
-                                    if (event.key === 'End') {
-                                        event.preventDefault();
-                                        focusEdge('last');
-                                    }
-                                }}
-                                onClick={() => onValueChange(item.value)}
-                            >
-                                {item.icon ? (
-                                    <span className="oui-tabs-trigger-icon" aria-hidden>
-                                        {item.icon}
-                                    </span>
-                                ) : null}
-                                <span className="oui-tabs-trigger-label">{item.label}</span>
-                                {item.badge ? (
-                                    <span className="oui-tabs-trigger-badge">{item.badge}</span>
-                                ) : null}
-                            </button>
-                        );
-                    })}
-                </div>
-            </div>
+        <Root
+            value={active.value}
+            onValueChange={onValueChange}
+            className={cn('oui-tabs', className)}
+            data-testid={testId}
+        >
+            <List
+                variant="items"
+                className={listClassName}
+                data-testid={testId ? `${testId}-list` : undefined}
+            >
+                {items.map((item) => (
+                    <Trigger
+                        key={item.value}
+                        value={item.value}
+                        icon={item.icon}
+                        data-testid={testId ? `${testId}-${item.value}` : undefined}
+                    >
+                        <span className="oui-tabs-trigger-label">{item.label}</span>
+                        {item.badge ? (
+                            <span className="oui-tabs-trigger-badge">{item.badge}</span>
+                        ) : null}
+                    </Trigger>
+                ))}
+            </List>
             <div
                 className={cn('oui-tabs-content', contentClassName)}
                 data-testid={testId ? `${testId}-content` : undefined}
             >
-                {items.map((item) => {
-                    const open = active.value === item.value;
-                    return (
-                        <Collapse key={item.value} open={open}>
-                            <div
-                                role="tabpanel"
-                                className="oui-tabs-panel"
-                                data-active={open ? 'true' : undefined}
-                                data-testid={testId ? `${testId}-${item.value}-panel` : undefined}
-                            >
-                                {item.content}
-                            </div>
-                        </Collapse>
-                    );
-                })}
+                {items.map((item) => (
+                    <Content
+                        key={item.value}
+                        value={item.value}
+                        className="oui-tabs-panel"
+                        data-testid={testId ? `${testId}-${item.value}-panel` : undefined}
+                    >
+                        {item.content}
+                    </Content>
+                ))}
             </div>
-        </div>
+        </Root>
     );
 }
 
-type TabsCtxValue = {
+type TabsActiveContextValue = {
     activeValue: string | undefined;
-    hoveredValue: string | null;
-    setHoveredValue: (value: string | null) => void;
     setActiveValue: (value: string) => void;
-    registerTrigger: (value: string, element: HTMLElement | null) => void;
 };
 
-const TabsCtx = createContext<TabsCtxValue | null>(null);
+type TabsNavigationContextValue = {
+    registerTrigger: (value: string, element: HTMLElement | null) => void;
+    moveFocus: (value: string, target: 1 | -1 | 'first' | 'last') => string | null;
+    isFirst: (value: string) => boolean;
+    triggerId: (value: string) => string;
+    panelId: (value: string) => string;
+    version: number;
+};
 
-function useTabsCtx(): TabsCtxValue {
-    const ctx = useContext(TabsCtx);
-    if (!ctx) throw new Error('Tabs.* must be used inside <Tabs.Root>.');
-    return ctx;
+const TabsActiveContext = createContext<TabsActiveContextValue | null>(null);
+const TabsHoveredValueContext = createContext<string | null>(null);
+const TabsSetHoveredValueContext = createContext<((value: string | null) => void) | null>(null);
+const TabsNavigationContext = createContext<TabsNavigationContextValue | null>(null);
+
+function useTabsActive() {
+    const context = useContext(TabsActiveContext);
+    if (!context) throw new Error('Tabs.* must be used inside <Tabs.Root>.');
+    return context;
+}
+
+function useTabsNavigation() {
+    const context = useContext(TabsNavigationContext);
+    if (!context) throw new Error('Tabs.* must be used inside <Tabs.Root>.');
+    return context;
+}
+
+function useSetTabsHoveredValue() {
+    const context = useContext(TabsSetHoveredValueContext);
+    if (!context) throw new Error('Tabs.* must be used inside <Tabs.Root>.');
+    return context;
 }
 
 type RootProps = Omit<ComponentPropsWithoutRef<'div'>, 'defaultValue' | 'onChange'> & {
@@ -253,12 +162,17 @@ type RootProps = Omit<ComponentPropsWithoutRef<'div'>, 'defaultValue' | 'onChang
 };
 
 function Root({ value, defaultValue, onValueChange, children, className, ...props }: RootProps) {
-    const [uncontrolled, setUncontrolled] = useState<string | undefined>(defaultValue);
-    const isControlled = value !== undefined;
-    const currentValue = isControlled ? value : uncontrolled;
+    const [currentValue, setActiveValue] = useControllableState<string | undefined>({
+        value,
+        defaultValue,
+        onChange: (nextValue) => {
+            if (nextValue !== undefined) onValueChange?.(nextValue);
+        },
+    });
     const [hoveredValue, setHoveredValue] = useState<string | null>(null);
     const triggersRef = useRef<Map<string, HTMLElement>>(new Map());
-    const [, setTriggersVersion] = useState(0);
+    const [triggersVersion, setTriggersVersion] = useState(0);
+    const rootId = useId();
 
     const registerTrigger = useCallback((nextValue: string, element: HTMLElement | null) => {
         const triggers = triggersRef.current;
@@ -272,52 +186,104 @@ function Root({ value, defaultValue, onValueChange, children, className, ...prop
         setTriggersVersion((current) => current + 1);
     }, []);
 
-    const handleChange = useCallback(
-        (nextValue: string) => {
-            if (!isControlled) setUncontrolled(nextValue);
-            onValueChange?.(nextValue);
-        },
-        [isControlled, onValueChange],
+    const moveFocus = useCallback((current: string, target: 1 | -1 | 'first' | 'last') => {
+        const triggers = [...triggersRef.current.entries()];
+        if (triggers.length === 0) return null;
+        const currentIndex = triggers.findIndex(([triggerValue]) => triggerValue === current);
+        let nextIndex: number;
+        if (target === 'first') nextIndex = 0;
+        else if (target === 'last') nextIndex = triggers.length - 1;
+        else {
+            nextIndex =
+                currentIndex === -1
+                    ? 0
+                    : (currentIndex + target + triggers.length) % triggers.length;
+        }
+        const [nextValue, element] = triggers[nextIndex]!;
+        element.focus();
+        return nextValue;
+    }, []);
+    const isFirst = useCallback(
+        (candidate: string) => triggersRef.current.keys().next().value === candidate,
+        [],
+    );
+    const triggerId = useCallback(
+        (tabValue: string) => `${rootId}-tab-${domId(tabValue)}`,
+        [rootId],
+    );
+    const panelId = useCallback(
+        (tabValue: string) => `${rootId}-panel-${domId(tabValue)}`,
+        [rootId],
     );
 
-    const ctxValue = useMemo<TabsCtxValue>(
+    const activeContext = useMemo<TabsActiveContextValue>(
         () => ({
             activeValue: currentValue,
-            hoveredValue,
-            setHoveredValue,
-            setActiveValue: handleChange,
-            registerTrigger,
+            setActiveValue: (nextValue) => setActiveValue(nextValue),
         }),
-        [currentValue, handleChange, hoveredValue, registerTrigger],
+        [currentValue, setActiveValue],
+    );
+    const navigationContext = useMemo<TabsNavigationContextValue>(
+        () => ({
+            registerTrigger,
+            moveFocus,
+            isFirst,
+            triggerId,
+            panelId,
+            version: triggersVersion,
+        }),
+        [isFirst, moveFocus, panelId, registerTrigger, triggerId, triggersVersion],
     );
 
     return (
-        <TabsCtx.Provider value={ctxValue}>
-            <div
-                className={cn('oui-tabs-compound', className)}
-                data-tabs-root
-                data-value={currentValue}
-                {...props}
-            >
-                {children}
-            </div>
-        </TabsCtx.Provider>
+        <TabsNavigationContext.Provider value={navigationContext}>
+            <TabsActiveContext.Provider value={activeContext}>
+                <TabsSetHoveredValueContext.Provider value={setHoveredValue}>
+                    <TabsHoveredValueContext.Provider value={hoveredValue}>
+                        <div
+                            className={cn('oui-tabs-compound', className)}
+                            data-tabs-root
+                            data-value={currentValue}
+                            {...props}
+                        >
+                            {children}
+                        </div>
+                    </TabsHoveredValueContext.Provider>
+                </TabsSetHoveredValueContext.Provider>
+            </TabsActiveContext.Provider>
+        </TabsNavigationContext.Provider>
     );
 }
 
 type ListProps = Omit<ComponentPropsWithoutRef<'div'>, 'children' | 'onWheel'> & {
     children: ReactNode;
     indicatorPaddingY?: number;
+    variant?: 'compound' | 'items';
 };
 
-function List({ children, indicatorPaddingY = 4, className, style, ...props }: ListProps) {
-    const ctx = useTabsCtx();
+function List({
+    children,
+    indicatorPaddingY = 4,
+    variant = 'compound',
+    className,
+    style,
+    ...props
+}: ListProps) {
+    const reducedMotion = useReducedMotion();
+    const { copy } = useOrcestrUiLocale();
+    const { activeValue } = useTabsActive();
+    const hoveredValue = useContext(TabsHoveredValueContext);
+    const setHoveredValue = useSetTabsHoveredValue();
     const listRef = useRef<HTMLDivElement>(null);
     const [hoverRect, setHoverRect] = useState<TabRect | null>(null);
     const [hoverVisible, setHoverVisible] = useState(false);
     const [activeRect, setActiveRect] = useState<TabRect | null>(null);
     const [canScrollLeft, setCanScrollLeft] = useState(false);
     const [canScrollRight, setCanScrollRight] = useState(false);
+    const activeValueRef = useRef(activeValue);
+    const hoveredValueRef = useRef(hoveredValue);
+    activeValueRef.current = activeValue;
+    hoveredValueRef.current = hoveredValue;
 
     const measure = useCallback(() => {
         const list = listRef.current;
@@ -336,20 +302,20 @@ function List({ children, indicatorPaddingY = 4, className, style, ...props }: L
                 width: element.offsetWidth,
                 height: element.offsetHeight,
             };
-            if (nextValue === ctx.hoveredValue) hover = rect;
-            if (nextValue === ctx.activeValue) active = rect;
+            if (nextValue === hoveredValueRef.current) hover = rect;
+            if (nextValue === activeValueRef.current) active = rect;
         });
 
         setHoverRect((current) => (hover ? stableTabRect(current, hover) : current));
-        setHoverVisible(Boolean(hover && ctx.hoveredValue !== ctx.activeValue));
+        setHoverVisible(Boolean(hover && hoveredValueRef.current !== activeValueRef.current));
         setActiveRect((current) => stableTabRect(current, active));
         setCanScrollLeft(list.scrollLeft > 1);
         setCanScrollRight(list.scrollLeft + list.clientWidth < list.scrollWidth - 1);
-    }, [ctx.activeValue, ctx.hoveredValue]);
+    }, []);
 
     useLayoutEffect(() => {
         measure();
-    }, [measure]);
+    }, [activeValue, children, hoveredValue, measure]);
 
     useEffect(() => {
         const list = listRef.current;
@@ -373,32 +339,35 @@ function List({ children, indicatorPaddingY = 4, className, style, ...props }: L
         if (!list) return;
         list.scrollBy({
             left: direction * Math.max(Math.round(list.clientWidth * 0.6), 160),
-            behavior: 'smooth',
+            behavior: reducedMotion ? 'auto' : 'smooth',
         });
     };
 
-    const handleWheel = useCallback((event: WheelEvent) => {
-        if (event.defaultPrevented) return;
-        const list = listRef.current;
-        if (!list || list.scrollWidth <= list.clientWidth + 1) return;
+    const handleWheel = useCallback(
+        (event: WheelEvent) => {
+            if (event.defaultPrevented) return;
+            const list = listRef.current;
+            if (!list || list.scrollWidth <= list.clientWidth + 1) return;
 
-        const rawDelta =
-            Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
-        if (rawDelta === 0) return;
+            const rawDelta =
+                Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+            if (rawDelta === 0) return;
 
-        const delta =
-            event.deltaMode === 1
-                ? rawDelta * 32
-                : event.deltaMode === 2
-                  ? rawDelta * list.clientWidth
-                  : rawDelta;
-        const maxScrollLeft = list.scrollWidth - list.clientWidth;
-        const canScroll = delta < 0 ? list.scrollLeft > 1 : list.scrollLeft < maxScrollLeft - 1;
-        if (!canScroll) return;
+            const delta =
+                event.deltaMode === 1
+                    ? rawDelta * 32
+                    : event.deltaMode === 2
+                      ? rawDelta * list.clientWidth
+                      : rawDelta;
+            const maxScrollLeft = list.scrollWidth - list.clientWidth;
+            const canScroll = delta < 0 ? list.scrollLeft > 1 : list.scrollLeft < maxScrollLeft - 1;
+            if (!canScroll) return;
 
-        event.preventDefault();
-        list.scrollBy({ left: delta, behavior: 'smooth' });
-    }, []);
+            event.preventDefault();
+            list.scrollBy({ left: delta, behavior: reducedMotion ? 'auto' : 'smooth' });
+        },
+        [reducedMotion],
+    );
 
     useEffect(() => {
         const list = listRef.current;
@@ -410,7 +379,7 @@ function List({ children, indicatorPaddingY = 4, className, style, ...props }: L
     const hasOverflowControls = canScrollLeft || canScrollRight;
 
     return (
-        <div className="oui-tabs-compound-shell">
+        <div className={variant === 'items' ? 'oui-tabs-shell' : 'oui-tabs-compound-shell'}>
             {canScrollLeft ? (
                 <span aria-hidden className="oui-tabs-edge oui-tabs-edge-left" />
             ) : null}
@@ -425,7 +394,7 @@ function List({ children, indicatorPaddingY = 4, className, style, ...props }: L
                     round
                     size={1}
                     onClick={() => scrollList(-1)}
-                    aria-label="Scroll tabs left"
+                    aria-label={copy.common.scrollTabsLeft}
                     className="oui-tabs-scroll-button oui-tabs-scroll-button-left"
                 >
                     <LuChevronLeft size={16} />
@@ -439,7 +408,7 @@ function List({ children, indicatorPaddingY = 4, className, style, ...props }: L
                     round
                     size={1}
                     onClick={() => scrollList(1)}
-                    aria-label="Scroll tabs right"
+                    aria-label={copy.common.scrollTabsRight}
                     className="oui-tabs-scroll-button oui-tabs-scroll-button-right"
                 >
                     <LuChevronRight size={16} />
@@ -448,8 +417,11 @@ function List({ children, indicatorPaddingY = 4, className, style, ...props }: L
             <div
                 ref={listRef}
                 role="tablist"
-                onMouseLeave={() => ctx.setHoveredValue(null)}
-                className={cn('oui-tabs-list-scroll', className)}
+                onMouseLeave={() => setHoveredValue(null)}
+                className={cn(
+                    variant === 'items' ? 'oui-tabs-list' : 'oui-tabs-list-scroll',
+                    className,
+                )}
                 data-overflow={hasOverflowControls ? 'true' : undefined}
                 style={style}
                 {...props}
@@ -457,16 +429,32 @@ function List({ children, indicatorPaddingY = 4, className, style, ...props }: L
                 {activeRect ? (
                     <span
                         aria-hidden
-                        className="oui-tabs-compound-active-indicator"
-                        style={compoundIndicatorStyle(activeRect, indicatorPaddingY)}
+                        className={
+                            variant === 'items'
+                                ? 'oui-tabs-active-indicator'
+                                : 'oui-tabs-compound-active-indicator'
+                        }
+                        style={
+                            variant === 'items'
+                                ? indicatorStyle(activeRect)
+                                : compoundIndicatorStyle(activeRect, indicatorPaddingY)
+                        }
                     />
                 ) : null}
                 {hoverRect ? (
                     <span
                         aria-hidden
-                        className="oui-tabs-compound-hover-indicator"
+                        className={
+                            variant === 'items'
+                                ? 'oui-tabs-hover-indicator'
+                                : 'oui-tabs-compound-hover-indicator'
+                        }
                         data-visible={hoverVisible ? 'true' : undefined}
-                        style={compoundIndicatorStyle(hoverRect, indicatorPaddingY)}
+                        style={
+                            variant === 'items'
+                                ? indicatorStyle(hoverRect)
+                                : compoundIndicatorStyle(hoverRect, indicatorPaddingY)
+                        }
                     />
                 ) : null}
                 {children}
@@ -490,36 +478,55 @@ function Trigger({
     className,
     onMouseEnter,
     onClick,
+    onKeyDown,
     ...props
 }: TriggerProps) {
-    const ctx = useTabsCtx();
+    const { activeValue, setActiveValue } = useTabsActive();
+    const setHoveredValue = useSetTabsHoveredValue();
+    const navigation = useTabsNavigation();
     const ref = useRef<HTMLButtonElement | null>(null);
-    const isActive = ctx.activeValue === value;
+    const isActive = activeValue === value;
 
     useEffect(() => {
-        ctx.registerTrigger(value, ref.current);
-        return () => ctx.registerTrigger(value, null);
-    }, [ctx, value]);
+        navigation.registerTrigger(value, ref.current);
+        return () => navigation.registerTrigger(value, null);
+    }, [navigation.registerTrigger, value]);
 
     return (
         <button
             ref={ref}
             type="button"
             role="tab"
+            id={navigation.triggerId(value)}
+            aria-controls={navigation.panelId(value)}
             aria-selected={isActive}
+            tabIndex={isActive || (activeValue === undefined && navigation.isFirst(value)) ? 0 : -1}
             className={cn('oui-tabs-trigger', className)}
             data-active={isActive ? 'true' : undefined}
             data-size={size}
             data-tabs-trigger={value}
             onMouseEnter={(event) => {
-                ctx.setHoveredValue(value);
+                setHoveredValue(value);
                 onMouseEnter?.(event);
+            }}
+            onKeyDown={(event) => {
+                onKeyDown?.(event);
+                if (event.defaultPrevented) return;
+                let target: 1 | -1 | 'first' | 'last' | null = null;
+                if (event.key === 'ArrowRight') target = 1;
+                else if (event.key === 'ArrowLeft') target = -1;
+                else if (event.key === 'Home') target = 'first';
+                else if (event.key === 'End') target = 'last';
+                if (target === null) return;
+                event.preventDefault();
+                const nextValue = navigation.moveFocus(value, target);
+                if (nextValue !== null) setActiveValue(nextValue);
             }}
             onClick={(event) => {
                 onClick?.(event);
                 if (event.defaultPrevented) return;
-                ctx.setHoveredValue(value);
-                ctx.setActiveValue(value);
+                setHoveredValue(value);
+                setActiveValue(value);
             }}
             {...props}
         >
@@ -539,8 +546,9 @@ type ContentProps = Omit<ComponentPropsWithoutRef<'div'>, 'value'> & {
 };
 
 function Content({ value, children, className, mountOnActive = false, ...props }: ContentProps) {
-    const ctx = useTabsCtx();
-    const open = ctx.activeValue === value;
+    const { activeValue } = useTabsActive();
+    const navigation = useTabsNavigation();
+    const open = activeValue === value;
     const [mounted, setMounted] = useState(open);
 
     useEffect(() => {
@@ -554,6 +562,9 @@ function Content({ value, children, className, mountOnActive = false, ...props }
     return (
         <div
             role="tabpanel"
+            id={navigation.panelId(value)}
+            aria-labelledby={navigation.triggerId(value)}
+            tabIndex={0}
             className={cn('oui-tabs-compound-panel', className)}
             data-tabs-content={value}
             hidden={!open}
@@ -592,3 +603,7 @@ export const Tabs = Object.assign(ItemTabs, {
     Trigger,
     Content,
 });
+
+function domId(value: string) {
+    return encodeURIComponent(value).replace(/%/g, '_');
+}

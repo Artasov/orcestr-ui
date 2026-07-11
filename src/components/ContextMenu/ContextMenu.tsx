@@ -4,23 +4,31 @@ import {
     cloneElement,
     useCallback,
     useEffect,
+    useLayoutEffect,
     useRef,
     useState,
+    type KeyboardEvent as ReactKeyboardEvent,
     type MouseEvent,
     type ReactElement,
+    type Ref,
 } from 'react';
 
 import { cn } from '../../utils/cn';
+import { composeRefs } from '../../utils/composeRefs';
 import { ActionConfirmModal } from '../Action/ActionConfirmModal';
-import { isActionItemDisabled } from '../Action/ActionTypes';
-import type { MenuItem } from '../Menu/Menu';
+import { MenuContent, type MenuItem } from '../Menu/Menu';
 import {
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
 } from '../Overlay/OverlayProvider';
 import { Portal } from '../Portal/Portal';
-import { Spinner } from '../Spinner/Spinner';
+
+type ContextMenuTriggerProps = {
+    ref?: Ref<HTMLElement>;
+    onContextMenu?: (event: MouseEvent<HTMLElement>) => void;
+    onKeyDown?: (event: ReactKeyboardEvent<HTMLElement>) => void;
+};
 
 export function ContextMenu({
     children,
@@ -28,7 +36,7 @@ export function ContextMenu({
     className,
     testId,
 }: {
-    children: ReactElement<{ onContextMenu?: (event: MouseEvent) => void }>;
+    children: ReactElement<ContextMenuTriggerProps>;
     items: ReadonlyArray<MenuItem>;
     className?: string;
     testId?: string;
@@ -37,6 +45,8 @@ export function ContextMenu({
     const [point, setPoint] = useState<{ x: number; y: number } | null>(null);
     const [confirmItem, setConfirmItem] = useState<MenuItem | null>(null);
     const layerRef = useRef<HTMLDivElement | null>(null);
+    const triggerRef = useRef<HTMLElement | null>(null);
+    const [position, setPosition] = useState<{ left: number; top: number } | null>(null);
     const close = useCallback(() => setPoint(null), []);
     const layerIndex = useOverlayLayerIndex(point !== null);
 
@@ -50,21 +60,52 @@ export function ContextMenu({
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Escape') close();
         };
+        const handleViewportChange = () => close();
         document.addEventListener('pointerdown', handlePointerDown, true);
         document.addEventListener('keydown', handleKeyDown, true);
+        window.addEventListener('resize', handleViewportChange);
+        window.addEventListener('scroll', handleViewportChange, true);
         return () => {
             document.removeEventListener('pointerdown', handlePointerDown, true);
             document.removeEventListener('keydown', handleKeyDown, true);
+            window.removeEventListener('resize', handleViewportChange);
+            window.removeEventListener('scroll', handleViewportChange, true);
         };
     }, [close, point]);
 
+    useLayoutEffect(() => {
+        if (!point || !layerRef.current) {
+            setPosition(null);
+            return;
+        }
+        const rect = layerRef.current.getBoundingClientRect();
+        const padding = 8;
+        setPosition({
+            left: Math.max(padding, Math.min(point.x, window.innerWidth - rect.width - padding)),
+            top: Math.max(padding, Math.min(point.y, window.innerHeight - rect.height - padding)),
+        });
+    }, [point]);
+
     const childProps = children.props;
     const trigger = cloneElement(children, {
-        onContextMenu: (event: MouseEvent) => {
+        ref: composeRefs(childProps.ref, triggerRef),
+        onContextMenu: (event: MouseEvent<HTMLElement>) => {
             childProps.onContextMenu?.(event);
             if (event.defaultPrevented) return;
             event.preventDefault();
-            setPoint({ x: event.clientX, y: event.clientY });
+            const rect = event.currentTarget.getBoundingClientRect();
+            setPoint({
+                x: event.clientX || rect.left + 8,
+                y: event.clientY || rect.top + 8,
+            });
+        },
+        onKeyDown: (event: ReactKeyboardEvent<HTMLElement>) => {
+            childProps.onKeyDown?.(event);
+            if (event.defaultPrevented) return;
+            if (event.key !== 'ContextMenu' && !(event.shiftKey && event.key === 'F10')) return;
+            event.preventDefault();
+            const rect = event.currentTarget.getBoundingClientRect();
+            setPoint({ x: rect.left + 8, y: rect.top + 8 });
         },
     });
 
@@ -81,15 +122,17 @@ export function ContextMenu({
                         )}
                         data-state="opening"
                         data-layer="dropdown"
+                        data-oui-layer-index={layerIndex}
                         data-testid={testId}
                         style={{
-                            left: point.x,
-                            top: point.y,
+                            left: position?.left ?? point.x,
+                            top: position?.top ?? point.y,
+                            visibility: position ? 'visible' : 'hidden',
                             zIndex: overlayLayerZIndex(overlay.zIndex, 'dropdown', layerIndex),
                         }}
                         onClick={(event) => event.stopPropagation()}
                     >
-                        <ContextMenuContent
+                        <MenuContent
                             items={items}
                             close={close}
                             requestConfirmation={setConfirmItem}
@@ -108,54 +151,5 @@ export function ContextMenu({
                 }}
             />
         </>
-    );
-}
-
-function ContextMenuContent({
-    items,
-    close,
-    requestConfirmation,
-    testId,
-}: {
-    items: ReadonlyArray<MenuItem>;
-    close: () => void;
-    requestConfirmation: (item: MenuItem) => void;
-    testId?: string;
-}) {
-    return (
-        <div className="oui-menu-list" role="menu" data-testid={testId}>
-            {items.map((item) => (
-                <div key={item.key}>
-                    {item.separatorBefore ? <div className="oui-menu-separator" /> : null}
-                    <button
-                        type="button"
-                        role="menuitem"
-                        className="oui-menu-item"
-                        data-tone={item.tone}
-                        data-loading={item.loading ? 'true' : undefined}
-                        data-testid={testId ? `${testId}-${item.key}` : undefined}
-                        aria-busy={item.loading ? 'true' : undefined}
-                        disabled={isActionItemDisabled(item) || Boolean(item.children?.length)}
-                        onClick={() => {
-                            if (isActionItemDisabled(item) || item.children?.length) return;
-                            if (item.confirm) {
-                                close();
-                                requestConfirmation(item);
-                                return;
-                            }
-                            item.onSelect?.();
-                            close();
-                        }}
-                    >
-                        {item.icon || item.loading ? (
-                            <span className="oui-menu-icon">
-                                {item.loading ? <Spinner size={1} /> : item.icon}
-                            </span>
-                        ) : null}
-                        <span className="oui-menu-label">{item.label}</span>
-                    </button>
-                </div>
-            ))}
-        </div>
     );
 }

@@ -12,11 +12,16 @@ import {
 export type PaginatedComboboxQueryParams = {
     page: number;
     search: string;
+    pageSize?: number;
+};
+
+export type PaginatedComboboxQueryFnParams = PaginatedComboboxQueryParams & {
+    signal: AbortSignal;
 };
 
 export type PaginatedComboboxQueryLoaderOptions<TItem, TQueryKey extends QueryKey = QueryKey> = {
     queryKey: TQueryKey | ((params: PaginatedComboboxQueryParams) => TQueryKey);
-    queryFn: (params: PaginatedComboboxQueryParams) => Promise<PaginatedResult<TItem>>;
+    queryFn: (params: PaginatedComboboxQueryFnParams) => Promise<PaginatedResult<TItem>>;
     staleTime?: UseQueryOptions<
         PaginatedResult<TItem>,
         Error,
@@ -35,9 +40,9 @@ export function usePaginatedComboboxQueryLoader<TItem, TQueryKey extends QueryKe
     optionsRef.current = { queryKey, queryFn, staleTime };
 
     return useCallback(
-        (page: number, search: string) => {
+        (page: number, search: string, options: { signal: AbortSignal; pageSize?: number }) => {
             const current = optionsRef.current;
-            const params = { page, search };
+            const params = { page, search, pageSize: options.pageSize };
             const resolvedQueryKey =
                 typeof current.queryKey === 'function'
                     ? current.queryKey(params)
@@ -45,7 +50,7 @@ export function usePaginatedComboboxQueryLoader<TItem, TQueryKey extends QueryKe
 
             return queryClient.fetchQuery({
                 queryKey: resolvedQueryKey,
-                queryFn: () => current.queryFn(params),
+                queryFn: ({ signal }) => current.queryFn({ ...params, signal }),
                 staleTime: current.staleTime,
             });
         },
@@ -58,7 +63,11 @@ export type ReactQueryPaginatedComboboxProps<T> = Omit<
     'loadPage'
 > & {
     queryKey: QueryKey;
-    loadPage: (page: number, search: string) => Promise<PaginatedResult<T>>;
+    loadPage: (
+        page: number,
+        search: string,
+        options: { signal: AbortSignal; pageSize?: number },
+    ) => Promise<PaginatedResult<T>>;
     pageSize?: number;
     staleTime?: number;
 };
@@ -72,19 +81,27 @@ export function ReactQueryPaginatedCombobox<T>({
     ...props
 }: ReactQueryPaginatedComboboxProps<T>) {
     const cachedLoadPage = usePaginatedComboboxQueryLoader<T>({
-        queryKey: ({ page, search }) => [
+        queryKey: ({ page, search, pageSize: requestedPageSize }) => [
             ...queryKey,
             'paginated-combobox',
             search,
             page,
-            pageSize ?? null,
+            requestedPageSize ?? null,
             resetKey ?? null,
         ],
-        queryFn: ({ page, search }) => loadPage(page, search),
+        queryFn: ({ page, search, signal, pageSize: requestedPageSize }) =>
+            loadPage(page, search, { signal, pageSize: requestedPageSize }),
         staleTime,
     });
 
-    return <CorePaginatedCombobox<T> {...props} loadPage={cachedLoadPage} resetKey={resetKey} />;
+    return (
+        <CorePaginatedCombobox<T>
+            {...props}
+            loadPage={cachedLoadPage}
+            pageSize={pageSize}
+            resetKey={resetKey}
+        />
+    );
 }
 
 export { ReactQueryPaginatedCombobox as PaginatedCombobox };

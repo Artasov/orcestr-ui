@@ -32,6 +32,38 @@ export type ResponsiveValue<T> =
           xl?: T;
       };
 
+type ResponsiveSystemProp =
+    | 'm'
+    | 'mt'
+    | 'mr'
+    | 'mb'
+    | 'ml'
+    | 'mx'
+    | 'my'
+    | 'p'
+    | 'pt'
+    | 'pr'
+    | 'pb'
+    | 'pl'
+    | 'px'
+    | 'py'
+    | 'g'
+    | 'w'
+    | 'minW'
+    | 'minWidth'
+    | 'maxW'
+    | 'maxWidth'
+    | 'size'
+    | 'h'
+    | 'minH'
+    | 'minHeight'
+    | 'maxH'
+    | 'maxHeight'
+    | 'fs'
+    | 'lh';
+
+type ResponsiveBreakpoint = 'initial' | 'sm' | 'md' | 'lg' | 'xl';
+
 export type SystemProps = {
     m?: ResponsiveValue<number | string>;
     mt?: ResponsiveValue<number | string>;
@@ -136,6 +168,37 @@ const systemKeys = new Set<keyof SystemProps>([
     'truncate',
 ]);
 
+const responsiveSystemKeys = new Set<ResponsiveSystemProp>([
+    'm',
+    'mt',
+    'mr',
+    'mb',
+    'ml',
+    'mx',
+    'my',
+    'p',
+    'pt',
+    'pr',
+    'pb',
+    'pl',
+    'px',
+    'py',
+    'g',
+    'w',
+    'minW',
+    'minWidth',
+    'maxW',
+    'maxWidth',
+    'size',
+    'h',
+    'minH',
+    'minHeight',
+    'maxH',
+    'maxHeight',
+    'fs',
+    'lh',
+]);
+
 const spacing = ['0', '4px', '8px', '12px', '16px', '24px', '32px', '40px', '48px', '64px'];
 const radiusScale = ['0', '2px', '4px', '6px', '8px', '10px', '12px', '999px'];
 
@@ -150,6 +213,30 @@ function sizeValue(
     const normalized = value.trim();
     if (/^[0-9]$/.test(normalized)) return spacing[Number(normalized)];
     return value;
+}
+
+function isResponsiveObject(
+    value: unknown,
+): value is Partial<Record<ResponsiveBreakpoint, number | string>> {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function setResponsiveStyleValue(
+    style: CSSProperties,
+    key: ResponsiveSystemProp,
+    value: ResponsiveValue<number | string>,
+) {
+    const values = isResponsiveObject(value) ? value : { initial: value };
+    const customStyle = style as CSSProperties & Record<`--oui-sp-${string}`, string | number>;
+
+    for (const breakpoint of ['initial', 'sm', 'md', 'lg', 'xl'] as const) {
+        const breakpointValue = values[breakpoint];
+        if (breakpointValue === undefined) continue;
+        const resolved = key === 'lh' ? breakpointValue : sizeValue(breakpointValue);
+        if (resolved !== undefined) {
+            customStyle[`--oui-sp-${key}-${breakpoint}`] = resolved;
+        }
+    }
 }
 
 function radiusValue(
@@ -213,6 +300,11 @@ export function splitSystemProps<P extends Record<string, unknown>>(
 } {
     const systemStyle: CSSProperties = {};
     const restProps: Record<string, unknown> = {};
+    const hasResponsiveValues = Object.entries(props).some(
+        ([key, value]) =>
+            responsiveSystemKeys.has(key as ResponsiveSystemProp) && isResponsiveObject(value),
+    );
+    let usesResponsiveStyles = false;
 
     for (const [key, value] of Object.entries(props)) {
         if (!systemKeys.has(key as keyof SystemProps)) {
@@ -220,6 +312,19 @@ export function splitSystemProps<P extends Record<string, unknown>>(
             continue;
         }
         if (value === undefined || value === null) continue;
+        if (
+            hasResponsiveValues &&
+            responsiveSystemKeys.has(key as ResponsiveSystemProp) &&
+            (typeof value === 'string' || typeof value === 'number' || isResponsiveObject(value))
+        ) {
+            setResponsiveStyleValue(
+                systemStyle,
+                key as ResponsiveSystemProp,
+                value as ResponsiveValue<number | string>,
+            );
+            usesResponsiveStyles = true;
+            continue;
+        }
         switch (key as keyof SystemProps) {
             case 'm':
                 systemStyle.margin = sizeValue(value as number | string);
@@ -372,6 +477,10 @@ export function splitSystemProps<P extends Record<string, unknown>>(
             default:
                 break;
         }
+    }
+
+    if (usesResponsiveStyles) {
+        restProps['data-oui-responsive'] = '';
     }
 
     return { systemStyle, restProps: restProps as Omit<P, keyof SystemProps> };

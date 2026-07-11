@@ -66,9 +66,12 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(function S
     const { onScroll, ...outerProps } = restProps;
     const showHighlights = highlights && highlightVisible;
     const scrollRef = useRef<HTMLDivElement | null>(null);
+    const contentRef = useRef<HTMLDivElement | null>(null);
     const frameRef = useRef<number | null>(null);
+    const scrollEndTimerRef = useRef<number | null>(null);
     const [opacity, setOpacity] = useState({ top: 0, bottom: 0 });
     const [overflow, setOverflow] = useState({ x: false, y: false });
+    const [scrolling, setScrolling] = useState(false);
     const topConfig = useMemo(
         () =>
             normalizeHighlightConfig({
@@ -166,37 +169,43 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(function S
 
         const observer =
             typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(scheduleUpdate);
-        const mutationObserver =
-            typeof MutationObserver === 'undefined' ? null : new MutationObserver(scheduleUpdate);
         observer?.observe(node);
-        Array.from(node.children).forEach((child) => {
-            if (child instanceof HTMLElement && !child.classList.contains('oui-highlight')) {
-                observer?.observe(child);
-            }
-        });
-        mutationObserver?.observe(node, {
-            attributes: true,
-            childList: true,
-            subtree: true,
-        });
+        if (contentRef.current) observer?.observe(contentRef.current);
         window.addEventListener('resize', scheduleUpdate);
 
         return () => {
             observer?.disconnect();
-            mutationObserver?.disconnect();
             window.removeEventListener('resize', scheduleUpdate);
             if (frameRef.current !== null) {
                 window.cancelAnimationFrame(frameRef.current);
                 frameRef.current = null;
             }
+            if (scrollEndTimerRef.current !== null) {
+                window.clearTimeout(scrollEndTimerRef.current);
+                scrollEndTimerRef.current = null;
+            }
         };
     }, [scheduleUpdate]);
+
+    const handleScrollActivity = useCallback(() => {
+        scheduleUpdate();
+        if (type !== 'scroll') return;
+        setScrolling(true);
+        if (scrollEndTimerRef.current !== null) {
+            window.clearTimeout(scrollEndTimerRef.current);
+        }
+        scrollEndTimerRef.current = window.setTimeout(() => {
+            scrollEndTimerRef.current = null;
+            setScrolling(false);
+        }, 160);
+    }, [scheduleUpdate, type]);
 
     return (
         <div
             className={cn('oui-scroll-area', className)}
             data-scrollbars={scrollbars}
             data-type={type}
+            data-scrolling={scrolling ? 'true' : undefined}
             data-overflow-x={overflow.x ? 'true' : undefined}
             data-overflow-y={overflow.y ? 'true' : undefined}
             data-testid={testId}
@@ -209,10 +218,12 @@ export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(function S
                 data-testid={testId ? `${testId}-viewport` : undefined}
                 onScroll={(event) => {
                     onScroll?.(event);
-                    scheduleUpdate();
+                    handleScrollActivity();
                 }}
             >
-                {children}
+                <div ref={contentRef} className="oui-scroll-area-content">
+                    {children}
+                </div>
             </div>
             {showHighlights ? (
                 <div className="oui-scroll-area-highlight-overlay" aria-hidden="true">

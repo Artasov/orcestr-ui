@@ -9,6 +9,7 @@ import {
 import { LuX } from 'react-icons/lu';
 
 import { cn } from '../../utils/cn';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
 import { Modal, type ModalProps } from '../Modal/Modal';
 
 export type SpecialModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
@@ -129,14 +130,15 @@ type SpecialModalCloseProps = Omit<ComponentPropsWithoutRef<'button'>, 'children
 function SpecialModalClose({
     className,
     children,
-    'aria-label': ariaLabel = 'Close',
+    'aria-label': ariaLabel,
     ...props
 }: SpecialModalCloseProps) {
+    const { copy } = useOrcestrUiLocale();
     return (
         <Modal.Close
             {...props}
             className={cn('oui-icon-button oui-special-modal-close', className)}
-            aria-label={ariaLabel}
+            aria-label={ariaLabel ?? copy.common.close}
             data-size="2"
             data-variant="ghost"
             data-tone="neutral"

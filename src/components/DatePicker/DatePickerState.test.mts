@@ -4,8 +4,12 @@ import test from 'node:test';
 import {
     calendarMonthState,
     clampDate,
+    isValidCalendarDate,
+    localTodayIsoDate,
     monthCursorForDate,
     shiftMonth,
+    shiftDate,
+    shiftDateByMonth,
     weekdayLabels,
 } from './DatePickerState.ts';
 
@@ -53,5 +57,29 @@ test('weekday labels start from Monday', () => {
     assert.deepEqual(
         weekdayLabels('en').map((label) => label.toLowerCase()),
         ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+    );
+});
+
+test('calendar date parsing rejects impossible dates', () => {
+    assert.equal(isValidCalendarDate('2026-02-28'), true);
+    assert.equal(isValidCalendarDate('2028-02-29'), true);
+    assert.equal(isValidCalendarDate('2026-02-29'), false);
+    assert.equal(isValidCalendarDate('2026-02-31'), false);
+    assert.equal(isValidCalendarDate('2026-04-31'), false);
+});
+
+test('date navigation preserves calendar semantics', () => {
+    assert.equal(shiftDate('2026-03-01', -1), '2026-02-28');
+    assert.equal(shiftDateByMonth('2028-02-29', 12), '2029-02-28');
+    assert.equal(shiftDateByMonth('2026-01-31', 1), '2026-02-28');
+});
+
+test('today helper uses local calendar fields', () => {
+    const date = new Date(2026, 6, 11, 23, 30);
+    assert.equal(
+        localTodayIsoDate(date),
+        `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(
+            date.getDate(),
+        ).padStart(2, '0')}`,
     );
 });

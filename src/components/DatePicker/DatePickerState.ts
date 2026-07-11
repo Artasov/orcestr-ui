@@ -31,13 +31,13 @@ export function calendarMonthState({
     max?: string;
     disabledDate?: DatePickerDisabledDate;
 }): CalendarMonthState {
-    const cursor = parseDateParts(cursorMonth) ?? requiredDateParts(todayIsoDate());
+    const cursor = parseDateParts(cursorMonth) ?? requiredDateParts(localTodayIsoDate());
     const monthStart = new Date(Date.UTC(cursor.year, cursor.monthIndex, 1));
     const gridStart = new Date(monthStart);
     const startOffset = (monthStart.getUTCDay() + 6) % 7;
     gridStart.setUTCDate(monthStart.getUTCDate() - startOffset);
 
-    const normalizedToday = today ?? todayIsoDate();
+    const normalizedToday = today ?? localTodayIsoDate();
     const days = Array.from({ length: 42 }, (_, index) => {
         const date = new Date(gridStart);
         date.setUTCDate(gridStart.getUTCDate() + index);
@@ -67,12 +67,12 @@ export function monthCursorForDate(value?: string | null, fallback?: string): st
     const parts =
         parseDateParts(value ?? '') ??
         parseDateParts(fallback ?? '') ??
-        requiredDateParts(todayIsoDate());
+        requiredDateParts(localTodayIsoDate());
     return formatMonth(parts.year, parts.monthIndex);
 }
 
 export function shiftMonth(cursorMonth: string, offset: number): string {
-    const parts = parseDateParts(cursorMonth) ?? requiredDateParts(todayIsoDate());
+    const parts = parseDateParts(cursorMonth) ?? requiredDateParts(localTodayIsoDate());
     return formatMonth(parts.year, parts.monthIndex + offset);
 }
 
@@ -80,6 +80,31 @@ export function clampDate(value: string, min?: string, max?: string): string {
     if (min !== undefined && value < min) return min;
     if (max !== undefined && value > max) return max;
     return value;
+}
+
+export function isValidCalendarDate(value: string): boolean {
+    return /^\d{4}-\d{2}-\d{2}$/.test(value) && parseDateParts(value) !== null;
+}
+
+export function shiftDate(value: string, offset: number): string {
+    const parts = parseDateParts(value);
+    if (!parts || !isValidCalendarDate(value)) return value;
+    const date = new Date(Date.UTC(parts.year, parts.monthIndex, parts.day + offset));
+    return formatDate(date);
+}
+
+export function shiftDateByMonth(value: string, offset: number): string {
+    const parts = parseDateParts(value);
+    if (!parts || !isValidCalendarDate(value)) return value;
+    const targetMonth = parts.monthIndex + offset;
+    const targetYear = parts.year + Math.floor(targetMonth / 12);
+    const normalizedMonth = ((targetMonth % 12) + 12) % 12;
+    const day = Math.min(parts.day, daysInMonth(targetYear, normalizedMonth + 1));
+    return `${targetYear}-${pad(normalizedMonth + 1)}-${pad(day)}`;
+}
+
+export function localTodayIsoDate(now = new Date()): string {
+    return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 }
 
 export function formatDateLabel(value: string, locale: string): string {
@@ -114,7 +139,15 @@ function parseDateParts(value: string): { year: number; monthIndex: number; day:
     const year = Number(match[1]);
     const month = Number(match[2]);
     const day = Number(match[3] ?? '01');
-    if (!Number.isInteger(year) || month < 1 || month > 12 || day < 1 || day > 31) return null;
+    if (
+        !Number.isInteger(year) ||
+        month < 1 ||
+        month > 12 ||
+        day < 1 ||
+        day > daysInMonth(year, month)
+    ) {
+        return null;
+    }
     return { year, monthIndex: month - 1, day };
 }
 
@@ -133,12 +166,16 @@ function formatDate(date: Date): string {
     return `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())}`;
 }
 
-function todayIsoDate(): string {
-    return formatDate(new Date());
-}
-
 function pad(value: number): string {
     return String(value).padStart(2, '0');
+}
+
+function daysInMonth(year: number, month: number) {
+    if (month === 2) {
+        const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+        return leap ? 29 : 28;
+    }
+    return [4, 6, 9, 11].includes(month) ? 30 : 31;
 }
 
 function chunk<T>(items: T[], size: number): T[][] {

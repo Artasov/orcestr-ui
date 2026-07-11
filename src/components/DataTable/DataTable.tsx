@@ -2,8 +2,10 @@
 
 import {
     Fragment,
+    memo,
     useCallback,
     useEffect,
+    useId,
     useMemo,
     useRef,
     useState,
@@ -15,26 +17,19 @@ import {
     type UIEvent,
     type WheelEvent,
 } from 'react';
-import {
-    LuArrowDown,
-    LuArrowUp,
-    LuChevronDown,
-    LuChevronRight,
-    LuRefreshCw,
-    LuRotateCcw,
-    LuSettings2,
-} from 'react-icons/lu';
+import { LuArrowDown, LuArrowUp, LuChevronDown, LuChevronRight, LuRefreshCw } from 'react-icons/lu';
 
 import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { ContextMenu } from '../ContextMenu/ContextMenu';
-import { IconButton } from '../IconButton/IconButton';
 import type { MenuItem } from '../Menu/Menu';
-import { Popover } from '../Popover/Popover';
 import { Spinner } from '../Spinner/Spinner';
 import { Text } from '../Text/Text';
 import type { OrcestrActionItem } from '../Action/ActionTypes';
+import { calculateDataTableVirtualWindow } from './DataTableVirtualizer';
+import { DataTableColumnSettingsPanel } from './DataTableColumnSettings';
+export type { DataTableVirtualWindow } from './DataTableVirtualizer';
 
 export type DataTableSortDirection = 'asc' | 'desc';
 
@@ -128,13 +123,15 @@ export type DataTableProps<T> = {
     testId?: string;
 };
 
+const EMPTY_ROW_KEYS: ReadonlyArray<string> = [];
+
 export function DataTable<T>({
     rows,
     columns,
     rowKey,
     sort,
     onSortChange,
-    selectedRowKeys = [],
+    selectedRowKeys = EMPTY_ROW_KEYS,
     onSelectedRowKeysChange,
     selectable = false,
     isLoading = false,
@@ -168,6 +165,7 @@ export function DataTable<T>({
     const [resizingColumnKey, setResizingColumnKey] = useState<string | null>(null);
     const [scrollState, setScrollState] = useState({ top: 0, height: 0 });
     const [activeRowIndex, setActiveRowIndex] = useState<number | null>(null);
+    const gridId = useId();
     const horizontalScrollAnimationRef = useRef<number | null>(null);
     const horizontalScrollTargetRef = useRef<number | null>(null);
     const sortItems = normalizeSort(sort);
@@ -190,15 +188,13 @@ export function DataTable<T>({
     );
     const internalVirtualWindow = useMemo(() => {
         if (!virtualized || virtualWindow || scrollState.height <= 0) return null;
-        const start = Math.max(0, Math.floor(scrollState.top / virtualRowHeight) - virtualOverscan);
-        const visibleCount = Math.ceil(scrollState.height / virtualRowHeight) + virtualOverscan * 2;
-        const end = Math.min(keyedRows.length, start + visibleCount);
-        return {
-            start,
-            end,
-            beforeHeight: start * virtualRowHeight,
-            afterHeight: Math.max(0, keyedRows.length - end) * virtualRowHeight,
-        };
+        return calculateDataTableVirtualWindow({
+            rowCount: keyedRows.length,
+            scrollTop: scrollState.top,
+            viewportHeight: scrollState.height,
+            rowHeight: virtualRowHeight,
+            overscan: virtualOverscan,
+        });
     }, [
         keyedRows.length,
         scrollState.height,
@@ -218,7 +214,18 @@ export function DataTable<T>({
         () => new Set(expansion?.expandedRowKeys ?? []),
         [expansion?.expandedRowKeys],
     );
-    const visibleKeys = renderedRows.map((item) => item.key);
+    const localizedExpansion = useMemo(
+        () =>
+            expansion
+                ? {
+                      ...expansion,
+                      expandLabel: expansion.expandLabel ?? copy.table.expandRow,
+                      collapseLabel: expansion.collapseLabel ?? copy.table.collapseRow,
+                  }
+                : undefined,
+        [copy.table.collapseRow, copy.table.expandRow, expansion],
+    );
+    const visibleKeys = keyedRows.map((item) => item.key);
     const selectedVisibleCount = visibleKeys.filter((key) => selectedSet.has(key)).length;
     const allVisibleSelected =
         visibleKeys.length > 0 && selectedVisibleCount === visibleKeys.length;
@@ -239,20 +246,16 @@ export function DataTable<T>({
         (node: HTMLDivElement | null) => {
             scrollRootRef?.(node);
             if (!node) return;
-            setScrollState({
-                top: node.scrollTop,
-                height: node.clientHeight,
-            });
+            setScrollState((current) =>
+                stableScrollState(current, node.scrollTop, node.clientHeight),
+            );
         },
         [scrollRootRef],
     );
 
     const handleScroll = useCallback((event: UIEvent<HTMLDivElement>) => {
         const node = event.currentTarget;
-        setScrollState({
-            top: node.scrollTop,
-            height: node.clientHeight,
-        });
+        setScrollState((current) => stableScrollState(current, node.scrollTop, node.clientHeight));
     }, []);
 
     const cancelHorizontalScrollAnimation = useCallback(() => {
@@ -316,9 +319,12 @@ export function DataTable<T>({
 
     useEffect(() => () => cancelHorizontalScrollAnimation(), [cancelHorizontalScrollAnimation]);
 
-    const setSelectedKeys = (keys: string[]) => {
-        onSelectedRowKeysChange?.(keys);
-    };
+    const setSelectedKeys = useCallback(
+        (keys: string[]) => {
+            onSelectedRowKeysChange?.(keys);
+        },
+        [onSelectedRowKeysChange],
+    );
 
     const toggleAllVisible = () => {
         if (!onSelectedRowKeysChange) return;
@@ -329,25 +335,46 @@ export function DataTable<T>({
         setSelectedKeys(Array.from(new Set([...selectedRowKeys, ...visibleKeys])));
     };
 
-    const toggleRow = (key: string) => {
-        if (!onSelectedRowKeysChange) return;
-        if (selectedSet.has(key)) {
-            setSelectedKeys(selectedRowKeys.filter((item) => item !== key));
-            return;
-        }
-        setSelectedKeys([...selectedRowKeys, key]);
-    };
+    const updateColumnWidth = useCallback(
+        (column: DataTableColumn<T>, nextWidth: number) => {
+            const next = clamp(nextWidth, column.minWidth ?? 72, column.maxWidth ?? 720);
+            if (columnSettings?.onColumnWidthsChange) {
+                columnSettings.onColumnWidthsChange({
+                    ...actualColumnWidths,
+                    [column.key]: next,
+                });
+                return;
+            }
+            setColumnWidths((current) => ({ ...current, [column.key]: next }));
+        },
+        [actualColumnWidths, columnSettings],
+    );
 
-    const toggleExpandedRow = (key: string) => {
-        if (!expansion) return;
-        if (expandedSet.has(key)) {
-            expansion.onExpandedRowKeysChange(
-                expansion.expandedRowKeys.filter((item) => item !== key),
-            );
-            return;
-        }
-        expansion.onExpandedRowKeysChange([...expansion.expandedRowKeys, key]);
-    };
+    const toggleRow = useCallback(
+        (key: string) => {
+            if (!onSelectedRowKeysChange) return;
+            if (selectedSet.has(key)) {
+                setSelectedKeys(selectedRowKeys.filter((item) => item !== key));
+                return;
+            }
+            setSelectedKeys([...selectedRowKeys, key]);
+        },
+        [onSelectedRowKeysChange, selectedRowKeys, selectedSet, setSelectedKeys],
+    );
+
+    const toggleExpandedRow = useCallback(
+        (key: string) => {
+            if (!expansion) return;
+            if (expandedSet.has(key)) {
+                expansion.onExpandedRowKeysChange(
+                    expansion.expandedRowKeys.filter((item) => item !== key),
+                );
+                return;
+            }
+            expansion.onExpandedRowKeysChange([...expansion.expandedRowKeys, key]);
+        },
+        [expandedSet, expansion],
+    );
 
     const toggleSort = (column: DataTableColumn<T>, event?: MouseEvent) => {
         if (!column.sortable || !onSortChange) return;
@@ -378,19 +405,7 @@ export function DataTable<T>({
             160;
         setResizingColumnKey(column.key);
         const onMove = (moveEvent: globalThis.PointerEvent) => {
-            const next = clamp(
-                Math.round(startWidth + moveEvent.clientX - startX),
-                column.minWidth ?? 72,
-                column.maxWidth ?? 720,
-            );
-            if (columnSettings?.onColumnWidthsChange) {
-                columnSettings.onColumnWidthsChange({
-                    ...actualColumnWidths,
-                    [column.key]: next,
-                });
-                return;
-            }
-            setColumnWidths((current) => ({ ...current, [column.key]: next }));
+            updateColumnWidth(column, Math.round(startWidth + moveEvent.clientX - startX));
         };
         const onUp = () => {
             setResizingColumnKey(null);
@@ -401,35 +416,71 @@ export function DataTable<T>({
         window.addEventListener('pointerup', onUp);
     };
 
+    const resizeColumnWithKeyboard = (
+        column: DataTableColumn<T>,
+        event: KeyboardEvent<HTMLElement>,
+    ) => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+        event.preventDefault();
+        event.stopPropagation();
+        const current =
+            actualColumnWidths[column.key] ?? numericWidth(column.width) ?? column.minWidth ?? 160;
+        const direction = event.key === 'ArrowRight' ? 1 : -1;
+        updateColumnWidth(column, current + direction * (event.shiftKey ? 24 : 8));
+    };
+
     const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-        if (renderedRows.length === 0) return;
+        if (keyedRows.length === 0) return;
         if (event.key === 'ArrowDown') {
             event.preventDefault();
-            setActiveRowIndex((current) => Math.min(renderedRows.length - 1, (current ?? -1) + 1));
+            setActiveRowIndex((current) => Math.min(keyedRows.length - 1, (current ?? -1) + 1));
         } else if (event.key === 'ArrowUp') {
             event.preventDefault();
-            setActiveRowIndex((current) => Math.max(0, (current ?? renderedRows.length) - 1));
+            setActiveRowIndex((current) => Math.max(0, (current ?? keyedRows.length) - 1));
+        } else if (event.key === 'Home') {
+            event.preventDefault();
+            setActiveRowIndex(0);
+        } else if (event.key === 'End') {
+            event.preventDefault();
+            setActiveRowIndex(keyedRows.length - 1);
         } else if (event.key === 'Enter') {
             if (activeRowIndex == null) return;
-            const item = renderedRows[activeRowIndex];
+            const item = keyedRows[activeRowIndex];
             if (item) onRowClick?.(item.row);
         } else if (event.key === ' ' && selectable) {
             if (activeRowIndex == null) return;
-            const item = renderedRows[activeRowIndex];
+            const item = keyedRows[activeRowIndex];
             if (item) {
                 event.preventDefault();
                 toggleRow(item.key);
             }
         } else if (event.key === 'ArrowRight' && expansion) {
             if (activeRowIndex == null) return;
-            const item = renderedRows[activeRowIndex];
+            const item = keyedRows[activeRowIndex];
             if (item && !expandedSet.has(item.key)) toggleExpandedRow(item.key);
         } else if (event.key === 'ArrowLeft' && expansion) {
             if (activeRowIndex == null) return;
-            const item = renderedRows[activeRowIndex];
+            const item = keyedRows[activeRowIndex];
             if (item && expandedSet.has(item.key)) toggleExpandedRow(item.key);
         }
     };
+
+    useEffect(() => {
+        if (!virtualized || activeRowIndex === null) return;
+        const node = document.getElementById(`${gridId}-row-${activeRowIndex}`);
+        if (node) {
+            node.scrollIntoView({ block: 'nearest' });
+            return;
+        }
+        const scrollNode = document.getElementById(gridId);
+        if (scrollNode) scrollNode.scrollTop = activeRowIndex * virtualRowHeight;
+    }, [activeRowIndex, gridId, virtualized, virtualRowHeight]);
+
+    if (virtualized && (rowGroup || expansion)) {
+        throw new Error(
+            'DataTable virtualization cannot be combined with rowGroup or expansion because those rows have variable height.',
+        );
+    }
 
     return (
         <div className="oui-data-table-shell" data-testid={testId ? `${testId}-shell` : undefined}>
@@ -439,13 +490,15 @@ export function DataTable<T>({
                         <div className="oui-data-table-toolbar-content">{toolbar}</div>
                     ) : null}
                     {columnSettings ? (
-                        <ColumnSettingsPanel
+                        <DataTableColumnSettingsPanel
                             columns={settingsColumns}
                             visibleColumnKeys={columnSettings.visibleColumnKeys}
                             columnOrder={columnSettings.columnOrder}
                             label={columnSettings.label ?? copy.table.columnSettings}
                             resetLabel={columnSettings.resetLabel ?? copy.common.reset}
                             emptyLabel={columnSettings.emptyLabel ?? copy.common.noData}
+                            moveLeftLabel={copy.table.moveColumnLeft}
+                            moveRightLabel={copy.table.moveColumnRight}
                             onVisibleColumnKeysChange={columnSettings.onVisibleColumnKeysChange}
                             onColumnOrderChange={columnSettings.onColumnOrderChange}
                             onReset={columnSettings.onReset}
@@ -456,10 +509,16 @@ export function DataTable<T>({
             ) : null}
             <div
                 ref={attachScrollRoot}
+                id={gridId}
                 className="oui-data-table-wrap"
                 style={{ height }}
                 role="grid"
                 tabIndex={0}
+                aria-rowcount={total ?? rows.length}
+                aria-colcount={colSpan}
+                aria-activedescendant={
+                    activeRowIndex === null ? undefined : `${gridId}-row-${activeRowIndex}`
+                }
                 data-testid={testId}
                 onScroll={virtualized ? handleScroll : undefined}
                 onWheel={handleWheel}
@@ -469,7 +528,7 @@ export function DataTable<T>({
             >
                 <table
                     className="oui-data-table"
-                    aria-rowcount={total ?? rows.length}
+                    role="presentation"
                     style={
                         {
                             minWidth: tableMinWidth ? `${tableMinWidth}px` : undefined,
@@ -495,7 +554,7 @@ export function DataTable<T>({
                         ))}
                     </colgroup>
                     <thead>
-                        <tr>
+                        <tr role="row" aria-rowindex={1}>
                             {expansion ? (
                                 <th
                                     className="oui-data-table-expand-cell"
@@ -574,8 +633,19 @@ export function DataTable<T>({
                                                     tabIndex={0}
                                                     className="oui-data-table-resize"
                                                     aria-label={copy.common.resizeColumn}
+                                                    aria-valuemin={column.minWidth ?? 72}
+                                                    aria-valuemax={column.maxWidth ?? 720}
+                                                    aria-valuenow={
+                                                        actualColumnWidths[column.key] ??
+                                                        numericWidth(column.width) ??
+                                                        column.minWidth ??
+                                                        160
+                                                    }
                                                     onPointerDown={(event) =>
                                                         startResize(column, event)
+                                                    }
+                                                    onKeyDown={(event) =>
+                                                        resizeColumnWithKeyboard(column, event)
                                                     }
                                                 />
                                             ) : null}
@@ -633,10 +703,15 @@ export function DataTable<T>({
                                     activeRowIndex,
                                     colSpan,
                                     columns: visibleColumns,
-                                    copy,
+                                    selectRowLabel: copy.table.selectRow,
                                     expandedSet,
-                                    expansion,
+                                    expansion: localizedExpansion,
                                     renderedRows,
+                                    rowStartIndex:
+                                        virtualized && actualVirtualWindow
+                                            ? actualVirtualWindow.start
+                                            : 0,
+                                    gridId,
                                     rowContextMenuActions,
                                     rowGroup,
                                     onRowClick,
@@ -675,135 +750,10 @@ export function DataTable<T>({
     );
 }
 
-function ColumnSettingsPanel<T>({
-    columns,
-    visibleColumnKeys,
-    columnOrder,
-    label,
-    resetLabel,
-    emptyLabel,
-    onVisibleColumnKeysChange,
-    onColumnOrderChange,
-    onReset,
-    testId,
-}: {
-    columns: ReadonlyArray<DataTableColumn<T>>;
-    visibleColumnKeys: ReadonlyArray<string>;
-    columnOrder?: ReadonlyArray<string>;
-    label: ReactNode;
-    resetLabel: ReactNode;
-    emptyLabel: ReactNode;
-    onVisibleColumnKeysChange: (keys: string[]) => void;
-    onColumnOrderChange?: (keys: string[]) => void;
-    onReset?: () => void;
-    testId?: string;
-}) {
-    const configurableColumns = orderColumns(
-        columns.filter((column) => column.hideable !== false),
-        columnOrder,
-    );
-    const visibleSet = new Set(visibleColumnKeys);
-    const orderedKeys = configurableColumns.map((column) => column.key);
-    const selectedCount = orderedKeys.filter((key) => visibleSet.has(key)).length;
-
-    const toggleColumn = (key: string) => {
-        if (visibleSet.has(key)) {
-            if (selectedCount <= 1) return;
-            onVisibleColumnKeysChange(visibleColumnKeys.filter((item) => item !== key));
-            return;
-        }
-        onVisibleColumnKeysChange([...visibleColumnKeys, key]);
-    };
-
-    const moveColumn = (key: string, direction: -1 | 1) => {
-        if (!onColumnOrderChange) return;
-        const current = columnOrder?.length
-            ? [...columnOrder]
-            : columns.map((column) => column.key);
-        const index = current.indexOf(key);
-        const nextIndex = index + direction;
-        if (index < 0 || nextIndex < 0 || nextIndex >= current.length) return;
-        const next = [...current];
-        [next[index], next[nextIndex]] = [next[nextIndex], next[index]];
-        onColumnOrderChange(next);
-    };
-
-    return (
-        <Popover
-            trigger={
-                <IconButton
-                    v="surface"
-                    icon={<LuSettings2 size={16} />}
-                    aria-label={typeof label === 'string' ? label : undefined}
-                    testId={testId}
-                />
-            }
-            align="end"
-            className="oui-data-table-column-settings"
-            testId={testId ? `${testId}-popover` : undefined}
-        >
-            <div className="oui-data-table-column-settings-head">
-                <Text fs="13px" fw={760}>
-                    {label}
-                </Text>
-                {onReset ? (
-                    <Button
-                        className="oui-data-table-settings-reset"
-                        size={1}
-                        v="ghost"
-                        leftIcon={<LuRotateCcw size={13} />}
-                        onClick={onReset}
-                    >
-                        {resetLabel}
-                    </Button>
-                ) : null}
-            </div>
-            <div className="oui-data-table-column-settings-list">
-                {configurableColumns.length === 0 ? (
-                    <Text fs="12px" tone="muted">
-                        {emptyLabel}
-                    </Text>
-                ) : (
-                    configurableColumns.map((column, index) => {
-                        const visible = visibleSet.has(column.key);
-                        return (
-                            <div key={column.key} className="oui-data-table-column-settings-row">
-                                <label className="oui-data-table-column-toggle">
-                                    <Checkbox
-                                        checked={visible}
-                                        disabled={visible && selectedCount <= 1}
-                                        onChange={() => toggleColumn(column.key)}
-                                    />
-                                    <span>{column.title}</span>
-                                </label>
-                                {onColumnOrderChange ? (
-                                    <span className="oui-data-table-column-settings-order">
-                                        <button
-                                            type="button"
-                                            disabled={index === 0}
-                                            onClick={() => moveColumn(column.key, -1)}
-                                        >
-                                            <LuArrowUp size={13} />
-                                        </button>
-                                        <button
-                                            type="button"
-                                            disabled={index === configurableColumns.length - 1}
-                                            onClick={() => moveColumn(column.key, 1)}
-                                        >
-                                            <LuArrowDown size={13} />
-                                        </button>
-                                    </span>
-                                ) : null}
-                            </div>
-                        );
-                    })
-                )}
-            </div>
-        </Popover>
-    );
-}
-
 function DataTableRow<T>({
+    id,
+    rowIndex,
+    rowKey,
     row,
     columns,
     active,
@@ -815,9 +765,12 @@ function DataTableRow<T>({
     onToggle,
     onExpandToggle,
     onRowClick,
-    actions,
+    getActions,
     selectLabel,
 }: {
+    id: string;
+    rowIndex: number;
+    rowKey: string;
     row: T;
     columns: ReadonlyArray<DataTableColumn<T>>;
     active: boolean;
@@ -826,15 +779,17 @@ function DataTableRow<T>({
     selected: boolean;
     selectable: boolean;
     canSelect: boolean;
-    onToggle: () => void;
-    onExpandToggle: () => void;
+    onToggle: (key: string) => void;
+    onExpandToggle: (key: string) => void;
     onRowClick?: (row: T) => void;
-    actions: ReadonlyArray<DataTableRowAction<T>>;
+    getActions?: (row: T) => ReadonlyArray<DataTableRowAction<T>>;
     selectLabel: string;
 }) {
     const rowNode = (
         <tr
+            id={id}
             role="row"
+            aria-rowindex={rowIndex}
             data-selected={selected ? 'true' : undefined}
             data-active={active ? 'true' : undefined}
             data-clickable={onRowClick ? 'true' : undefined}
@@ -849,7 +804,7 @@ function DataTableRow<T>({
                         aria-expanded={expanded}
                         onClick={(event) => {
                             event.stopPropagation();
-                            onExpandToggle();
+                            onExpandToggle(rowKey);
                         }}
                     >
                         {expanded ? <LuChevronDown size={14} /> : <LuChevronRight size={14} />}
@@ -864,7 +819,7 @@ function DataTableRow<T>({
                             checked={selected}
                             disabled={!canSelect}
                             onClick={(event) => event.stopPropagation()}
-                            onChange={onToggle}
+                            onChange={() => onToggle(rowKey)}
                         />
                     </span>
                 </td>
@@ -882,6 +837,7 @@ function DataTableRow<T>({
         </tr>
     );
 
+    const actions = getActions?.(row) ?? [];
     if (actions.length === 0) return rowNode;
 
     const menuItems: MenuItem[] = actions.map(({ children: _children, onSelect, ...action }) => ({
@@ -892,14 +848,18 @@ function DataTableRow<T>({
     return <ContextMenu items={menuItems}>{rowNode}</ContextMenu>;
 }
 
+const MemoizedDataTableRow = memo(DataTableRow) as typeof DataTableRow;
+
 function renderGroupedRows<T>({
     activeRowIndex,
     colSpan,
     columns,
-    copy,
+    selectRowLabel,
     expandedSet,
     expansion,
     renderedRows,
+    rowStartIndex,
+    gridId,
     rowContextMenuActions,
     rowGroup,
     onRowClick,
@@ -912,10 +872,12 @@ function renderGroupedRows<T>({
     activeRowIndex: number | null;
     colSpan: number;
     columns: ReadonlyArray<DataTableColumn<T>>;
-    copy: ReturnType<typeof useOrcestrUiLocale>['copy'];
+    selectRowLabel: string;
     expandedSet: Set<string>;
     expansion?: DataTableExpansion<T>;
     renderedRows: ReadonlyArray<{ row: T; key: string }>;
+    rowStartIndex: number;
+    gridId: string;
     rowContextMenuActions?: (row: T) => ReadonlyArray<DataTableRowAction<T>>;
     rowGroup?: (row: T) => DataTableRowGroup<T> | null;
     onRowClick?: (row: T) => void;
@@ -928,6 +890,7 @@ function renderGroupedRows<T>({
     let previousGroupKey: string | null = null;
 
     return renderedRows.map(({ row, key }, index) => {
+        const absoluteIndex = rowStartIndex + index;
         const group = rowGroup?.(row) ?? null;
         const showGroup = group && group.key !== previousGroupKey;
         if (group) previousGroupKey = group.key;
@@ -942,28 +905,23 @@ function renderGroupedRows<T>({
                         </td>
                     </tr>
                 ) : null}
-                <DataTableRow
+                <MemoizedDataTableRow
+                    id={`${gridId}-row-${absoluteIndex}`}
+                    rowIndex={absoluteIndex + 2}
+                    rowKey={key}
                     row={row}
                     columns={columns}
-                    active={index === activeRowIndex}
+                    active={absoluteIndex === activeRowIndex}
                     expanded={expanded}
-                    expansion={
-                        expansion
-                            ? {
-                                  ...expansion,
-                                  expandLabel: expansion.expandLabel ?? copy.table.expandRow,
-                                  collapseLabel: expansion.collapseLabel ?? copy.table.collapseRow,
-                              }
-                            : undefined
-                    }
+                    expansion={expansion}
                     selected={selectedSet.has(key)}
                     selectable={selectable}
                     canSelect={canSelect}
-                    onToggle={() => onSelectToggle(key)}
-                    onExpandToggle={() => onExpandToggle(key)}
+                    onToggle={onSelectToggle}
+                    onExpandToggle={onExpandToggle}
                     onRowClick={onRowClick}
-                    actions={rowContextMenuActions?.(row) ?? []}
-                    selectLabel={copy.table.selectRow}
+                    getActions={rowContextMenuActions}
+                    selectLabel={selectRowLabel}
                 />
                 {expanded && expansion ? (
                     <tr className="oui-data-table-expanded-row" role="row">
@@ -992,6 +950,10 @@ function normalizeSort(
 ): DataTableSort[] {
     if (!sort) return [];
     return Array.isArray(sort) ? [...(sort as DataTableSort[])] : [sort as DataTableSort];
+}
+
+function stableScrollState(current: { top: number; height: number }, top: number, height: number) {
+    return current.top === top && current.height === height ? current : { top, height };
 }
 
 function columnVisible<T>(column: DataTableColumn<T>, settings?: DataTableColumnSettings<T>) {

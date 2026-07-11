@@ -4,7 +4,10 @@ import {
     cloneElement,
     forwardRef,
     isValidElement,
-    useState,
+    useCallback,
+    useEffect,
+    useId,
+    useRef,
     type FocusEvent,
     type MouseEvent,
     type ReactElement,
@@ -14,6 +17,7 @@ import {
 
 import { type FloatingAlign, type FloatingSide } from '../../hooks/useFloatingPosition';
 import { useFloatingLayer } from '../../hooks/useFloatingLayer';
+import { useControllableState } from '../../hooks/useControllableState';
 import { composeRefs } from '../../utils/composeRefs';
 import { cn } from '../../utils/cn';
 import {
@@ -27,6 +31,7 @@ type TooltipTriggerProps = {
     ref?: Ref<HTMLElement>;
     className?: string;
     'data-testid'?: string;
+    'aria-describedby'?: string;
     onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
     onMouseLeave?: (event: MouseEvent<HTMLElement>) => void;
     onFocus?: (event: FocusEvent<HTMLElement>) => void;
@@ -44,6 +49,8 @@ export type TooltipProps = {
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: (open: boolean) => void;
+    delayDuration?: number;
+    closeDelay?: number;
     className?: string;
     testId?: string;
 };
@@ -55,23 +62,27 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
         side = 'top',
         align = 'center',
         sideOffset = 8,
-        avoidCollisions: _avoidCollisions,
-        collisionPadding: _collisionPadding,
+        avoidCollisions = true,
+        collisionPadding = 8,
         open,
         defaultOpen = false,
         onOpenChange,
+        delayDuration = 300,
+        closeDelay = 120,
         className,
         testId,
     },
     ref,
 ) {
     const overlay = useOverlayContext();
-    const [internalOpen, setInternalOpen] = useState(defaultOpen);
-    const actualOpen = open ?? internalOpen;
-    const setOpen = (nextOpen: boolean) => {
-        if (open === undefined) setInternalOpen(nextOpen);
-        onOpenChange?.(nextOpen);
-    };
+    const tooltipId = useId();
+    const openTimerRef = useRef<number | null>(null);
+    const closeTimerRef = useRef<number | null>(null);
+    const [actualOpen, setOpen] = useControllableState({
+        value: open,
+        defaultValue: defaultOpen,
+        onChange: onOpenChange,
+    });
     const { triggerRef, contentRef, present, state, style } = useFloatingLayer<
         HTMLSpanElement,
         HTMLDivElement
@@ -81,20 +92,70 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
         side,
         align,
         sideOffset,
+        avoidCollisions,
+        collisionPadding,
     });
     const layerIndex = useOverlayLayerIndex(present);
-    const triggerHandlers = {
-        onMouseEnter: () => setOpen(true),
-        onMouseLeave: () => setOpen(false),
-        onFocus: (event: FocusEvent<HTMLElement>) => {
-            if (isKeyboardFocus(event.currentTarget)) setOpen(true);
+    const clearOpenTimer = useCallback(() => {
+        if (openTimerRef.current === null) return;
+        window.clearTimeout(openTimerRef.current);
+        openTimerRef.current = null;
+    }, []);
+    const clearCloseTimer = useCallback(() => {
+        if (closeTimerRef.current === null) return;
+        window.clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+    }, []);
+    const scheduleOpen = useCallback(() => {
+        clearCloseTimer();
+        clearOpenTimer();
+        if (delayDuration <= 0) {
+            setOpen(true);
+            return;
+        }
+        openTimerRef.current = window.setTimeout(() => {
+            openTimerRef.current = null;
+            setOpen(true);
+        }, delayDuration);
+    }, [clearCloseTimer, clearOpenTimer, delayDuration, setOpen]);
+    const scheduleClose = useCallback(() => {
+        clearOpenTimer();
+        clearCloseTimer();
+        if (closeDelay <= 0) {
+            setOpen(false);
+            return;
+        }
+        closeTimerRef.current = window.setTimeout(() => {
+            closeTimerRef.current = null;
+            setOpen(false);
+        }, closeDelay);
+    }, [clearCloseTimer, clearOpenTimer, closeDelay, setOpen]);
+
+    useEffect(
+        () => () => {
+            clearOpenTimer();
+            clearCloseTimer();
         },
-        onBlur: () => setOpen(false),
+        [clearCloseTimer, clearOpenTimer],
+    );
+
+    const triggerHandlers = {
+        onMouseEnter: scheduleOpen,
+        onMouseLeave: scheduleClose,
+        onFocus: (event: FocusEvent<HTMLElement>) => {
+            if (isKeyboardFocus(event.currentTarget)) {
+                clearOpenTimer();
+                clearCloseTimer();
+                setOpen(true);
+            }
+        },
+        onBlur: scheduleClose,
     };
     const trigger = isValidElement(children) ? (
         cloneTooltipTrigger(children as ReactElement<TooltipTriggerProps>, {
             ref: composeRefs(triggerRef, ref),
             testId,
+            describedBy: tooltipId,
             ...triggerHandlers,
         })
     ) : (
@@ -102,6 +163,7 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
             ref={composeRefs(triggerRef, ref)}
             className="oui-tooltip-trigger"
             data-testid={testId}
+            aria-describedby={tooltipId}
             {...triggerHandlers}
         >
             {children}
@@ -116,14 +178,18 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
                     <div
                         ref={contentRef}
                         role="tooltip"
+                        id={tooltipId}
                         className={cn('oui-tooltip-content', className)}
                         data-state={state}
                         data-layer="dropdown"
+                        data-oui-layer-index={layerIndex}
                         data-testid={testId ? `${testId}-content` : undefined}
                         style={{
                             ...style,
                             zIndex: overlayLayerZIndex(overlay.zIndex, 'dropdown', layerIndex),
                         }}
+                        onMouseEnter={clearCloseTimer}
+                        onMouseLeave={scheduleClose}
                     >
                         {content}
                     </div>
@@ -142,12 +208,14 @@ function cloneTooltipTrigger(
         onMouseLeave,
         onFocus,
         onBlur,
-    }: TooltipTriggerProps & { testId?: string },
+        describedBy,
+    }: TooltipTriggerProps & { testId?: string; describedBy: string },
 ) {
     return cloneElement(trigger, {
         ref: composeRefs(trigger.props.ref, ref),
         className: cn('oui-tooltip-trigger', trigger.props.className),
         'data-testid': testId,
+        'aria-describedby': describedBy,
         onMouseEnter: (event) => {
             trigger.props.onMouseEnter?.(event);
             onMouseEnter?.(event);

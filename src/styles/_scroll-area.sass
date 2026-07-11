@@ -12,6 +12,14 @@
     scrollbar-width: thin
     scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-border-strong)) var(--oui-scrollbar-track, transparent)
 
+.oui-scroll-area-content
+    min-width: 100%
+    min-height: 100%
+
+.oui-scroll-area[data-scrollbars="horizontal"] > .oui-scroll-area-viewport > .oui-scroll-area-content,
+.oui-scroll-area[data-scrollbars="both"] > .oui-scroll-area-viewport > .oui-scroll-area-content
+    display: table
+
 .oui-scroll-area[data-scrollbars="vertical"] > .oui-scroll-area-viewport
     overflow-x: hidden
     overflow-y: auto
@@ -23,11 +31,23 @@
 .oui-scroll-area[data-scrollbars="both"] > .oui-scroll-area-viewport
     overflow: auto
 
-.oui-scroll-area[data-scrollbars="vertical"][data-type="scroll"] > .oui-scroll-area-viewport
+.oui-scroll-area[data-scrollbars="vertical"][data-type="always"] > .oui-scroll-area-viewport
     overflow-y: scroll
 
-.oui-scroll-area[data-scrollbars="horizontal"][data-type="scroll"] > .oui-scroll-area-viewport
+.oui-scroll-area[data-scrollbars="horizontal"][data-type="always"] > .oui-scroll-area-viewport
     overflow-x: scroll
+
+.oui-scroll-area[data-scrollbars="both"][data-type="always"] > .oui-scroll-area-viewport
+    overflow: scroll
+
+.oui-scroll-area[data-type="hover"] > .oui-scroll-area-viewport,
+.oui-scroll-area[data-type="scroll"] > .oui-scroll-area-viewport
+    scrollbar-color: transparent transparent
+
+.oui-scroll-area[data-type="hover"]:hover > .oui-scroll-area-viewport,
+.oui-scroll-area[data-type="hover"]:focus-within > .oui-scroll-area-viewport,
+.oui-scroll-area[data-type="scroll"][data-scrolling="true"] > .oui-scroll-area-viewport
+    scrollbar-color: var(--oui-scrollbar-thumb, var(--oui-border-strong)) var(--oui-scrollbar-track, transparent)
 
 .oui-scroll-area-highlight-overlay
     position: absolute
@@ -68,6 +88,15 @@
     background-color: var(--oui-scrollbar-thumb, var(--oui-border-strong))
     background-clip: content-box
     transition: background-color 180ms ease
+
+.oui-scroll-area[data-type="hover"] > .oui-scroll-area-viewport::-webkit-scrollbar-thumb,
+.oui-scroll-area[data-type="scroll"] > .oui-scroll-area-viewport::-webkit-scrollbar-thumb
+    background-color: transparent
+
+.oui-scroll-area[data-type="hover"]:hover > .oui-scroll-area-viewport::-webkit-scrollbar-thumb,
+.oui-scroll-area[data-type="hover"]:focus-within > .oui-scroll-area-viewport::-webkit-scrollbar-thumb,
+.oui-scroll-area[data-type="scroll"][data-scrolling="true"] > .oui-scroll-area-viewport::-webkit-scrollbar-thumb
+    background-color: var(--oui-scrollbar-thumb, var(--oui-border-strong))
 
 .oui-scroll-area-viewport::-webkit-scrollbar-thumb:hover,
 .oui-combobox-scroll::-webkit-scrollbar-thumb:hover,

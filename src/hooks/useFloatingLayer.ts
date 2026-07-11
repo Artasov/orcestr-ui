@@ -13,6 +13,7 @@ type UseFloatingLayerOptions = {
     sideOffset?: number;
     collisionPadding?: number;
     matchTriggerWidth?: boolean;
+    avoidCollisions?: boolean;
 };
 
 export function useFloatingLayer<TTrigger extends HTMLElement, TContent extends HTMLElement>({
@@ -23,6 +24,7 @@ export function useFloatingLayer<TTrigger extends HTMLElement, TContent extends 
     sideOffset = 8,
     collisionPadding = 8,
     matchTriggerWidth = false,
+    avoidCollisions = true,
 }: UseFloatingLayerOptions) {
     const triggerRef = useRef<TTrigger | null>(null);
     const contentRef = useRef<TContent | null>(null);
@@ -36,6 +38,7 @@ export function useFloatingLayer<TTrigger extends HTMLElement, TContent extends 
         sideOffset,
         collisionPadding,
         matchTriggerWidth,
+        avoidCollisions,
     });
 
     return {
