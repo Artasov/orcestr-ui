@@ -11,7 +11,7 @@
 # Orcestr UI
 
 [![npm](https://img.shields.io/npm/v/@orcestr/ui)](https://www.npmjs.com/package/@orcestr/ui)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](./LICENSE)
 
 ## [Live Demo](https://orcestr.com/ui)
 
@@ -147,6 +147,8 @@ Workflow перед публикацией запускает typecheck, tests, 
 
 Публичные обновления ведет [@Artasov](https://github.com/Artasov).
 
-## License
+## Лицензия
 
-MIT. См. [LICENSE](./LICENSE).
+Проект распространяется по [Mozilla Public License 2.0](./LICENSE). Коммерческое использование
+разрешено; изменения файлов под MPL остаются на условиях MPL. Авторство указано в
+[NOTICE](./NOTICE), правила использования бренда — в [TRADEMARKS.md](./TRADEMARKS.md).

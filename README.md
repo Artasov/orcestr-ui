@@ -11,7 +11,7 @@
 # Orcestr UI
 
 [![npm](https://img.shields.io/npm/v/@orcestr/ui)](https://www.npmjs.com/package/@orcestr/ui)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](./LICENSE)
 
 ## [Live Demo](https://orcestr.com/ui)
 
@@ -149,4 +149,6 @@ Public updates are maintained by [@Artasov](https://github.com/Artasov).
 
 ## License
 
-MIT. See [LICENSE](./LICENSE).
+Licensed under the [Mozilla Public License 2.0](./LICENSE). Commercial use is permitted; changes
+to MPL-covered files remain subject to the MPL. See [NOTICE](./NOTICE) for attribution and
+[TRADEMARKS.md](./TRADEMARKS.md) for brand-use rules.
