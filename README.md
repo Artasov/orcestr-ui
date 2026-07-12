@@ -26,8 +26,8 @@ Main website: [orcestr.com](https://orcestr.com)
 | Item    | Value                                     |
 | ------- | ----------------------------------------- |
 | Package | `@orcestr/ui`                             |
-| Version | `0.2.3`                                   |
-| Status  | Dev / Beta                                |
+| Version | `0.3.0`                                   |
+| Status  | Beta                                      |
 | Runtime | React 19                                  |
 | Styling | bundled CSS from `@orcestr/ui/styles.css` |
 
@@ -132,11 +132,11 @@ npm run release:minor
 npm run release:major
 ```
 
-Each helper updates `package.json` and `package-lock.json`, creates a release commit and creates a tag such as `ui-v0.2.3`.
+Each helper updates `package.json` and `package-lock.json`, creates a release commit and creates a tag such as `ui-v0.3.1`.
 
 ```bash
 git push
-git push origin ui-v0.2.3
+git push origin ui-v0.3.1
 ```
 
 The workflow runs typecheck, tests, build and `npm pack --dry-run` before publishing.

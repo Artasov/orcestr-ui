@@ -26,8 +26,8 @@
 | Пункт   | Значение                        |
 | ------- | ------------------------------- |
 | Package | `@orcestr/ui`                   |
-| Version | `0.2.3`                         |
-| Status  | Dev / Beta                      |
+| Version | `0.3.0`                         |
+| Status  | Beta                            |
 | Runtime | React 19                        |
 | Styling | CSS из `@orcestr/ui/styles.css` |
 
@@ -132,11 +132,11 @@ npm run release:minor
 npm run release:major
 ```
 
-Каждый helper обновляет `package.json` и `package-lock.json`, создает release commit и tag вроде `ui-v0.2.3`.
+Каждый helper обновляет `package.json` и `package-lock.json`, создает release commit и tag вроде `ui-v0.3.1`.
 
 ```bash
 git push
-git push origin ui-v0.2.3
+git push origin ui-v0.3.1
 ```
 
 Workflow перед публикацией запускает typecheck, tests, build и `npm pack --dry-run`.
