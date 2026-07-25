@@ -86,13 +86,19 @@
     line-height: 1.35
 
 .oui-special-modal-actions
+    position: relative
+    z-index: 1
     display: inline-flex
     flex: 0 0 auto
     align-items: center
     gap: 8px
 
 .oui-special-modal-close
+    position: relative
+    z-index: 1
+    flex: 0 0 auto
     border: 0
+    pointer-events: auto
 
 @media (max-width: 768px)
     .oui-special-modal-layer

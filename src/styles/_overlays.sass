@@ -676,7 +676,7 @@
 
 .oui-menu-subcontent
     position: absolute
-    top: -4px
+    top: calc(-4px + var(--oui-menu-submenu-shift-y, 0px))
     left: calc(100% + 6px)
     min-width: 220px
     max-width: min(360px, calc(100vw - 24px))
@@ -790,8 +790,13 @@
     height: calc(100% + 8px)
     content: ""
 
+.oui-menu-row[data-submenu-side="left"]:hover::after,
+.oui-menu-row[data-submenu-side="left"]:focus-within::after
+    right: auto
+    left: -8px
+
 .oui-menu-subcontent
-    left: calc(100% + 4px)
+    left: calc(100% + 4px + var(--oui-menu-submenu-shift-x, 0px))
     border-color: color-mix(in srgb, var(--oui-border-strong) 48%, transparent)
     border-radius: 6px
     opacity: 0
@@ -799,6 +804,11 @@
     transform: translateX(-4px) scale(.98)
     transform-origin: left top
     will-change: opacity, transform
+
+.oui-menu-subcontent[data-side="left"]
+    right: calc(100% + 4px - var(--oui-menu-submenu-shift-x, 0px))
+    left: auto
+    transform-origin: right top
 
 .oui-menu-subcontent[data-state="opening"]
     animation: ouiSubmenuIn 180ms cubic-bezier(.22, 1, .36, 1) forwards

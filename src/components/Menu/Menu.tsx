@@ -3,9 +3,11 @@
 import {
     useCallback,
     useEffect,
+    useLayoutEffect,
     useMemo,
     useRef,
     useState,
+    type CSSProperties,
     type KeyboardEvent,
     type ReactNode,
 } from 'react';
@@ -25,6 +27,7 @@ import { ActionConfirmModal } from '../Action/ActionConfirmModal';
 import { Popover, type PopoverProps } from '../Popover/Popover';
 import { Spinner } from '../Spinner/Spinner';
 import { Tooltip } from '../Tooltip/Tooltip';
+import { resolveMenuSubmenuPlacement, type MenuSubmenuPlacement } from './menuPlacement';
 
 export type MenuItem = OrcestrActionItem;
 
@@ -254,14 +257,60 @@ function MenuRow({
     clearHighlighted: () => void;
     testId?: string;
 }) {
+    const rowRef = useRef<HTMLDivElement | null>(null);
+    const submenuRef = useRef<HTMLDivElement | null>(null);
     const [hoverOpen, setHoverOpen] = useState(false);
+    const [submenuPlacement, setSubmenuPlacement] = useState<MenuSubmenuPlacement>({
+        side: 'right',
+        shiftX: 0,
+        shiftY: 0,
+    });
     const hasChildren = Boolean(item.children?.length);
     const inlineOpen = inlineState.openSubmenus.has(item.key);
     const submenuPresence = usePresence(hoverOpen, 180);
 
+    useLayoutEffect(() => {
+        if (!submenuPresence.present || inlineState.inlineSubmenus) return;
+
+        const updatePlacement = () => {
+            const row = rowRef.current;
+            const submenu = submenuRef.current;
+            if (!row || !submenu) return;
+            const rowRect = row.getBoundingClientRect();
+            const submenuRect = submenu.getBoundingClientRect();
+
+            setSubmenuPlacement((current) => {
+                const next = resolveMenuSubmenuPlacement({
+                    rowLeft: rowRect.left,
+                    rowRight: rowRect.right,
+                    submenuWidth: submenuRect.width,
+                    submenuTop: submenuRect.top - current.shiftY,
+                    submenuBottom: submenuRect.bottom - current.shiftY,
+                    viewportWidth: window.innerWidth,
+                    viewportHeight: window.innerHeight,
+                });
+                return next.side === current.side &&
+                    next.shiftX === current.shiftX &&
+                    next.shiftY === current.shiftY
+                    ? current
+                    : next;
+            });
+        };
+
+        updatePlacement();
+        window.addEventListener('resize', updatePlacement);
+        window.addEventListener('scroll', updatePlacement, true);
+        return () => {
+            window.removeEventListener('resize', updatePlacement);
+            window.removeEventListener('scroll', updatePlacement, true);
+        };
+    }, [inlineState.inlineSubmenus, submenuPresence.present]);
+
     return (
         <div
+            ref={rowRef}
             className="oui-menu-row"
+            data-submenu-side={hasChildren ? submenuPlacement.side : undefined}
             onMouseEnter={() => {
                 setHighlighted();
                 setHoverOpen(true);
@@ -325,9 +374,17 @@ function MenuRow({
                     </div>
                 ) : submenuPresence.present ? (
                     <div
+                        ref={submenuRef}
                         className="oui-menu-subcontent oui-popover-content"
                         data-state={submenuPresence.state}
+                        data-side={submenuPlacement.side}
                         data-testid={testId ? `${testId}-subcontent` : undefined}
+                        style={
+                            {
+                                '--oui-menu-submenu-shift-x': `${submenuPlacement.shiftX}px`,
+                                '--oui-menu-submenu-shift-y': `${submenuPlacement.shiftY}px`,
+                            } as CSSProperties
+                        }
                     >
                         <MenuList
                             items={item.children}
