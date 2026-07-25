@@ -4,7 +4,10 @@ import { test } from 'node:test';
 
 const source = readFileSync(new URL('./SpecialModal.tsx', import.meta.url), 'utf8');
 const styles = readFileSync(new URL('../../styles/_special-modal.sass', import.meta.url), 'utf8');
-const scrollAreaStyles = readFileSync(new URL('../../styles/_scroll-area.sass', import.meta.url), 'utf8');
+const scrollAreaStyles = readFileSync(
+    new URL('../../styles/_scroll-area.sass', import.meta.url),
+    'utf8',
+);
 const barrel = readFileSync(new URL('../../index.ts', import.meta.url), 'utf8');
 
 test('SpecialModal is a library-owned styled modal', () => {
