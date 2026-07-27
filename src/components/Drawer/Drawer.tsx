@@ -152,6 +152,11 @@ export function Drawer({
                         data-state={state}
                         data-testid={testId ? `${testId}-backdrop` : undefined}
                         style={backdropStyle}
+                        onPointerDown={(event) => {
+                            if (!closeOnBackdropClick) return;
+                            event.preventDefault();
+                            setOpen(false);
+                        }}
                         onClick={() => {
                             if (closeOnBackdropClick) setOpen(false);
                         }}

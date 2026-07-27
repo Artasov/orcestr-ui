@@ -490,6 +490,10 @@ test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigat
     const shellStyles = read('styles/_shell.sass');
     const drawerStyles = read('styles/_drawer.sass');
 
+    assert.match(
+        drawer,
+        /onPointerDown=\{\(event\) => \{[\s\S]*?event\.preventDefault\(\);[\s\S]*?setOpen\(false\);/,
+    );
     assert.match(page, /header=\{<UiExampleBrand \/>/);
     assert.doesNotMatch(page, /<UiExampleBrand compact \/>/);
     assert.match(page, /function UiExampleSidebar/);
