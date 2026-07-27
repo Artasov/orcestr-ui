@@ -48,6 +48,7 @@ test('new searches abort stale requests and pass pageSize to the loader', async 
     await waitFor(() => assert.ok(calls.some((call) => call.search === '')));
     await user.type(search, 'x');
     await waitFor(() => assert.ok(calls.some((call) => call.search === 'x')));
+    await screen.findByText('No options');
 
     assert.ok(aborted.includes(''));
     assert.ok(calls.every((call) => call.pageSize === 25));
