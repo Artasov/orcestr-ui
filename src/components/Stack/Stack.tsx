@@ -1,8 +1,8 @@
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 
-import { cn } from '../../utils/cn';
-import { Flex } from '../Flex/Flex';
-import type { SystemProps } from '../../theme/systemProps';
+import { cn } from '../../utils/cn.js';
+import { Flex } from '../Flex/Flex.js';
+import type { SystemProps } from '../../theme/systemProps.js';
 
 export type StackProps = ComponentPropsWithoutRef<'div'> &
     SystemProps & {

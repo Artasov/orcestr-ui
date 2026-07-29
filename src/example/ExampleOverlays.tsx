@@ -14,9 +14,9 @@ import {
     Text,
     TextField,
     type ModalProps,
-} from '..';
-import { getCommandItems } from './exampleData';
-import { type OrcestrUiLocale } from '..';
+} from '../index.js';
+import { getCommandItems } from './exampleData.js';
+import { type OrcestrUiLocale } from '../index.js';
 
 type ToastTone = 'info' | 'success' | 'danger';
 type SetOpen = (open: boolean) => void;

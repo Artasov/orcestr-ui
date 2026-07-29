@@ -2,14 +2,14 @@
 
 import type { ReactNode } from 'react';
 
-import type { UiSize } from '../../theme/systemProps';
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import type { UiSize } from '../../theme/systemProps.js';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
 import {
     PaginatedCombobox,
     type PaginatedComboboxOptionAction,
     type PaginatedComboboxProps,
     type PaginatedResult,
-} from '../PaginatedCombobox/PaginatedCombobox';
+} from '../PaginatedCombobox/PaginatedCombobox.js';
 
 export type EntityPickerCreateAction = {
     label?: string | ((search: string) => string);

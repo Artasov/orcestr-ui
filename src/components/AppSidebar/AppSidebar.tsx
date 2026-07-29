@@ -11,10 +11,10 @@ import {
     type ReactNode,
 } from 'react';
 
-import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
-import { cn } from '../../utils/cn';
-import { ScrollArea } from '../ScrollArea/ScrollArea';
-import { Separator } from '../Separator/Separator';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps.js';
+import { cn } from '../../utils/cn.js';
+import { ScrollArea } from '../ScrollArea/ScrollArea.js';
+import { Separator } from '../Separator/Separator.js';
 
 export type AppSidebarSide = 'left' | 'right';
 

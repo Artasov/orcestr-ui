@@ -12,11 +12,11 @@ import {
 } from 'react';
 import { LuCalendarDays, LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { Button } from '../Button/Button';
-import { IconButton } from '../IconButton/IconButton';
-import { Popover } from '../Popover/Popover';
-import { TextField } from '../TextField/TextField';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { Button } from '../Button/Button.js';
+import { IconButton } from '../IconButton/IconButton.js';
+import { Popover } from '../Popover/Popover.js';
+import { TextField } from '../TextField/TextField.js';
 import {
     calendarMonthState,
     clampDate,
@@ -30,7 +30,7 @@ import {
     shiftMonth,
     weekdayLabels,
     type DatePickerDisabledDate,
-} from './DatePickerState';
+} from './DatePickerState.js';
 
 export type DatePickerProps = {
     value: string;

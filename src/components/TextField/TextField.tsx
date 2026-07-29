@@ -11,10 +11,10 @@ import {
 } from 'react';
 import { LuX } from 'react-icons/lu';
 
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { cn } from '../../utils/cn';
-import { composeRefs } from '../../utils/composeRefs';
-import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { cn } from '../../utils/cn.js';
+import { composeRefs } from '../../utils/composeRefs.js';
+import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps.js';
 
 export type TextFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> &
     SystemProps & {

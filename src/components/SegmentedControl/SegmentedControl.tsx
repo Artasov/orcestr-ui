@@ -2,8 +2,8 @@
 
 import { Children, isValidElement, type ReactNode } from 'react';
 
-import type { UiSize } from '../../theme/systemProps';
-import { cn } from '../../utils/cn';
+import type { UiSize } from '../../theme/systemProps.js';
+import { cn } from '../../utils/cn.js';
 
 export type SegmentedControlItem = {
     value: string;

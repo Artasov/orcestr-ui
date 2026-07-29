@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useId, useMemo, useRef, type KeyboardEvent } from 'react';
 
-import { useListNavigation } from '../../hooks/useListNavigation';
-import { useTypeahead } from '../../hooks/useTypeahead';
-import { cn } from '../../utils/cn';
+import { useListNavigation } from '../../hooks/useListNavigation.js';
+import { useTypeahead } from '../../hooks/useTypeahead.js';
+import { cn } from '../../utils/cn.js';
 
 export type ListboxItem = {
     value: string;

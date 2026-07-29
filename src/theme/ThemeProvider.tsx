@@ -3,15 +3,15 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
 
-import { themeByMode } from './defaultTheme';
-import { OrcestrThemeContext } from './useTheme';
-import { cn } from '../utils/cn';
+import { themeByMode } from './defaultTheme.js';
+import { OrcestrThemeContext } from './useTheme.js';
+import { cn } from '../utils/cn.js';
 import type {
     OrcestrTheme,
     OrcestrThemeMode,
     OrcestrThemeProviderProps,
     OrcestrThemeSurface,
-} from './themeTypes';
+} from './themeTypes.js';
 
 export function OrcestrThemeProvider({
     children,

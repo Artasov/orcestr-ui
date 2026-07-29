@@ -1,4 +1,4 @@
-import type { DataTableSort } from './DataTable';
+import type { DataTableSort } from './DataTable.js';
 
 export type DataTablePreferenceScope = {
     tableKey: string;

@@ -6,15 +6,15 @@ import {
     OrcestrUiLocaleProvider,
     type OrcestrUiCopy,
     type OrcestrUiLocale,
-} from '../locale/LocaleProvider';
-import { OverlayProvider, type OverlayZIndex } from '../components/Overlay/OverlayProvider';
-import { ToastProvider, type ToastPosition } from '../components/Toast/Toast';
-import { OrcestrThemeProvider } from '../theme/ThemeProvider';
+} from '../locale/LocaleProvider.js';
+import { OverlayProvider, type OverlayZIndex } from '../components/Overlay/OverlayProvider.js';
+import { ToastProvider, type ToastPosition } from '../components/Toast/Toast.js';
+import { OrcestrThemeProvider } from '../theme/ThemeProvider.js';
 import type {
     OrcestrThemeMode,
     OrcestrThemeOverrides,
     OrcestrThemeSurface,
-} from '../theme/themeTypes';
+} from '../theme/themeTypes.js';
 
 export type OrcestrUiProviderProps = {
     children: ReactNode;

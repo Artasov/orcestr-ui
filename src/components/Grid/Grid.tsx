@@ -1,7 +1,7 @@
 import { forwardRef, type CSSProperties, type ComponentPropsWithoutRef } from 'react';
 
-import { cn } from '../../utils/cn';
-import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
+import { cn } from '../../utils/cn.js';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps.js';
 
 export type GridProps = ComponentPropsWithoutRef<'div'> &
     SystemProps & {

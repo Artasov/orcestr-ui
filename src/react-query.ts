@@ -1,1 +1,1 @@
-export * from './components/PaginatedCombobox/PaginatedComboboxReactQueryAdapter';
+export * from './components/PaginatedCombobox/PaginatedComboboxReactQueryAdapter.js';

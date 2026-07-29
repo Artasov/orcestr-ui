@@ -1,5 +1,5 @@
-import { cn } from '../../utils/cn';
-import type { UiSize } from '../../theme/systemProps';
+import { cn } from '../../utils/cn.js';
+import type { UiSize } from '../../theme/systemProps.js';
 import type { CSSProperties } from 'react';
 
 export function Spinner({

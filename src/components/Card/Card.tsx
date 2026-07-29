@@ -6,9 +6,9 @@ import {
     type ReactNode,
 } from 'react';
 
-import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps';
-import { cn } from '../../utils/cn';
-import { renderSlot } from '../../utils/slot';
+import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps.js';
+import { cn } from '../../utils/cn.js';
+import { renderSlot } from '../../utils/slot.js';
 
 export type CardVariant = 'ghost' | 'surface' | 'soft' | 'classic';
 

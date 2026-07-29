@@ -6,12 +6,12 @@ import { setupDom } from '../../test-utils/dom.mts';
 
 const restoreDom = setupDom();
 const { cleanup, render, screen } = await import('@testing-library/react');
-const userEvent = (await import('@testing-library/user-event')).default;
+const { userEvent } = await import('@testing-library/user-event');
 
 afterEach(cleanup);
 after(restoreDom);
 
-const { Tabs } = await import('./Tabs');
+const { Tabs } = await import('./Tabs.js');
 
 test('compound tabs use roving focus and linked tabpanel ids', async () => {
     render(

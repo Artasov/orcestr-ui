@@ -3,13 +3,13 @@
 import type { ReactNode } from 'react';
 import { LuX } from 'react-icons/lu';
 
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import type { Tone } from '../../theme/systemProps';
-import { Button } from '../Button/Button';
-import { Flex } from '../Flex/Flex';
-import { IconButton } from '../IconButton/IconButton';
-import { Modal, type ModalProps } from '../Modal/Modal';
-import { Text } from '../Text/Text';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import type { Tone } from '../../theme/systemProps.js';
+import { Button } from '../Button/Button.js';
+import { Flex } from '../Flex/Flex.js';
+import { IconButton } from '../IconButton/IconButton.js';
+import { Modal, type ModalProps } from '../Modal/Modal.js';
+import { Text } from '../Text/Text.js';
 
 export type ConfirmDialogTone = Tone;
 

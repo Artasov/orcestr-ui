@@ -1,7 +1,7 @@
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 
-import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps';
-import { cn } from '../../utils/cn';
+import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps.js';
+import { cn } from '../../utils/cn.js';
 
 type Align = 'left' | 'center' | 'right';
 

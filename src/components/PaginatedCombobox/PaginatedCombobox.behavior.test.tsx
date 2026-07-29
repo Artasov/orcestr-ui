@@ -5,13 +5,13 @@ import { setupDom } from '../../test-utils/dom.mts';
 
 const restoreDom = setupDom();
 const { cleanup, render, screen, waitFor } = await import('@testing-library/react');
-const userEvent = (await import('@testing-library/user-event')).default;
+const { userEvent } = await import('@testing-library/user-event');
 
 afterEach(cleanup);
 after(restoreDom);
 
-const { OrcestrUiProvider } = await import('../../provider/OrcestrUiProvider');
-const { PaginatedCombobox } = await import('./PaginatedCombobox');
+const { OrcestrUiProvider } = await import('../../provider/OrcestrUiProvider.js');
+const { PaginatedCombobox } = await import('./PaginatedCombobox.js');
 
 test('new searches abort stale requests and pass pageSize to the loader', async () => {
     const calls: Array<{ search: string; pageSize?: number }> = [];

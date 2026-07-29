@@ -19,10 +19,10 @@ import {
     Text,
     TopHighlight,
     BottomHighlight,
-} from '..';
-import { ExampleTile } from './CodePreview';
-import { codeSamples, type CodeExample } from './codeSamples';
-import { UiExampleSection } from './UiExampleSection';
+} from '../index.js';
+import { ExampleTile } from './CodePreview.js';
+import { codeSamples, type CodeExample } from './codeSamples.js';
+import { UiExampleSection } from './UiExampleSection.js';
 
 type ExampleSectionProps = {
     onOpenCode: (example: CodeExample) => void;

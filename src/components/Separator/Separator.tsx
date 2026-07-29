@@ -1,7 +1,7 @@
 import type { HTMLAttributes } from 'react';
 
-import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
-import { cn } from '../../utils/cn';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps.js';
+import { cn } from '../../utils/cn.js';
 
 export function Separator({
     orientation = 'horizontal',

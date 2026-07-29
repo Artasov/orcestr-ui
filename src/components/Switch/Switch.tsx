@@ -8,7 +8,7 @@ import {
     type ReactNode,
 } from 'react';
 
-import { cn } from '../../utils/cn';
+import { cn } from '../../utils/cn.js';
 
 export type SwitchProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> & {
     label?: ReactNode;

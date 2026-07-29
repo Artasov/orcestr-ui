@@ -1,8 +1,8 @@
 import { forwardRef, type ComponentPropsWithoutRef, type ElementType, type Ref } from 'react';
 
-import { cn } from '../../utils/cn';
-import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
-import { renderSlot } from '../../utils/slot';
+import { cn } from '../../utils/cn.js';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps.js';
+import { renderSlot } from '../../utils/slot.js';
 
 export type BoxProps = ComponentPropsWithoutRef<'div'> &
     SystemProps & {

@@ -3,11 +3,11 @@
 import { useId, useMemo, useState, type ReactNode } from 'react';
 import { LuChevronsUpDown, LuX } from 'react-icons/lu';
 
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { Button } from '../Button/Button';
-import { Listbox, type ListboxItem } from '../Listbox/Listbox';
-import { Popover } from '../Popover/Popover';
-import { TextField } from '../TextField/TextField';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { Button } from '../Button/Button.js';
+import { Listbox, type ListboxItem } from '../Listbox/Listbox.js';
+import { Popover } from '../Popover/Popover.js';
+import { TextField } from '../TextField/TextField.js';
 
 export function Combobox({
     items,

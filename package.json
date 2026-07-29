@@ -51,9 +51,10 @@
   },
   "scripts": {
     "clean": "node -e \"require('fs').rmSync('dist', {recursive: true, force: true})\"",
-    "build": "npm run clean && tsc -p tsconfig.build.json && npm run build:styles",
+    "build": "npm run clean && tsc -p tsconfig.build.json && npm run build:styles && npm run check:package",
     "build:styles": "sass src/styles/orcestr-ui.sass dist/styles/orcestr-ui.css --style=compressed --no-source-map && sass src/example/styles.sass dist/example/styles.css --style=compressed --no-source-map",
     "check:bundle": "node scripts/check-bundle-size.mjs",
+    "check:package": "node scripts/check-package-exports.mjs",
     "check": "npm run typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,mts,cts,js,jsx,mjs,cjs,json,md,yml,yaml}\"",

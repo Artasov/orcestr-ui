@@ -83,7 +83,10 @@ test('BadgeSelectMenu uses the shared selection dropdown surface', () => {
     assert.match(source, /export type BadgeSelectItem/);
     assert.match(source, /export function BadgeSelectMenu/);
     assert.match(source, /className=["\']oui-combobox-option oui-badge-select-option["\']/);
-    assert.match(barrel, /export \* from '\.\/components\/BadgeSelectMenu\/BadgeSelectMenu';/);
+    assert.match(
+        barrel,
+        /export \* from '\.\/components\/BadgeSelectMenu\/BadgeSelectMenu\.js';/,
+    );
 });
 
 test('PaginatedCombobox exposes retry contract for failed page loads', () => {
@@ -112,7 +115,7 @@ test('PaginatedCombobox react-query adapter stays public', () => {
     );
     assert.match(
         adapterEntry,
-        /export \* from '\.\/components\/PaginatedCombobox\/PaginatedComboboxReactQueryAdapter';/,
+        /export \* from '\.\/components\/PaginatedCombobox\/PaginatedComboboxReactQueryAdapter\.js';/,
     );
     assert.match(adapterSource, /queryKey: TQueryKey \| \(\(params:/);
     assert.match(adapterSource, /const optionsRef = useRef/);

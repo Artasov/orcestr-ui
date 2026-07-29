@@ -18,21 +18,21 @@ import {
     type Ref,
 } from 'react';
 
-import { useDisclosure } from '../../hooks/useDisclosure';
-import type { OpenAutoFocusEvent } from '../../hooks/useFocusTrap';
-import { type FloatingAlign, type FloatingSide } from '../../hooks/useFloatingPosition';
-import { useFloatingLayer } from '../../hooks/useFloatingLayer';
-import { useOutsidePointerDown } from '../../hooks/useOutsidePointerDown';
-import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
-import { OrcestrThemeContext } from '../../theme/useTheme';
-import { composeRefs } from '../../utils/composeRefs';
-import { cn } from '../../utils/cn';
+import { useDisclosure } from '../../hooks/useDisclosure.js';
+import type { OpenAutoFocusEvent } from '../../hooks/useFocusTrap.js';
+import { type FloatingAlign, type FloatingSide } from '../../hooks/useFloatingPosition.js';
+import { useFloatingLayer } from '../../hooks/useFloatingLayer.js';
+import { useOutsidePointerDown } from '../../hooks/useOutsidePointerDown.js';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps.js';
+import { OrcestrThemeContext } from '../../theme/useTheme.js';
+import { composeRefs } from '../../utils/composeRefs.js';
+import { cn } from '../../utils/cn.js';
 import {
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
-} from '../Overlay/OverlayProvider';
-import { Portal } from '../Portal/Portal';
+} from '../Overlay/OverlayProvider.js';
+import { Portal } from '../Portal/Portal.js';
 
 type TriggerElementProps = {
     ref?: Ref<HTMLElement>;

@@ -11,8 +11,8 @@ import {
     type Ref,
 } from 'react';
 
-import { cn } from './cn';
-import { composeRefs } from './composeRefs';
+import { cn } from './cn.js';
+import { composeRefs } from './composeRefs.js';
 
 type SlotChildProps = HTMLAttributes<HTMLElement> & {
     ref?: Ref<HTMLElement>;

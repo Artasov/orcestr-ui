@@ -1,7 +1,7 @@
 import { forwardRef, type ComponentPropsWithoutRef, type CSSProperties } from 'react';
 
-import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
-import { cn } from '../../utils/cn';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps.js';
+import { cn } from '../../utils/cn.js';
 
 export type HighlightProps = ComponentPropsWithoutRef<'div'> &
     SystemProps & {

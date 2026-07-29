@@ -1,7 +1,7 @@
 import { cloneElement, isValidElement, useId, type ReactElement, type ReactNode } from 'react';
 
-import { cn } from '../../utils/cn';
-import { Text } from '../Text/Text';
+import { cn } from '../../utils/cn.js';
+import { Text } from '../Text/Text.js';
 
 export function Field({
     label,

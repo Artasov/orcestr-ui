@@ -3,9 +3,9 @@
 import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
 import { LuInfo, LuX } from 'react-icons/lu';
 
-import { CopyIconButton, Flex, IconButton, Modal, ScrollArea } from '..';
-import { cn } from '../utils/cn';
-import { type CodeExample } from './codeSamples';
+import { CopyIconButton, Flex, IconButton, Modal, ScrollArea } from '../index.js';
+import { cn } from '../utils/cn.js';
+import { type CodeExample } from './codeSamples.js';
 
 function highlightedCode(code: string): ReactNode[] {
     const tokenPattern =

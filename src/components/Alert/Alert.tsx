@@ -7,9 +7,9 @@ import {
     splitSystemProps,
     type SystemProps,
     type ToneInput,
-} from '../../theme/systemProps';
-import { cn } from '../../utils/cn';
-import { stateIcon } from '../State/stateIcon';
+} from '../../theme/systemProps.js';
+import { cn } from '../../utils/cn.js';
+import { stateIcon } from '../State/stateIcon.js';
 
 export type AlertProps = Omit<HTMLAttributes<HTMLDivElement>, 'title'> &
     SystemProps & {

@@ -13,16 +13,16 @@ import {
     type Ref,
 } from 'react';
 
-import { cn } from '../../utils/cn';
-import { composeRefs } from '../../utils/composeRefs';
-import { ActionConfirmModal } from '../Action/ActionConfirmModal';
-import { MenuContent, type MenuItem } from '../Menu/Menu';
+import { cn } from '../../utils/cn.js';
+import { composeRefs } from '../../utils/composeRefs.js';
+import { ActionConfirmModal } from '../Action/ActionConfirmModal.js';
+import { MenuContent, type MenuItem } from '../Menu/Menu.js';
 import {
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
-} from '../Overlay/OverlayProvider';
-import { Portal } from '../Portal/Portal';
+} from '../Overlay/OverlayProvider.js';
+import { Portal } from '../Portal/Portal.js';
 
 type ContextMenuTriggerProps = {
     ref?: Ref<HTMLElement>;

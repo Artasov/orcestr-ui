@@ -1,9 +1,9 @@
 'use client';
 
-import { Badge, Stack, Text } from '..';
-import { ExampleTile } from './CodePreview';
-import { type CodeExample } from './codeSamples';
-import { UiExampleSection } from './UiExampleSection';
+import { Badge, Stack, Text } from '../index.js';
+import { ExampleTile } from './CodePreview.js';
+import { type CodeExample } from './codeSamples.js';
+import { UiExampleSection } from './UiExampleSection.js';
 
 const providerSample: CodeExample = {
     title: 'OrcestrUiProvider',

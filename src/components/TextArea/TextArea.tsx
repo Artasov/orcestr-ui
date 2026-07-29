@@ -2,9 +2,9 @@
 
 import { forwardRef, useLayoutEffect, useRef, type TextareaHTMLAttributes } from 'react';
 
-import { cn } from '../../utils/cn';
-import { composeRefs } from '../../utils/composeRefs';
-import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps';
+import { cn } from '../../utils/cn.js';
+import { composeRefs } from '../../utils/composeRefs.js';
+import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps.js';
 
 export type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> &
     SystemProps & {

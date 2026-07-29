@@ -2,9 +2,9 @@
 
 import { forwardRef, type ReactNode, type Ref } from 'react';
 
-import { cn } from '../../utils/cn';
-import { Button, type ButtonProps } from '../Button/Button';
-import { LinkButton, type LinkButtonProps } from '../LinkButton/LinkButton';
+import { cn } from '../../utils/cn.js';
+import { Button, type ButtonProps } from '../Button/Button.js';
+import { LinkButton, type LinkButtonProps } from '../LinkButton/LinkButton.js';
 
 type IconTextButtonOwnProps = {
     icon?: ReactNode;

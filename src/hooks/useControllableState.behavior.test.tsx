@@ -9,7 +9,7 @@ const { act, cleanup, renderHook } = await import('@testing-library/react');
 afterEach(cleanup);
 after(restoreDom);
 
-const { useControllableState } = await import('./useControllableState');
+const { useControllableState } = await import('./useControllableState.js');
 
 test('controllable setter is stable and chains functional updates from the latest value', () => {
     const { result } = renderHook(() =>

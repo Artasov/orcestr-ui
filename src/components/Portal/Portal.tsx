@@ -3,7 +3,7 @@
 import { useSyncExternalStore, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
-import { useOverlayContext } from '../Overlay/OverlayProvider';
+import { useOverlayContext } from '../Overlay/OverlayProvider.js';
 
 export function Portal({
     children,

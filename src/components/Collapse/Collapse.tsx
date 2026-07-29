@@ -2,7 +2,7 @@
 
 import { type CSSProperties, type ReactNode } from 'react';
 
-import { cn } from '../../utils/cn';
+import { cn } from '../../utils/cn.js';
 
 export type CollapseProps = {
     open: boolean;

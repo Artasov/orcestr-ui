@@ -2,11 +2,11 @@
 
 import { LuCalendarDays } from 'react-icons/lu';
 
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { IconButton } from '../IconButton/IconButton';
-import { Menu, type MenuItem } from '../Menu/Menu';
-import type { DateRangePickerValue } from '../DateRangePicker/DateRangePicker';
-import { resolveDateRangePreset } from './DateRangePresetPickerState';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { IconButton } from '../IconButton/IconButton.js';
+import { Menu, type MenuItem } from '../Menu/Menu.js';
+import type { DateRangePickerValue } from '../DateRangePicker/DateRangePicker.js';
+import { resolveDateRangePreset } from './DateRangePresetPickerState.js';
 
 export type DateRangePreset = 'today' | 'week' | 'month';
 

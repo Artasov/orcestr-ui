@@ -1,6 +1,6 @@
-import type { DateRangePickerValue } from '../DateRangePicker/DateRangePicker';
+import type { DateRangePickerValue } from '../DateRangePicker/DateRangePicker.js';
 
-import type { DateRangePreset } from './DateRangePresetPicker';
+import type { DateRangePreset } from './DateRangePresetPicker.js';
 
 export function resolveDateRangePreset(
     preset: DateRangePreset,

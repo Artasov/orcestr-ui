@@ -11,19 +11,19 @@ import {
 } from 'react';
 import { LuX } from 'react-icons/lu';
 
-import { useDisclosure } from '../../hooks/useDisclosure';
-import { useFocusTrap } from '../../hooks/useFocusTrap';
-import { usePresence } from '../../hooks/usePresence';
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { OrcestrThemeContext } from '../../theme/useTheme';
-import { cn } from '../../utils/cn';
-import { IconButton } from '../IconButton/IconButton';
+import { useDisclosure } from '../../hooks/useDisclosure.js';
+import { useFocusTrap } from '../../hooks/useFocusTrap.js';
+import { usePresence } from '../../hooks/usePresence.js';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { OrcestrThemeContext } from '../../theme/useTheme.js';
+import { cn } from '../../utils/cn.js';
+import { IconButton } from '../IconButton/IconButton.js';
 import {
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
-} from '../Overlay/OverlayProvider';
-import { Portal } from '../Portal/Portal';
+} from '../Overlay/OverlayProvider.js';
+import { Portal } from '../Portal/Portal.js';
 
 export type DrawerSide = 'bottom' | 'left' | 'right' | 'top';
 

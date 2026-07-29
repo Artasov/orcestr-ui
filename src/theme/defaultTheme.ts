@@ -3,7 +3,7 @@ import type {
     OrcestrThemeMode,
     OrcestrThemeOverrides,
     OrcestrThemeSurface,
-} from './themeTypes';
+} from './themeTypes.js';
 
 type ThemeSeed = Omit<OrcestrTheme, 'mode' | 'surface'>;
 

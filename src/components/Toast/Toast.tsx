@@ -13,11 +13,11 @@ import {
 } from 'react';
 import { LuCircleAlert, LuCircleCheck, LuCircleX, LuInfo, LuX } from 'react-icons/lu';
 
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { Button } from '../Button/Button';
-import { IconButton } from '../IconButton/IconButton';
-import { useOverlayContext } from '../Overlay/OverlayProvider';
-import { Portal } from '../Portal/Portal';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { Button } from '../Button/Button.js';
+import { IconButton } from '../IconButton/IconButton.js';
+import { useOverlayContext } from '../Overlay/OverlayProvider.js';
+import { Portal } from '../Portal/Portal.js';
 
 export type ToastTone = 'info' | 'success' | 'warning' | 'danger';
 export type ToastPosition =

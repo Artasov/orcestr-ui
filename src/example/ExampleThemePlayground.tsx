@@ -15,7 +15,7 @@ import {
     type OrcestrThemeSurface,
     type OrcestrThemeStatus,
     type OrcestrUiLocale,
-} from '..';
+} from '../index.js';
 
 type LocalizedText = Record<OrcestrUiLocale, string>;
 

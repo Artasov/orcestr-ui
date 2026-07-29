@@ -9,9 +9,9 @@ const { cleanup, fireEvent, render, screen, waitFor } = await import('@testing-l
 afterEach(cleanup);
 after(restoreDom);
 
-const { Modal } = await import('../Modal/Modal');
-const { SpecialModal } = await import('../SpecialModal/SpecialModal');
-const { OrcestrUiProvider } = await import('../../provider/OrcestrUiProvider');
+const { Modal } = await import('../Modal/Modal.js');
+const { SpecialModal } = await import('../SpecialModal/SpecialModal.js');
+const { OrcestrUiProvider } = await import('../../provider/OrcestrUiProvider.js');
 
 test('empty modal receives focus and makes background inert', async () => {
     render(

@@ -7,7 +7,7 @@ import {
     PaginatedCombobox as CorePaginatedCombobox,
     type PaginatedComboboxProps as CorePaginatedComboboxProps,
     type PaginatedResult,
-} from './PaginatedCombobox';
+} from './PaginatedCombobox.js';
 
 export type PaginatedComboboxQueryParams = {
     page: number;
@@ -108,4 +108,4 @@ export { ReactQueryPaginatedCombobox as PaginatedCombobox };
 export type {
     PaginatedComboboxOptionAction,
     PaginatedComboboxSearchAction,
-} from './PaginatedCombobox';
+} from './PaginatedCombobox.js';

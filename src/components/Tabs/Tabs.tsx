@@ -16,12 +16,12 @@ import {
 } from 'react';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
-import { cn } from '../../utils/cn';
-import { useControllableState } from '../../hooks/useControllableState';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { Collapse } from '../Collapse/Collapse';
-import { IconButton } from '../IconButton/IconButton';
+import { cn } from '../../utils/cn.js';
+import { useControllableState } from '../../hooks/useControllableState.js';
+import { useReducedMotion } from '../../hooks/useReducedMotion.js';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { Collapse } from '../Collapse/Collapse.js';
+import { IconButton } from '../IconButton/IconButton.js';
 
 export type TabItem = {
     value: string;

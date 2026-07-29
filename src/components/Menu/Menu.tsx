@@ -13,21 +13,21 @@ import {
 } from 'react';
 import { LuChevronRight, LuInfo } from 'react-icons/lu';
 
-import { useListNavigation } from '../../hooks/useListNavigation';
-import { usePresence } from '../../hooks/usePresence';
-import { useTypeahead } from '../../hooks/useTypeahead';
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { cn } from '../../utils/cn';
+import { useListNavigation } from '../../hooks/useListNavigation.js';
+import { usePresence } from '../../hooks/usePresence.js';
+import { useTypeahead } from '../../hooks/useTypeahead.js';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { cn } from '../../utils/cn.js';
 import {
     actionItemText,
     isActionItemDisabled,
     type OrcestrActionItem,
-} from '../Action/ActionTypes';
-import { ActionConfirmModal } from '../Action/ActionConfirmModal';
-import { Popover, type PopoverProps } from '../Popover/Popover';
-import { Spinner } from '../Spinner/Spinner';
-import { Tooltip } from '../Tooltip/Tooltip';
-import { resolveMenuSubmenuPlacement, type MenuSubmenuPlacement } from './menuPlacement';
+} from '../Action/ActionTypes.js';
+import { ActionConfirmModal } from '../Action/ActionConfirmModal.js';
+import { Popover, type PopoverProps } from '../Popover/Popover.js';
+import { Spinner } from '../Spinner/Spinner.js';
+import { Tooltip } from '../Tooltip/Tooltip.js';
+import { resolveMenuSubmenuPlacement, type MenuSubmenuPlacement } from './menuPlacement.js';
 
 export type MenuItem = OrcestrActionItem;
 

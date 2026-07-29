@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { LuCheck, LuCopy } from 'react-icons/lu';
 
-import { cn } from '../../utils/cn';
-import { Button, type ButtonProps } from '../Button/Button';
-import { IconButton, type IconButtonProps } from '../IconButton/IconButton';
-import { useToast } from '../Toast/Toast';
+import { cn } from '../../utils/cn.js';
+import { Button, type ButtonProps } from '../Button/Button.js';
+import { IconButton, type IconButtonProps } from '../IconButton/IconButton.js';
+import { useToast } from '../Toast/Toast.js';
 
 export type CopyButtonProps = Omit<ButtonProps, 'children' | 'leftIcon' | 'loading' | 'onClick'> & {
     text: string;

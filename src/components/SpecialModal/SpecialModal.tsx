@@ -8,9 +8,9 @@ import {
 } from 'react';
 import { LuX } from 'react-icons/lu';
 
-import { cn } from '../../utils/cn';
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { Modal, type ModalProps } from '../Modal/Modal';
+import { cn } from '../../utils/cn.js';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { Modal, type ModalProps } from '../Modal/Modal.js';
 
 export type SpecialModalSize = 'sm' | 'md' | 'lg' | 'xl' | 'full';
 export type SpecialModalScroll = 'body' | 'content';

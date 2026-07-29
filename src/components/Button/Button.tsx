@@ -2,7 +2,7 @@
 
 import { forwardRef, useContext, type ButtonHTMLAttributes, type Ref, type ReactNode } from 'react';
 
-import { cn } from '../../utils/cn';
+import { cn } from '../../utils/cn.js';
 import {
     splitSystemProps,
     type SystemProps,
@@ -10,11 +10,11 @@ import {
     type ToneInput,
     type UiSize,
     normalizeTone,
-} from '../../theme/systemProps';
-import { OrcestrThemeContext } from '../../theme/useTheme';
-import type { ButtonPressAnimation } from '../../theme/themeTypes';
-import { renderSlot } from '../../utils/slot';
-import { Spinner } from '../Spinner/Spinner';
+} from '../../theme/systemProps.js';
+import { OrcestrThemeContext } from '../../theme/useTheme.js';
+import type { ButtonPressAnimation } from '../../theme/themeTypes.js';
+import { renderSlot } from '../../utils/slot.js';
+import { Spinner } from '../Spinner/Spinner.js';
 
 export type ButtonVariant = 'solid' | 'soft' | 'surface' | 'pad' | 'ghost' | 'outline';
 

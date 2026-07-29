@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { TextField, type TextFieldProps } from '../TextField/TextField';
+import { TextField, type TextFieldProps } from '../TextField/TextField.js';
 
 export type NumberFieldProps = Omit<TextFieldProps, 'type'>;
 

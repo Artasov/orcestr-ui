@@ -11,8 +11,8 @@ import {
 } from 'react';
 import { LuCheck, LuMinus } from 'react-icons/lu';
 
-import { cn } from '../../utils/cn';
-import { composeRefs } from '../../utils/composeRefs';
+import { cn } from '../../utils/cn.js';
+import { composeRefs } from '../../utils/composeRefs.js';
 
 export type CheckboxProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'checked'> & {
     label?: ReactNode;

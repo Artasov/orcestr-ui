@@ -7,7 +7,7 @@ import {
     makeOverlayBackgroundInert,
     registerOverlayFocusLayer,
     useOverlayManager,
-} from '../components/Overlay/OverlayProvider';
+} from '../components/Overlay/OverlayProvider.js';
 
 const focusableSelector = [
     'a[href]',

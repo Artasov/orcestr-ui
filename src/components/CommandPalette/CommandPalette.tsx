@@ -12,18 +12,18 @@ import {
 } from 'react';
 import { LuSearch, LuX } from 'react-icons/lu';
 
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
 import {
     actionItemSearchText,
     isActionItemDisabled,
     type OrcestrActionItem,
-} from '../Action/ActionTypes';
-import { ActionConfirmModal } from '../Action/ActionConfirmModal';
-import { Collapse } from '../Collapse/Collapse';
-import { Modal } from '../Modal/Modal';
-import { IconButton } from '../IconButton/IconButton';
-import { Spinner } from '../Spinner/Spinner';
-import { TextField } from '../TextField/TextField';
+} from '../Action/ActionTypes.js';
+import { ActionConfirmModal } from '../Action/ActionConfirmModal.js';
+import { Collapse } from '../Collapse/Collapse.js';
+import { Modal } from '../Modal/Modal.js';
+import { IconButton } from '../IconButton/IconButton.js';
+import { Spinner } from '../Spinner/Spinner.js';
+import { TextField } from '../TextField/TextField.js';
 
 export type CommandPaletteItem = OrcestrActionItem & {
     group?: string;

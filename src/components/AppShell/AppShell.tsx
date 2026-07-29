@@ -10,15 +10,15 @@ import {
 } from 'react';
 import { LuMenu, LuX } from 'react-icons/lu';
 
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
-import { cn } from '../../utils/cn';
-import { Badge } from '../Badge/Badge';
-import { Drawer } from '../Drawer/Drawer';
-import { IconButton } from '../IconButton/IconButton';
-import { ScrollArea } from '../ScrollArea/ScrollArea';
-import { Separator } from '../Separator/Separator';
-import { Text } from '../Text/Text';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps.js';
+import { cn } from '../../utils/cn.js';
+import { Badge } from '../Badge/Badge.js';
+import { Drawer } from '../Drawer/Drawer.js';
+import { IconButton } from '../IconButton/IconButton.js';
+import { ScrollArea } from '../ScrollArea/ScrollArea.js';
+import { Separator } from '../Separator/Separator.js';
+import { Text } from '../Text/Text.js';
 
 export type AppShellNavItem = {
     key: string;

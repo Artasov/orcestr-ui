@@ -19,17 +19,17 @@ import {
 } from 'react';
 import { LuArrowDown, LuArrowUp, LuChevronDown, LuChevronRight, LuRefreshCw } from 'react-icons/lu';
 
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { Button } from '../Button/Button';
-import { Checkbox } from '../Checkbox/Checkbox';
-import { ContextMenu } from '../ContextMenu/ContextMenu';
-import type { MenuItem } from '../Menu/Menu';
-import { Spinner } from '../Spinner/Spinner';
-import { Text } from '../Text/Text';
-import type { OrcestrActionItem } from '../Action/ActionTypes';
-import { calculateDataTableVirtualWindow } from './DataTableVirtualizer';
-import { DataTableColumnSettingsPanel } from './DataTableColumnSettings';
-export type { DataTableVirtualWindow } from './DataTableVirtualizer';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { Button } from '../Button/Button.js';
+import { Checkbox } from '../Checkbox/Checkbox.js';
+import { ContextMenu } from '../ContextMenu/ContextMenu.js';
+import type { MenuItem } from '../Menu/Menu.js';
+import { Spinner } from '../Spinner/Spinner.js';
+import { Text } from '../Text/Text.js';
+import type { OrcestrActionItem } from '../Action/ActionTypes.js';
+import { calculateDataTableVirtualWindow } from './DataTableVirtualizer.js';
+import { DataTableColumnSettingsPanel } from './DataTableColumnSettings.js';
+export type { DataTableVirtualWindow } from './DataTableVirtualizer.js';
 
 export type DataTableSortDirection = 'asc' | 'desc';
 

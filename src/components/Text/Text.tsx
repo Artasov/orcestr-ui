@@ -1,13 +1,13 @@
 import { forwardRef, type ComponentPropsWithoutRef, type ElementType, type Ref } from 'react';
 
-import { cn } from '../../utils/cn';
+import { cn } from '../../utils/cn.js';
 import {
     normalizeTone,
     splitSystemProps,
     type SystemProps,
     type ToneInput,
-} from '../../theme/systemProps';
-import { renderSlot } from '../../utils/slot';
+} from '../../theme/systemProps.js';
+import { renderSlot } from '../../utils/slot.js';
 
 export type TextProps = ComponentPropsWithoutRef<'span'> &
     SystemProps & {

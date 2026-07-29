@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from 'react';
 
-import type { OrcestrThemeContextValue } from './themeTypes';
+import type { OrcestrThemeContextValue } from './themeTypes.js';
 
 export const OrcestrThemeContext = createContext<OrcestrThemeContextValue | null>(null);
 

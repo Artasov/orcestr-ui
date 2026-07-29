@@ -1,7 +1,7 @@
 import { forwardRef, type CSSProperties } from 'react';
 
-import { cn } from '../../utils/cn';
-import { Flex, type FlexProps } from '../Flex/Flex';
+import { cn } from '../../utils/cn.js';
+import { Flex, type FlexProps } from '../Flex/Flex.js';
 
 export type SectionProps = FlexProps & {
     sectionColor?: string;

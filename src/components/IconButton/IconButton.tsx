@@ -11,19 +11,19 @@ import {
     type Ref,
 } from 'react';
 
-import { cn } from '../../utils/cn';
+import { cn } from '../../utils/cn.js';
 import {
     splitSystemProps,
     type SystemProps,
     type ToneInput,
     type UiSize,
     normalizeTone,
-} from '../../theme/systemProps';
-import { OrcestrThemeContext } from '../../theme/useTheme';
-import type { ButtonPressAnimation } from '../../theme/themeTypes';
-import { renderSlot } from '../../utils/slot';
-import type { ButtonVariant } from '../Button/Button';
-import { Spinner } from '../Spinner/Spinner';
+} from '../../theme/systemProps.js';
+import { OrcestrThemeContext } from '../../theme/useTheme.js';
+import type { ButtonPressAnimation } from '../../theme/themeTypes.js';
+import { renderSlot } from '../../utils/slot.js';
+import type { ButtonVariant } from '../Button/Button.js';
+import { Spinner } from '../Spinner/Spinner.js';
 
 export type IconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
     SystemProps & {

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { Section } from '../components/Section/Section';
+import { Section } from '../components/Section/Section.js';
 
 export function UiExampleSection({
     id,

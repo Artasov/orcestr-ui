@@ -5,12 +5,12 @@ import { setupDom } from '../../test-utils/dom.mts';
 
 const restoreDom = setupDom();
 const { cleanup, render, screen } = await import('@testing-library/react');
-const userEvent = (await import('@testing-library/user-event')).default;
+const { userEvent } = await import('@testing-library/user-event');
 
 afterEach(cleanup);
 after(restoreDom);
 
-const { Button } = await import('./Button');
+const { Button } = await import('./Button.js');
 
 test('asChild composes handlers and blocks disabled link activation', async () => {
     const calls: string[] = [];

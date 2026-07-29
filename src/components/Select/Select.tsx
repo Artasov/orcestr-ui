@@ -16,12 +16,12 @@ import {
 } from 'react';
 import { LuCheck, LuChevronsUpDown, LuX } from 'react-icons/lu';
 
-import { Button } from '../Button/Button';
-import { Popover } from '../Popover/Popover';
-import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps';
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { useListNavigation } from '../../hooks/useListNavigation';
-import { useTypeahead } from '../../hooks/useTypeahead';
+import { Button } from '../Button/Button.js';
+import { Popover } from '../Popover/Popover.js';
+import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps.js';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { useListNavigation } from '../../hooks/useListNavigation.js';
+import { useTypeahead } from '../../hooks/useTypeahead.js';
 
 export type SelectItem<V extends string = string> = {
     value: V;

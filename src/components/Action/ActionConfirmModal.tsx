@@ -1,7 +1,7 @@
 'use client';
 
-import { ConfirmDialog } from '../ConfirmDialog/ConfirmDialog';
-import type { OrcestrActionItem } from './ActionTypes';
+import { ConfirmDialog } from '../ConfirmDialog/ConfirmDialog.js';
+import type { OrcestrActionItem } from './ActionTypes.js';
 
 export function ActionConfirmModal({
     item,

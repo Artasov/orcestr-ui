@@ -2,9 +2,9 @@
 
 import type { CSSProperties, ReactNode } from 'react';
 
-import type { Tone } from '../../theme/systemProps';
-import { cn } from '../../utils/cn';
-import { Text, type TextProps } from '../Text/Text';
+import type { Tone } from '../../theme/systemProps.js';
+import { cn } from '../../utils/cn.js';
+import { Text, type TextProps } from '../Text/Text.js';
 
 export type IconTextProps = TextProps & {
     icon?: ReactNode;

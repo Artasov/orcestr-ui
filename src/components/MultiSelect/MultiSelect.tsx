@@ -12,13 +12,13 @@ import {
 } from 'react';
 import { LuCheck, LuChevronsUpDown, LuX } from 'react-icons/lu';
 
-import { useListNavigation } from '../../hooks/useListNavigation';
-import { useTypeahead } from '../../hooks/useTypeahead';
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import type { UiSize } from '../../theme/systemProps';
-import { Button } from '../Button/Button';
-import { Popover } from '../Popover/Popover';
-import type { SelectItem } from '../Select/Select';
+import { useListNavigation } from '../../hooks/useListNavigation.js';
+import { useTypeahead } from '../../hooks/useTypeahead.js';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import type { UiSize } from '../../theme/systemProps.js';
+import { Button } from '../Button/Button.js';
+import { Popover } from '../Popover/Popover.js';
+import type { SelectItem } from '../Select/Select.js';
 
 export function MultiSelect<V extends string = string>({
     items,

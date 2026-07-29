@@ -3,14 +3,14 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import { LuLock } from 'react-icons/lu';
 
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { cn } from '../../utils/cn';
-import type { SystemProps, Tone } from '../../theme/systemProps';
-import { Button } from '../Button/Button';
-import { IconText, type IconTextProps } from '../IconText/IconText';
-import { Spinner } from '../Spinner/Spinner';
-import { Text, type TextProps } from '../Text/Text';
-import { stateIcon } from './stateIcon';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { cn } from '../../utils/cn.js';
+import type { SystemProps, Tone } from '../../theme/systemProps.js';
+import { Button } from '../Button/Button.js';
+import { IconText, type IconTextProps } from '../IconText/IconText.js';
+import { Spinner } from '../Spinner/Spinner.js';
+import { Text, type TextProps } from '../Text/Text.js';
+import { stateIcon } from './stateIcon.js';
 
 export type StateCardTone = Tone;
 export type StateCardVariant = 'soft' | 'surface' | 'outline' | 'ghost';

@@ -1,5 +1,5 @@
-import { Flex } from '../Flex/Flex';
-import { DatePicker, type DatePickerProps } from '../DatePicker/DatePicker';
+import { Flex } from '../Flex/Flex.js';
+import { DatePicker, type DatePickerProps } from '../DatePicker/DatePicker.js';
 
 export type DateRangePickerValue = { from: string; to: string };
 

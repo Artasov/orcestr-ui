@@ -33,16 +33,16 @@ import {
     type MenuItem,
     type OrcestrThemeOverrides,
     type OrcestrUiLocale,
-} from '..';
-import { LayoutSection, TextSection } from './ExampleBasicsSections';
-import { ActionsSection } from './ExampleActionsSection';
-import { ApplicationSection } from './ExampleApplicationSection';
-import { FieldsSection } from './ExampleFieldsSection';
-import { SelectionSection } from './ExampleSelectionSection';
-import { DataSection } from './ExampleDataSection';
-import { OverlaysSection } from './ExampleOverlaysSection';
-import { FoundationsSection } from './ExampleFoundationsSection';
-import { BadgeSection, IconTextSection, StateCardSection } from './ExampleStateSection';
+} from '../index.js';
+import { LayoutSection, TextSection } from './ExampleBasicsSections.js';
+import { ActionsSection } from './ExampleActionsSection.js';
+import { ApplicationSection } from './ExampleApplicationSection.js';
+import { FieldsSection } from './ExampleFieldsSection.js';
+import { SelectionSection } from './ExampleSelectionSection.js';
+import { DataSection } from './ExampleDataSection.js';
+import { OverlaysSection } from './ExampleOverlaysSection.js';
+import { FoundationsSection } from './ExampleFoundationsSection.js';
+import { BadgeSection, IconTextSection, StateCardSection } from './ExampleStateSection.js';
 import {
     ExampleThemePlayground,
     getThemePlaygroundPreset,
@@ -50,11 +50,11 @@ import {
     themePresetLabel,
     themePresetPreviewStyle,
     type ThemePresetId,
-} from './ExampleThemePlayground';
-import { CodePreviewModal } from './CodePreview';
-import { ExampleOverlays } from './ExampleOverlays';
-import { type CodeExample } from './codeSamples';
-import { navGroups, navItems, type EntityOption } from './exampleData';
+} from './ExampleThemePlayground.js';
+import { CodePreviewModal } from './CodePreview.js';
+import { ExampleOverlays } from './ExampleOverlays.js';
+import { type CodeExample } from './codeSamples.js';
+import { navGroups, navItems, type EntityOption } from './exampleData.js';
 
 const ORCESTR_LOGO_SRC = '/assets/orcestr/logo.png';
 const UI_EXAMPLE_SCROLL_LEAD = 50;

@@ -1,4 +1,4 @@
-import { type CommandPaletteItem, type ListboxItem, type OrcestrUiLocale } from '..';
+import { type CommandPaletteItem, type ListboxItem, type OrcestrUiLocale } from '../index.js';
 
 export type ExampleNavItem = {
     id: string;

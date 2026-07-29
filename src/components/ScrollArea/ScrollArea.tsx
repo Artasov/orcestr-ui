@@ -11,9 +11,9 @@ import {
     type ComponentPropsWithoutRef,
 } from 'react';
 
-import { cn } from '../../utils/cn';
-import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
-import { BottomHighlight, TopHighlight } from '../Highlight/Highlight';
+import { cn } from '../../utils/cn.js';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps.js';
+import { BottomHighlight, TopHighlight } from '../Highlight/Highlight.js';
 
 export type ScrollHighlightConfig = {
     visible?: boolean;

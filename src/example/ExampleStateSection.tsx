@@ -25,10 +25,10 @@ import {
     Stack,
     StateCard,
     Text,
-} from '..';
-import { ExampleTile } from './CodePreview';
-import { type CodeExample } from './codeSamples';
-import { UiExampleSection } from './UiExampleSection';
+} from '../index.js';
+import { ExampleTile } from './CodePreview.js';
+import { type CodeExample } from './codeSamples.js';
+import { UiExampleSection } from './UiExampleSection.js';
 
 const validationItems = [
     { key: 'quantity', label: 'Quantity', message: 'Required value is missing' },

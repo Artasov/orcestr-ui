@@ -9,11 +9,11 @@ import {
     type ToneInput,
     type UiSize,
     normalizeTone,
-} from '../../theme/systemProps';
-import type { ButtonPressAnimation } from '../../theme/themeTypes';
-import { OrcestrThemeContext } from '../../theme/useTheme';
-import { cn } from '../../utils/cn';
-import type { ButtonVariant } from '../Button/Button';
+} from '../../theme/systemProps.js';
+import type { ButtonPressAnimation } from '../../theme/themeTypes.js';
+import { OrcestrThemeContext } from '../../theme/useTheme.js';
+import { cn } from '../../utils/cn.js';
+import type { ButtonVariant } from '../Button/Button.js';
 
 export type LinkButtonProps = AnchorHTMLAttributes<HTMLAnchorElement> &
     SystemProps & {

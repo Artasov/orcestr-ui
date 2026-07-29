@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import type { Tone } from '../../theme/systemProps';
+import type { Tone } from '../../theme/systemProps.js';
 
 export type OrcestrActionTone = Tone;
 

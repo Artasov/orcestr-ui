@@ -11,13 +11,13 @@ import {
 } from 'react';
 import { LuX } from 'react-icons/lu';
 
-import { cn } from '../../utils/cn';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { composeRefs } from '../../utils/composeRefs';
-import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
-import { IconButton } from '../IconButton/IconButton';
-import { Spinner } from '../Spinner/Spinner';
+import { cn } from '../../utils/cn.js';
+import { useReducedMotion } from '../../hooks/useReducedMotion.js';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { composeRefs } from '../../utils/composeRefs.js';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps.js';
+import { IconButton } from '../IconButton/IconButton.js';
+import { Spinner } from '../Spinner/Spinner.js';
 
 export type InlineEditFieldProps = SystemProps & {
     label: ReactNode;

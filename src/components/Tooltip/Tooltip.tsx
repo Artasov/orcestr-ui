@@ -15,17 +15,17 @@ import {
     type Ref,
 } from 'react';
 
-import { type FloatingAlign, type FloatingSide } from '../../hooks/useFloatingPosition';
-import { useFloatingLayer } from '../../hooks/useFloatingLayer';
-import { useControllableState } from '../../hooks/useControllableState';
-import { composeRefs } from '../../utils/composeRefs';
-import { cn } from '../../utils/cn';
+import { type FloatingAlign, type FloatingSide } from '../../hooks/useFloatingPosition.js';
+import { useFloatingLayer } from '../../hooks/useFloatingLayer.js';
+import { useControllableState } from '../../hooks/useControllableState.js';
+import { composeRefs } from '../../utils/composeRefs.js';
+import { cn } from '../../utils/cn.js';
 import {
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
-} from '../Overlay/OverlayProvider';
-import { Portal } from '../Portal/Portal';
+} from '../Overlay/OverlayProvider.js';
+import { Portal } from '../Portal/Portal.js';
 
 type TooltipTriggerProps = {
     ref?: Ref<HTMLElement>;

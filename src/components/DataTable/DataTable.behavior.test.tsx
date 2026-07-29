@@ -6,12 +6,12 @@ import { setupDom } from '../../test-utils/dom.mts';
 
 const restoreDom = setupDom();
 const { cleanup, render, screen } = await import('@testing-library/react');
-const userEvent = (await import('@testing-library/user-event')).default;
+const { userEvent } = await import('@testing-library/user-event');
 
 afterEach(cleanup);
 after(restoreDom);
 
-const { DataTable } = await import('./DataTable');
+const { DataTable } = await import('./DataTable.js');
 
 test('select-all covers every row on the page, not only the virtual window', async () => {
     function Harness() {

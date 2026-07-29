@@ -13,15 +13,15 @@ import {
 } from 'react';
 import { LuCheck, LuChevronsUpDown, LuPlus, LuX } from 'react-icons/lu';
 
-import { useListNavigation } from '../../hooks/useListNavigation';
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import type { UiSize } from '../../theme/systemProps';
-import { Button } from '../Button/Button';
-import { IconButton } from '../IconButton/IconButton';
-import { Popover } from '../Popover/Popover';
-import { Spinner } from '../Spinner/Spinner';
-import { TextField } from '../TextField/TextField';
-import { Tooltip } from '../Tooltip/Tooltip';
+import { useListNavigation } from '../../hooks/useListNavigation.js';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import type { UiSize } from '../../theme/systemProps.js';
+import { Button } from '../Button/Button.js';
+import { IconButton } from '../IconButton/IconButton.js';
+import { Popover } from '../Popover/Popover.js';
+import { Spinner } from '../Spinner/Spinner.js';
+import { TextField } from '../TextField/TextField.js';
+import { Tooltip } from '../Tooltip/Tooltip.js';
 
 export type PaginatedResult<T> = {
     items: T[];

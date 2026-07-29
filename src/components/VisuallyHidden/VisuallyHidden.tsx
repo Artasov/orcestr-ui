@@ -1,6 +1,6 @@
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 
-import { cn } from '../../utils/cn';
+import { cn } from '../../utils/cn.js';
 
 export type VisuallyHiddenProps = ComponentPropsWithoutRef<'span'> & {
     testId?: string;

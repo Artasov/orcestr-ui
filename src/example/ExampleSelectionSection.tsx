@@ -16,11 +16,11 @@ import {
     Tabs,
     Text,
     type OrcestrUiLocale,
-} from '..';
-import { ExampleTile } from './CodePreview';
-import { codeSamples, type CodeExample } from './codeSamples';
-import { getOptionItems, getOwnerItems, loadEntityPage, type EntityOption } from './exampleData';
-import { UiExampleSection } from './UiExampleSection';
+} from '../index.js';
+import { ExampleTile } from './CodePreview.js';
+import { codeSamples, type CodeExample } from './codeSamples.js';
+import { getOptionItems, getOwnerItems, loadEntityPage, type EntityOption } from './exampleData.js';
+import { UiExampleSection } from './UiExampleSection.js';
 
 type ToastTone = 'info' | 'success' | 'danger';
 

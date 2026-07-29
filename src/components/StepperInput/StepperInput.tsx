@@ -3,9 +3,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { LuMinus, LuPlus } from 'react-icons/lu';
 
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
-import { IconButton } from '../IconButton/IconButton';
-import { TextField } from '../TextField/TextField';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { IconButton } from '../IconButton/IconButton.js';
+import { TextField } from '../TextField/TextField.js';
 
 export function StepperInput({
     value,

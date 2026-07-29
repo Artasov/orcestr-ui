@@ -1,7 +1,7 @@
-import { Button } from '../Button/Button';
-import { Flex } from '../Flex/Flex';
-import { Text } from '../Text/Text';
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider';
+import { Button } from '../Button/Button.js';
+import { Flex } from '../Flex/Flex.js';
+import { Text } from '../Text/Text.js';
+import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
 
 export function Pagination({
     page,

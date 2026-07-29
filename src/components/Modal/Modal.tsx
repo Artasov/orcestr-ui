@@ -12,18 +12,18 @@ import {
     type ReactNode,
 } from 'react';
 
-import { useFocusTrap, type OpenAutoFocusEvent } from '../../hooks/useFocusTrap';
-import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { usePresence } from '../../hooks/usePresence';
-import { OrcestrThemeContext } from '../../theme/useTheme';
-import type { ModalAnimation } from '../../theme/themeTypes';
-import { cn } from '../../utils/cn';
+import { useFocusTrap, type OpenAutoFocusEvent } from '../../hooks/useFocusTrap.js';
+import { useReducedMotion } from '../../hooks/useReducedMotion.js';
+import { usePresence } from '../../hooks/usePresence.js';
+import { OrcestrThemeContext } from '../../theme/useTheme.js';
+import type { ModalAnimation } from '../../theme/themeTypes.js';
+import { cn } from '../../utils/cn.js';
 import {
     overlayLayerZIndex,
     useOverlayContext,
     useOverlayLayerIndex,
-} from '../Overlay/OverlayProvider';
-import { Portal } from '../Portal/Portal';
+} from '../Overlay/OverlayProvider.js';
+import { Portal } from '../Portal/Portal.js';
 
 export type ModalProps = {
     open: boolean;

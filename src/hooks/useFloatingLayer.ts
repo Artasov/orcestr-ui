@@ -2,8 +2,8 @@
 
 import { useRef } from 'react';
 
-import { useFloatingPosition, type FloatingAlign, type FloatingSide } from './useFloatingPosition';
-import { usePresence } from './usePresence';
+import { useFloatingPosition, type FloatingAlign, type FloatingSide } from './useFloatingPosition.js';
+import { usePresence } from './usePresence.js';
 
 type UseFloatingLayerOptions = {
     open: boolean;

@@ -2,7 +2,7 @@
 
 import { useCallback } from 'react';
 
-import { useControllableState } from './useControllableState';
+import { useControllableState } from './useControllableState.js';
 
 export function useDisclosure({
     open,

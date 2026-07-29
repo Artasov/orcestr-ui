@@ -9,9 +9,9 @@ import {
     type ReactNode,
 } from 'react';
 
-import { Modal, type ModalProps } from '../Modal/Modal';
-import { splitSystemProps, type SystemProps } from '../../theme/systemProps';
-import { cn } from '../../utils/cn';
+import { Modal, type ModalProps } from '../Modal/Modal.js';
+import { splitSystemProps, type SystemProps } from '../../theme/systemProps.js';
+import { cn } from '../../utils/cn.js';
 
 export type DialogProps = ModalProps;
 

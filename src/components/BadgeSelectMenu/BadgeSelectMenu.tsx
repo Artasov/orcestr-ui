@@ -3,15 +3,15 @@
 import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
 import { LuCheck } from 'react-icons/lu';
 
-import { Badge } from '../Badge/Badge';
-import { Popover } from '../Popover/Popover';
+import { Badge } from '../Badge/Badge.js';
+import { Popover } from '../Popover/Popover.js';
 import {
     splitSystemProps,
     type SystemProps,
     type ToneInput,
     type UiSize,
-} from '../../theme/systemProps';
-import { cn } from '../../utils/cn';
+} from '../../theme/systemProps.js';
+import { cn } from '../../utils/cn.js';
 
 export type BadgeSelectItem<V extends string = string> = {
     value: V;

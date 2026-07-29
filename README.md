@@ -110,15 +110,17 @@ import '@orcestr/ui/example/styles.css';
 npm run build
 npm run typecheck
 npm test
+npm run check:package
 npm run pack:dry-run
 ```
 
-| Script                 | What it checks                          |
-| ---------------------- | --------------------------------------- |
-| `npm run build`        | TypeScript output, declarations and CSS |
-| `npm run typecheck`    | TypeScript without emit                 |
-| `npm test`             | Contract and state tests                |
-| `npm run pack:dry-run` | Published package contents              |
+| Script                  | What it checks                                       |
+| ----------------------- | ---------------------------------------------------- |
+| `npm run build`         | TypeScript output, declarations, CSS and ESM imports |
+| `npm run typecheck`     | TypeScript without emit                              |
+| `npm test`              | Contract and state tests                             |
+| `npm run check:package` | Public Node ESM entrypoints                          |
+| `npm run pack:dry-run`  | Published package contents                           |
 
 ## Release
 

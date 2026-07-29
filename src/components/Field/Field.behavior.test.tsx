@@ -10,8 +10,8 @@ const { cleanup, render, screen } = await import('@testing-library/react');
 afterEach(cleanup);
 after(restoreDom);
 
-const { Field } = await import('./Field');
-const { TextField } = await import('../TextField/TextField');
+const { Field } = await import('./Field.js');
+const { TextField } = await import('../TextField/TextField.js');
 
 test('Field links label, required state, error and control semantics', () => {
     render(

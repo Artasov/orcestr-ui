@@ -9,7 +9,7 @@ import {
     type RefObject,
 } from 'react';
 
-import { scheduleFloatingUpdates, subscribeFloatingUpdates } from './floatingScheduler';
+import { scheduleFloatingUpdates, subscribeFloatingUpdates } from './floatingScheduler.js';
 
 export type FloatingSide = 'top' | 'right' | 'bottom' | 'left';
 export type FloatingAlign = 'start' | 'center' | 'end';

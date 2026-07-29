@@ -3,12 +3,12 @@
 import type { ReactNode } from 'react';
 import { LuArrowDown, LuArrowUp, LuRotateCcw, LuSettings2 } from 'react-icons/lu';
 
-import { Button } from '../Button/Button';
-import { Checkbox } from '../Checkbox/Checkbox';
-import { IconButton } from '../IconButton/IconButton';
-import { Popover } from '../Popover/Popover';
-import { Text } from '../Text/Text';
-import type { DataTableColumn } from './DataTable';
+import { Button } from '../Button/Button.js';
+import { Checkbox } from '../Checkbox/Checkbox.js';
+import { IconButton } from '../IconButton/IconButton.js';
+import { Popover } from '../Popover/Popover.js';
+import { Text } from '../Text/Text.js';
+import type { DataTableColumn } from './DataTable.js';
 
 export function DataTableColumnSettingsPanel<T>({
     columns,

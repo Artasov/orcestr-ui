@@ -1,6 +1,6 @@
 import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 
-import { cn } from '../../utils/cn';
+import { cn } from '../../utils/cn.js';
 import {
     splitSystemProps,
     type SystemProps,
@@ -8,7 +8,7 @@ import {
     type ToneInput,
     type UiSize,
     normalizeTone,
-} from '../../theme/systemProps';
+} from '../../theme/systemProps.js';
 
 export type BadgeProps = ComponentPropsWithoutRef<'span'> &
     SystemProps & {
