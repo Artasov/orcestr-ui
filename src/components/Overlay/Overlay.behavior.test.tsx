@@ -5,10 +5,12 @@ import { setupDom } from '../../test-utils/dom.mts';
 
 const restoreDom = setupDom();
 const { cleanup, fireEvent, render, screen, waitFor } = await import('@testing-library/react');
+const { useState } = await import('react');
 
 afterEach(cleanup);
 after(restoreDom);
 
+const { AppShell } = await import('../AppShell/AppShell.js');
 const { Modal } = await import('../Modal/Modal.js');
 const { SpecialModal } = await import('../SpecialModal/SpecialModal.js');
 const { OrcestrUiProvider } = await import('../../provider/OrcestrUiProvider.js');
@@ -72,4 +74,36 @@ test('SpecialModal.Close requests closing the owning modal', async () => {
     fireEvent.click(screen.getByRole('button', { name: 'Close' }));
 
     assert.deepEqual(changes, [false]);
+});
+
+test('AppShell mobile drawer keeps its custom-portal backdrop interactive', async () => {
+    function Harness() {
+        const [open, setOpen] = useState(true);
+
+        return (
+            <OrcestrUiProvider>
+                <AppShell
+                    sidebar={<nav>Navigation</nav>}
+                    sidebarMode="mobile"
+                    sidebarOpen={open}
+                    onSidebarOpenChange={setOpen}
+                    testId="shell"
+                >
+                    <div>Content</div>
+                </AppShell>
+            </OrcestrUiProvider>
+        );
+    }
+
+    render(<Harness />);
+
+    const backdrop = await screen.findByTestId('shell-sidebar-drawer-backdrop');
+    assert.equal(backdrop.hasAttribute('inert'), false);
+    assert.equal(backdrop.closest('[inert]'), null);
+
+    fireEvent.pointerDown(backdrop);
+
+    await waitFor(() => {
+        assert.equal(screen.getByTestId('shell').dataset.sidebarOpen, 'false');
+    });
 });

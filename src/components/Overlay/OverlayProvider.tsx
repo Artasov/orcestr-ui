@@ -282,7 +282,7 @@ function backgroundElements(root: HTMLElement) {
         }
     }
 
-    let branch: HTMLElement | null = portalRoot ?? root;
+    let branch: HTMLElement | null = portalRoot ?? rootLayer ?? root;
     while (branch.parentElement) {
         for (const sibling of branch.parentElement.children) {
             if (sibling instanceof HTMLElement && sibling !== branch) elements.add(sibling);
