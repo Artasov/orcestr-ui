@@ -32,6 +32,7 @@ export * from './components/IconButton/IconButton.js';
 export * from './components/IconText/IconText.js';
 export * from './components/IconTextButton/IconTextButton.js';
 export * from './components/InlineEdit/InlineEdit.js';
+export * from './components/Link/Link.js';
 export * from './components/LinkButton/LinkButton.js';
 export * from './components/Listbox/Listbox.js';
 export * from './components/Menu/Menu.js';

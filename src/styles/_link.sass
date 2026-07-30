@@ -1,0 +1,28 @@
+.oui-link
+    color: var(--oui-link-color, inherit)
+    text-decoration-line: none
+    text-decoration-thickness: from-font
+    text-underline-offset: 0.18em
+    transition: color 140ms ease
+    cursor: pointer
+
+.oui-link[data-underline="always"]
+    text-decoration-line: underline
+
+@media (hover: hover)
+    .oui-link:hover
+        color: var(--oui-link-hover-color, var(--oui-primary-text))
+
+    .oui-link[data-underline="hover"]:hover
+        text-decoration-line: underline
+
+.oui-link:focus-visible
+    color: var(--oui-link-hover-color, var(--oui-primary-text))
+    outline: 2px solid color-mix(in srgb, var(--oui-primary-base) 52%, transparent)
+    outline-offset: 2px
+    border-radius: 2px
+
+.oui-link[aria-disabled="true"]
+    opacity: 0.55
+    pointer-events: none
+    cursor: default

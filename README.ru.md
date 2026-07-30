@@ -38,7 +38,7 @@ Public API еще формируется, пока пакет находится
 | Зона       | Что входит                                                                     |
 | ---------- | ------------------------------------------------------------------------------ |
 | App layout | shell, навигационные паттерны, page surfaces                                   |
-| Actions    | buttons, icon buttons, menus, command surfaces                                 |
+| Actions    | buttons, icon buttons, text links, menus, command surfaces                     |
 | Inputs     | fields, selects, comboboxes, pickers, switches, checkboxes, segmented controls |
 | Overlays   | dialogs, drawers, modals, popovers, tooltips, context menus, confirm flows     |
 | Data views | tables, pagination, empty/error/loading states, badges, alerts                 |
@@ -62,13 +62,14 @@ npm install ../../orcestr-ui
 Подключи CSS один раз рядом с корнем приложения и оберни приложение в `OrcestrUiProvider`.
 
 ```tsx
-import { Button, OrcestrUiProvider } from '@orcestr/ui';
+import { Button, Link, OrcestrUiProvider } from '@orcestr/ui';
 import '@orcestr/ui/styles.css';
 
 export function App() {
     return (
         <OrcestrUiProvider locale="ru" defaultMode="dark">
             <Button>Сохранить</Button>
+            <Link href="/account">Аккаунт</Link>
         </OrcestrUiProvider>
     );
 }

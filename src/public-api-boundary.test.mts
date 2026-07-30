@@ -75,6 +75,7 @@ test('Orcestr UI keeps runtime and example styles split', () => {
         'badge',
         'fields',
         'icon-text',
+        'link',
         'state',
         'alert',
         'selection',

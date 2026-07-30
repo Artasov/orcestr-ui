@@ -7,6 +7,7 @@ export * from './components/Flex/Flex.js';
 export * from './components/Grid/Grid.js';
 export * from './components/Highlight/Highlight.js';
 export * from './components/IconText/IconText.js';
+export * from './components/Link/Link.js';
 export * from './components/Section/Section.js';
 export * from './components/Separator/Separator.js';
 export * from './components/Skeleton/Skeleton.js';

@@ -38,7 +38,7 @@ The public API is still being shaped while the package is in beta.
 | Area       | Includes                                                                       |
 | ---------- | ------------------------------------------------------------------------------ |
 | App layout | shell, navigation patterns, page surfaces                                      |
-| Actions    | buttons, icon buttons, menus, command surfaces                                 |
+| Actions    | buttons, icon buttons, text links, menus, command surfaces                     |
 | Inputs     | fields, selects, comboboxes, pickers, switches, checkboxes, segmented controls |
 | Overlays   | dialogs, drawers, modals, popovers, tooltips, context menus, confirm flows     |
 | Data views | tables, pagination, empty/error/loading states, badges, alerts                 |
@@ -62,13 +62,14 @@ npm install ../../orcestr-ui
 Import the CSS once near the app root and wrap the app with `OrcestrUiProvider`.
 
 ```tsx
-import { Button, OrcestrUiProvider } from '@orcestr/ui';
+import { Button, Link, OrcestrUiProvider } from '@orcestr/ui';
 import '@orcestr/ui/styles.css';
 
 export function App() {
     return (
         <OrcestrUiProvider locale="en" defaultMode="dark">
             <Button>Save</Button>
+            <Link href="/account">Account</Link>
         </OrcestrUiProvider>
     );
 }
