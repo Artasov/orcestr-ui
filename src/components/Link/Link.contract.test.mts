@@ -13,6 +13,7 @@ test('Link is a semantic anchor with accent hover and keyboard focus states', ()
     assert.match(component, /underline = 'none'/);
     assert.match(styles, /\.oui-link:hover/);
     assert.match(styles, /color: var\(--oui-link-hover-color, var\(--oui-primary-text\)\)/);
+    assert.match(styles, /transition: color 300ms ease/);
     assert.match(styles, /\.oui-link:focus-visible/);
     assert.match(runtimeBarrel, /components\/Link\/Link\.js/);
     assert.match(serverBarrel, /components\/Link\/Link\.js/);
