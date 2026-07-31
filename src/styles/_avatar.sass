@@ -1,0 +1,37 @@
+.oui-avatar
+    --oui-avatar-size: 24px
+    display: inline-flex
+    width: var(--oui-avatar-size)
+    height: var(--oui-avatar-size)
+    min-width: var(--oui-avatar-size)
+    flex: 0 0 var(--oui-avatar-size)
+    align-items: center
+    justify-content: center
+    overflow: hidden
+    border-radius: 999px
+    color: var(--oui-info-base, var(--oui-primary-text))
+    background: var(--oui-info-soft, var(--oui-primary-surface))
+    font-size: calc(var(--oui-avatar-size) * .44)
+    font-weight: 700
+    line-height: 1
+    letter-spacing: -.02em
+    text-align: center
+    white-space: nowrap
+
+.oui-avatar[data-size="1"]
+    --oui-avatar-size: 20px
+
+.oui-avatar[data-size="2"]
+    --oui-avatar-size: 24px
+
+.oui-avatar[data-size="3"]
+    --oui-avatar-size: 32px
+
+.oui-avatar[data-size="4"]
+    --oui-avatar-size: 40px
+
+.oui-avatar-image
+    display: block
+    width: 100%
+    height: 100%
+    object-fit: cover

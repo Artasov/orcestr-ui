@@ -3,6 +3,7 @@ export * from './components/ActionMenu/ActionMenu.js';
 export * from './components/Alert/Alert.js';
 export * from './components/AppShell/AppShell.js';
 export * from './components/AppSidebar/AppSidebar.js';
+export * from './components/Avatar/Avatar.js';
 export * from './components/Badge/Badge.js';
 export * from './components/BadgeSelectMenu/BadgeSelectMenu.js';
 export * from './components/Box/Box.js';

@@ -8,7 +8,15 @@ const appSidebarStyles = readFileSync(
 );
 const appSidebarSource = readFileSync(new URL('./AppSidebar.tsx', import.meta.url), 'utf8');
 
-test('AppSidebar active icons use text accent active icon token by default', () => {
+test('AppSidebar active item uses the accent color and pad background', () => {
+    assert.match(
+        appSidebarStyles,
+        /\.oui-app-sidebar-indicator\s+[\s\S]*background: var\(--oui-pad-bg\)/,
+    );
+    assert.match(
+        appSidebarStyles,
+        /\.oui-app-sidebar-item\[data-sidebar-active="true"\]\s+color: var\(--oui-primary-text\)/,
+    );
     assert.match(
         appSidebarStyles,
         /\.oui-app-sidebar-item\[data-sidebar-active="true"\] \.oui-app-sidebar-item-icon\s+color: var\(--oui-primary-text\)/,
