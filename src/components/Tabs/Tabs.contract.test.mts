@@ -80,3 +80,11 @@ test('Tabs active icons use text accent active icon token', () => {
         /\.oui-tabs-trigger\[data-active="true"\] \.oui-tabs-trigger-icon\s+color: var\(--oui-primary-text\)/,
     );
 });
+
+test('Tabs keep inactive panels mounted so Collapse can animate their height', () => {
+    assert.doesNotMatch(tabsSource, /hidden=\{!open\}/);
+    assert.match(tabsSource, /data-state=\{open \? 'open' : 'closed'\}/);
+    assert.match(tabsSource, /aria-hidden=\{open \? undefined : true\}/);
+    assert.match(tabsSource, /inert=\{open \? undefined : true\}/);
+    assert.match(tabsSource, /<Collapse open=\{open\}>/);
+});

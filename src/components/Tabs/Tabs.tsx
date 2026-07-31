@@ -564,10 +564,12 @@ function Content({ value, children, className, mountOnActive = false, ...props }
             role="tabpanel"
             id={navigation.panelId(value)}
             aria-labelledby={navigation.triggerId(value)}
-            tabIndex={0}
+            tabIndex={open ? 0 : -1}
             className={cn('oui-tabs-compound-panel', className)}
             data-tabs-content={value}
-            hidden={!open}
+            data-state={open ? 'open' : 'closed'}
+            aria-hidden={open ? undefined : true}
+            inert={open ? undefined : true}
             {...props}
         >
             <Collapse open={open}>

@@ -5,18 +5,16 @@ import { useEffect, useRef, useState } from 'react';
 export function usePresence(open: boolean, durationMs = 220) {
     const [present, setPresent] = useState(open);
     const [state, setState] = useState<'opening' | 'open' | 'closed' | 'closing'>(
-        open ? 'open' : 'closed',
+        open ? 'opening' : 'closed',
     );
-    const previousOpenRef = useRef(open);
+    const presentRef = useRef(open);
 
     useEffect(() => {
-        if (previousOpenRef.current === open) return;
-        previousOpenRef.current = open;
-
         let frame = 0;
         let timer = 0;
 
         if (open) {
+            presentRef.current = true;
             setState('opening');
             setPresent(true);
             frame = window.requestAnimationFrame(() => {
@@ -28,9 +26,15 @@ export function usePresence(open: boolean, durationMs = 220) {
             };
         }
 
+        if (!presentRef.current) {
+            setState('closed');
+            return;
+        }
+
         setState('closing');
         frame = window.requestAnimationFrame(() => {
             timer = window.setTimeout(() => {
+                presentRef.current = false;
                 setPresent(false);
                 setState('closed');
             }, durationMs);

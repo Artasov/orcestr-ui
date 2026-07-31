@@ -27,12 +27,21 @@ test('compound tabs use roving focus and linked tabpanel ids', async () => {
     const user = userEvent.setup();
     const first = screen.getByRole('tab', { name: 'One' });
     const second = screen.getByRole('tab', { name: 'Two' });
+    const secondPanel = screen.getByText('Second panel').closest('[role="tabpanel"]');
+    assert.ok(secondPanel);
+    assert.equal(secondPanel.hasAttribute('hidden'), false);
+    assert.equal(secondPanel.getAttribute('aria-hidden'), 'true');
+    assert.equal(secondPanel.hasAttribute('inert'), true);
+    assert.equal(secondPanel.querySelector('.oui-collapse')?.getAttribute('data-state'), 'closed');
     first.focus();
     await user.keyboard('{ArrowRight}');
 
     assert.equal(document.activeElement, second);
     assert.equal(second.getAttribute('aria-selected'), 'true');
     assert.equal(first.tabIndex, -1);
+    assert.equal(secondPanel.getAttribute('aria-hidden'), null);
+    assert.equal(secondPanel.hasAttribute('inert'), false);
+    assert.equal(secondPanel.querySelector('.oui-collapse')?.getAttribute('data-state'), 'open');
     assert.equal(
         second.getAttribute('aria-controls'),
         screen.getByText('Second panel').closest('[role="tabpanel"]')?.id,
