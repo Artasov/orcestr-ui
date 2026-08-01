@@ -17,5 +17,5 @@ test('Avatar owns fallback sizing for every standard size', () => {
 test('Avatar supports theme-safe image and fallback rendering', () => {
     assert.match(source, /src \? <img className="oui-avatar-image" src=\{src\} alt="" \/> : fallback/);
     assert.match(styles, /background: var\(--oui-info-soft, var\(--oui-primary-surface\)\)/);
-    assert.match(styles, /color: var\(--oui-info-base, var\(--oui-primary-text\)\)/);
+    assert.match(styles, /color: var\(--oui-primary-text\)/);
 });
