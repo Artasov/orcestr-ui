@@ -145,14 +145,16 @@ Release получает заголовок вида `@orcestr/ui vX.Y.Z`, сс�
 
 1. Проверь package page в NPM.
 2. Проверь GitHub Release в репозитории.
-3. В продуктовых репозиториях обнови зависимость `@orcestr/ui` до новой версии.
-4. Для основного Orcestr repo обнови `frontend/package.json` и `frontend/package-lock.json`.
-5. Если локально нужно снова работать с соседним checkout `../orcestr-ui`, используй в основном проекте:
+3. В приложениях-потребителях обнови зависимость `@orcestr/ui` до новой версии.
+4. Для проверки неопубликованной локальной сборки создай архив пакета:
 
-```powershell
-cd F:\dev\orcestr\frontend
-npm run ui:local
+```bash
+npm pack
+npm install /path/to/orcestr-ui/orcestr-ui-<version>.tgz
 ```
+
+Не сохраняй `file:` и `link:` зависимости в публикуемых manifest- и lock-файлах
+приложений.
 
 ## Если релиз упал
 

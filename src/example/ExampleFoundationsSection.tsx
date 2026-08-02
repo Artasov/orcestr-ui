@@ -10,8 +10,8 @@ const providerSample: CodeExample = {
     code: `import {OrcestrUiProvider} from '@orcestr/ui';
 
 <OrcestrUiProvider
-    surface='deliveries'
     locale='ru'
+    themeOverrides={{colors: {primary: {base: '#7c3aed'}}}}
 >
     <App />
 </OrcestrUiProvider>`,

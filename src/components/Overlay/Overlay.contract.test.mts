@@ -110,7 +110,7 @@ test('Popover portals carry active theme variables', () => {
     assert.match(source, /OrcestrThemeContext/);
     assert.match(source, /useContext\(OrcestrThemeContext\)/);
     assert.match(source, /data-oui-theme=\{themeContext\?\.mode\}/);
-    assert.match(source, /data-oui-surface=\{themeContext\?\.surface\}/);
+    assert.doesNotMatch(source, /data-oui-surface/);
     assert.match(source, /\.\.\.themeContext\?\.cssVariables/);
 });
 

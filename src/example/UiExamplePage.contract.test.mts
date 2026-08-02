@@ -287,7 +287,7 @@ test('AppSidebar exposes composable header and footer slots', () => {
     );
     assert.match(applicationSection, /className=["']oui-app-sidebar-brand["']/);
     assert.match(samples, /className=["']oui-app-sidebar-brand["']/);
-    assert.doesNotMatch(samples, /title=["']Deliveries'|logo=\{/);
+    assert.match(samples, /oui-app-sidebar-title["']>Workspace</);
 });
 
 test('UI example keeps forms out of the foundation demo', () => {

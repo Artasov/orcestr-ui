@@ -180,7 +180,7 @@ export function ApplicationSection({ onOpenCode }: ExampleSectionProps) {
             <UiExampleSection
                 id="app-sidebar-example"
                 title="AppSidebar"
-                description="Deliveries-style sidebar with active indicator and footer actions."
+                description="Application sidebar with active indicator and footer actions."
             >
                 <ExampleTile title="AppSidebar" code={codeSamples.appSidebar} onOpen={onOpenCode}>
                     <div className="oui-ui-app-sidebar-demo">
@@ -191,7 +191,7 @@ export function ApplicationSection({ onOpenCode }: ExampleSectionProps) {
                                         <span className="oui-app-sidebar-logo">
                                             <span className="oui-ui-demo-logo">O</span>
                                         </span>
-                                        <span className="oui-app-sidebar-title">Deliveries</span>
+                                        <span className="oui-app-sidebar-title">Workspace</span>
                                     </div>
                                     <div className="oui-app-sidebar-actions">
                                         <IconButton
@@ -449,7 +449,7 @@ function DemoShellBrand() {
             <span className="oui-app-sidebar-logo">
                 <span className="oui-ui-demo-logo">O</span>
             </span>
-            <span className="oui-app-sidebar-title">Deliveries</span>
+            <span className="oui-app-sidebar-title">Workspace</span>
         </div>
     );
 }

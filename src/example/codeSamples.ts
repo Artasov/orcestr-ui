@@ -156,7 +156,7 @@ const languageItems: MenuItem[] = [
                         side={sidebarSide}
                         header={(
                             <>
-                                <div className='oui-app-sidebar-brand'><span className='oui-app-sidebar-logo'>O</span><span className='oui-app-sidebar-title'>Deliveries</span></div>
+                                <div className='oui-app-sidebar-brand'><span className='oui-app-sidebar-logo'>W</span><span className='oui-app-sidebar-title'>Workspace</span></div>
                                 <div className='oui-app-sidebar-actions'>
                                     <Tooltip content='Back'>
                                         <IconButton size={2} v='ghost' icon={<LuArrowLeft />} aria-label='Back' />
@@ -1332,7 +1332,7 @@ const [activeKey, setActiveKey] = useState('requests');
         <>
             <div className='oui-app-sidebar-brand'>
                 <span className='oui-app-sidebar-logo'>O</span>
-                <span className='oui-app-sidebar-title'>Deliveries</span>
+                <span className='oui-app-sidebar-title'>Workspace</span>
             </div>
             <div className='oui-app-sidebar-actions'>
                 <IconButton size={2} v='ghost' icon={<LuSettings />} />

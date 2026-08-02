@@ -6,33 +6,23 @@ import type { CSSProperties } from 'react';
 import { themeByMode } from './defaultTheme.js';
 import { OrcestrThemeContext } from './useTheme.js';
 import { cn } from '../utils/cn.js';
-import type {
-    OrcestrTheme,
-    OrcestrThemeMode,
-    OrcestrThemeProviderProps,
-    OrcestrThemeSurface,
-} from './themeTypes.js';
+import type { OrcestrTheme, OrcestrThemeMode, OrcestrThemeProviderProps } from './themeTypes.js';
 
 export function OrcestrThemeProvider({
     children,
     mode: controlledMode,
     defaultMode = 'dark',
-    defaultSurface = 'orcestr',
-    surface,
     onModeChange,
-    onSurfaceChange,
     themeOverrides,
     className,
     style,
     testId,
 }: OrcestrThemeProviderProps) {
     const [mode, setModeState] = useState<OrcestrThemeMode>(defaultMode);
-    const [surfaceState, setSurfaceState] = useState<OrcestrThemeSurface>(defaultSurface);
     const resolvedMode = controlledMode ?? mode;
-    const resolvedSurface = surface ?? surfaceState;
     const theme = useMemo<OrcestrTheme>(
-        () => themeByMode(resolvedMode, resolvedSurface, themeOverrides),
-        [resolvedMode, resolvedSurface, themeOverrides],
+        () => themeByMode(resolvedMode, themeOverrides),
+        [resolvedMode, themeOverrides],
     );
     const setMode = useCallback(
         (next: OrcestrThemeMode) => {
@@ -40,13 +30,6 @@ export function OrcestrThemeProvider({
             onModeChange?.(next);
         },
         [controlledMode, onModeChange],
-    );
-    const setSurface = useCallback(
-        (next: OrcestrThemeSurface) => {
-            if (surface === undefined) setSurfaceState(next);
-            onSurfaceChange?.(next);
-        },
-        [onSurfaceChange, surface],
     );
     const toggleMode = useCallback(() => {
         setMode(resolvedMode === 'dark' ? 'light' : 'dark');
@@ -223,20 +206,17 @@ export function OrcestrThemeProvider({
     const value = useMemo(
         () => ({
             mode: resolvedMode,
-            surface: resolvedSurface,
             theme,
             cssVariables: rootStyle,
             setMode,
-            setSurface,
             toggleMode,
         }),
-        [resolvedMode, resolvedSurface, theme, rootStyle, setMode, setSurface, toggleMode],
+        [resolvedMode, theme, rootStyle, setMode, toggleMode],
     );
 
     useEffect(() => {
         const root = document.documentElement;
         const previousTheme = root.getAttribute('data-oui-theme');
-        const previousSurface = root.getAttribute('data-oui-surface');
         const previousVariables = new Map<string, string>();
 
         for (const [name, value] of Object.entries(themeStyle)) {
@@ -246,7 +226,6 @@ export function OrcestrThemeProvider({
         }
 
         root.setAttribute('data-oui-theme', resolvedMode);
-        root.setAttribute('data-oui-surface', resolvedSurface);
         return () => {
             for (const [name, value] of previousVariables) {
                 if (value) root.style.setProperty(name, value);
@@ -254,17 +233,14 @@ export function OrcestrThemeProvider({
             }
             if (previousTheme) root.setAttribute('data-oui-theme', previousTheme);
             else root.removeAttribute('data-oui-theme');
-            if (previousSurface) root.setAttribute('data-oui-surface', previousSurface);
-            else root.removeAttribute('data-oui-surface');
         };
-    }, [resolvedMode, resolvedSurface, themeStyle]);
+    }, [resolvedMode, themeStyle]);
 
     return (
         <OrcestrThemeContext.Provider value={value}>
             <div
                 className={cn('oui-root', className)}
                 data-oui-theme={resolvedMode}
-                data-oui-surface={resolvedSurface}
                 data-testid={testId}
                 style={themeStyle}
             >

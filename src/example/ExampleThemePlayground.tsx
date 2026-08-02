@@ -12,7 +12,6 @@ import {
     type OrcestrTheme,
     type OrcestrThemeMode,
     type OrcestrThemeOverrides,
-    type OrcestrThemeSurface,
     type OrcestrThemeStatus,
     type OrcestrUiLocale,
 } from '../index.js';
@@ -24,7 +23,6 @@ export type ThemePreset = {
     label: LocalizedText;
     description: LocalizedText;
     mode: OrcestrThemeMode;
-    surface: OrcestrThemeSurface;
     accent: string;
     previewBg: string;
     previewPanel: string;
@@ -45,7 +43,6 @@ export const themePlaygroundPresets = [
             en: 'Neutral dark platform base.',
         },
         mode: 'dark',
-        surface: 'orcestr',
         accent: '#6ea0ff',
         previewBg: '#111318',
         previewPanel: '#171a21',
@@ -53,17 +50,16 @@ export const themePlaygroundPresets = [
         group: 'dark',
     },
     {
-        id: 'deliveries-dark',
+        id: 'operations-dark',
         label: {
-            ru: 'Deliveries',
-            en: 'Deliveries',
+            ru: 'Operations',
+            en: 'Operations',
         },
         description: {
             ru: 'Плотная тема для повторяющейся операционной работы.',
-            en: 'Dense theme for deliveries workflows.',
+            en: 'Dense theme for operational workflows.',
         },
         mode: 'dark',
-        surface: 'deliveries',
         accent: '#34d399',
         previewBg: '#07140f',
         previewPanel: '#0d2119',
@@ -102,7 +98,6 @@ export const themePlaygroundPresets = [
             en: 'Absolute black base for OLED interfaces.',
         },
         mode: 'dark',
-        surface: 'orcestr',
         accent: '#8ab4ff',
         previewBg: '#000000',
         previewPanel: '#050505',
@@ -156,7 +151,6 @@ export const themePlaygroundPresets = [
             en: 'Restrained analytics and admin screens.',
         },
         mode: 'dark',
-        surface: 'orcestr',
         accent: '#c4d3e8',
         previewBg: '#111111',
         previewPanel: '#1a1a1a',
@@ -190,17 +184,16 @@ export const themePlaygroundPresets = [
         },
     },
     {
-        id: 'beauty-dark',
+        id: 'rose-dark',
         label: {
-            ru: 'Beauty dark',
-            en: 'Beauty dark',
+            ru: 'Rose dark',
+            en: 'Rose dark',
         },
         description: {
             ru: 'Мягкая темная тема для контентных интерфейсов.',
             en: 'Soft dark theme for content-heavy interfaces.',
         },
         mode: 'dark',
-        surface: 'beauty',
         accent: '#f0a6d8',
         previewBg: '#141116',
         previewPanel: '#1d1820',
@@ -229,22 +222,46 @@ export const themePlaygroundPresets = [
         },
     },
     {
-        id: 'jewelry-dark',
+        id: 'amber-dark',
         label: {
-            ru: 'Jewelry dark',
-            en: 'Jewelry dark',
+            ru: 'Amber dark',
+            en: 'Amber dark',
         },
         description: {
             ru: 'Точная темная тема для структурированных каталогов.',
             en: 'Precise dark theme for structured index surfaces.',
         },
         mode: 'dark',
-        surface: 'jewelry',
         accent: '#e6c26a',
         previewBg: '#11100d',
         previewPanel: '#191712',
         previewText: '#f8f1dd',
         group: 'dark',
+        overrides: {
+            colors: {
+                bg: '#11100d',
+                panel: '#191712',
+                panelSoft: '#242017',
+                floating: '#191712',
+                primary: {
+                    base: '#ffc53d',
+                    text: '#ffca16',
+                    surface: '#fa820022',
+                    border: '#fd9b0051',
+                    contrast: '#111111',
+                },
+                selected: '#fa820022',
+                focusRing: '0 0 0 3px #fc820032',
+            },
+            status: {
+                primary: {
+                    color: '#ffc53d',
+                    text: '#ffca16',
+                    soft: '#fa820022',
+                    border: '#fd9b0051',
+                },
+            },
+        },
     },
     {
         id: 'midnight',
@@ -257,7 +274,6 @@ export const themePlaygroundPresets = [
             en: 'Blue-black dispatcher theme.',
         },
         mode: 'dark',
-        surface: 'orcestr',
         accent: '#7dd3fc',
         previewBg: '#080f1c',
         previewPanel: '#101a2b',
@@ -296,7 +312,6 @@ export const themePlaygroundPresets = [
             en: 'Clean light product base.',
         },
         mode: 'light',
-        surface: 'orcestr',
         accent: '#2563eb',
         previewBg: '#f8fafc',
         previewPanel: '#ffffff',
@@ -304,17 +319,16 @@ export const themePlaygroundPresets = [
         group: 'light',
     },
     {
-        id: 'deliveries-light',
+        id: 'operations-light',
         label: {
-            ru: 'Deliveries light',
-            en: 'Deliveries light',
+            ru: 'Operations light',
+            en: 'Operations light',
         },
         description: {
             ru: 'Плотная светлая тема для повторяющейся операционной работы.',
             en: 'Dense light theme for repeated operational work.',
         },
         mode: 'light',
-        surface: 'deliveries',
         accent: '#047857',
         previewBg: '#eefbf4',
         previewPanel: '#ffffff',
@@ -337,17 +351,16 @@ export const themePlaygroundPresets = [
         },
     },
     {
-        id: 'beauty-light',
+        id: 'rose-light',
         label: {
-            ru: 'Beauty light',
-            en: 'Beauty light',
+            ru: 'Rose light',
+            en: 'Rose light',
         },
         description: {
             ru: 'Мягкая светлая тема для контентных интерфейсов.',
             en: 'Soft light theme for content-heavy interfaces.',
         },
         mode: 'light',
-        surface: 'beauty',
         accent: '#db2777',
         previewBg: '#fff1f8',
         previewPanel: '#ffffff',
@@ -370,22 +383,45 @@ export const themePlaygroundPresets = [
         },
     },
     {
-        id: 'jewelry-light',
+        id: 'amber-light',
         label: {
-            ru: 'Jewelry light',
-            en: 'Jewelry light',
+            ru: 'Amber light',
+            en: 'Amber light',
         },
         description: {
             ru: 'Теплая светлая тема для структурированных каталогов.',
             en: 'Warm light theme for structured index surfaces.',
         },
         mode: 'light',
-        surface: 'jewelry',
         accent: '#9b6f12',
         previewBg: '#fbfaf6',
         previewPanel: '#ffffff',
         previewText: '#211a0f',
         group: 'light',
+        overrides: {
+            colors: {
+                bg: '#fbfaf6',
+                panel: '#ffffff',
+                panelSoft: '#f3efe4',
+                primary: {
+                    base: '#ffc53d',
+                    text: '#ab6400',
+                    surface: '#ffde003d',
+                    border: '#eab5008c',
+                    contrast: '#111111',
+                },
+                selected: '#ffde003d',
+                focusRing: '0 0 0 3px #ffd40063',
+            },
+            status: {
+                primary: {
+                    color: '#ffc53d',
+                    text: '#ab6400',
+                    soft: '#ffde003d',
+                    border: '#eab5008c',
+                },
+            },
+        },
     },
     {
         id: 'porcelain',
@@ -398,7 +434,6 @@ export const themePlaygroundPresets = [
             en: 'Calm white editorial workspace.',
         },
         mode: 'light',
-        surface: 'orcestr',
         accent: '#7c3aed',
         previewBg: '#f8f5ff',
         previewPanel: '#ffffff',
@@ -436,7 +471,6 @@ export const themePlaygroundPresets = [
             en: 'Fresh light theme for dense work screens.',
         },
         mode: 'light',
-        surface: 'orcestr',
         accent: '#0f9f6e',
         previewBg: '#f4fbf8',
         previewPanel: '#ffffff',

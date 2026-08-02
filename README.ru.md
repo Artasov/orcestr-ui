@@ -23,13 +23,13 @@
 
 ## Статус
 
-| Пункт   | Значение                        |
-| ------- | ------------------------------- |
-| Package | `@orcestr/ui`                   |
-| Version | `0.3.0`                         |
-| Status  | Beta                            |
-| Runtime | React 19                        |
-| Styling | CSS из `@orcestr/ui/styles.css` |
+| Пункт   | Значение                                   |
+| ------- | ------------------------------------------ |
+| Package | `@orcestr/ui`                              |
+| Version | актуальная версия указана в npm badge выше |
+| Status  | Beta                                       |
+| Runtime | React 19                                   |
+| Styling | CSS из `@orcestr/ui/styles.css`            |
 
 Public API еще формируется, пока пакет находится в beta.
 
@@ -48,14 +48,18 @@ Public API еще формируется, пока пакет находится
 ## Установка
 
 ```bash
-npm install @orcestr/ui
+npm install @orcestr/ui react react-dom react-icons
 ```
 
-Для локальной разработки внутри Orcestr:
+TanStack Query нужен только при использовании `@orcestr/ui/react-query`:
 
 ```bash
-npm install ../../orcestr-ui
+npm install @tanstack/react-query
 ```
+
+Для проверки неопубликованной сборки в другом приложении запусти `npm pack` и
+установи созданный архив. В публикуемых manifest- и lock-файлах должны оставаться
+registry-версии.
 
 ## Использование
 
@@ -94,16 +98,19 @@ import { UiExamplePage } from '@orcestr/ui/example/UiExamplePage';
 import '@orcestr/ui/example/styles.css';
 ```
 
+Настройка provider, тем приложения, overlays, controlled state и границ между
+client/server описана в [руководстве для потребителей](./docs/CONSUMER_GUIDE.ru.md).
+
 ## Entrypoints
 
-| Entrypoint                          | Назначение                               |
-| ----------------------------------- | ---------------------------------------- |
-| `@orcestr/ui`                       | Components, providers, hooks и theme API |
-| `@orcestr/ui/server`                | Server-safe render-only primitives       |
-| `@orcestr/ui/styles.css`            | Runtime styles UI kit                    |
-| `@orcestr/ui/react-query`           | Optional React Query adapter             |
-| `@orcestr/ui/example/UiExamplePage` | Demo page component                      |
-| `@orcestr/ui/example/styles.css`    | Demo page styles                         |
+| Entrypoint                          | Назначение                                      |
+| ----------------------------------- | ----------------------------------------------- |
+| `@orcestr/ui`                       | Client components, providers, hooks и theme API |
+| `@orcestr/ui/server`                | Server-safe render-only primitives              |
+| `@orcestr/ui/styles.css`            | Runtime styles UI kit                           |
+| `@orcestr/ui/react-query`           | Optional React Query adapter                    |
+| `@orcestr/ui/example/UiExamplePage` | Demo page component                             |
+| `@orcestr/ui/example/styles.css`    | Demo page styles                                |
 
 ## Скрипты
 

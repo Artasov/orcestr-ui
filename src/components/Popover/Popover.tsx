@@ -192,7 +192,6 @@ export function Popover({
                         data-layer="dropdown"
                         data-oui-layer-index={layerIndex}
                         data-oui-theme={themeContext?.mode}
-                        data-oui-surface={themeContext?.surface}
                         data-testid={testId ? `${testId}-content` : undefined}
                         style={{
                             ...themeContext?.cssVariables,
