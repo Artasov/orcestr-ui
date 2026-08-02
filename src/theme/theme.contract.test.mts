@@ -11,9 +11,9 @@ function read(path: string): string {
     return readFileSync(`${root}/${path}`, 'utf8');
 }
 
-test('theme contract includes surfaces and full token families', () => {
+test('theme contract includes full token families without product concepts', () => {
     const types = read('theme/themeTypes.ts');
-    assert.match(types, /OrcestrThemeSurface = 'orcestr' \| 'deliveries' \| 'beauty' \| 'jewelry'/);
+    assert.doesNotMatch(types, /OrcestrThemeSurface|defaultSurface|onSurfaceChange/);
     assert.match(types, /colors: \{/);
     assert.match(types, /primary: OrcestrThemeColorRole/);
     assert.match(types, /secondary: OrcestrThemeColorRole/);
@@ -85,13 +85,11 @@ test('responsive system props emit breakpoint CSS variables instead of collapsin
     assert.match(responsiveStyles, /--oui-sp-#\{\$key\}-md/);
 });
 
-test('theme surface registry includes all first-party surfaces', () => {
+test('default theme is independent from consuming applications', () => {
     const source = read('theme/defaultTheme.ts');
-    assert.match(source, /orcestrThemeSurfaceRegistry/);
-    assert.match(source, /orcestrThemeSurfaceRegistry\.orcestr/);
-    assert.match(source, /orcestrThemeSurfaceRegistry\.deliveries/);
-    assert.match(source, /orcestrThemeSurfaceRegistry\.beauty/);
-    assert.match(source, /orcestrThemeSurfaceRegistry\.jewelry/);
+    assert.doesNotMatch(source, /orcestrThemeSurfaceRegistry|surfaceOverrides/);
+    assert.match(source, /themeByMode/);
+    assert.match(source, /themeOverrides/);
 });
 
 test('theme contract keeps only active component tokens', () => {
@@ -292,35 +290,25 @@ test('theme provider can be controlled by playground state', () => {
 
     assert.match(types, /mode\?: OrcestrThemeMode/);
     assert.match(types, /onModeChange\?: \(mode: OrcestrThemeMode\) => void/);
-    assert.match(types, /onSurfaceChange\?: \(surface: OrcestrThemeSurface\) => void/);
+    assert.doesNotMatch(types, /SurfaceChange|ThemeSurface/);
     assert.match(provider, /controlledMode/);
     assert.match(provider, /resolvedMode/);
     assert.match(uiProvider, /onModeChange={onModeChange}/);
-    assert.match(uiProvider, /onSurfaceChange={onSurfaceChange}/);
+    assert.doesNotMatch(uiProvider, /SurfaceChange|defaultSurface/);
 });
 
-test('default themes include module surface overrides', () => {
+test('default themes do not include consuming product overrides', () => {
     const source = read('theme/defaultTheme.ts');
-    assert.match(source, /deliveries: \{/);
-    assert.match(source, /beauty: \{/);
-    assert.match(source, /jewelry: \{/);
-    assert.match(
-        source,
-        /deliveries: \{[\s\S]*?status: \{[\s\S]*?primary: \{[\s\S]*?color: '#f76b15'/,
-    );
-    assert.match(source, /beauty: \{[\s\S]*?status: \{[\s\S]*?primary: \{[\s\S]*?color: '#d86d8f'/);
-    assert.match(
-        source,
-        /jewelry: \{[\s\S]*?status: \{[\s\S]*?primary: \{[\s\S]*?color: '#ffc53d'/,
-    );
+    assert.doesNotMatch(source, /surfaceOverrides|OrcestrThemeSurface/);
     assert.doesNotMatch(source, /chatBubbleRadius/);
     assert.doesNotMatch(source, /mediaPreviewBackground/);
 });
 
-test('theme playground exposes new token families and jewelry presets', () => {
+test('theme playground exposes token families and generic presets', () => {
     const source = read('example/ExampleThemePlayground.tsx');
-    assert.match(source, /id: 'jewelry-dark'/);
-    assert.match(source, /id: 'jewelry-light'/);
+    assert.match(source, /id: 'amber-dark'/);
+    assert.match(source, /id: 'amber-light'/);
+    assert.doesNotMatch(source, /OrcestrThemeSurface|defaultSurface/);
     assert.match(source, /'radius'/);
     assert.match(source, /'text'/);
     assert.doesNotMatch(source, /'radii'|'typography'/);

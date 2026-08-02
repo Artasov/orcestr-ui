@@ -26,7 +26,7 @@ Main website: [orcestr.com](https://orcestr.com)
 | Item    | Value                                     |
 | ------- | ----------------------------------------- |
 | Package | `@orcestr/ui`                             |
-| Version | `0.3.0`                                   |
+| Version | see the npm badge above                   |
 | Status  | Beta                                      |
 | Runtime | React 19                                  |
 | Styling | bundled CSS from `@orcestr/ui/styles.css` |
@@ -48,14 +48,17 @@ The public API is still being shaped while the package is in beta.
 ## Install
 
 ```bash
-npm install @orcestr/ui
+npm install @orcestr/ui react react-dom react-icons
 ```
 
-For local Orcestr development:
+Install TanStack Query only when using `@orcestr/ui/react-query`:
 
 ```bash
-npm install ../../orcestr-ui
+npm install @tanstack/react-query
 ```
+
+To test an unpublished build in another application, run `npm pack` and install
+the generated tarball. Keep registry versions in published manifests and lock files.
 
 ## Usage
 
@@ -94,16 +97,19 @@ import { UiExamplePage } from '@orcestr/ui/example/UiExamplePage';
 import '@orcestr/ui/example/styles.css';
 ```
 
+For provider configuration, application-owned themes, overlays, controlled state and
+client/server boundaries, see the [consumer guide](./docs/CONSUMER_GUIDE.md).
+
 ## Entrypoints
 
-| Entrypoint                          | Purpose                                    |
-| ----------------------------------- | ------------------------------------------ |
-| `@orcestr/ui`                       | Components, providers, hooks and theme API |
-| `@orcestr/ui/server`                | Server-safe render-only primitives         |
-| `@orcestr/ui/styles.css`            | Runtime styles for the UI kit              |
-| `@orcestr/ui/react-query`           | Optional React Query adapter               |
-| `@orcestr/ui/example/UiExamplePage` | Demo page component                        |
-| `@orcestr/ui/example/styles.css`    | Demo page styles                           |
+| Entrypoint                          | Purpose                                           |
+| ----------------------------------- | ------------------------------------------------- |
+| `@orcestr/ui`                       | Client components, providers, hooks and theme API |
+| `@orcestr/ui/server`                | Server-safe render-only primitives                |
+| `@orcestr/ui/styles.css`            | Runtime styles for the UI kit                     |
+| `@orcestr/ui/react-query`           | Optional React Query adapter                      |
+| `@orcestr/ui/example/UiExamplePage` | Demo page component                               |
+| `@orcestr/ui/example/styles.css`    | Demo page styles                                  |
 
 ## Scripts
 

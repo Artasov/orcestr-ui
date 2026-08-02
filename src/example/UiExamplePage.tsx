@@ -618,7 +618,7 @@ function UiExampleHeaderActions({
             />
             <a
                 className="oui-ui-header-link"
-                href="https://github.com/Artasov/orcestr"
+                href="https://github.com/Artasov/orcestr-ui"
                 target="_blank"
                 rel="noreferrer"
             >
@@ -645,7 +645,6 @@ export function UiExamplePage({
         firstPreset.id as ThemePresetId,
     );
     const [mode, setMode] = useState(firstPreset.mode);
-    const [surface, setSurface] = useState(firstPreset.surface);
     const [internalLocale, setInternalLocale] = useState<OrcestrUiLocale>(defaultLocale);
     const [themeOverrides, setThemeOverrides] = useState<OrcestrThemeOverrides>(
         firstPreset.overrides ?? {},
@@ -656,7 +655,6 @@ export function UiExamplePage({
         (preset: ReturnType<typeof getThemePlaygroundPreset>) => {
             setActivePresetId(preset.id as ThemePresetId);
             setMode(preset.mode);
-            setSurface(preset.surface);
             setThemeOverrides(preset.overrides ?? {});
         },
         [],
@@ -675,9 +673,7 @@ export function UiExamplePage({
     return (
         <OrcestrUiProvider
             mode={mode}
-            surface={surface}
             onModeChange={setMode}
-            onSurfaceChange={setSurface}
             themeOverrides={themeOverrides}
             locale={locale}
         >

@@ -10,20 +10,13 @@ import {
 import { OverlayProvider, type OverlayZIndex } from '../components/Overlay/OverlayProvider.js';
 import { ToastProvider, type ToastPosition } from '../components/Toast/Toast.js';
 import { OrcestrThemeProvider } from '../theme/ThemeProvider.js';
-import type {
-    OrcestrThemeMode,
-    OrcestrThemeOverrides,
-    OrcestrThemeSurface,
-} from '../theme/themeTypes.js';
+import type { OrcestrThemeMode, OrcestrThemeOverrides } from '../theme/themeTypes.js';
 
 export type OrcestrUiProviderProps = {
     children: ReactNode;
     mode?: OrcestrThemeMode;
     defaultMode?: OrcestrThemeMode;
-    defaultSurface?: OrcestrThemeSurface;
-    surface?: OrcestrThemeSurface;
     onModeChange?: (mode: OrcestrThemeMode) => void;
-    onSurfaceChange?: (surface: OrcestrThemeSurface) => void;
     themeOverrides?: OrcestrThemeOverrides;
     locale?: OrcestrUiLocale;
     copy?: Partial<{
@@ -42,10 +35,7 @@ export function OrcestrUiProvider({
     children,
     mode,
     defaultMode,
-    defaultSurface,
-    surface,
     onModeChange,
-    onSurfaceChange,
     themeOverrides,
     locale,
     copy,
@@ -62,10 +52,7 @@ export function OrcestrUiProvider({
             <OrcestrThemeProvider
                 mode={mode}
                 defaultMode={defaultMode}
-                defaultSurface={defaultSurface}
-                surface={surface}
                 onModeChange={onModeChange}
-                onSurfaceChange={onSurfaceChange}
                 themeOverrides={themeOverrides}
                 className={className}
                 style={style}

@@ -1,7 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 export type OrcestrThemeMode = 'dark' | 'light';
-export type OrcestrThemeSurface = 'orcestr' | 'deliveries' | 'beauty' | 'jewelry';
 export type ButtonPressAnimation = 'translate' | 'scale' | 'soft' | 'none';
 export type ModalAnimation = 'zoom-blur' | 'rise' | 'fade';
 export type OrcestrThemeColorRole = {
@@ -14,7 +13,6 @@ export type OrcestrThemeColorRole = {
 
 export type OrcestrTheme = {
     mode: OrcestrThemeMode;
-    surface: OrcestrThemeSurface;
     colors: {
         bg: string;
         panel: string;
@@ -160,7 +158,6 @@ export type OrcestrThemeOverrides = Partial<
         OrcestrTheme,
         | 'colors'
         | 'mode'
-        | 'surface'
         | 'motion'
         | 'radius'
         | 'spacing'
@@ -216,11 +213,9 @@ type PartialColorOverrides = Partial<
 
 export type OrcestrThemeContextValue = {
     mode: OrcestrThemeMode;
-    surface: OrcestrThemeSurface;
     theme: OrcestrTheme;
     cssVariables: CSSProperties;
     setMode: (mode: OrcestrThemeMode) => void;
-    setSurface: (surface: OrcestrThemeSurface) => void;
     toggleMode: () => void;
 };
 
@@ -228,10 +223,7 @@ export type OrcestrThemeProviderProps = {
     children: ReactNode;
     mode?: OrcestrThemeMode;
     defaultMode?: OrcestrThemeMode;
-    defaultSurface?: OrcestrThemeSurface;
-    surface?: OrcestrThemeSurface;
     onModeChange?: (mode: OrcestrThemeMode) => void;
-    onSurfaceChange?: (surface: OrcestrThemeSurface) => void;
     themeOverrides?: OrcestrThemeOverrides;
     className?: string;
     style?: CSSProperties;
