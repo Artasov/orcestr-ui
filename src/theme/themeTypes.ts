@@ -17,6 +17,7 @@ export type OrcestrTheme = {
         bg: string;
         panel: string;
         panelSoft: string;
+        section: string;
         control: string;
         controlHover: string;
         text: string;
@@ -35,8 +36,6 @@ export type OrcestrTheme = {
         disabled: string;
         overlay: string;
         floating: string;
-        section: string;
-        sectionNested: string;
         pad: string;
         padHover: string;
         skeletonShimmer: string;

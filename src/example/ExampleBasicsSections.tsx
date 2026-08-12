@@ -12,8 +12,6 @@ import {
     Flex,
     Grid,
     ScrollArea,
-    Section,
-    Separator,
     Skeleton,
     Stack,
     Text,
@@ -162,17 +160,27 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                     <Stack g={2}>
                         {[
                             [
-                                '/gallery/cyberpunk-rain.webp',
+                                'CR',
+                                'var(--oui-primary-surface)',
+                                'var(--oui-primary-text)',
                                 'Created',
                                 'Draft created from intake',
                             ],
                             [
-                                '/gallery/hollywood-star.webp',
+                                'RS',
+                                'var(--oui-warning-surface)',
+                                'var(--oui-warning-text)',
                                 'Reserved',
                                 'Capacity is reserved for review',
                             ],
-                            ['/gallery/ice-cave.webp', 'Scheduled', 'Review window is confirmed'],
-                        ].map(([image, title, description]) => (
+                            [
+                                'SC',
+                                'var(--oui-success-surface)',
+                                'var(--oui-success-text)',
+                                'Scheduled',
+                                'Review window is confirmed',
+                            ],
+                        ].map(([initials, background, color, title, description]) => (
                             <Flex
                                 key={title}
                                 row
@@ -183,17 +191,25 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                                 r={2}
                                 style={{ background: 'var(--oui-pad-bg)' }}
                             >
-                                <img
-                                    src={image}
-                                    alt=""
+                                <span
+                                    aria-hidden="true"
                                     style={{
+                                        display: 'inline-flex',
                                         width: 34,
                                         height: 34,
                                         flex: '0 0 34px',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
                                         borderRadius: 999,
-                                        objectFit: 'cover',
+                                        background,
+                                        color,
+                                        fontSize: 11,
+                                        fontWeight: 760,
+                                        letterSpacing: '0.02em',
                                     }}
-                                />
+                                >
+                                    {initials}
+                                </span>
                                 <Stack g={0}>
                                     <Text fs="13px" fw={700}>
                                         {title}
@@ -246,10 +262,10 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
             <UiExampleSection
                 id="surfaces-example"
                 title="Surfaces"
-                description="Card, Section, Separator and Alert primitives."
+                description="Card and Alert surface variants."
             >
                 <ExampleTile title="Surfaces" code={codeSamples.surfaces} onOpen={onOpenCode}>
-                    <Section g={3}>
+                    <Stack g={3}>
                         <Grid columns="repeat(auto-fit, minmax(min(100%, 180px), 1fr))" g={2}>
                             <Card v="surface" interactive>
                                 <Stack g={1}>
@@ -276,7 +292,6 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                                 </Stack>
                             </Card>
                         </Grid>
-                        <Separator />
                         <Alert
                             title="Inventory sync delayed"
                             action={
@@ -287,7 +302,7 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                         >
                             Check this status before creating the next shipment.
                         </Alert>
-                    </Section>
+                    </Stack>
                 </ExampleTile>
             </UiExampleSection>
             <UiExampleSection id="grid-example" title="Grid" description="Grid layout primitive.">
@@ -321,11 +336,11 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                 >
                     <div
                         className="oui-highlight-demo-surface"
-                        style={{ background: 'var(--oui-section-nested-solid-bg)' }}
+                        style={{ background: 'var(--oui-section-opaque-bg)' }}
                     >
                         <TopHighlight
-                            h={32}
-                            color="var(--oui-section-nested-solid-bg)"
+                            h={42}
+                            color="var(--oui-bg)"
                             position="absolute"
                         />
                         <Text fs="13px" fw={700}>
@@ -335,8 +350,8 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                             One surface shows both edge masks at the same time.
                         </Text>
                         <BottomHighlight
-                            h={32}
-                            color="var(--oui-section-nested-solid-bg)"
+                            h={42}
+                            color="var(--oui-bg)"
                             position="absolute"
                         />
                     </div>
@@ -367,7 +382,7 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                             h={112}
                             pr={1}
                             highlights
-                            highlightColor="var(--oui-section-nested-solid-bg)"
+                            highlightColor="var(--oui-section-opaque-bg)"
                             highlightTop={{ h: 28, mode: 'static', maxOpacity: 0.96 }}
                             highlightBottom={{ h: 28, mode: 'static', maxOpacity: 0.96 }}
                         >
@@ -388,7 +403,7 @@ export function LayoutSection({ onOpenCode }: ExampleSectionProps) {
                             h={176}
                             pr={1}
                             highlights
-                            highlightColor="var(--oui-section-nested-solid-bg)"
+                            highlightColor="var(--oui-section-opaque-bg)"
                             highlightTop={{
                                 h: 42,
                                 mode: 'scroll',

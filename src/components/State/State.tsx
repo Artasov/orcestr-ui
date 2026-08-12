@@ -62,11 +62,9 @@ export function StateCard({
         >
             <div className="oui-state-card-main">
                 <IconText
-                    fw={760}
-                    fs={actualTitleFs}
                     icon={icon ?? stateIcon(tone)}
                     iconTone={iconTone ?? (tone === 'neutral' ? 'muted' : tone)}
-                    tone={titleTone}
+                    textProps={{ fw: 760, fs: actualTitleFs, tone: titleTone }}
                 >
                     {title}
                 </IconText>

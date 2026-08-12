@@ -131,16 +131,22 @@ const statusItems = [
 
 const iconTextSample: CodeExample = {
     title: 'IconText',
-    code: `import {Flex, IconText} from '@orcestr/ui';
+    code: `import {Flex, IconText, Stack} from '@orcestr/ui';
 import {LuCircleAlert, LuCircleCheck, LuCircleX, LuInfo, LuLoaderCircle} from 'react-icons/lu';
 
-<Flex g={2} wrap>
-    <IconText icon={<LuLoaderCircle />} iconTone='info' iconSpin>Saving changes</IconText>
-    <IconText icon={<LuCircleCheck />} iconTone='success'>Saved</IconText>
-    <IconText icon={<LuCircleX />} iconTone='danger'>Save failed</IconText>
-    <IconText icon={<LuCircleAlert />} iconTone='warning' fw={760}>Review required</IconText>
-    <IconText icon={<LuInfo />} iconTone='info' fs='13px'>Sync scheduled</IconText>
-</Flex>`,
+<Stack g={3}>
+    <Flex g={2} wrap>
+        <IconText icon={<LuLoaderCircle />} iconTone='info' iconSpin>Saving changes</IconText>
+        <IconText icon={<LuCircleCheck />} iconTone='success'>Saved</IconText>
+        <IconText icon={<LuCircleX />} iconTone='danger'>Save failed</IconText>
+    </Flex>
+    <IconText icon={<LuCircleAlert />} iconTone='warning' textProps={{fs: '24px', fw: 760, lh: 1.2}}>
+        Large status text
+    </IconText>
+    <IconText icon={<LuInfo />} iconTone='info' textProps={{fs: '16px', lh: 1.55, maxW: '560px', tone: 'muted'}}>
+        A longer explanation can wrap across several lines while the icon remains aligned with the first line of text.
+    </IconText>
+</Stack>`,
 };
 
 export function BadgeSection({ onOpenCode }: { onOpenCode: (example: CodeExample) => void }) {
@@ -268,23 +274,34 @@ export function IconTextSection({ onOpenCode }: { onOpenCode: (example: CodeExam
             description="Inline text primitive with an icon, text props and independent icon tone."
         >
             <ExampleTile title="IconText" code={iconTextSample.code} onOpen={onOpenCode}>
-                <Flex g={2} wrap>
-                    <IconText icon={<LuLoaderCircle />} iconTone="info" iconSpin>
-                        Saving changes
+                <Stack g={3}>
+                    <Flex g={2} wrap>
+                        <IconText icon={<LuLoaderCircle />} iconTone="info" iconSpin>
+                            Saving changes
+                        </IconText>
+                        <IconText icon={<LuCircleCheck />} iconTone="success">
+                            Saved
+                        </IconText>
+                        <IconText icon={<LuCircleX />} iconTone="danger">
+                            Save failed
+                        </IconText>
+                    </Flex>
+                    <IconText
+                        icon={<LuCircleAlert />}
+                        iconTone="warning"
+                        textProps={{ fs: '24px', fw: 760, lh: 1.2 }}
+                    >
+                        Large status text
                     </IconText>
-                    <IconText icon={<LuCircleCheck />} iconTone="success">
-                        Saved
+                    <IconText
+                        icon={<LuInfo />}
+                        iconTone="info"
+                        textProps={{ fs: '16px', lh: 1.55, maxW: '560px', tone: 'muted' }}
+                    >
+                        A longer explanation can wrap across several lines while the icon remains
+                        aligned with the first line of text.
                     </IconText>
-                    <IconText icon={<LuCircleX />} iconTone="danger">
-                        Save failed
-                    </IconText>
-                    <IconText icon={<LuCircleAlert />} iconTone="warning" fw={760}>
-                        Review required
-                    </IconText>
-                    <IconText icon={<LuInfo />} iconTone="info" fs="13px">
-                        Sync scheduled
-                    </IconText>
-                </Flex>
+                </Stack>
             </ExampleTile>
         </UiExampleSection>
     );

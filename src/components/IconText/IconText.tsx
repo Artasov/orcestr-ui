@@ -6,12 +6,14 @@ import type { Tone } from '../../theme/systemProps.js';
 import { cn } from '../../utils/cn.js';
 import { Text, type TextProps } from '../Text/Text.js';
 
-export type IconTextProps = TextProps & {
+export type IconTextProps = {
     icon?: ReactNode;
     iconTone?: Tone | 'muted';
     iconColor?: CSSProperties['color'];
     iconClassName?: string;
     iconSpin?: boolean;
+    textProps?: Omit<TextProps, 'children'>;
+    children?: ReactNode;
 };
 
 export function IconText({
@@ -20,12 +22,13 @@ export function IconText({
     iconColor,
     iconClassName,
     iconSpin,
-    className,
+    textProps,
     children,
-    ...props
 }: IconTextProps) {
+    const { className, ...restTextProps } = textProps ?? {};
+
     return (
-        <Text className={cn('oui-icon-text', className)} {...props}>
+        <Text className={cn('oui-icon-text', className)} {...restTextProps}>
             {icon ? (
                 <span
                     className={cn('oui-icon-text-icon', iconClassName)}

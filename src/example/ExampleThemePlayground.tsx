@@ -5,7 +5,9 @@ import { useEffect, useState, type CSSProperties, type Dispatch, type SetStateAc
 import {
     Badge,
     Button,
+    CopyButton,
     Flex,
+    Popover,
     ScrollArea,
     Stack,
     Text,
@@ -15,6 +17,10 @@ import {
     type OrcestrThemeStatus,
     type OrcestrUiLocale,
 } from '../index.js';
+import {
+    parseEditableThemeColor,
+    serializeEditableThemeColor,
+} from './themeEditorColor.js';
 
 type LocalizedText = Record<OrcestrUiLocale, string>;
 
@@ -109,8 +115,7 @@ export const themePlaygroundPresets = [
                 panel: '#050505',
                 panelSoft: '#0a0a0a',
                 floating: '#050505',
-                section: 'rgb(255 255 255 / 1.5%)',
-                sectionNested: 'rgb(255 255 255 / 1%)',
+                section: 'rgb(255 255 255 / 4%)',
                 pad: 'rgb(255 255 255 / 2.5%)',
                 padHover: 'rgb(255 255 255 / 5%)',
                 controlHover: 'rgb(255 255 255 / 6%)',
@@ -452,8 +457,7 @@ export const themePlaygroundPresets = [
                     contrast: '#ffffff',
                 },
                 selected: 'rgb(124 58 237 / 8%)',
-                section: 'rgb(124 58 237 / 3%)',
-                sectionNested: 'rgb(124 58 237 / 2%)',
+                section: 'rgb(124 58 237 / 4%)',
             },
             shadows: {
                 section: 'none',
@@ -513,24 +517,26 @@ export function themePresetDescription(preset: ThemePreset, locale: OrcestrUiLoc
     return preset.description[locale];
 }
 
-type FlatTokenSection = Exclude<keyof OrcestrThemeOverrides, 'status'>;
+type FlatTokenSection = Exclude<keyof OrcestrTheme, 'mode' | 'status'>;
 type TokenValueRecord = Record<string, string | number | false>;
 
-const flatTokenSections = [
-    'colors',
-    'radius',
-    'spacing',
-    'breakpoints',
-    'shadows',
-    'text',
-    'motion',
-    'toast',
-    'scrollbar',
-    'states',
-    'density',
-    'zIndex',
-    'components',
-] as const satisfies ReadonlyArray<FlatTokenSection>;
+const flatTokenSectionOrder: Record<FlatTokenSection, true> = {
+    colors: true,
+    radius: true,
+    spacing: true,
+    breakpoints: true,
+    shadows: true,
+    text: true,
+    motion: true,
+    toast: true,
+    scrollbar: true,
+    states: true,
+    density: true,
+    zIndex: true,
+    components: true,
+};
+
+const flatTokenSections = Object.keys(flatTokenSectionOrder) as FlatTokenSection[];
 
 const statusKeys = [
     'neutral',
@@ -632,9 +638,11 @@ export function ExampleThemePlayground({
 }) {
     const activePreset = getThemePlaygroundPreset(activePresetId);
     const copy = themePlaygroundCopy[locale];
+    const copyThemeLabel = locale === 'ru' ? 'Скопировать тему' : 'Copy theme';
+    const copiedThemeLabel = locale === 'ru' ? 'Тема скопирована' : 'Theme copied';
 
     return (
-        <section id="theme" className="oui-section oui-ui-section">
+        <section id="theme" className="oui-ui-section">
             <div className="oui-ui-section-head">
                 <div>
                     <h2 className="oui-ui-section-title">{copy.title}</h2>
@@ -652,14 +660,28 @@ export function ExampleThemePlayground({
                 <div className="oui-section oui-theme-preview">
                     <div className="oui-theme-preview-head">
                         <Text fw={760}>{copy.tokenEditor}</Text>
-                        <Button size={1} v="surface" onClick={() => onPresetChange(activePreset)}>
-                            {copy.resetPreset}
-                        </Button>
+                        <Flex g={1} wrap j="e">
+                            <CopyButton
+                                size={1}
+                                v="surface"
+                                text={serializeTheme(theme)}
+                                label={copyThemeLabel}
+                                copiedLabel={copiedThemeLabel}
+                                successMessage={copiedThemeLabel}
+                            />
+                            <Button
+                                size={1}
+                                v="surface"
+                                onClick={() => onPresetChange(activePreset)}
+                            >
+                                {copy.resetPreset}
+                            </Button>
+                        </Flex>
                     </div>
                     <ScrollArea
                         className="oui-theme-preview-scroll"
                         highlights
-                        highlightColor="var(--oui-section-nested-solid-bg)"
+                        highlightColor="var(--oui-section-opaque-bg)"
                         highlightTop={{
                             start: 2,
                             fadeDistance: 28,
@@ -736,7 +758,7 @@ export function ThemePresetSelector({
                     <ScrollArea
                         className="oui-theme-preset-scroll"
                         highlights
-                        highlightColor="var(--oui-section-solid-bg)"
+                        highlightColor="var(--oui-section-opaque-bg)"
                         highlightTop={{
                             start: 1,
                             fadeDistance: 18,
@@ -838,38 +860,56 @@ function ThemeTokenControl({
     onChange: (value: string | number | false) => void;
 }) {
     const valueText = String(value);
-    const colorInputValue = colorInputHex(valueText);
+    const editableColor = parseEditableThemeColor(valueText);
+    const colorInputValue = editableColor?.hex ?? null;
+    const colorInputOpacity = editableColor?.opacity ?? null;
     const [colorDraft, setColorDraft] = useState(colorInputValue);
+    const [opacityDraft, setOpacityDraft] = useState(colorInputOpacity);
     const selectOptions = selectOptionsForToken(path);
     const visibleColorValue = colorDraft ?? colorInputValue;
+    const visibleOpacity = opacityDraft ?? colorInputOpacity;
+    const visibleCssColor =
+        visibleColorValue && visibleOpacity !== null
+            ? serializeEditableThemeColor(visibleColorValue, visibleOpacity)
+            : valueText;
+    const changeOpacity = (nextOpacity: number) => {
+        setOpacityDraft(nextOpacity);
+        if (visibleColorValue) onChange(serializeEditableThemeColor(visibleColorValue, nextOpacity));
+    };
 
     useEffect(() => {
         setColorDraft(colorInputValue);
-    }, [colorInputValue]);
+        setOpacityDraft(colorInputOpacity);
+    }, [colorInputOpacity, colorInputValue]);
 
     useEffect(() => {
-        if (!colorDraft || colorDraft === colorInputValue) return;
-        const timer = window.setTimeout(() => onChange(colorDraft), COLOR_TOKEN_COMMIT_DELAY_MS);
+        if (!colorDraft || opacityDraft === null) return;
+        if (colorDraft === colorInputValue && opacityDraft === colorInputOpacity) return;
+        const nextColor = serializeEditableThemeColor(colorDraft, opacityDraft);
+        const timer = window.setTimeout(() => onChange(nextColor), COLOR_TOKEN_COMMIT_DELAY_MS);
         return () => window.clearTimeout(timer);
-    }, [colorDraft, colorInputValue, onChange]);
+    }, [colorDraft, colorInputOpacity, colorInputValue, onChange, opacityDraft]);
 
     const commitColorDraft = () => {
-        if (!colorDraft || colorDraft === colorInputValue) return;
-        onChange(colorDraft);
+        if (!colorDraft || opacityDraft === null) return;
+        if (colorDraft === colorInputValue && opacityDraft === colorInputOpacity) return;
+        onChange(serializeEditableThemeColor(colorDraft, opacityDraft));
     };
 
     return (
         <div className="oui-theme-token oui-theme-token-control">
             <span
                 className="oui-theme-token-swatch"
-                style={{
-                    background:
-                        visibleColorValue ??
-                        (section === 'colors' || section === 'status'
-                            ? valueText
-                            : 'var(--oui-primary-surface)'),
-                }}
             >
+                <span
+                    className="oui-theme-token-swatch-preview"
+                    style={{
+                        background:
+                            section === 'colors' || section === 'status'
+                                ? visibleCssColor
+                                : 'var(--oui-primary-surface)',
+                    }}
+                />
                 {colorInputValue ? (
                     <input
                         className="oui-theme-token-swatch-input"
@@ -903,18 +943,59 @@ function ThemeTokenControl({
                         ))}
                     </select>
                 ) : (
-                    <input
-                        type={typeof value === 'number' ? 'number' : 'text'}
-                        value={valueText}
-                        aria-label={label}
-                        onChange={(event) =>
-                            onChange(
-                                typeof value === 'number'
-                                    ? Number(event.target.value)
-                                    : event.target.value,
-                            )
-                        }
-                    />
+                    <>
+                        <span className="oui-theme-token-value-row">
+                            <input
+                                type={typeof value === 'number' ? 'number' : 'text'}
+                                value={valueText}
+                                aria-label={label}
+                                onChange={(event) =>
+                                    onChange(
+                                        typeof value === 'number'
+                                            ? Number(event.target.value)
+                                            : event.target.value,
+                                    )
+                                }
+                            />
+                            {colorInputValue && visibleOpacity !== null ? (
+                                <Popover
+                                    side="bottom"
+                                    align="end"
+                                    sideOffset={6}
+                                    collisionPadding={12}
+                                    className="oui-theme-token-opacity-popover"
+                                    trigger={
+                                        <button
+                                            type="button"
+                                            className="oui-theme-token-opacity-trigger"
+                                            aria-label={`${label} opacity settings`}
+                                        >
+                                            α
+                                        </button>
+                                    }
+                                >
+                                    <label className="oui-theme-token-opacity">
+                                        <span>Opacity</span>
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="100"
+                                            step="1"
+                                            value={Math.round(visibleOpacity * 100)}
+                                            aria-label={`${label} opacity`}
+                                            onInput={(event) =>
+                                                changeOpacity(
+                                                    Number(event.currentTarget.value) / 100,
+                                                )
+                                            }
+                                            onBlur={commitColorDraft}
+                                        />
+                                        <output>{Math.round(visibleOpacity * 100)}%</output>
+                                    </label>
+                                </Popover>
+                            ) : null}
+                        </span>
+                    </>
                 )}
             </span>
         </div>
@@ -999,20 +1080,8 @@ function readableTokenName(value: string) {
     return value.replace(/([A-Z])/g, ' $1').replace(/^./, (letter) => letter.toUpperCase());
 }
 
-function colorInputHex(value: string) {
-    const hex = value.trim();
-    if (/^#[0-9a-f]{6}$/i.test(hex)) return hex;
-    if (/^#[0-9a-f]{3}$/i.test(hex)) {
-        const [, r, g, b] = hex;
-        return `#${r}${r}${g}${g}${b}${b}`;
-    }
-    const rgb = hex.match(/^rgba?\((\d+)[,\s]+(\d+)[,\s]+(\d+)/i);
-    if (!rgb) return null;
-    return `#${toHex(Number(rgb[1]))}${toHex(Number(rgb[2]))}${toHex(Number(rgb[3]))}`;
-}
-
-function toHex(value: number) {
-    return Math.max(0, Math.min(255, value)).toString(16).padStart(2, '0');
+function serializeTheme(theme: OrcestrTheme) {
+    return JSON.stringify(theme, null, 2);
 }
 
 function selectOptionsForToken(path: string) {

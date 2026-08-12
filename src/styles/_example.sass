@@ -9,7 +9,13 @@ body.oui-ui-document-lock
     overscroll-behavior: none
 
 body.oui-ui-document-lock
-    background: #09090b
+    background: var(--oui-bg)
+
+.oui-ui-app-shell
+    padding-top: 0
+
+.oui-ui-app-shell > .oui-app-shell-frame
+    height: calc(100vh - var(--oui-app-shell-inset, 28px))
 
 .oui-ui-hero,
 .oui-ui-section
@@ -26,8 +32,10 @@ body.oui-ui-document-lock
     container-type: inline-size
     content-visibility: auto
     contain-intrinsic-size: auto 560px
+    width: 100%
+    max-width: 100%
     overflow: hidden
-    padding: 18px
+    padding: 10px 18px
 
 .oui-ui-workspace
     display: grid
@@ -45,6 +53,9 @@ body.oui-ui-document-lock
 .oui-ui-workspace-main > .oui-app-shell-content-scroll
     min-width: 0
     min-height: 0
+
+.oui-ui-workspace-main > .oui-app-shell-content-scroll .oui-app-shell-content
+    gap: 9px
 
 .oui-ui-brand
     display: inline-flex
@@ -96,8 +107,8 @@ body.oui-ui-document-lock
 .oui-ui-main-sidebar .oui-ui-brand-text
     flex: 1 1 auto
 
-.oui-app-shell-header > .oui-ui-brand
-    flex: 1 1 auto
+.oui-ui-app-shell[data-sidebar-mode="desktop"] .oui-app-shell-header-title
+    display: none
 
 .oui-ui-header-title
     display: flex
@@ -296,7 +307,7 @@ body.oui-ui-document-lock
 
 .oui-ui-app-shell-modal-header
     border-bottom: 1px solid var(--oui-border)
-    padding: 10px 12px
+    padding: 10px
 
 .oui-ui-app-shell-modal-body
     display: flex
@@ -389,7 +400,7 @@ body.oui-ui-document-lock
 .oui-ui-main-sidebar
     height: 100%
     border-radius: var(--oui-radius)
-    background: var(--oui-section-surface-bg, var(--oui-panel))
+    background: var(--oui-bg)
     box-shadow: var(--oui-section-shadow, none)
 
 .oui-ui-demo-logo
@@ -427,8 +438,8 @@ body.oui-ui-document-lock
     min-height: 0
     flex-direction: column
     overflow: hidden
-    --oui-ui-theme-rail-bg: var(--oui-section-surface-bg, var(--oui-panel))
-    --oui-ui-theme-rail-highlight-bg: var(--oui-section-solid-bg, var(--oui-panel))
+    --oui-ui-theme-rail-bg: var(--oui-bg)
+    --oui-ui-theme-rail-highlight-bg: var(--oui-bg)
     border-radius: var(--oui-radius)
     background: var(--oui-ui-theme-rail-bg)
     box-shadow: var(--oui-section-shadow, none)
@@ -514,7 +525,7 @@ body.oui-ui-document-lock
 .oui-highlight-demo-surface
     position: relative
     display: flex
-    min-height: 104px
+    min-height: 112px
     flex-direction: column
     justify-content: center
     overflow: hidden
@@ -684,6 +695,9 @@ body.oui-ui-document-lock
     justify-content: space-between
     gap: 12px
 
+.oui-theme-preview-head > .oui-flex
+    min-width: 0
+
 .oui-theme-token-grid
     display: grid
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr))
@@ -721,11 +735,17 @@ body.oui-ui-document-lock
     cursor: default
 
 .oui-theme-token-control-field
-    display: inline-flex
+    display: flex
+    min-width: 0
+    justify-content: flex-end
+
+.oui-theme-token-value-row
+    position: relative
+    display: flex
+    width: 100%
     min-width: 0
     align-items: center
-    justify-content: flex-end
-    gap: 6px
+    gap: 5px
 
 .oui-theme-token-control-field input[type="text"],
 .oui-theme-token-control-field input[type="number"],
@@ -741,6 +761,9 @@ body.oui-ui-document-lock
     font-size: 12px
     padding: 0 8px
 
+.oui-theme-token-value-row > input
+    flex: 1 1 auto
+
 .oui-theme-token-control-field input:focus-visible,
 .oui-theme-token-control-field select:focus-visible
     outline: none
@@ -753,7 +776,15 @@ body.oui-ui-document-lock
     flex: 0 0 auto
     overflow: hidden
     border-radius: 7px
+    background-color: var(--oui-bg)
+    background-image: linear-gradient(45deg, var(--oui-border) 25%, transparent 25%), linear-gradient(-45deg, var(--oui-border) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--oui-border) 75%), linear-gradient(-45deg, transparent 75%, var(--oui-border) 75%)
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0
+    background-size: 8px 8px
     box-shadow: inset 0 0 0 1px var(--oui-border)
+
+.oui-theme-token-swatch-preview
+    position: absolute
+    inset: 0
 
 .oui-theme-token-swatch-input
     position: absolute
@@ -764,6 +795,52 @@ body.oui-ui-document-lock
     opacity: 0
     cursor: pointer
     padding: 0
+
+.oui-theme-token-opacity-trigger
+    display: grid
+    flex: 0 0 auto
+    width: 28px
+    height: 28px
+    place-items: center
+    border: 1px solid var(--oui-border)
+    border-radius: var(--oui-radius-sm)
+    background: var(--oui-control-bg)
+    color: var(--oui-muted)
+    cursor: pointer
+    font-size: 13px
+    font-weight: 760
+
+.oui-theme-token-opacity-trigger:hover,
+.oui-theme-token-opacity-trigger[aria-expanded="true"]
+    border-color: var(--oui-border-strong)
+    color: var(--oui-text)
+
+.oui-theme-token-opacity-popover
+    width: min(230px, calc(100vw - 32px))
+    min-width: 0
+    border-radius: var(--oui-radius-sm)
+    background: color-mix(in srgb, var(--oui-bg) 82%, transparent)
+    -webkit-backdrop-filter: blur(16px) saturate(135%)
+    backdrop-filter: blur(16px) saturate(135%)
+    padding: 9px 10px
+
+.oui-theme-token-opacity
+    display: grid
+    width: 100%
+    grid-template-columns: auto minmax(80px, 1fr) 38px
+    align-items: center
+    gap: 8px
+    color: var(--oui-muted)
+    font-size: 11px
+
+.oui-theme-token-opacity input[type="range"]
+    width: 100%
+    min-width: 0
+    accent-color: var(--oui-primary-base)
+
+.oui-theme-token-opacity output
+    color: var(--oui-text)
+    text-align: right
 
 .oui-theme-token-swatch-text
     display: inline-flex
@@ -970,7 +1047,22 @@ body.oui-ui-document-lock
 @media (max-width: 860px)
     .oui-ui-workspace
         display: flex
+        width: 100%
+        max-width: 100%
+        min-width: 0
         flex-direction: column
+
+    .oui-ui-section
+        padding-right: 0
+        padding-left: 0
+
+    .oui-ui-app-shell[data-sidebar-mode="mobile"] .oui-app-shell-header-title
+        display: flex
+        align-items: center
+
+    .oui-ui-app-shell[data-sidebar-mode="mobile"] .oui-app-shell-header-title .oui-ui-brand,
+    .oui-ui-app-shell[data-sidebar-mode="mobile"] .oui-app-shell-header-title .oui-ui-brand-text
+        min-width: 0
 
     .oui-ui-brand[data-compact="true"]
         gap: 8px

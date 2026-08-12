@@ -12,6 +12,7 @@ import {
     RadioGroup,
     SegmentedControl,
     Select,
+    Stack,
     Switch,
     Tabs,
     Text,
@@ -95,106 +96,130 @@ export function SelectionSection({
                     code={codeSamples.selection}
                     onOpen={onOpenCode}
                 >
-                    <Select
-                        items={optionItems}
-                        value={selectValue}
-                        onValueChange={onSelectValueChange}
-                        clearable
-                    />
-                    <Select
-                        items={optionItems}
-                        value={selectNoChevronValue}
-                        onValueChange={onSelectNoChevronValueChange}
-                        clearable
-                        showChevron={false}
-                        placeholder="Clearable without chevron"
-                    />
-                    <Select
-                        items={optionItems}
-                        value={selectPlainValue}
-                        onValueChange={onSelectPlainValueChange}
-                        clearable={false}
-                        showChevron={false}
-                        placeholder="Plain select"
-                    />
-                    <Combobox
-                        items={optionItems}
-                        value={comboValue}
-                        onValueChange={onComboValueChange}
-                        placeholder="Find status"
-                    />
-                    <MultiSelect
-                        items={ownerItems}
-                        value={ownerValues}
-                        onValueChange={onOwnerValuesChange}
-                        placeholder={copy.responsibleUsers}
-                        clearable
-                        renderValue={(items) =>
-                            items.length === 1
-                                ? items[0]?.label
-                                : copy.responsibleCount(items.length)
-                        }
-                    />
-                    <EntityPicker<EntityOption>
-                        value={entityValue}
-                        onValueChange={onEntityValueChange}
-                        loadPage={loadLocalizedEntityPage}
-                        getEntityId={(item) => item.id}
-                        renderValue={(item) => item.article}
-                        renderEntity={(item) => (
-                            <>
+                    <Stack g={2}>
+                        <ExampleControlLabel>Select</ExampleControlLabel>
+                        <Select
+                            items={optionItems}
+                            value={selectValue}
+                            onValueChange={onSelectValueChange}
+                            clearable
+                        />
+                        <Select
+                            items={optionItems}
+                            value={selectNoChevronValue}
+                            onValueChange={onSelectNoChevronValueChange}
+                            clearable
+                            showChevron={false}
+                            placeholder="Clearable without chevron"
+                        />
+                        <Select
+                            items={optionItems}
+                            value={selectPlainValue}
+                            onValueChange={onSelectPlainValueChange}
+                            clearable={false}
+                            showChevron={false}
+                            placeholder="Plain select"
+                        />
+                    </Stack>
+                    <Stack g={2}>
+                        <ExampleControlLabel>Combobox</ExampleControlLabel>
+                        <Combobox
+                            items={optionItems}
+                            value={comboValue}
+                            onValueChange={onComboValueChange}
+                            placeholder="Find status"
+                        />
+                    </Stack>
+                    <Stack g={2}>
+                        <ExampleControlLabel>MultiSelect</ExampleControlLabel>
+                        <MultiSelect
+                            items={ownerItems}
+                            value={ownerValues}
+                            onValueChange={onOwnerValuesChange}
+                            placeholder={copy.responsibleUsers}
+                            clearable
+                            renderValue={(items) =>
+                                items.length === 1
+                                    ? items[0]?.label
+                                    : copy.responsibleCount(items.length)
+                            }
+                        />
+                    </Stack>
+                    <Stack g={2}>
+                        <ExampleControlLabel>EntityPicker</ExampleControlLabel>
+                        <EntityPicker<EntityOption>
+                            value={entityValue}
+                            onValueChange={onEntityValueChange}
+                            loadPage={loadLocalizedEntityPage}
+                            getEntityId={(item) => item.id}
+                            renderValue={(item) => item.article}
+                            renderEntity={(item) => (
+                                <>
+                                    <span className="oui-entity-option-main">
+                                        <span className="oui-entity-option-code">
+                                            {item.article}
+                                        </span>
+                                        <span className="oui-entity-option-meta">{item.name}</span>
+                                    </span>
+                                    <span className="oui-entity-option-badge">{item.status}</span>
+                                </>
+                            )}
+                            placeholder={copy.entityPicker}
+                            clearable
+                            createAction={{
+                                label: copy.createEntityFromSearch,
+                                onCreate: (search) =>
+                                    onToast(copy.createEntityToast(search), 'info'),
+                            }}
+                            optionAction={{
+                                icon: <LuPlus size={14} />,
+                                label: (item) => copy.addEntity(item.article),
+                                onClick: (item) =>
+                                    onToast(copy.entityAction(item.article), 'success'),
+                            }}
+                        />
+                    </Stack>
+                    <Stack g={2}>
+                        <ExampleControlLabel>PaginatedCombobox</ExampleControlLabel>
+                        <PaginatedCombobox<EntityOption>
+                            value={paginatedValue}
+                            onChange={onPaginatedValueChange}
+                            loadPage={loadLocalizedEntityPage}
+                            getItemId={(item) => item.id}
+                            renderSelectedLabel={(item) => item.article}
+                            renderOption={(item) => (
                                 <span className="oui-entity-option-main">
                                     <span className="oui-entity-option-code">{item.article}</span>
                                     <span className="oui-entity-option-meta">{item.name}</span>
                                 </span>
-                                <span className="oui-entity-option-badge">{item.status}</span>
-                            </>
-                        )}
-                        placeholder={copy.entityPicker}
-                        clearable
-                        createAction={{
-                            label: copy.createEntityFromSearch,
-                            onCreate: (search) => onToast(copy.createEntityToast(search), 'info'),
-                        }}
-                        optionAction={{
-                            icon: <LuPlus size={14} />,
-                            label: (item) => copy.addEntity(item.article),
-                            onClick: (item) => onToast(copy.entityAction(item.article), 'success'),
-                        }}
-                    />
-                    <PaginatedCombobox<EntityOption>
-                        value={paginatedValue}
-                        onChange={onPaginatedValueChange}
-                        loadPage={loadLocalizedEntityPage}
-                        getItemId={(item) => item.id}
-                        renderSelectedLabel={(item) => item.article}
-                        renderOption={(item) => (
-                            <span className="oui-entity-option-main">
-                                <span className="oui-entity-option-code">{item.article}</span>
-                                <span className="oui-entity-option-meta">{item.name}</span>
-                            </span>
-                        )}
-                        placeholder="Paginated combobox"
-                        clearable
-                        searchAction={{
-                            label: copy.createEntityFromSearch,
-                            onClick: (search) => onToast(copy.createEntityToast(search), 'info'),
-                        }}
-                        optionAction={{
-                            icon: <LuPlus size={14} />,
-                            label: (item) => copy.addEntity(item.article),
-                            onClick: (item) => onToast(copy.entityAction(item.article), 'success'),
-                        }}
-                    />
-                    <SegmentedControl
-                        items={[
-                            { value: 'active', label: 'Active' },
-                            { value: 'drafts', label: 'Drafts' },
-                            { value: 'archive', label: 'Archive' },
-                        ]}
-                        value={segment}
-                        onValueChange={onSegmentChange}
-                    />
+                            )}
+                            placeholder="Paginated combobox"
+                            clearable
+                            searchAction={{
+                                label: copy.createEntityFromSearch,
+                                onClick: (search) =>
+                                    onToast(copy.createEntityToast(search), 'info'),
+                            }}
+                            optionAction={{
+                                icon: <LuPlus size={14} />,
+                                label: (item) => copy.addEntity(item.article),
+                                onClick: (item) =>
+                                    onToast(copy.entityAction(item.article), 'success'),
+                            }}
+                        />
+                    </Stack>
+                    <Stack g={2}>
+                        <ExampleControlLabel>SegmentedControl</ExampleControlLabel>
+                        <SegmentedControl
+                            items={[
+                                { value: 'active', label: 'Active' },
+                                { value: 'drafts', label: 'Drafts' },
+                                { value: 'archive', label: 'Archive' },
+                            ]}
+                            value={segment}
+                            onValueChange={onSegmentChange}
+                        />
+                    </Stack>
                 </ExampleTile>
             </UiExampleSection>
             <UiExampleSection
@@ -252,6 +277,14 @@ export function SelectionSection({
                 </ExampleTile>
             </UiExampleSection>
         </>
+    );
+}
+
+function ExampleControlLabel({ children }: { children: string }) {
+    return (
+        <Text fs="12px" fw={760} tone="muted">
+            {children}
+        </Text>
     );
 }
 

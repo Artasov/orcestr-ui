@@ -15,7 +15,11 @@ import { cn } from '../../utils/cn.js';
 
 export type DialogProps = ModalProps;
 
-export const Dialog = Object.assign(Modal, {
+function DialogModal(props: DialogProps) {
+    return <Modal {...props} />;
+}
+
+export const Dialog = Object.assign(DialogModal, {
     Root: DialogRoot,
     Content: DialogContent,
     Title: DialogTitle,

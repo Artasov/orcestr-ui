@@ -120,6 +120,9 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
                         size={sidebarWidth}
                         lockScroll={false}
                         portalContainer={drawerPortalContainer}
+                        modal={false}
+                        trapFocus={false}
+                        showBackdrop
                         showCloseButton={false}
                         backdropClassName="oui-app-shell-sidebar-drawer-overlay"
                         panelClassName="oui-app-shell-sidebar-drawer-panel"
@@ -317,6 +320,7 @@ export const AppShellContent = forwardRef<HTMLDivElement, AppShellContentProps>(
         return (
             <ScrollArea
                 className="oui-app-shell-content-scroll"
+                scrollbars="vertical"
                 highlights
                 highlightH={52}
                 highlightColor="var(--oui-bg)"

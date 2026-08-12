@@ -71,9 +71,8 @@ test('UI example sidebar follows the rendered section order', () => {
     assert.match(page, /<AppSidebar[\s\S]*?className=["']oui-ui-main-sidebar["']/);
     assert.match(
         page,
-        /<AppShellHeader[\s\S]*?navigationVisibility=["']mobile["'][\s\S]*?actions=\{/,
+        /<AppShellHeader[\s\S]*?navigationVisibility=["']mobile["'][\s\S]*?title=\{<UiExampleBrand compact \/>\}[\s\S]*?actions=\{/,
     );
-    assert.doesNotMatch(page, /<AppShellHeader[\s\S]*?<UiExampleBrand compact \/>/);
     assert.match(
         page,
         /<Menu[\s\S]*?items=\{languageItems\}[\s\S]*?<IconButton[\s\S]*?className=["']oui-ui-language-button["'][\s\S]*?icon=\{<LuLanguages size=\{16\} \/>\}/,
@@ -127,7 +126,16 @@ test('UI example exposes deep anchors for public demo sections', () => {
     assert.match(stateSection, /IconText/);
     assert.doesNotMatch(stateSection, /InlineState|oui-ui-inline-state-list/);
     assert.match(fieldsSection, /id=["']text-fields-example["']/);
+    assert.match(fieldsSection, /<FloatingTextField size=\{1\} label="Compact" \/>/);
+    assert.match(fieldsSection, /<FloatingTextField[\s\S]*?size=\{4\}[\s\S]*?invalid/);
+    assert.match(
+        fieldsSection,
+        /sectionColor="var\(--oui-primary-surface\)"[\s\S]*?<FloatingTextField[\s\S]*?label="Workspace name"/,
+    );
+    assert.match(samples, /textFields:[\s\S]*?FloatingTextField[\s\S]*?label='Project title'/);
     assert.match(fieldsSection, /id=["']grouped-fields-example["']/);
+    assert.match(fieldsSection, /<Section g=\{3\} p=\{4\}>/);
+    assert.match(samples, /groupedFields:[\s\S]*?<Section g=\{3\} p=\{4\}>/);
     assert.match(fieldsSection, /id=["']inline-edit-example["']/);
     assert.match(fieldsSection, /InlineEditField/);
     assert.match(fieldsSection, /InlineEditMultiField/);
@@ -154,7 +162,6 @@ test('UI example exposes deep anchors for public demo sections', () => {
     assert.match(basicsSection, /id=["']collapse-example["']/);
     assert.match(basicsSection, /id=["']surfaces-example["']/);
     assert.match(basicsSection, /<Card/);
-    assert.match(basicsSection, /<Separator/);
     assert.match(basicsSection, /<Alert/);
     assert.match(basicsSection, /id=["']grid-example["']/);
     assert.match(basicsSection, /id=["']scroll-area-example["']/);
@@ -479,8 +486,21 @@ test('UI example starts with editable theme playground presets', () => {
     assert.match(playground, /en: \{[\s\S]*?title: 'Theme playground["']/);
     assert.match(playground, /oui-theme-preset-scroll/);
     assert.match(playground, /type=["']color["']/);
+    assert.match(playground, /type=["']range["']/);
+    assert.match(playground, /CopyButton/);
+    assert.match(playground, /serializeTheme\(theme\)/);
+    assert.match(playground, /Record<FlatTokenSection, true>/);
+    assert.match(playground, /parseEditableThemeColor/);
     assert.match(playground, /flatTokenSections/);
     assert.match(playground, /statusKeys/);
+});
+
+test('theme opacity editor uses the shared dismissible Popover', () => {
+    const source = read('example/ExampleThemePlayground.tsx');
+
+    assert.match(source, /<Popover[\s\S]*?className="oui-theme-token-opacity-popover"/);
+    assert.match(source, /className="oui-theme-token-opacity-trigger"/);
+    assert.doesNotMatch(source, /<details className="oui-theme-token-opacity-menu"/);
 });
 
 test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigation', () => {
@@ -495,7 +515,7 @@ test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigat
         /onPointerDown=\{\(event\) => \{[\s\S]*?event\.preventDefault\(\);[\s\S]*?setOpen\(false\);/,
     );
     assert.match(page, /header=\{<UiExampleBrand \/>/);
-    assert.doesNotMatch(page, /<UiExampleBrand compact \/>/);
+    assert.match(page, /title=\{<UiExampleBrand compact \/>\}/);
     assert.match(page, /function UiExampleSidebar/);
     assert.match(page, /<AppSidebar[\s\S]*?className=["']oui-ui-main-sidebar["']/);
     assert.match(page, /const \[activeSection, setActiveSection\] = useState\('theme'\)/);
@@ -734,6 +754,10 @@ test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigat
     );
     assert.match(shellStyles, /\.oui-app-shell-content-scroll\s+flex: 1 1 auto[\s\S]*?padding: 0/);
     assert.match(
+        shell,
+        /className="oui-app-shell-content-scroll"[\s\S]*?scrollbars="vertical"/,
+    );
+    assert.match(
         shellStyles,
         /\.oui-app-shell-content-scroll > \.oui-scroll-area-viewport\s+height: 100%[\s\S]*?scroll-padding: 8px 28px 24px 22px/,
     );
@@ -838,8 +862,10 @@ test('UI example and state components use container-safe layouts', () => {
         /\.oui-badge-icon\s+display: inline-flex[\s\S]*?width: 1em[\s\S]*?height: 1em/,
     );
     assert.match(stateSource, /const actualTitleFs = titleFs \?\? \(compact \? '14px' : '15px'\)/);
-    assert.match(stateSource, /<IconText[\s\S]*?fw=\{760\}[\s\S]*?fs=\{actualTitleFs\}/);
-    assert.match(stateSource, /tone=\{titleTone\}/);
+    assert.match(
+        stateSource,
+        /<IconText[\s\S]*?textProps=\{\{ fw: 760, fs: actualTitleFs, tone: titleTone \}\}/,
+    );
     assert.match(stateSource, /tone=\{descriptionTone\}/);
     assert.match(stateStyles, /\.oui-state-card\[data-variant="surface"\]/);
     assert.match(stateStyles, /\.oui-state-card\[data-variant="outline"\]/);
