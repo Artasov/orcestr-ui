@@ -88,13 +88,13 @@ export function ExampleTile({
     children: ReactNode;
 }) {
     return (
-        <div id={id} className={cn('oui-section oui-ui-tile', className)}>
+        <section id={id} className={cn('oui-section oui-ui-tile', className)}>
             <div className="oui-ui-tile-body">
                 <ExampleTileHeader title={title} code={code} onOpen={onOpen} />
                 {children}
             </div>
             <InlineCodeBlock code={code} />
-        </div>
+        </section>
     );
 }
 

@@ -220,10 +220,10 @@ const languageItems: MenuItem[] = [
 
 <Stack g={2}>
     {[
-        ['/gallery/cyberpunk-rain.webp', 'Created', 'Draft created from intake'],
-        ['/gallery/hollywood-star.webp', 'Reserved', 'Capacity is reserved for review'],
-        ['/gallery/ice-cave.webp', 'Scheduled', 'Review window is confirmed'],
-    ].map(([image, title, description]) => (
+        ['CR', 'var(--oui-primary-surface)', 'var(--oui-primary-text)', 'Created', 'Draft created from intake'],
+        ['RS', 'var(--oui-warning-surface)', 'var(--oui-warning-text)', 'Reserved', 'Capacity is reserved for review'],
+        ['SC', 'var(--oui-success-surface)', 'var(--oui-success-text)', 'Scheduled', 'Review window is confirmed'],
+    ].map(([initials, background, color, title, description]) => (
         <Flex
             key={title}
             row
@@ -234,17 +234,24 @@ const languageItems: MenuItem[] = [
             r={2}
             style={{background: 'var(--oui-pad-bg)'}}
         >
-            <img
-                src={image}
-                alt=''
+            <span
+                aria-hidden='true'
                 style={{
+                    display: 'inline-flex',
                     width: 34,
                     height: 34,
                     flex: '0 0 34px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     borderRadius: 999,
-                    objectFit: 'cover',
+                    background,
+                    color,
+                    fontSize: 11,
+                    fontWeight: 760,
                 }}
-            />
+            >
+                {initials}
+            </span>
             <Stack g={0}>
                 <Text fs='13px' fw={700}>{title}</Text>
                 <Text fs='12px' tone='muted' lh={1.45}>{description}</Text>
@@ -294,11 +301,11 @@ const [detailsOpen, setDetailsOpen] = useState(true);
 
 <div
     className='oui-highlight-demo-surface'
-    style={{background: 'var(--oui-section-nested-solid-bg)'}}
+    style={{background: 'var(--oui-section-opaque-bg)'}}
 >
     <TopHighlight
-        h={32}
-        color='var(--oui-section-nested-solid-bg)'
+        h={42}
+        color='var(--oui-bg)'
         position='absolute'
     />
     <Text fs='13px' fw={700}>Top and bottom highlights</Text>
@@ -306,8 +313,8 @@ const [detailsOpen, setDetailsOpen] = useState(true);
         One surface shows both edge masks at the same time.
     </Text>
     <BottomHighlight
-        h={32}
-        color='var(--oui-section-nested-solid-bg)'
+        h={42}
+        color='var(--oui-bg)'
         position='absolute'
     />
 </div>`,
@@ -340,7 +347,7 @@ const richRows = [
         h={112}
         pr={1}
         highlights
-        highlightColor='var(--oui-section-nested-solid-bg)'
+        highlightColor='var(--oui-section-opaque-bg)'
         highlightTop={{h: 28, mode: 'static', maxOpacity: 0.96}}
         highlightBottom={{h: 28, mode: 'static', maxOpacity: 0.96}}
     >
@@ -357,7 +364,7 @@ const richRows = [
         h={176}
         pr={1}
         highlights
-        highlightColor='var(--oui-section-nested-solid-bg)'
+        highlightColor='var(--oui-section-opaque-bg)'
         highlightTop={{
             h: 42,
             mode: 'scroll',
@@ -416,9 +423,9 @@ const richRows = [
 <Button mt={2} v='pad' r={7}>
     Button r=7
 </Button>`,
-    surfaces: `import {Alert, Button, Card, Grid, Section, Separator, Stack, Text} from '@orcestr/ui';
+    surfaces: `import {Alert, Button, Card, Grid, Stack, Text} from '@orcestr/ui';
 
-<Section g={3}>
+<Stack g={3}>
     <Grid columns='repeat(auto-fit, minmax(min(100%, 180px), 1fr))' g={2}>
         <Card v='surface' interactive>
             <Stack g={1}>
@@ -439,11 +446,10 @@ const richRows = [
             </Stack>
         </Card>
     </Grid>
-    <Separator />
     <Alert title='Inventory sync delayed' action={<Button size={1} v='surface'>Retry</Button>}>
         Check this status before creating the next shipment.
     </Alert>
-</Section>`,
+</Stack>`,
     buttons: `import {Button, CopyButton, CopyIconButton, Spinner} from '@orcestr/ui';
 import {LuCheck, LuInfo, LuTrash2, LuTriangleAlert} from 'react-icons/lu';
 
@@ -575,7 +581,7 @@ const items: MenuItem[] = [
         <Text fs='12px' tone='muted'>Context menu reuses Menu item styling.</Text>
     </div>
 </ContextMenu>`,
-    textFields: `import {Button, Flex, Field, TextArea, TextField} from '@orcestr/ui';
+    textFields: `import {Button, Flex, Field, FloatingTextField, Grid, Section, Stack, Text, TextArea, TextField} from '@orcestr/ui';
 import {LuSearch} from 'react-icons/lu';
 
 <Field label='Search' helperText='Clearable field with left slot.'>
@@ -591,7 +597,20 @@ import {LuSearch} from 'react-icons/lu';
 </Field>
 <Field label='Comment'>
     <TextArea rows={4} placeholder='Internal note' />
-</Field>`,
+</Field>
+<Stack g={3}>
+    <Text fs='12px' fw={760} tone='muted'>Floating labels</Text>
+    <Grid columns='repeat(auto-fit, minmax(min(100%, 210px), 1fr))' g={3}>
+        <FloatingTextField size={1} label='Compact' />
+        <FloatingTextField size={2} label='Customer name' />
+        <FloatingTextField size={3} label='Work email' defaultValue='team@orcestr.com' />
+        <FloatingTextField size={4} label='Project title' invalid />
+    </Grid>
+    <Section sectionColor='var(--oui-primary-surface)' sectionOpacity={100} p={4} g={2}>
+        <Text fs='12px' fw={760} tone='primary'>Different surface color</Text>
+        <FloatingTextField label='Workspace name' defaultValue='Operations hub' />
+    </Section>
+</Stack>`,
     inlineEdit: `import {useState} from 'react';
 import {Badge, Field, IconButton, InlineEditField, InlineEditMultiField, Listbox, Popover, Stack} from '@orcestr/ui';
 import {LuCheck, LuPencil} from 'react-icons/lu';
@@ -708,7 +727,7 @@ const toggleOwner = (key) => {
 </Stack>`,
     groupedFields: `import {Button, Flex, Field, Grid, Section, Stack, Text, TextArea, TextField} from '@orcestr/ui';
 
-<Section g={3}>
+<Section g={3} p={4}>
     <Stack g={1}>
         <Text fw={760}>Request details</Text>
         <Text fs='12px' tone='muted'>
@@ -742,41 +761,73 @@ const toggleOwner = (key) => {
 <Field label='Date'>
     <DatePicker value={date} onValueChange={setDate} />
 </Field>`,
-    dateRangeFields: `import {DateRangePicker, DateRangePresetPicker, Field} from '@orcestr/ui';
+    dateRangeFields: `import {DateRangePicker, DateRangePresetPicker, Field, Flex} from '@orcestr/ui';
+import {LuCalendarDays, LuCalendarRange, LuHistory} from 'react-icons/lu';
 
 <Field label='Range'>
     <DateRangePicker value={dateRange} onValueChange={setDateRange} />
 </Field>
-<DateRangePresetPicker
-    today='2026-06-26'
-    onValueChange={setDateRange}
-/>`,
-    selection: `import {Combobox, EntityPicker, MultiSelect, PaginatedCombobox, Select, SegmentedControl} from '@orcestr/ui';
+<Flex g={2} wrap a='c'>
+    <DateRangePresetPicker
+        today='2026-06-26'
+        onValueChange={setDateRange}
+    />
+    <DateRangePresetPicker
+        today='2026-06-26'
+        triggerIcon={<LuCalendarRange size={16} />}
+        triggerLabel='Choose period'
+        triggerButtonProps={{v: 'surface', tone: 'primary', size: 3}}
+        triggerLabelProps={{fs: '13px', fw: 650}}
+        presets={[
+            'today',
+            {
+                key: 'previous-week',
+                label: 'Previous week',
+                description: 'The seven days before this week',
+                icon: <LuHistory size={15} />,
+                range: {from: '2026-06-15', to: '2026-06-21'},
+            },
+            {
+                key: 'quarter-to-date',
+                label: 'Quarter to date',
+                icon: <LuCalendarDays size={15} />,
+                range: (today) => ({from: today.slice(0, 4) + '-04-01', to: today}),
+            },
+        ]}
+        onValueChange={setDateRange}
+    />
+</Flex>`,
+    selection: `import {Combobox, EntityPicker, MultiSelect, PaginatedCombobox, Select, SegmentedControl, Stack, Text} from '@orcestr/ui';
 import {LuPlus} from 'react-icons/lu';
 
-<Select items={items} value={status} onValueChange={setStatus} clearable />
-<Select
-    items={items}
-    value={statusWithoutChevron}
-    onValueChange={setStatusWithoutChevron}
-    clearable
-    showChevron={false}
-    placeholder='Clearable without chevron'
-/>
-<Select
-    items={items}
-    value={plainStatus}
-    onValueChange={setPlainStatus}
-    clearable={false}
-    showChevron={false}
-    placeholder='Plain select'
-/>
+<Stack g={2}>
+    <Text fs='12px' fw={760} tone='muted'>Select</Text>
+    <Select items={items} value={status} onValueChange={setStatus} clearable />
+    <Select
+        items={items}
+        value={statusWithoutChevron}
+        onValueChange={setStatusWithoutChevron}
+        clearable
+        showChevron={false}
+        placeholder='Clearable without chevron'
+    />
+    <Select
+        items={items}
+        value={plainStatus}
+        onValueChange={setPlainStatus}
+        clearable={false}
+        showChevron={false}
+        placeholder='Plain select'
+    />
+</Stack>
+<Text fs='12px' fw={760} tone='muted'>Combobox</Text>
 <Combobox
     items={items}
     value={comboValue}
     onValueChange={setComboValue}
     placeholder='Find status'
 />
+<Text fs='12px' fw={760} tone='muted'>MultiSelect</Text>
 <MultiSelect
     items={owners}
     value={ownerValues}
@@ -787,6 +838,7 @@ import {LuPlus} from 'react-icons/lu';
         items.length === 1 ? items[0]?.label : String(items.length) + ' responsible'
     }
 />
+<Text fs='12px' fw={760} tone='muted'>EntityPicker</Text>
 <EntityPicker
     value={entity}
     onValueChange={setEntity}
@@ -814,6 +866,7 @@ import {LuPlus} from 'react-icons/lu';
         onClick: addEntity,
     }}
 />
+<Text fs='12px' fw={760} tone='muted'>PaginatedCombobox</Text>
 <PaginatedCombobox
     value={paginatedValue}
     onChange={setPaginatedValue}
@@ -835,6 +888,7 @@ import {LuPlus} from 'react-icons/lu';
         onClick: addEntity,
     }}
 />
+<Text fs='12px' fw={760} tone='muted'>SegmentedControl</Text>
 <SegmentedControl
     items={[
         {value: 'active', label: 'Active'},

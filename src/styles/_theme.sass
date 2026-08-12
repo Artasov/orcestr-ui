@@ -5,6 +5,9 @@
     --oui-bg: #ffffff
     --oui-panel: #ffffff
     --oui-panel-2: #f9f9f9
+    --oui-section-bg: rgb(15 23 42 / 3%)
+    --oui-section-opacity: 100%
+    --oui-section-opaque-bg: rgb(248 248 249)
     --oui-control-bg: transparent
     --oui-control-hover-bg: #0000000f
     --oui-border: #00000017
@@ -48,16 +51,8 @@
     --oui-info-surface: #008ff519
     --oui-info-border: #0083eb71
     --oui-info-contrast: #ffffff
-    --oui-section-bg: #0f172a
-    --oui-section-opacity: 0%
-    --oui-section-nested-opacity: 0%
     --oui-section-shadow: 0 8px 26px rgb(15 23 42 / 8%)
-    --oui-section-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-opacity), transparent)
-    --oui-section-nested-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-nested-opacity), transparent)
-    --oui-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-opacity), var(--oui-bg))
-    --oui-section-solid-bg: var(--oui-bg)
-    --oui-section-nested-solid-bg: var(--oui-bg)
-    --oui-floating-bg: var(--oui-surface-bg)
+    --oui-floating-bg: var(--oui-panel)
     --oui-pad-bg: #00000006
     --oui-pad-hover-bg: #0000000f
     --oui-pad-opacity: 100%
@@ -100,9 +95,12 @@
 
 :root[data-oui-theme="dark"],
 .oui-root[data-oui-theme="dark"]
-    --oui-bg: #09090b
+    --oui-bg: #000000
     --oui-panel: #0c0c0f
     --oui-panel-2: #222222
+    --oui-section-bg: rgb(255 255 255 / 4%)
+    --oui-section-opacity: 100%
+    --oui-section-opaque-bg: rgb(10 10 10)
     --oui-control-bg: transparent
     --oui-control-hover-bg: #ffffff12
     --oui-border: #ffffff1b
@@ -146,16 +144,8 @@
     --oui-info-surface: #0077ff3a
     --oui-info-border: #2a91fe98
     --oui-info-contrast: #ffffff
-    --oui-section-bg: #ffffff
-    --oui-section-opacity: 0%
-    --oui-section-nested-opacity: 0%
     --oui-section-shadow: none
-    --oui-section-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-opacity), transparent)
-    --oui-section-nested-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-nested-opacity), transparent)
-    --oui-surface-bg: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-opacity), var(--oui-bg))
-    --oui-section-solid-bg: rgb(22 24 29)
-    --oui-section-nested-solid-bg: rgb(27 29 34)
-    --oui-floating-bg: var(--oui-surface-bg)
+    --oui-floating-bg: var(--oui-panel)
     --oui-pad-bg: #ffffff09
     --oui-pad-hover-bg: #ffffff12
     --oui-pad-opacity: 100%
@@ -195,11 +185,8 @@
     min-width: 0
     border: 0
     border-radius: var(--oui-radius)
-    background: var(--oui-section-surface-bg, var(--oui-surface-bg))
+    background: color-mix(in srgb, var(--oui-section-bg) var(--oui-section-opacity), transparent)
     box-shadow: var(--oui-section-shadow, none)
-
-.oui-section .oui-section
-    background: var(--oui-section-nested-surface-bg, var(--oui-section-surface-bg, var(--oui-surface-bg)))
 
 .oui-text
     margin: 0

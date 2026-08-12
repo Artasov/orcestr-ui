@@ -1,7 +1,14 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { LuCheck, LuPencil, LuSearch } from 'react-icons/lu';
+import {
+    LuCalendarDays,
+    LuCalendarRange,
+    LuCheck,
+    LuHistory,
+    LuPencil,
+    LuSearch,
+} from 'react-icons/lu';
 
 import {
     Badge,
@@ -11,6 +18,7 @@ import {
     DateRangePresetPicker,
     Flex,
     Field,
+    FloatingTextField,
     Grid,
     IconButton,
     InlineEditField,
@@ -97,7 +105,7 @@ export function FieldsSection({
             <UiExampleSection
                 id="text-fields-example"
                 title="Text fields"
-                description="TextField and TextArea inside Field."
+                description="Standard and floating-label text inputs in supported sizes."
             >
                 <ExampleTile title="Text fields" code={codeSamples.textFields} onOpen={onOpenCode}>
                     <Field label="Search" helperText="Clearable field with left slot.">
@@ -116,6 +124,36 @@ export function FieldsSection({
                     <Field label="Comment">
                         <TextArea rows={4} placeholder="Internal note" />
                     </Field>
+                    <Stack g={3}>
+                        <Text fs="12px" fw={760} tone="muted">
+                            Floating labels
+                        </Text>
+                        <Grid columns="repeat(auto-fit, minmax(min(100%, 210px), 1fr))" g={3}>
+                            <FloatingTextField size={1} label="Compact" />
+                            <FloatingTextField size={2} label="Customer name" />
+                            <FloatingTextField
+                                size={3}
+                                label="Work email"
+                                defaultValue="team@orcestr.com"
+                            />
+                            <FloatingTextField size={4} label="Project title" invalid />
+                        </Grid>
+                        <Section
+                            className="oui-ui-floating-field-color-demo"
+                            sectionColor="var(--oui-primary-surface)"
+                            sectionOpacity={100}
+                            p={4}
+                            g={2}
+                        >
+                            <Text fs="12px" fw={760} tone="primary">
+                                Different surface color
+                            </Text>
+                            <FloatingTextField
+                                label="Workspace name"
+                                defaultValue="Operations hub"
+                            />
+                        </Section>
+                    </Stack>
                 </ExampleTile>
             </UiExampleSection>
             <UiExampleSection
@@ -128,7 +166,7 @@ export function FieldsSection({
                     code={codeSamples.groupedFields}
                     onOpen={onOpenCode}
                 >
-                    <Section g={3}>
+                    <Section g={3} p={4}>
                         <Stack g={1}>
                             <Text fw={760}>Request details</Text>
                             <Text fs="12px" tone="muted">
@@ -347,7 +385,39 @@ export function FieldsSection({
                     <Field label="Range">
                         <DateRangePicker value={dateRange} onValueChange={onDateRangeChange} />
                     </Field>
-                    <DateRangePresetPicker today="2026-06-26" onValueChange={onDateRangeChange} />
+                    <Flex g={2} wrap a="c">
+                        <DateRangePresetPicker
+                            today="2026-06-26"
+                            onValueChange={onDateRangeChange}
+                        />
+                        <DateRangePresetPicker
+                            today="2026-06-26"
+                            triggerIcon={<LuCalendarRange size={16} />}
+                            triggerLabel="Choose period"
+                            triggerButtonProps={{ v: 'surface', tone: 'primary', size: 3 }}
+                            triggerLabelProps={{ fs: '13px', fw: 650 }}
+                            presets={[
+                                'today',
+                                {
+                                    key: 'previous-week',
+                                    label: 'Previous week',
+                                    description: 'The seven days before this week',
+                                    icon: <LuHistory size={15} />,
+                                    range: { from: '2026-06-15', to: '2026-06-21' },
+                                },
+                                {
+                                    key: 'quarter-to-date',
+                                    label: 'Quarter to date',
+                                    icon: <LuCalendarDays size={15} />,
+                                    range: (today) => ({
+                                        from: `${today.slice(0, 4)}-04-01`,
+                                        to: today,
+                                    }),
+                                },
+                            ]}
+                            onValueChange={onDateRangeChange}
+                        />
+                    </Flex>
                     <Text fs="12px" tone="muted">
                         Date inputs stay as controls. Form ownership belongs to the application.
                     </Text>

@@ -116,8 +116,8 @@
     flex-direction: column
     gap: 0
     overflow: hidden
-    --oui-app-shell-sidebar-bg: var(--oui-section-surface-bg, var(--oui-panel))
-    --oui-app-shell-sidebar-highlight-bg: var(--oui-section-solid-bg, var(--oui-panel))
+    --oui-app-shell-sidebar-bg: var(--oui-bg)
+    --oui-app-shell-sidebar-highlight-bg: var(--oui-bg)
     --oui-app-shell-sidebar-head-pad: 18px 18px 12px
     --oui-app-shell-sidebar-body-pad: 12px 8px 18px 18px
     --oui-app-shell-sidebar-footer-pad: 12px 18px 18px
@@ -203,6 +203,8 @@
 .oui-app-shell-content
     display: flex
     box-sizing: border-box
+    width: 100%
+    max-width: 100%
     min-width: 0
     min-height: 100%
     flex-direction: column
@@ -458,6 +460,8 @@
     display: inline-flex
 
 .oui-app-shell[data-sidebar-mode="mobile"] .oui-app-shell-content-scroll > .oui-scroll-area-viewport
+    overflow-x: clip
+    overflow-y: auto
     scroll-padding: 12px 10px 18px
 
 .oui-app-shell[data-sidebar-mode="mobile"] .oui-app-shell-content
@@ -599,6 +603,8 @@
         display: inline-flex
 
     .oui-app-shell-content-scroll > .oui-scroll-area-viewport
+        overflow-x: clip
+        overflow-y: auto
         scroll-padding: 12px 10px 18px
 
     .oui-app-shell-content

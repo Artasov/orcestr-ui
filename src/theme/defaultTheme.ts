@@ -99,9 +99,10 @@ const sharedStructure = {
 
 const darkBase: ThemeSeed = {
     colors: {
-        bg: '#09090b',
+        bg: '#000000',
         panel: '#0c0c0f',
         panelSoft: '#222222',
+        section: 'rgb(255 255 255 / 4%)',
         control: 'transparent',
         controlHover: '#ffffff12',
         text: '#eeeeee',
@@ -162,8 +163,6 @@ const darkBase: ThemeSeed = {
         disabled: '#ffffff55',
         overlay: 'rgb(0 0 0 / 48%)',
         floating: '#0c0c0f',
-        section: 'transparent',
-        sectionNested: 'transparent',
         pad: '#ffffff09',
         padHover: '#ffffff12',
         skeletonShimmer: '#ffffff12',
@@ -240,6 +239,7 @@ const lightBase: ThemeSeed = {
         bg: '#ffffff',
         panel: '#ffffff',
         panelSoft: '#f9f9f9',
+        section: 'rgb(15 23 42 / 3%)',
         control: 'transparent',
         controlHover: '#0000000f',
         text: '#202020',
@@ -300,8 +300,6 @@ const lightBase: ThemeSeed = {
         disabled: '#00000044',
         overlay: 'rgb(15 23 42 / 36%)',
         floating: '#ffffff',
-        section: 'transparent',
-        sectionNested: 'transparent',
         pad: '#00000006',
         padHover: '#0000000f',
         skeletonShimmer: 'rgb(255 255 255 / 18%)',

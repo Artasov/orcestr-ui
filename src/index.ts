@@ -26,6 +26,7 @@ export * from './components/Drawer/Drawer.js';
 export * from './components/EntityPicker/EntityPicker.js';
 export * from './components/State/State.js';
 export * from './components/Flex/Flex.js';
+export * from './components/FloatingTextField/FloatingTextField.js';
 export * from './components/Field/Field.js';
 export * from './components/Grid/Grid.js';
 export * from './components/Highlight/Highlight.js';

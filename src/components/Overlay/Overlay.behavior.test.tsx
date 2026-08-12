@@ -11,6 +11,7 @@ afterEach(cleanup);
 after(restoreDom);
 
 const { AppShell } = await import('../AppShell/AppShell.js');
+const { Dialog } = await import('../Dialog/Dialog.js');
 const { Modal } = await import('../Modal/Modal.js');
 const { SpecialModal } = await import('../SpecialModal/SpecialModal.js');
 const { OrcestrUiProvider } = await import('../../provider/OrcestrUiProvider.js');
@@ -76,21 +77,75 @@ test('SpecialModal.Close requests closing the owning modal', async () => {
     assert.deepEqual(changes, [false]);
 });
 
-test('AppShell mobile drawer keeps its custom-portal backdrop interactive', async () => {
+test('Dialog compound parts do not replace Modal or SpecialModal close buttons', async () => {
+    assert.notEqual(Dialog, Modal);
+    assert.equal(Modal.Close.name, 'ModalClose');
+
+    const changes: boolean[] = [];
+    render(
+        <OrcestrUiProvider>
+            <SpecialModal
+                open
+                onOpenChange={(open) => changes.push(open)}
+                ariaLabel="Close remains a button"
+            >
+                <SpecialModal.Header actions={<SpecialModal.Close aria-label="Close preview" />} />
+            </SpecialModal>
+        </OrcestrUiProvider>,
+    );
+
+    const close = await screen.findByRole('button', { name: 'Close preview' });
+    assert.equal(close.tagName, 'BUTTON');
+    fireEvent.click(close);
+    assert.deepEqual(changes, [false]);
+});
+
+test('modal overlay requests closing when it is pressed outside the content', async () => {
+    const changes: boolean[] = [];
+    render(
+        <OrcestrUiProvider>
+            <SpecialModal
+                open
+                onOpenChange={(open) => changes.push(open)}
+                ariaLabel="Overlay close"
+                testId="overlay-close"
+            >
+                <SpecialModal.Body>Content</SpecialModal.Body>
+            </SpecialModal>
+        </OrcestrUiProvider>,
+    );
+
+    await screen.findByRole('dialog', { name: 'Overlay close' });
+    fireEvent.pointerDown(screen.getByTestId('overlay-close'));
+    assert.deepEqual(changes, [false]);
+});
+
+test('AppShell mobile drawer closes outside without blocking its parent modal', async () => {
     function Harness() {
         const [open, setOpen] = useState(true);
 
         return (
             <OrcestrUiProvider>
-                <AppShell
-                    sidebar={<nav>Navigation</nav>}
-                    sidebarMode="mobile"
-                    sidebarOpen={open}
-                    onSidebarOpenChange={setOpen}
-                    testId="shell"
+                <SpecialModal
+                    open
+                    onOpenChange={() => undefined}
+                    ariaLabel="AppShell preview"
                 >
-                    <div>Content</div>
-                </AppShell>
+                    <SpecialModal.Header
+                        actions={<SpecialModal.Close aria-label="Close preview" />}
+                    />
+                    <SpecialModal.Body>
+                        <AppShell
+                            sidebar={<nav>Navigation</nav>}
+                            sidebarMode="mobile"
+                            sidebarOpen={open}
+                            onSidebarOpenChange={setOpen}
+                            testId="shell"
+                        >
+                            <div>Content</div>
+                        </AppShell>
+                    </SpecialModal.Body>
+                </SpecialModal>
             </OrcestrUiProvider>
         );
     }
@@ -98,12 +153,28 @@ test('AppShell mobile drawer keeps its custom-portal backdrop interactive', asyn
     render(<Harness />);
 
     const backdrop = await screen.findByTestId('shell-sidebar-drawer-backdrop');
-    assert.equal(backdrop.hasAttribute('inert'), false);
-    assert.equal(backdrop.closest('[inert]'), null);
+    const drawerRoot = document.querySelector<HTMLElement>('.oui-app-shell-drawer-root');
+    assert.ok(drawerRoot);
+    await waitFor(() => {
+        assert.equal(backdrop.hasAttribute('inert'), false);
+        assert.equal(backdrop.closest('[inert]'), null);
+        assert.equal(screen.getByTestId('shell').dataset.sidebarOpen, 'true');
+        assert.equal(
+            screen.getByRole('dialog', { name: 'AppShell preview' }).hasAttribute('inert'),
+            false,
+        );
+    });
 
     fireEvent.pointerDown(backdrop);
 
     await waitFor(() => {
         assert.equal(screen.getByTestId('shell').dataset.sidebarOpen, 'false');
+        assert.equal(
+            screen.getByRole('button', { name: 'Close preview' }).closest('[inert]'),
+            null,
+        );
     });
+
+    cleanup();
+    assert.equal(document.querySelector('.oui-drawer-layer'), null);
 });

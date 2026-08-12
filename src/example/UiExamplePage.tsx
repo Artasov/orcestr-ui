@@ -251,6 +251,7 @@ function UiExampleContent({
 
     return (
         <AppShell
+            className="oui-ui-app-shell"
             sidebarOpen={mobileNavOpen}
             onSidebarOpenChange={setMobileNavOpen}
             header={
@@ -258,6 +259,7 @@ function UiExampleContent({
                     sidebarOpen={mobileNavOpen}
                     onSidebarOpenChange={setMobileNavOpen}
                     navigationVisibility="mobile"
+                    title={<UiExampleBrand compact />}
                     actions={
                         <UiExampleHeaderActions
                             compact

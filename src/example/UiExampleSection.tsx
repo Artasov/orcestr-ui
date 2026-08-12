@@ -1,7 +1,5 @@
 import type { ReactNode } from 'react';
 
-import { Section } from '../components/Section/Section.js';
-
 export function UiExampleSection({
     id,
     title,
@@ -14,7 +12,7 @@ export function UiExampleSection({
     children: ReactNode;
 }) {
     return (
-        <Section id={id} className="oui-ui-section">
+        <section id={id} className="oui-ui-section">
             <div className="oui-ui-section-head">
                 <div>
                     <h2 className="oui-ui-section-title">{title}</h2>
@@ -22,6 +20,6 @@ export function UiExampleSection({
                 </div>
             </div>
             {children}
-        </Section>
+        </section>
     );
 }
