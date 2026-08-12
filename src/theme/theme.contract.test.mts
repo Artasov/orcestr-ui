@@ -309,8 +309,8 @@ test('theme playground exposes token families and generic presets', () => {
     assert.match(source, /id: 'amber-dark'/);
     assert.match(source, /id: 'amber-light'/);
     assert.doesNotMatch(source, /OrcestrThemeSurface|defaultSurface/);
-    assert.match(source, /'radius'/);
-    assert.match(source, /'text'/);
+    assert.match(source, /\bradius:\s*true/);
+    assert.match(source, /\btext:\s*true/);
     assert.doesNotMatch(source, /'radii'|'typography'/);
     assert.match(source, /tokenSections: \{[\s\S]*?spacing: 'Отступы'/);
     assert.match(source, /tokenSections: \{[\s\S]*?breakpoints: 'Брейкпоинты'/);
@@ -321,6 +321,6 @@ test('theme playground exposes token families and generic presets', () => {
     assert.match(source, /tokenSections: \{[\s\S]*?states: 'States'/);
     assert.match(
         source,
-        /flatTokenSections = \[[\s\S]*?'toast'[\s\S]*?'scrollbar'[\s\S]*?'states'/,
+        /flatTokenSectionOrder:[\s\S]*?toast: true[\s\S]*?scrollbar: true[\s\S]*?states: true/,
     );
 });
