@@ -49,6 +49,13 @@ test('floating selection fields render only the shared outlined border', () => {
         styles.slice(floatingOverrideIndex),
         /\.oui-button\.oui-combobox-trigger\.oui-floating-field,[\s\S]*?border-color: transparent[\s\S]*?box-shadow: none/,
     );
+
+    const fieldStyles = read('styles/_fields.sass');
+    assert.match(
+        fieldStyles,
+        /\.oui-floating-field-outline[\s\S]*?box-sizing: border-box/,
+        'the fieldset outline must match the trigger box instead of growing past it',
+    );
 });
 
 test('selection dropdown surfaces use themed floating background', () => {
