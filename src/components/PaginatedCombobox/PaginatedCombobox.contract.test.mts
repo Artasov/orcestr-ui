@@ -54,8 +54,14 @@ test('floating selection fields render only the shared outlined border', () => {
     assert.match(
         fieldStyles,
         /\.oui-floating-field-outline[\s\S]*?box-sizing: border-box/,
-        'the fieldset outline must match the trigger box instead of growing past it',
+        'the outline must match the trigger box instead of growing past it',
     );
+
+    const decoration = read('components/Field/FloatingFieldDecoration.tsx');
+    assert.doesNotMatch(decoration, /<fieldset|<legend/);
+    assert.match(decoration, /oui-floating-field-outline-top-start/);
+    assert.match(decoration, /oui-floating-field-outline-gap/);
+    assert.match(decoration, /oui-floating-field-outline-top-end/);
 });
 
 test('selection dropdown surfaces use themed floating background', () => {

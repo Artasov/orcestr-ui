@@ -31,6 +31,8 @@ export type TextFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>
         testId?: string;
         /** Renders an animated label inside the control that moves into the outline. */
         floatingLabel?: ReactNode;
+        /** Applies an arbitrary CSS color to the floating label and its outline. */
+        floatingColor?: string;
     };
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function TextField(
@@ -47,6 +49,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
         clearLabel,
         testId,
         floatingLabel,
+        floatingColor,
         value,
         defaultValue,
         onChange,
@@ -95,7 +98,11 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
             style={{ ...systemStyle, ...style }}
         >
             {floatingLabel !== undefined ? (
-                <FloatingFieldDecoration label={floatingLabel} htmlFor={inputId} />
+                <FloatingFieldDecoration
+                    label={floatingLabel}
+                    htmlFor={inputId}
+                    color={floatingColor}
+                />
             ) : null}
             {leftSlot ? <span className="oui-text-field-slot">{leftSlot}</span> : null}
             <input

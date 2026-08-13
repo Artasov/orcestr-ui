@@ -42,6 +42,7 @@ export type MultiSelectProps<V extends string = string> = {
     searchPlaceholder?: string;
     testId?: string;
     floatingLabel?: ReactNode;
+    floatingColor?: string;
 };
 
 export function MultiSelect<V extends string = string>({
@@ -64,6 +65,7 @@ export function MultiSelect<V extends string = string>({
     searchPlaceholder,
     testId,
     floatingLabel,
+    floatingColor,
 }: MultiSelectProps<V>) {
     const { copy } = useOrcestrUiLocale();
     const [open, setOpen] = useState(false);
@@ -235,7 +237,7 @@ export function MultiSelect<V extends string = string>({
                         onKeyDown={handleKeyDown}
                     >
                         {floatingLabel !== undefined ? (
-                            <FloatingFieldDecoration label={floatingLabel} />
+                            <FloatingFieldDecoration label={floatingLabel} color={floatingColor} />
                         ) : null}
                         <span className="oui-button-label">
                             <span
