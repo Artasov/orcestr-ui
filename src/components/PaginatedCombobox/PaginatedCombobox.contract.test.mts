@@ -34,6 +34,23 @@ test('all selection inputs expose the shared floating label mode', () => {
     );
 });
 
+test('floating selection fields render only the shared outlined border', () => {
+    const styles = read('styles/_selection.sass');
+    const ordinaryStateIndex = styles.indexOf(
+        '.oui-button.oui-combobox-trigger[data-state="open"]',
+    );
+    const floatingOverrideIndex = styles.indexOf(
+        '.oui-button.oui-combobox-trigger.oui-floating-field,',
+    );
+
+    assert.ok(ordinaryStateIndex >= 0);
+    assert.ok(floatingOverrideIndex > ordinaryStateIndex);
+    assert.match(
+        styles.slice(floatingOverrideIndex),
+        /\.oui-button\.oui-combobox-trigger\.oui-floating-field,[\s\S]*?border-color: transparent[\s\S]*?box-shadow: none/,
+    );
+});
+
 test('selection dropdown surfaces use themed floating background', () => {
     const selectionStyles = read('styles/_selection.sass');
     const overlayStyles = read('styles/_overlays.sass');
