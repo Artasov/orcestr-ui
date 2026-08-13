@@ -477,6 +477,19 @@
     box-shadow: none
     outline: none
 
+// Floating controls delegate the complete border and focus ring to the shared
+// fieldset. Keep this after the ordinary trigger states so no second border can
+// bleed through the legend cutout.
+.oui-button.oui-combobox-trigger.oui-floating-field,
+.oui-button.oui-combobox-trigger.oui-floating-field[data-variant="surface"],
+.oui-button.oui-combobox-trigger.oui-floating-field:not(:disabled):hover,
+.oui-button.oui-combobox-trigger.oui-floating-field[data-state="open"],
+.oui-button.oui-combobox-trigger.oui-floating-field[data-state="open"]:focus,
+.oui-button.oui-combobox-trigger.oui-floating-field[data-state="open"]:focus-visible,
+.oui-button.oui-combobox-trigger.oui-floating-field[data-state="open"]:not(:disabled):hover
+    border-color: transparent
+    box-shadow: none
+
 .oui-checkbox,
 .oui-radio,
 .oui-switch
