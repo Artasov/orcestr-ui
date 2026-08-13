@@ -12,15 +12,18 @@ export function usePresence(open: boolean, durationMs = 220) {
     useEffect(() => {
         let frame = 0;
         let timer = 0;
+        let disposed = false;
 
         if (open) {
             presentRef.current = true;
             setState('opening');
             setPresent(true);
             frame = window.requestAnimationFrame(() => {
+                if (disposed) return;
                 timer = window.setTimeout(() => setState('open'), durationMs);
             });
             return () => {
+                disposed = true;
                 window.cancelAnimationFrame(frame);
                 window.clearTimeout(timer);
             };
@@ -33,13 +36,16 @@ export function usePresence(open: boolean, durationMs = 220) {
 
         setState('closing');
         frame = window.requestAnimationFrame(() => {
+            if (disposed) return;
             timer = window.setTimeout(() => {
+                if (disposed) return;
                 presentRef.current = false;
                 setPresent(false);
                 setState('closed');
             }, durationMs);
         });
         return () => {
+            disposed = true;
             window.cancelAnimationFrame(frame);
             window.clearTimeout(timer);
         };
