@@ -581,7 +581,7 @@ const items: MenuItem[] = [
         <Text fs='12px' tone='muted'>Context menu reuses Menu item styling.</Text>
     </div>
 </ContextMenu>`,
-    textFields: `import {Button, Flex, Field, FloatingTextField, Grid, Section, Stack, Text, TextArea, TextField} from '@orcestr/ui';
+    textFields: `import {Button, Flex, Field, Grid, Section, Stack, Text, TextArea, TextField} from '@orcestr/ui';
 import {LuSearch} from 'react-icons/lu';
 
 <Field label='Search' helperText='Clearable field with left slot.'>
@@ -601,14 +601,14 @@ import {LuSearch} from 'react-icons/lu';
 <Stack g={3}>
     <Text fs='12px' fw={760} tone='muted'>Floating labels</Text>
     <Grid columns='repeat(auto-fit, minmax(min(100%, 210px), 1fr))' g={3}>
-        <FloatingTextField size={1} label='Compact' />
-        <FloatingTextField size={2} label='Customer name' />
-        <FloatingTextField size={3} label='Work email' defaultValue='team@orcestr.com' />
-        <FloatingTextField size={4} label='Project title' invalid />
+        <TextField size={1} floatingLabel='Compact' />
+        <TextField size={2} floatingLabel='Customer name' />
+        <TextField size={3} floatingLabel='Work email' defaultValue='team@orcestr.com' />
+        <TextField size={4} floatingLabel='Project title' invalid />
     </Grid>
     <Section sectionColor='var(--oui-primary-surface)' sectionOpacity={100} p={4} g={2}>
         <Text fs='12px' fw={760} tone='primary'>Different surface color</Text>
-        <FloatingTextField label='Workspace name' defaultValue='Operations hub' />
+        <TextField floatingLabel='Workspace name' defaultValue='Operations hub' />
     </Section>
 </Stack>`,
     inlineEdit: `import {useState} from 'react';

@@ -102,6 +102,7 @@ export function SelectionSection({
                             items={optionItems}
                             value={selectValue}
                             onValueChange={onSelectValueChange}
+                            floatingLabel="Status"
                             clearable
                         />
                         <Select
@@ -128,6 +129,7 @@ export function SelectionSection({
                             value={comboValue}
                             onValueChange={onComboValueChange}
                             placeholder="Find status"
+                            floatingLabel="Search status"
                         />
                     </Stack>
                     <Stack g={2}>
@@ -137,6 +139,7 @@ export function SelectionSection({
                             value={ownerValues}
                             onValueChange={onOwnerValuesChange}
                             placeholder={copy.responsibleUsers}
+                            floatingLabel="Responsible users"
                             searchable
                             searchPlaceholder="Find a responsible user"
                             clearable
@@ -167,6 +170,7 @@ export function SelectionSection({
                                 </>
                             )}
                             placeholder={copy.entityPicker}
+                            floatingLabel="Entity"
                             clearable
                             createAction={{
                                 label: copy.createEntityFromSearch,
@@ -196,6 +200,7 @@ export function SelectionSection({
                                 </span>
                             )}
                             placeholder="Paginated combobox"
+                            floatingLabel="Inventory item"
                             clearable
                             searchAction={{
                                 label: copy.createEntityFromSearch,

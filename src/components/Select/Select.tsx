@@ -17,6 +17,7 @@ import {
 import { LuCheck, LuChevronsUpDown, LuX } from 'react-icons/lu';
 
 import { Button } from '../Button/Button.js';
+import { FloatingFieldDecoration } from '../Field/FloatingFieldDecoration.js';
 import { Popover } from '../Popover/Popover.js';
 import { splitSystemProps, type SystemProps, type UiSize } from '../../theme/systemProps.js';
 import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
@@ -48,6 +49,7 @@ export function Select<V extends string = string>({
     showChevron = true,
     clearLabel,
     ariaLabel,
+    floatingLabel,
     testId,
     ...props
 }: {
@@ -67,6 +69,7 @@ export function Select<V extends string = string>({
     showChevron?: boolean;
     clearLabel?: string;
     ariaLabel?: string;
+    floatingLabel?: ReactNode;
     testId?: string;
 } & SystemProps) {
     const { copy } = useOrcestrUiLocale();
@@ -188,8 +191,18 @@ export function Select<V extends string = string>({
                     disabled={disabled}
                     fullWidth
                     pressAnimation="none"
-                    className="oui-combobox-trigger"
+                    className={
+                        floatingLabel !== undefined
+                            ? 'oui-combobox-trigger oui-floating-field'
+                            : 'oui-combobox-trigger'
+                    }
                     data-state={open ? 'open' : 'closed'}
+                    data-floating={
+                        floatingLabel !== undefined && (open || hasSelectedValue)
+                            ? 'true'
+                            : undefined
+                    }
+                    data-focused={floatingLabel !== undefined && open ? 'true' : undefined}
                     testId={testId}
                     style={{ ...systemStyle, ...style }}
                     {...restProps}
@@ -204,6 +217,9 @@ export function Select<V extends string = string>({
                         aria-controls={listboxId}
                         onKeyDown={handleKeyDown}
                     >
+                        {floatingLabel !== undefined ? (
+                            <FloatingFieldDecoration label={floatingLabel} />
+                        ) : null}
                         <span className="oui-button-label">
                             <span
                                 className={

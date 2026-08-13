@@ -17,6 +17,7 @@ import { useTypeahead } from '../../hooks/useTypeahead.js';
 import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
 import type { UiSize } from '../../theme/systemProps.js';
 import { Button } from '../Button/Button.js';
+import { FloatingFieldDecoration } from '../Field/FloatingFieldDecoration.js';
 import { Popover } from '../Popover/Popover.js';
 import type { SelectItem } from '../Select/Select.js';
 import { TextField } from '../TextField/TextField.js';
@@ -40,6 +41,7 @@ export type MultiSelectProps<V extends string = string> = {
     searchable?: boolean;
     searchPlaceholder?: string;
     testId?: string;
+    floatingLabel?: ReactNode;
 };
 
 export function MultiSelect<V extends string = string>({
@@ -61,6 +63,7 @@ export function MultiSelect<V extends string = string>({
     searchable = false,
     searchPlaceholder,
     testId,
+    floatingLabel,
 }: MultiSelectProps<V>) {
     const { copy } = useOrcestrUiLocale();
     const [open, setOpen] = useState(false);
@@ -205,8 +208,18 @@ export function MultiSelect<V extends string = string>({
                     disabled={disabled}
                     fullWidth
                     pressAnimation="none"
-                    className="oui-combobox-trigger oui-multi-select-trigger"
+                    className={
+                        floatingLabel !== undefined
+                            ? 'oui-combobox-trigger oui-multi-select-trigger oui-floating-field'
+                            : 'oui-combobox-trigger oui-multi-select-trigger'
+                    }
                     data-state={open ? 'open' : 'closed'}
+                    data-floating={
+                        floatingLabel !== undefined && (open || value.length > 0)
+                            ? 'true'
+                            : undefined
+                    }
+                    data-focused={floatingLabel !== undefined && open ? 'true' : undefined}
                     testId={testId}
                 >
                     <div
@@ -221,6 +234,9 @@ export function MultiSelect<V extends string = string>({
                         aria-controls={listboxId}
                         onKeyDown={handleKeyDown}
                     >
+                        {floatingLabel !== undefined ? (
+                            <FloatingFieldDecoration label={floatingLabel} />
+                        ) : null}
                         <span className="oui-button-label">
                             <span
                                 className={

@@ -26,3 +26,15 @@ test('field controls use one visible border contract', () => {
         /\.oui-stepper \.oui-stepper-field,[\s\S]*?border-right: 0[\s\S]*?border-left: 0/,
     );
 });
+
+test('TextField owns the floating label mode without a parallel component', () => {
+    const source = read('components/TextField/TextField.tsx');
+    const styles = read('styles/_fields.sass');
+    const barrel = read('index.ts');
+
+    assert.match(source, /floatingLabel\?: ReactNode/);
+    assert.match(source, /<FloatingFieldDecoration label=\{floatingLabel\} htmlFor=\{inputId\}/);
+    assert.match(styles, /\.oui-floating-field-label[\s\S]*?line-height: 1\.35/);
+    assert.match(styles, /\.oui-text-field-input,[\s\S]*?line-height: 1\.35/);
+    assert.doesNotMatch(barrel, /FloatingTextField/);
+});

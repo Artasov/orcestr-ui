@@ -4,7 +4,6 @@ export * from './components/Badge/Badge.js';
 export * from './components/Box/Box.js';
 export * from './components/Card/Card.js';
 export * from './components/Flex/Flex.js';
-export * from './components/FloatingTextField/FloatingTextField.js';
 export * from './components/Grid/Grid.js';
 export * from './components/Highlight/Highlight.js';
 export * from './components/IconText/IconText.js';

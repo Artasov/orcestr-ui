@@ -17,6 +17,7 @@ import { useListNavigation } from '../../hooks/useListNavigation.js';
 import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
 import type { UiSize } from '../../theme/systemProps.js';
 import { Button } from '../Button/Button.js';
+import { FloatingFieldDecoration } from '../Field/FloatingFieldDecoration.js';
 import { IconButton } from '../IconButton/IconButton.js';
 import { Popover } from '../Popover/Popover.js';
 import { Spinner } from '../Spinner/Spinner.js';
@@ -81,6 +82,7 @@ export type PaginatedComboboxProps<T> = {
     estimatedItemHeight?: number;
     virtualOverscan?: number;
     testId?: string;
+    floatingLabel?: ReactNode;
 };
 
 const DEFAULT_DEBOUNCE_MS = 200;
@@ -118,6 +120,7 @@ export function PaginatedCombobox<T>({
     estimatedItemHeight = 40,
     virtualOverscan = 6,
     testId,
+    floatingLabel,
 }: PaginatedComboboxProps<T>) {
     const { copy } = useOrcestrUiLocale();
     const actualPlaceholder = placeholder ?? copy.common.selectValue;
@@ -490,9 +493,19 @@ export function PaginatedCombobox<T>({
                         disabled={disabled}
                         fullWidth
                         pressAnimation="none"
-                        className="oui-combobox-trigger"
+                        className={
+                            floatingLabel !== undefined
+                                ? 'oui-combobox-trigger oui-floating-field'
+                                : 'oui-combobox-trigger'
+                        }
                         data-testid={testId}
                         data-state={open ? 'open' : 'closed'}
+                        data-floating={
+                            floatingLabel !== undefined && (open || value !== null)
+                                ? 'true'
+                                : undefined
+                        }
+                        data-focused={floatingLabel !== undefined && open ? 'true' : undefined}
                     >
                         <div
                             role="combobox"
@@ -510,6 +523,9 @@ export function PaginatedCombobox<T>({
                             }
                             onKeyDown={handleKeyDown}
                         >
+                            {floatingLabel !== undefined ? (
+                                <FloatingFieldDecoration label={floatingLabel} />
+                            ) : null}
                             <span className="oui-button-label">
                                 <span
                                     className={
