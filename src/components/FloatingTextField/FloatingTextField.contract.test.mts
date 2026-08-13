@@ -31,3 +31,10 @@ test('FloatingTextField moves its label diagonally with synchronized transitions
         /\.oui-floating-text-field-label[\s\S]*?transition: top 180ms cubic-bezier\(\.2, 0, 0, 1\), left 180ms cubic-bezier\(\.2, 0, 0, 1\)/,
     );
 });
+
+test('FloatingTextField keeps a long label inside the field when a left slot is present', () => {
+    assert.match(
+        styles,
+        /\.oui-floating-text-field\[data-has-left="true"\] \.oui-floating-text-field-label[\s\S]*?left: 36px[\s\S]*?max-width: calc\(100% - 46px\)/,
+    );
+});
