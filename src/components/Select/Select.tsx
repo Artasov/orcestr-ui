@@ -50,6 +50,7 @@ export function Select<V extends string = string>({
     clearLabel,
     ariaLabel,
     floatingLabel,
+    floatingColor,
     testId,
     ...props
 }: {
@@ -70,6 +71,7 @@ export function Select<V extends string = string>({
     clearLabel?: string;
     ariaLabel?: string;
     floatingLabel?: ReactNode;
+    floatingColor?: string;
     testId?: string;
 } & SystemProps) {
     const { copy } = useOrcestrUiLocale();
@@ -218,7 +220,7 @@ export function Select<V extends string = string>({
                         onKeyDown={handleKeyDown}
                     >
                         {floatingLabel !== undefined ? (
-                            <FloatingFieldDecoration label={floatingLabel} />
+                            <FloatingFieldDecoration label={floatingLabel} color={floatingColor} />
                         ) : null}
                         <span className="oui-button-label">
                             <span

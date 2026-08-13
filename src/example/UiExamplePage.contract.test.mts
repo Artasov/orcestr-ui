@@ -128,6 +128,7 @@ test('UI example exposes deep anchors for public demo sections', () => {
     assert.match(fieldsSection, /id=["']text-fields-example["']/);
     assert.match(fieldsSection, /<TextField size=\{1\} floatingLabel="Compact" \/>/);
     assert.match(fieldsSection, /<TextField[\s\S]*?size=\{4\}[\s\S]*?invalid/);
+    assert.match(fieldsSection, /floatingColor="oklch\(78% 0\.18 330\)"/);
     assert.match(
         fieldsSection,
         /sectionColor="var\(--oui-primary-surface\)"[\s\S]*?<TextField[\s\S]*?floatingLabel="Workspace name"/,

@@ -608,7 +608,11 @@ import {LuSearch} from 'react-icons/lu';
     </Grid>
     <Section sectionColor='var(--oui-primary-surface)' sectionOpacity={100} p={4} g={2}>
         <Text fs='12px' fw={760} tone='primary'>Different surface color</Text>
-        <TextField floatingLabel='Workspace name' defaultValue='Operations hub' />
+        <TextField
+            floatingLabel='Workspace name'
+            floatingColor='oklch(78% 0.18 330)'
+            defaultValue='Operations hub'
+        />
     </Section>
 </Stack>`,
     inlineEdit: `import {useState} from 'react';

@@ -149,6 +149,7 @@ export function FieldsSection({
                             </Text>
                             <TextField
                                 floatingLabel="Workspace name"
+                                floatingColor="oklch(78% 0.18 330)"
                                 defaultValue="Operations hub"
                             />
                         </Section>

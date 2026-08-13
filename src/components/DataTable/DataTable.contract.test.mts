@@ -82,6 +82,15 @@ test('DataTable settings and pinned cells use shared UI primitives', () => {
         styles,
         /\.oui-data-table-select-cell \.oui-checkbox[\s\S]*?margin-inline: auto/,
     );
+    const selectionStyles = read('styles/_selection.sass');
+    assert.match(
+        selectionStyles,
+        /\.oui-checkbox-box svg[\s\S]*?top: 50%[\s\S]*?left: 50%[\s\S]*?transform: translate\(-50%, -50%\) scale\(\.72\)/,
+    );
+    assert.match(
+        selectionStyles,
+        /\.oui-checkbox\[data-checked="true"\] \.oui-checkbox-check,[\s\S]*?transform: translate\(-50%, -50%\) scale\(1\)/,
+    );
     assert.match(
         source,
         /<Button\s+className=["']oui-data-table-settings-reset["'][\s\S]*?size=\{1\}[\s\S]*?v=["']ghost["'][\s\S]*?leftIcon=\{<LuRotateCcw size=\{13\} \/>\}/,

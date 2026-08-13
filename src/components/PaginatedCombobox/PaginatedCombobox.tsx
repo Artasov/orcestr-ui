@@ -83,6 +83,7 @@ export type PaginatedComboboxProps<T> = {
     virtualOverscan?: number;
     testId?: string;
     floatingLabel?: ReactNode;
+    floatingColor?: string;
 };
 
 const DEFAULT_DEBOUNCE_MS = 200;
@@ -121,6 +122,7 @@ export function PaginatedCombobox<T>({
     virtualOverscan = 6,
     testId,
     floatingLabel,
+    floatingColor,
 }: PaginatedComboboxProps<T>) {
     const { copy } = useOrcestrUiLocale();
     const actualPlaceholder = placeholder ?? copy.common.selectValue;
@@ -524,7 +526,10 @@ export function PaginatedCombobox<T>({
                             onKeyDown={handleKeyDown}
                         >
                             {floatingLabel !== undefined ? (
-                                <FloatingFieldDecoration label={floatingLabel} />
+                                <FloatingFieldDecoration
+                                    label={floatingLabel}
+                                    color={floatingColor}
+                                />
                             ) : null}
                             <span className="oui-button-label">
                                 <span

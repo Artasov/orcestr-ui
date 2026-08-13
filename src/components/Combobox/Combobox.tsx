@@ -25,6 +25,7 @@ export function Combobox({
     showChevron = true,
     testId,
     floatingLabel,
+    floatingColor,
     size = 3,
 }: {
     items: ReadonlyArray<ListboxItem>;
@@ -41,6 +42,7 @@ export function Combobox({
     showChevron?: boolean;
     testId?: string;
     floatingLabel?: ReactNode;
+    floatingColor?: string;
     size?: import('../../theme/systemProps.js').UiSize;
 }) {
     const { copy } = useOrcestrUiLocale();
@@ -100,7 +102,7 @@ export function Combobox({
                         aria-controls={listboxId}
                     >
                         {floatingLabel !== undefined ? (
-                            <FloatingFieldDecoration label={floatingLabel} />
+                            <FloatingFieldDecoration label={floatingLabel} color={floatingColor} />
                         ) : null}
                         <span className="oui-button-label">
                             <span

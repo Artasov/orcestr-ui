@@ -81,56 +81,92 @@
 
 .oui-floating-field
     position: relative
+    --oui-floating-field-height: 40px
+    --oui-floating-field-label-rest-x: 6px
+    --oui-floating-field-label-float-x: 9px
+    --oui-floating-field-motion-duration: 300ms
+    --oui-floating-field-motion-easing: cubic-bezier(.2, .75, .25, 1)
+    --oui-floating-field-color-duration: 240ms
     border-color: transparent
     box-shadow: none
+
+.oui-floating-field[data-size="1"]
+    --oui-floating-field-height: 28px
+
+.oui-floating-field[data-size="2"]
+    --oui-floating-field-height: 34px
+
+.oui-floating-field[data-size="3"]
+    --oui-floating-field-height: 40px
+
+.oui-floating-field[data-size="4"]
+    --oui-floating-field-height: 48px
 
 .oui-floating-field-outline
     position: absolute
     inset: 0
     box-sizing: border-box
-    min-width: 0
-    margin: 0
-    border: 1px solid var(--oui-field-border-color, var(--oui-border))
-    border-radius: 6px
+    color: var(--oui-floating-field-border-color, var(--oui-field-border-color, var(--oui-border)))
     pointer-events: none
-    padding: 0 8px
-    transition: border-color 180ms ease
+    transition: color var(--oui-floating-field-color-duration) ease
 
-.oui-floating-field-outline legend
-    width: auto
+.oui-floating-field-outline-sides
+    position: absolute
+    inset: 6px 0 0
+    border: 1px solid currentColor
+    border-top: 0
+    border-radius: 0 0 6px 6px
+
+.oui-floating-field-outline-top
+    position: absolute
+    top: 0
+    right: 0
+    left: 0
+    display: flex
+    height: 6px
+
+.oui-floating-field-outline-top-start,
+.oui-floating-field-outline-top-end
+    height: 6px
+    border-top: 1px solid currentColor
+
+.oui-floating-field-outline-top-start
+    width: 9px
+    flex: 0 0 9px
+    border-left: 1px solid currentColor
+    border-top-left-radius: 6px
+
+.oui-floating-field-outline-top-end
+    flex: 1 1 auto
+    border-right: 1px solid currentColor
+    border-top-right-radius: 6px
+
+.oui-floating-field-outline-gap
     max-width: 0
-    height: 0
+    flex: 0 1 auto
     overflow: hidden
-    padding: 0
-    transition: max-width 160ms ease, padding 160ms ease
+    transition: max-width 160ms var(--oui-floating-field-motion-easing)
+
+.oui-floating-field-outline-gap > span
+    display: inline-block
+    padding-inline: 3px
+    font-size: .75em
+    line-height: 1.35
+    opacity: 0
     white-space: nowrap
 
-.oui-floating-field-outline legend span
-    display: inline-block
-    font-size: .75em
-    line-height: 0
-    opacity: 0
-
-.oui-floating-field[data-floating="true"] .oui-floating-field-outline legend
-    max-width: 100%
-    padding: 0 4px
+.oui-floating-field[data-floating="true"] .oui-floating-field-outline-gap
+    max-width: calc(100% - 18px)
+    transition-delay: 90ms
 
 .oui-floating-field:hover .oui-floating-field-outline
-    border-color: var(--oui-field-border-hover-color, var(--oui-border-strong))
+    color: var(--oui-floating-field-border-hover-color, var(--oui-field-border-hover-color, var(--oui-border-strong)))
 
 .oui-floating-field[data-focused="true"] .oui-floating-field-outline
-    border-color: var(--oui-primary-base)
-
-.oui-floating-field[data-focused="true"]::after
-    position: absolute
-    inset: 0
-    border-radius: inherit
-    box-shadow: var(--oui-ring)
-    content: ''
-    pointer-events: none
+    color: var(--oui-floating-field-focus-color, var(--oui-primary-base))
 
 .oui-floating-field[data-invalid="true"] .oui-floating-field-outline
-    border-color: var(--oui-danger-base)
+    color: var(--oui-floating-field-invalid-color, var(--oui-danger-base))
 
 .oui-floating-field[data-disabled="true"]
     cursor: not-allowed
@@ -142,54 +178,58 @@
 
 .oui-floating-field-label
     position: absolute
+    z-index: 1
     top: 50%
-    left: 10px
-    max-width: calc(100% - 20px)
+    left: 0
+    max-width: calc(100% - 16px)
     overflow: hidden
-    color: var(--oui-muted)
+    padding-inline: 4px
+    color: var(--oui-floating-field-label-color, var(--oui-muted))
     cursor: text
     line-height: 1.35
     pointer-events: none
     text-overflow: ellipsis
-    transform: translateY(-50%)
+    transform: translate3d(var(--oui-floating-field-label-rest-x), -50%, 0) scale(1)
     transform-origin: left center
-    transition: top 180ms cubic-bezier(.2, 0, 0, 1), left 180ms cubic-bezier(.2, 0, 0, 1), max-width 180ms cubic-bezier(.2, 0, 0, 1), font-size 180ms cubic-bezier(.2, 0, 0, 1), color 150ms ease
+    transition: transform var(--oui-floating-field-motion-duration) var(--oui-floating-field-motion-easing), max-width var(--oui-floating-field-motion-duration) var(--oui-floating-field-motion-easing), color var(--oui-floating-field-color-duration) ease
+    will-change: transform
     white-space: nowrap
 
 .oui-floating-field[data-has-left="true"] .oui-floating-field-label
-    left: 36px
-    max-width: calc(100% - 46px)
+    --oui-floating-field-label-rest-x: 32px
+    max-width: calc(100% - 42px)
 
 .oui-floating-field[data-floating="true"] .oui-floating-field-label
-    top: 0
-    left: 12px
-    max-width: calc(100% - 24px)
-    color: var(--oui-muted)
-    font-size: .75em
-    transform: translateY(-50%)
+    max-width: calc(133.333% - 14px)
+    color: var(--oui-floating-field-label-color, var(--oui-muted))
+    transform: translate3d(var(--oui-floating-field-label-float-x), calc(-50% - var(--oui-floating-field-height) / 2), 0) scale(.75)
 
 .oui-floating-field[data-focused="true"] .oui-floating-field-label
-    color: var(--oui-primary-base)
+    color: var(--oui-floating-field-label-focus-color, var(--oui-floating-field-focus-color, var(--oui-primary-base)))
 
 .oui-floating-field[data-invalid="true"] .oui-floating-field-label
-    color: var(--oui-danger-base)
+    color: var(--oui-floating-field-label-invalid-color, var(--oui-floating-field-invalid-color, var(--oui-danger-base)))
 
 .oui-text-field.oui-floating-field[data-size="1"]
+    height: 28px
     min-height: 28px
     padding: 0 7px
     font-size: 12px
 
 .oui-text-field.oui-floating-field[data-size="2"]
+    height: 34px
     min-height: 34px
     padding: 0 8px
     font-size: 13px
 
 .oui-text-field.oui-floating-field[data-size="3"]
+    height: 40px
     min-height: 40px
     padding: 0 10px
     font-size: 14px
 
 .oui-text-field.oui-floating-field[data-size="4"]
+    height: 48px
     min-height: 48px
     padding: 0 12px
     font-size: 15px
@@ -315,6 +355,18 @@
 .oui-text-area:disabled
     cursor: not-allowed
     opacity: 0.62
+
+// Floating TextField owns a segmented outline. The ordinary TextField border
+// must stay fully disabled in every state or it becomes visible through the
+// label gap and gives focus/error two competing colors.
+.oui-text-field.oui-floating-field,
+.oui-text-field.oui-floating-field:hover,
+.oui-text-field.oui-floating-field:focus-within,
+.oui-text-field.oui-floating-field:has(.oui-text-field-input:focus),
+.oui-text-field.oui-floating-field[data-invalid="true"]
+    border-color: transparent
+    box-shadow: none
+    outline: none
 
 .oui-combobox-search-wrap .oui-text-field
     background-color: transparent
