@@ -136,9 +136,6 @@ export function useFloatingPosition({
             maxWidth: avoidCollisions
                 ? Math.max(0, clippingRect.right - clippingRect.left - collisionPadding * 2)
                 : undefined,
-            maxHeight: avoidCollisions
-                ? Math.max(0, clippingRect.bottom - clippingRect.top - collisionPadding * 2)
-                : undefined,
             visibility: rectsIntersect(triggerRect, clippingRect) ? 'visible' : 'hidden',
             transformOrigin: transformOriginFor(actualSide, align, isRtl),
         });

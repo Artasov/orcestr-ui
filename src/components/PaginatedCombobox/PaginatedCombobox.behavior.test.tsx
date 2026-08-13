@@ -7,6 +7,11 @@ const restoreDom = setupDom();
 const { cleanup, render, screen, waitFor } = await import('@testing-library/react');
 const { userEvent } = await import('@testing-library/user-event');
 
+Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+    configurable: true,
+    value: () => undefined,
+});
+
 afterEach(cleanup);
 after(restoreDom);
 
@@ -52,4 +57,47 @@ test('new searches abort stale requests and pass pageSize to the loader', async 
 
     assert.ok(aborted.includes(''));
     assert.ok(calls.every((call) => call.pageSize === 25));
+});
+
+test('changing an inline loader identity does not reset an open result list', async () => {
+    const calls: number[] = [];
+    const user = userEvent.setup();
+    const load = async (page: number) => {
+        calls.push(page);
+        return { items: [{ id: 1 }, { id: 2 }], page: 1, has_next: false };
+    };
+    const view = render(
+        <OrcestrUiProvider locale="en">
+            <PaginatedCombobox
+                value={null}
+                onChange={() => undefined}
+                debounceMs={0}
+                getItemId={(item: { id: number }) => item.id}
+                renderOption={(item) => `Item ${item.id}`}
+                renderSelectedLabel={(item) => `Item ${item.id}`}
+                loadPage={(page) => load(page)}
+            />
+        </OrcestrUiProvider>,
+    );
+
+    await user.click(screen.getByRole('combobox', { name: 'Not selected' }));
+    await screen.findByText('Item 2');
+    const callsAfterOpen = calls.length;
+
+    view.rerender(
+        <OrcestrUiProvider locale="en">
+            <PaginatedCombobox
+                value={null}
+                onChange={() => undefined}
+                debounceMs={0}
+                getItemId={(item: { id: number }) => item.id}
+                renderOption={(item) => `Item ${item.id}`}
+                renderSelectedLabel={(item) => `Item ${item.id}`}
+                loadPage={(page) => load(page)}
+            />
+        </OrcestrUiProvider>,
+    );
+
+    assert.ok(screen.getByText('Item 2'));
+    assert.equal(calls.length, callsAfterOpen);
 });

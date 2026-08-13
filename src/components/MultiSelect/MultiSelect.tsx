@@ -19,6 +19,28 @@ import type { UiSize } from '../../theme/systemProps.js';
 import { Button } from '../Button/Button.js';
 import { Popover } from '../Popover/Popover.js';
 import type { SelectItem } from '../Select/Select.js';
+import { TextField } from '../TextField/TextField.js';
+
+export type MultiSelectProps<V extends string = string> = {
+    items: ReadonlyArray<SelectItem<V>>;
+    value: ReadonlyArray<V>;
+    onValueChange: (value: V[]) => void;
+    placeholder?: string;
+    clearable?: boolean;
+    disabled?: boolean;
+    showChevron?: boolean;
+    emptyText?: ReactNode;
+    clearLabel?: string;
+    ariaLabel?: string;
+    selectedFallbackLabel?: ReactNode | ((values: ReadonlyArray<V>) => ReactNode);
+    size?: UiSize;
+    maxHeight?: number;
+    className?: string;
+    renderValue?: (items: ReadonlyArray<SelectItem<V>>) => ReactNode;
+    searchable?: boolean;
+    searchPlaceholder?: string;
+    testId?: string;
+};
 
 export function MultiSelect<V extends string = string>({
     items,
@@ -36,27 +58,13 @@ export function MultiSelect<V extends string = string>({
     maxHeight = 280,
     className,
     renderValue,
+    searchable = false,
+    searchPlaceholder,
     testId,
-}: {
-    items: ReadonlyArray<SelectItem<V>>;
-    value: ReadonlyArray<V>;
-    onValueChange: (value: V[]) => void;
-    placeholder?: string;
-    clearable?: boolean;
-    disabled?: boolean;
-    showChevron?: boolean;
-    emptyText?: ReactNode;
-    clearLabel?: string;
-    ariaLabel?: string;
-    selectedFallbackLabel?: ReactNode | ((values: ReadonlyArray<V>) => ReactNode);
-    size?: UiSize;
-    maxHeight?: number;
-    className?: string;
-    renderValue?: (items: ReadonlyArray<SelectItem<V>>) => ReactNode;
-    testId?: string;
-}) {
+}: MultiSelectProps<V>) {
     const { copy } = useOrcestrUiLocale();
     const [open, setOpen] = useState(false);
+    const [search, setSearch] = useState('');
     const listboxId = useId();
     const optionsRef = useRef<HTMLDivElement | null>(null);
     const selectedItems = useMemo(
@@ -64,14 +72,19 @@ export function MultiSelect<V extends string = string>({
         [items, value],
     );
     const selectedSet = useMemo(() => new Set(value), [value]);
+    const filteredItems = useMemo(() => {
+        const query = search.trim().toLowerCase();
+        if (!searchable || !query) return items;
+        return items.filter((item) => selectItemText(item).toLowerCase().includes(query));
+    }, [items, search, searchable]);
     const navigationItems = useMemo(
         () =>
-            items.map((item) => ({
+            filteredItems.map((item) => ({
                 value: item.value,
                 disabled: item.disabled,
                 searchText: selectItemText(item),
             })),
-        [items],
+        [filteredItems],
     );
     const navigation = useListNavigation(navigationItems, {
         value: value[0] ?? null,
@@ -109,6 +122,7 @@ export function MultiSelect<V extends string = string>({
 
     const close = useCallback(() => {
         setOpen(false);
+        setSearch('');
         navigation.reset();
     }, [navigation]);
 
@@ -121,6 +135,7 @@ export function MultiSelect<V extends string = string>({
 
     const handleKeyDown = useCallback(
         (event: KeyboardEvent) => {
+            const fromSearchInput = (event.currentTarget as HTMLElement).tagName === 'INPUT';
             if (!open && ['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(event.key)) {
                 event.preventDefault();
                 setOpen(true);
@@ -146,7 +161,11 @@ export function MultiSelect<V extends string = string>({
                     navigation.last();
                     break;
                 case 'Enter':
+                    event.preventDefault();
+                    if (highlighted !== null) toggle(highlighted);
+                    break;
                 case ' ':
+                    if (fromSearchInput) break;
                     event.preventDefault();
                     if (highlighted !== null) toggle(highlighted);
                     break;
@@ -155,7 +174,12 @@ export function MultiSelect<V extends string = string>({
                     close();
                     break;
                 default:
-                    if (event.key.length === 1 && !event.metaKey && !event.ctrlKey) {
+                    if (
+                        !fromSearchInput &&
+                        event.key.length === 1 &&
+                        !event.metaKey &&
+                        !event.ctrlKey
+                    ) {
                         handleTypeahead(event.key);
                     }
             }
@@ -168,7 +192,10 @@ export function MultiSelect<V extends string = string>({
             open={open}
             onOpenChange={(next) => {
                 setOpen(next);
-                if (!next) navigation.reset();
+                if (!next) {
+                    setSearch('');
+                    navigation.reset();
+                }
             }}
             trigger={
                 <Button
@@ -238,6 +265,21 @@ export function MultiSelect<V extends string = string>({
             matchTriggerWidth
             disabled={disabled}
         >
+            {searchable ? (
+                <div className="oui-combobox-search-wrap">
+                    <TextField
+                        size={1}
+                        placeholder={searchPlaceholder ?? copy.common.search}
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
+                        onKeyDown={handleKeyDown}
+                        role="combobox"
+                        aria-autocomplete="list"
+                        aria-expanded={open}
+                        aria-controls={listboxId}
+                    />
+                </div>
+            ) : null}
             <div
                 ref={optionsRef}
                 id={listboxId}
@@ -249,10 +291,10 @@ export function MultiSelect<V extends string = string>({
                 tabIndex={-1}
                 onKeyDown={handleKeyDown}
             >
-                {items.length === 0 ? (
+                {filteredItems.length === 0 ? (
                     <div className="oui-combobox-empty">{emptyText ?? copy.common.noOptions}</div>
                 ) : (
-                    items.map((item) => {
+                    filteredItems.map((item) => {
                         const selected = selectedSet.has(item.value);
                         const isHighlighted = highlighted === item.value;
                         return (

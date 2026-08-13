@@ -131,12 +131,14 @@ export function SelectionSection({
                         />
                     </Stack>
                     <Stack g={2}>
-                        <ExampleControlLabel>MultiSelect</ExampleControlLabel>
+                        <ExampleControlLabel>Searchable MultiSelect</ExampleControlLabel>
                         <MultiSelect
                             items={ownerItems}
                             value={ownerValues}
                             onValueChange={onOwnerValuesChange}
                             placeholder={copy.responsibleUsers}
+                            searchable
+                            searchPlaceholder="Find a responsible user"
                             clearable
                             renderValue={(items) =>
                                 items.length === 1

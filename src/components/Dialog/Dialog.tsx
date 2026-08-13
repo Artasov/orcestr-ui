@@ -80,7 +80,7 @@ function DialogContent({ children, className, style, ...props }: DialogContentPr
                 onOpenChange={context.onOpenChange}
                 ariaLabelledBy={titleId}
                 ariaDescribedBy={descriptionId}
-                contentClassName={className}
+                contentClassName={cn('oui-dialog-content', className)}
                 contentStyle={style}
             >
                 {children}

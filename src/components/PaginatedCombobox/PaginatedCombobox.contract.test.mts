@@ -83,10 +83,7 @@ test('BadgeSelectMenu uses the shared selection dropdown surface', () => {
     assert.match(source, /export type BadgeSelectItem/);
     assert.match(source, /export function BadgeSelectMenu/);
     assert.match(source, /className=["\']oui-combobox-option oui-badge-select-option["\']/);
-    assert.match(
-        barrel,
-        /export \* from '\.\/components\/BadgeSelectMenu\/BadgeSelectMenu\.js';/,
-    );
+    assert.match(barrel, /export \* from '\.\/components\/BadgeSelectMenu\/BadgeSelectMenu\.js';/);
 });
 
 test('PaginatedCombobox exposes retry contract for failed page loads', () => {
@@ -162,4 +159,23 @@ test('PaginatedCombobox exposes opt-in search autofocus', () => {
     assert.match(source, /ref=\{setSearchInputRef\}/);
     assert.match(entityPickerSource, /autoFocusSearch\?: boolean/);
     assert.match(entityPickerSource, /autoFocusSearch=\{autoFocusSearch\}/);
+});
+
+test('MultiSelect exposes an optional searchable list', () => {
+    const source = read('components/MultiSelect/MultiSelect.tsx');
+
+    assert.match(source, /searchable\?: boolean/);
+    assert.match(source, /searchPlaceholder\?: string/);
+    assert.match(source, /filteredItems/);
+    assert.match(source, /aria-autocomplete="list"/);
+});
+
+test('PaginatedCombobox keeps loader identity and touch scrolling stable', () => {
+    const source = read('components/PaginatedCombobox/PaginatedCombobox.tsx');
+    const styles = read('styles/_selection.sass');
+
+    assert.match(source, /const loadPageRef = useRef\(loadPage\)/);
+    assert.match(source, /loadPageRef\.current\(page, search/);
+    assert.match(source, /\{ root: scrollRef\.current, threshold: 0\.1 \}/);
+    assert.match(styles, /\.oui-combobox-scroll[\s\S]*?touch-action: pan-y/);
 });
