@@ -5,6 +5,7 @@ import { LuChevronsUpDown, LuX } from 'react-icons/lu';
 
 import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
 import { Button } from '../Button/Button.js';
+import { FloatingFieldDecoration } from '../Field/FloatingFieldDecoration.js';
 import { Listbox, type ListboxItem } from '../Listbox/Listbox.js';
 import { Popover } from '../Popover/Popover.js';
 import { TextField } from '../TextField/TextField.js';
@@ -23,6 +24,8 @@ export function Combobox({
     clearable = true,
     showChevron = true,
     testId,
+    floatingLabel,
+    size = 3,
 }: {
     items: ReadonlyArray<ListboxItem>;
     value: string | null;
@@ -37,6 +40,8 @@ export function Combobox({
     clearable?: boolean;
     showChevron?: boolean;
     testId?: string;
+    floatingLabel?: ReactNode;
+    size?: import('../../theme/systemProps.js').UiSize;
 }) {
     const { copy } = useOrcestrUiLocale();
     const [open, setOpen] = useState(false);
@@ -59,11 +64,23 @@ export function Combobox({
                 <Button
                     asChild
                     v="surface"
+                    size={size}
                     fullWidth
                     disabled={disabled}
                     pressAnimation="none"
-                    className="oui-combobox-trigger"
+                    className={
+                        floatingLabel !== undefined
+                            ? 'oui-combobox-trigger oui-floating-field'
+                            : 'oui-combobox-trigger'
+                    }
                     data-state={open ? 'open' : 'closed'}
+                    data-floating={
+                        floatingLabel !== undefined &&
+                        (open || Boolean(selected ?? selectedFallbackLabel))
+                            ? 'true'
+                            : undefined
+                    }
+                    data-focused={floatingLabel !== undefined && open ? 'true' : undefined}
                     testId={testId}
                 >
                     <div
@@ -82,6 +99,9 @@ export function Combobox({
                         aria-expanded={open}
                         aria-controls={listboxId}
                     >
+                        {floatingLabel !== undefined ? (
+                            <FloatingFieldDecoration label={floatingLabel} />
+                        ) : null}
                         <span className="oui-button-label">
                             <span
                                 className={

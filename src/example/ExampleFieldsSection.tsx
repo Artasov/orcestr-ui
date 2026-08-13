@@ -18,7 +18,6 @@ import {
     DateRangePresetPicker,
     Flex,
     Field,
-    FloatingTextField,
     Grid,
     IconButton,
     InlineEditField,
@@ -129,14 +128,14 @@ export function FieldsSection({
                             Floating labels
                         </Text>
                         <Grid columns="repeat(auto-fit, minmax(min(100%, 210px), 1fr))" g={3}>
-                            <FloatingTextField size={1} label="Compact" />
-                            <FloatingTextField size={2} label="Customer name" />
-                            <FloatingTextField
+                            <TextField size={1} floatingLabel="Compact" />
+                            <TextField size={2} floatingLabel="Customer name" />
+                            <TextField
                                 size={3}
-                                label="Work email"
+                                floatingLabel="Work email"
                                 defaultValue="team@orcestr.com"
                             />
-                            <FloatingTextField size={4} label="Project title" invalid />
+                            <TextField size={4} floatingLabel="Project title" invalid />
                         </Grid>
                         <Section
                             className="oui-ui-floating-field-color-demo"
@@ -148,8 +147,8 @@ export function FieldsSection({
                             <Text fs="12px" fw={760} tone="primary">
                                 Different surface color
                             </Text>
-                            <FloatingTextField
-                                label="Workspace name"
+                            <TextField
+                                floatingLabel="Workspace name"
                                 defaultValue="Operations hub"
                             />
                         </Section>

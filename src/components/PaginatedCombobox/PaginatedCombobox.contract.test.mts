@@ -18,6 +18,22 @@ test('selection components expose selected fallback labels', () => {
     );
 });
 
+test('all selection inputs expose the shared floating label mode', () => {
+    for (const path of [
+        'components/Select/Select.tsx',
+        'components/Combobox/Combobox.tsx',
+        'components/MultiSelect/MultiSelect.tsx',
+        'components/PaginatedCombobox/PaginatedCombobox.tsx',
+        'components/EntityPicker/EntityPicker.tsx',
+    ]) {
+        assert.match(read(path), /floatingLabel\?: ReactNode/);
+    }
+    assert.match(
+        read('components/EntityPicker/EntityPicker.tsx'),
+        /floatingLabel=\{floatingLabel\}/,
+    );
+});
+
 test('selection dropdown surfaces use themed floating background', () => {
     const selectionStyles = read('styles/_selection.sass');
     const overlayStyles = read('styles/_overlays.sass');

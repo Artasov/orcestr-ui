@@ -126,13 +126,13 @@ test('UI example exposes deep anchors for public demo sections', () => {
     assert.match(stateSection, /IconText/);
     assert.doesNotMatch(stateSection, /InlineState|oui-ui-inline-state-list/);
     assert.match(fieldsSection, /id=["']text-fields-example["']/);
-    assert.match(fieldsSection, /<FloatingTextField size=\{1\} label="Compact" \/>/);
-    assert.match(fieldsSection, /<FloatingTextField[\s\S]*?size=\{4\}[\s\S]*?invalid/);
+    assert.match(fieldsSection, /<TextField size=\{1\} floatingLabel="Compact" \/>/);
+    assert.match(fieldsSection, /<TextField[\s\S]*?size=\{4\}[\s\S]*?invalid/);
     assert.match(
         fieldsSection,
-        /sectionColor="var\(--oui-primary-surface\)"[\s\S]*?<FloatingTextField[\s\S]*?label="Workspace name"/,
+        /sectionColor="var\(--oui-primary-surface\)"[\s\S]*?<TextField[\s\S]*?floatingLabel="Workspace name"/,
     );
-    assert.match(samples, /textFields:[\s\S]*?FloatingTextField[\s\S]*?label='Project title'/);
+    assert.match(samples, /textFields:[\s\S]*?floatingLabel='Project title'/);
     assert.match(fieldsSection, /id=["']grouped-fields-example["']/);
     assert.match(fieldsSection, /<Section g=\{3\} p=\{4\}>/);
     assert.match(samples, /groupedFields:[\s\S]*?<Section g=\{3\} p=\{4\}>/);
@@ -343,7 +343,10 @@ test('UI example DataTable demo keeps controls compact', () => {
         /<DataTable[\s\S]*?toolbar=\{[\s\S]*?<TextField[\s\S]*?<Button[\s\S]*?size=\{3\}[\s\S]*?v=["']surface["'][\s\S]*?Reset\s*<\/Button>/,
     );
     assert.match(dataSection, /Plain table/);
-    assert.match(dataSection, /const \[plainSort, setPlainSort\] = useState<DataTableSort \| null>/);
+    assert.match(
+        dataSection,
+        /const \[plainSort, setPlainSort\] = useState<DataTableSort \| null>/,
+    );
     assert.match(dataSection, /rows=\{sortRows\(rows\.slice\(0, 4\), plainSort\)\}/);
     assert.match(dataSection, /sort=\{plainSort\}/);
     assert.match(dataSection, /onSortChange=\{\(nextSort\) =>[\s\S]*?setPlainSort\(/);
@@ -756,10 +759,7 @@ test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigat
         /@media \(max-width: 860px\)[\s\S]*?backdrop-filter: blur\(24px\)/,
     );
     assert.match(shellStyles, /\.oui-app-shell-content-scroll\s+flex: 1 1 auto[\s\S]*?padding: 0/);
-    assert.match(
-        shell,
-        /className="oui-app-shell-content-scroll"[\s\S]*?scrollbars="vertical"/,
-    );
+    assert.match(shell, /className="oui-app-shell-content-scroll"[\s\S]*?scrollbars="vertical"/);
     assert.match(
         shellStyles,
         /\.oui-app-shell-content-scroll > \.oui-scroll-area-viewport\s+height: 100%[\s\S]*?scroll-padding: 8px 28px 24px 22px/,

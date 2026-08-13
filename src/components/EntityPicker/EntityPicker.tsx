@@ -45,6 +45,7 @@ export type EntityPickerProps<T> = {
     resetKey?: unknown;
     debounceMs?: number;
     testId?: string;
+    floatingLabel?: ReactNode;
 };
 
 export function EntityPicker<T>({
@@ -73,6 +74,7 @@ export function EntityPicker<T>({
     resetKey,
     debounceMs,
     testId,
+    floatingLabel,
 }: EntityPickerProps<T>) {
     const { copy } = useOrcestrUiLocale();
     const searchAction: PaginatedComboboxProps<T>['searchAction'] = createAction
@@ -119,6 +121,7 @@ export function EntityPicker<T>({
             resetKey={resetKey}
             debounceMs={debounceMs}
             testId={testId}
+            floatingLabel={floatingLabel}
         />
     );
 }
