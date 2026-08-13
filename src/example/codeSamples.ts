@@ -827,12 +827,14 @@ import {LuPlus} from 'react-icons/lu';
     onValueChange={setComboValue}
     placeholder='Find status'
 />
-<Text fs='12px' fw={760} tone='muted'>MultiSelect</Text>
+<Text fs='12px' fw={760} tone='muted'>Searchable MultiSelect</Text>
 <MultiSelect
     items={owners}
     value={ownerValues}
     onValueChange={setOwnerValues}
     placeholder='Responsible users'
+    searchable
+    searchPlaceholder='Find a responsible user'
     clearable
     renderValue={(items) =>
         items.length === 1 ? items[0]?.label : String(items.length) + ' responsible'

@@ -68,6 +68,15 @@ test('Floating layer keeps dropdowns mounted for exit animation and positions fr
         /contentWidth = matchTriggerWidth[\s\S]*?Math\.max\(contentRect\.width, triggerRect\.width\)/,
     );
     assert.match(positionSource, /minWidth: matchTriggerWidth \? contentWidth : undefined/);
+    assert.doesNotMatch(positionSource, /maxHeight:/);
+});
+
+test('Dialog content supplies the shared dialog layout surface', () => {
+    const source = read('components/Dialog/Dialog.tsx');
+    const styles = read('styles/_overlays.sass');
+
+    assert.match(source, /contentClassName=\{cn\('oui-dialog-content', className\)\}/);
+    assert.match(styles, /\.oui-dialog-content\s+[\s\S]*?padding: 18px/);
 });
 
 test('ScrollArea applies requested scrollbar axis and exposes overflow state', () => {

@@ -86,6 +86,10 @@ export function DataSection({ onOpenCode }: DataSectionProps) {
         key: 'name',
         direction: 'asc',
     });
+    const [plainSort, setPlainSort] = useState<DataTableSort | null>({
+        key: 'name',
+        direction: 'asc',
+    });
     const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>(['Review item']);
     const [visibleColumnKeys, setVisibleColumnKeys] = useState<string[]>(defaultVisibleColumnKeys);
     const [columnOrder, setColumnOrder] = useState<string[]>(defaultColumnOrder);
@@ -184,11 +188,11 @@ export function DataSection({ onOpenCode }: DataSectionProps) {
                                 </Text>
                                 <DataTable
                                     rowKey={(row) => row.name}
-                                    rows={rows.slice(0, 4)}
+                                    rows={sortRows(rows.slice(0, 4), plainSort)}
                                     columns={columns}
-                                    sort={sort}
+                                    sort={plainSort}
                                     onSortChange={(nextSort) =>
-                                        setSort(
+                                        setPlainSort(
                                             Array.isArray(nextSort)
                                                 ? (nextSort[0] ?? null)
                                                 : nextSort,

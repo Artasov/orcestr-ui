@@ -343,7 +343,10 @@ test('UI example DataTable demo keeps controls compact', () => {
         /<DataTable[\s\S]*?toolbar=\{[\s\S]*?<TextField[\s\S]*?<Button[\s\S]*?size=\{3\}[\s\S]*?v=["']surface["'][\s\S]*?Reset\s*<\/Button>/,
     );
     assert.match(dataSection, /Plain table/);
-    assert.match(dataSection, /rows=\{rows\.slice\(0, 4\)\}/);
+    assert.match(dataSection, /const \[plainSort, setPlainSort\] = useState<DataTableSort \| null>/);
+    assert.match(dataSection, /rows=\{sortRows\(rows\.slice\(0, 4\), plainSort\)\}/);
+    assert.match(dataSection, /sort=\{plainSort\}/);
+    assert.match(dataSection, /onSortChange=\{\(nextSort\) =>[\s\S]*?setPlainSort\(/);
     assert.doesNotMatch(dataSection, /Reset table|oui-ui-table-demo-toolbar|pinned: 'left["']/);
     assert.match(
         samples,
@@ -666,7 +669,7 @@ test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigat
     assert.match(shellStyles, /\.oui-app-shell\[data-sidebar-mode="mobile"\]\s+padding: 0/);
     assert.match(
         shellStyles,
-        /\.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-app-shell-frame\s+width: 100%[\s\S]*?height: 100vh[\s\S]*?grid-template-columns: 1fr/,
+        /\.oui-app-shell\[data-sidebar-mode="mobile"\] \.oui-app-shell-frame\s+width: 100%[\s\S]*?height: 100dvh[\s\S]*?grid-template-columns: 1fr/,
     );
     assert.doesNotMatch(
         shellStyles,
@@ -693,13 +696,13 @@ test('UI example shell uses Drawer-backed mobile sidebar and stable hash navigat
     );
     assert.match(
         shellStyles,
-        /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-header\s+min-height: 48px/,
+        /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-header[\s\S]*?min-height: 48px/,
     );
     assert.match(
         shellStyles,
         /@media \(max-width: 860px\)[\s\S]*?\.oui-app-shell-header > \.oui-icon-button\s+width: 32px[\s\S]*?height: 32px[\s\S]*?min-height: 32px/,
     );
-    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?height: calc\(100vh - 48px\)/);
+    assert.match(shellStyles, /@media \(max-width: 860px\)[\s\S]*?height: 100dvh/);
     assert.match(
         shellStyles,
         /@media \(max-width: 860px\)[\s\S]*?\.oui-drawer-backdrop\.oui-app-shell-sidebar-drawer-overlay\s+background: transparent/,

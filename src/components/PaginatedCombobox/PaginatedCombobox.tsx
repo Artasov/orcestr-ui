@@ -141,6 +141,8 @@ export function PaginatedCombobox<T>({
     const [error, setError] = useState<unknown>(null);
     const requestIdRef = useRef(0);
     const requestControllerRef = useRef<AbortController | null>(null);
+    const loadPageRef = useRef(loadPage);
+    loadPageRef.current = loadPage;
     const sentinelRef = useRef<HTMLDivElement | null>(null);
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const rowHeightsRef = useRef(new Map<string, number>());
@@ -148,6 +150,7 @@ export function PaginatedCombobox<T>({
     const [viewport, setViewport] = useState({ top: 0, height: maxHeight });
     const searchInputRef = useRef<HTMLInputElement | null>(null);
     const shouldAutoFocusSearchRef = useRef(false);
+    const previousHighlightedIdRef = useRef<string | null>(null);
     shouldAutoFocusSearchRef.current = open && autoFocusSearch;
     const setSearchInputRef = useCallback(
         (node: HTMLInputElement | null) => {
@@ -254,7 +257,14 @@ export function PaginatedCombobox<T>({
     ]);
 
     useEffect(() => {
-        if (!open || highlightedId === null) return;
+        if (!open) {
+            previousHighlightedIdRef.current = null;
+            return;
+        }
+        if (highlightedId === null || previousHighlightedIdRef.current === highlightedId) {
+            return;
+        }
+        previousHighlightedIdRef.current = highlightedId;
         const node = scrollRef.current?.querySelector<HTMLElement>(
             `[data-oui-paginated-combobox-value="${cssAttr(highlightedId)}"]`,
         );
@@ -321,7 +331,7 @@ export function PaginatedCombobox<T>({
             }
             setError(null);
             try {
-                const result = await loadPage(page, search, {
+                const result = await loadPageRef.current(page, search, {
                     signal: controller.signal,
                     pageSize,
                 });
@@ -341,7 +351,7 @@ export function PaginatedCombobox<T>({
                 setLoadingNext(false);
             }
         },
-        [loadPage, pageSize],
+        [pageSize],
     );
 
     useEffect(
@@ -377,7 +387,7 @@ export function PaginatedCombobox<T>({
                 const nextPage = (lastPage?.page ?? pages.length) + 1;
                 void fetchPage(nextPage, debouncedSearch);
             },
-            { threshold: 0.1 },
+            { root: scrollRef.current, threshold: 0.1 },
         );
         observer.observe(sentinel);
         return () => observer.disconnect();
