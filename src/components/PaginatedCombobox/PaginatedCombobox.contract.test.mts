@@ -136,7 +136,7 @@ test('PaginatedCombobox and EntityPicker share the public option action contract
     );
 });
 
-test('PaginatedCombobox keeps its search row compact', () => {
+test('selection controls share the compact search row', () => {
     const source = read('components/PaginatedCombobox/PaginatedCombobox.tsx');
     const styles = read('styles/_selection.sass');
 
@@ -144,8 +144,8 @@ test('PaginatedCombobox keeps its search row compact', () => {
     assert.match(source, /<TextField[\s\S]*?size=\{1\}/);
     assert.match(source, /const handleOpenChange = useCallback/);
     assert.match(source, /onOpenChange=\{handleOpenChange\}/);
-    assert.match(styles, /\.oui-paginated-combobox-search-wrap[\s\S]*?min-height: 28px/);
-    assert.match(styles, /\.oui-paginated-combobox-search-wrap[\s\S]*?padding: 0 4px 3px/);
+    assert.match(styles, /\.oui-combobox-search-wrap[\s\S]*?min-height: 28px/);
+    assert.match(styles, /\.oui-combobox-search-wrap[\s\S]*?padding: 0 4px 3px/);
 });
 
 test('PaginatedCombobox exposes opt-in search autofocus', () => {
