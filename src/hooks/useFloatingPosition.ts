@@ -56,6 +56,7 @@ export function useFloatingPosition({
             : contentRect.width;
         const contentHeight = contentRect.height;
         const isRtl = window.getComputedStyle(trigger).direction === 'rtl';
+        const contentOwnsFocus = content.contains(trigger.ownerDocument.activeElement);
 
         let left = triggerRect.left;
         let top = triggerRect.bottom + sideOffset;
@@ -136,7 +137,11 @@ export function useFloatingPosition({
             maxWidth: avoidCollisions
                 ? Math.max(0, clippingRect.right - clippingRect.left - collisionPadding * 2)
                 : undefined,
-            visibility: rectsIntersect(triggerRect, clippingRect) ? 'visible' : 'hidden',
+            // A mobile virtual keyboard can shrink the visual viewport enough to move the
+            // trigger outside the clipping rect while the user is typing in the floating
+            // layer. Hiding a focused layer blurs its input and immediately dismisses the
+            // keyboard, so keep it visible for as long as focus remains inside the content.
+            visibility: floatingLayerVisibility(triggerRect, clippingRect, contentOwnsFocus),
             transformOrigin: transformOriginFor(actualSide, align, isRtl),
         });
     }, [
@@ -212,4 +217,12 @@ function rectsIntersect(
         rect.bottom > clippingRect.top &&
         rect.top < clippingRect.bottom
     );
+}
+
+export function floatingLayerVisibility(
+    triggerRect: Pick<DOMRect, 'bottom' | 'left' | 'right' | 'top'>,
+    clippingRect: { bottom: number; left: number; right: number; top: number },
+    contentOwnsFocus: boolean,
+): CSSProperties['visibility'] {
+    return contentOwnsFocus || rectsIntersect(triggerRect, clippingRect) ? 'visible' : 'hidden';
 }
