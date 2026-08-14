@@ -38,4 +38,7 @@ test('Carousel styles include smooth motion and hover-only arrow behavior', () =
     assert.match(styles, /translateX\(-1px\)/);
     assert.match(styles, /@media \(hover: none\)/);
     assert.match(styles, /prefers-reduced-motion/);
+    assert.match(styles, /contain: paint/);
+    assert.match(styles, /flex: 0 0 calc\(100% \+ 1px\)/);
+    assert.match(styles, /margin-inline-end: -1px/);
 });

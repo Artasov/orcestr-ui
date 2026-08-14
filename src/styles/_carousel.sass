@@ -13,6 +13,7 @@
     min-width: 0
     overflow: hidden
     border-radius: inherit
+    contain: paint
 
 .oui-carousel-track
     display: flex
@@ -22,8 +23,11 @@
     will-change: transform
 
 .oui-carousel-slide
-    flex: 0 0 100%
+    // A one-pixel overlap prevents fractional compositor rounding from exposing
+    // the previous slide at the viewport edge while preserving 100% slide steps.
+    flex: 0 0 calc(100% + 1px)
     min-width: 0
+    margin-inline-end: -1px
 
 .oui-carousel-arrow
     position: absolute
