@@ -253,6 +253,91 @@ body.oui-ui-document-lock
 .oui-ui-table-tile
     align-items: flex-start
 
+.oui-ui-carousel-demo,
+.oui-ui-carousel-compact,
+.oui-ui-carousel-minimal
+    border: 1px solid var(--oui-border)
+    border-radius: var(--oui-radius-xl)
+    background: var(--oui-section-bg)
+
+.oui-ui-carousel-demo .oui-carousel-viewport
+    border-radius: inherit
+
+.oui-ui-carousel-slide
+    display: flex
+    min-height: 310px
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    gap: 18px
+    padding: clamp(42px, 6vw, 66px) clamp(58px, 9vw, 96px)
+    text-align: center
+    background: radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--oui-primary-base) 16%, transparent), transparent 42%), linear-gradient(135deg, var(--oui-section-bg), var(--oui-bg))
+
+    &[data-tone='blue']
+        background: radial-gradient(circle at 18% 25%, color-mix(in srgb, var(--oui-info) 28%, transparent), transparent 40%), linear-gradient(135deg, var(--oui-section-bg), var(--oui-bg))
+
+    &[data-tone='rose']
+        background: radial-gradient(circle at 18% 25%, color-mix(in srgb, var(--oui-danger) 22%, transparent), transparent 40%), linear-gradient(135deg, var(--oui-section-bg), var(--oui-bg))
+
+.oui-ui-carousel-slide-icon
+    display: grid
+    width: 58px
+    aspect-ratio: 1
+    place-items: center
+    justify-self: center
+    border: 1px solid var(--oui-border)
+    border-radius: var(--oui-radius-xl)
+    color: var(--oui-primary-base)
+    background: color-mix(in srgb, var(--oui-primary-base) 12%, var(--oui-bg))
+    box-shadow: var(--oui-shadow-md)
+    font-size: 27px
+
+.oui-ui-carousel-slide-copy
+    align-items: center
+
+.oui-ui-carousel-slide-description
+    max-width: 52ch
+    font-size: 15px
+
+.oui-ui-carousel-slide-action
+    width: fit-content
+
+.oui-ui-carousel-status
+    display: flex
+    min-height: 190px
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    gap: 10px
+    padding: 36px 66px
+    text-align: center
+    background: radial-gradient(circle at 50% 0, color-mix(in srgb, var(--oui-primary-base) 18%, transparent), transparent 62%)
+
+.oui-ui-carousel-minimal
+    overflow: hidden
+
+.oui-ui-carousel-minimal-slide
+    display: flex
+    min-height: 130px
+    flex-direction: column
+    justify-content: center
+    gap: 6px
+    padding: 24px
+    background: linear-gradient(115deg, var(--oui-section-bg), var(--oui-pad-bg))
+
+@media (max-width: 640px)
+    .oui-ui-carousel-slide
+        min-height: 340px
+        gap: 16px
+        padding: 42px 48px
+
+    .oui-ui-carousel-slide-action
+        margin-inline: auto
+
+    .oui-ui-carousel-status
+        padding-inline: 48px
+
 .oui-ui-table-tile .oui-ui-table-demo,
 .oui-ui-table-tile .oui-data-table-shell,
 .oui-ui-table-tile .oui-data-table-wrap

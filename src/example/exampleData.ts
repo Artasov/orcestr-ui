@@ -75,6 +75,7 @@ export const navGroups: ExampleNavGroup[] = [
         items: [
             { id: 'data-table-example', label: 'DataTable' },
             { id: 'table-primitives-example', label: 'Table and pagination' },
+            { id: 'carousel-example', label: 'Carousel' },
         ],
     },
     {

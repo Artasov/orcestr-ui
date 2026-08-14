@@ -9,6 +9,7 @@ export * from './components/BadgeSelectMenu/BadgeSelectMenu.js';
 export * from './components/Box/Box.js';
 export * from './components/Button/Button.js';
 export * from './components/Card/Card.js';
+export * from './components/Carousel/Carousel.js';
 export * from './components/Checkbox/Checkbox.js';
 export * from './components/Collapse/Collapse.js';
 export * from './components/Combobox/Combobox.js';

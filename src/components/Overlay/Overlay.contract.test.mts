@@ -111,6 +111,9 @@ test('Popover uses the passed React trigger without nested interactive wrappers'
     assert.match(source, /clonePopoverTrigger/);
     assert.match(source, /role=["\']button["\'][\s\S]*?\{trigger\}/);
     assert.match(source, /matchTriggerWidth\?: boolean/);
+    assert.match(source, /layoutMotion\?: boolean/);
+    assert.match(source, /ResizeObserver\(measure\)/);
+    assert.match(source, /data-layout-ready=\{layoutMotionReady/);
 });
 
 test('Popover portals carry active theme variables', () => {

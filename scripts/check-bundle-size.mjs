@@ -2,7 +2,7 @@ import { statSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const budgets = [
-    ['dist/styles/orcestr-ui.css', 150 * 1024],
+    ['dist/styles/orcestr-ui.css', 154 * 1024],
     ['dist/example/styles.css', 48 * 1024],
 ];
 

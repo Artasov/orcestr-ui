@@ -8,7 +8,9 @@ import {
     useCallback,
     useContext,
     useEffect,
+    useLayoutEffect,
     useRef,
+    useState,
     type KeyboardEvent as ReactKeyboardEvent,
     type MouseEvent as ReactMouseEvent,
     type CSSProperties,
@@ -56,6 +58,7 @@ export type PopoverProps = SystemProps &
         sideOffset?: number;
         collisionPadding?: number;
         matchTriggerWidth?: boolean;
+        layoutMotion?: boolean;
         disabled?: boolean;
         className?: string;
         contentStyle?: CSSProperties;
@@ -76,6 +79,7 @@ export function Popover({
     sideOffset = 8,
     collisionPadding = 8,
     matchTriggerWidth = false,
+    layoutMotion = false,
     disabled = false,
     className,
     contentStyle,
@@ -103,7 +107,54 @@ export function Popover({
         matchTriggerWidth,
     });
     const layerIndex = useOverlayLayerIndex(present);
+    const layoutContentRef = useRef<HTMLDivElement | null>(null);
+    const [layoutHeight, setLayoutHeight] = useState<number>();
+    const [layoutMotionReady, setLayoutMotionReady] = useState(false);
     const { systemStyle, restProps } = splitSystemProps(props);
+
+    useLayoutEffect(() => {
+        if (!present || !layoutMotion) {
+            setLayoutHeight(undefined);
+            setLayoutMotionReady(false);
+            return;
+        }
+        const content = contentRef.current;
+        const layoutContent = layoutContentRef.current;
+        const ownerWindow = content?.ownerDocument.defaultView;
+        if (!content || !layoutContent || !ownerWindow) return;
+
+        const measure = () => {
+            const contentStyle = ownerWindow.getComputedStyle(content);
+            const nextHeight =
+                layoutContent.getBoundingClientRect().height +
+                cssPixels(contentStyle.paddingTop) +
+                cssPixels(contentStyle.paddingBottom) +
+                cssPixels(contentStyle.borderTopWidth) +
+                cssPixels(contentStyle.borderBottomWidth);
+            setLayoutHeight((current) =>
+                current !== undefined && Math.abs(current - nextHeight) < 0.5
+                    ? current
+                    : nextHeight,
+            );
+        };
+
+        measure();
+        const observer = new ownerWindow.ResizeObserver(measure);
+        observer.observe(layoutContent);
+        return () => observer.disconnect();
+    }, [contentRef, layoutMotion, present]);
+
+    useLayoutEffect(() => {
+        if (!present || !layoutMotion) {
+            setLayoutMotionReady(false);
+            return;
+        }
+        if (layoutMotionReady || layoutHeight === undefined || !isPositioned(style)) return;
+        const ownerWindow = contentRef.current?.ownerDocument.defaultView;
+        if (!ownerWindow) return;
+        const frame = ownerWindow.requestAnimationFrame(() => setLayoutMotionReady(true));
+        return () => ownerWindow.cancelAnimationFrame(frame);
+    }, [contentRef, layoutHeight, layoutMotion, layoutMotionReady, present, style]);
     const handleOutsidePointerDown = useCallback(
         (event: PointerEvent) => {
             onInteractOutside?.(event);
@@ -187,8 +238,13 @@ export function Popover({
                 <Portal>
                     <div
                         ref={composeRefs(contentRef, externalContentRef)}
-                        className={cn('oui-popover-content', className)}
+                        className={cn(
+                            'oui-popover-content',
+                            layoutMotion && 'oui-popover-layout-motion',
+                            className,
+                        )}
                         data-state={state}
+                        data-layout-ready={layoutMotionReady ? 'true' : undefined}
                         data-layer="dropdown"
                         data-oui-layer-index={layerIndex}
                         data-oui-theme={themeContext?.mode}
@@ -196,6 +252,7 @@ export function Popover({
                         style={{
                             ...themeContext?.cssVariables,
                             ...style,
+                            height: layoutMotion ? layoutHeight : undefined,
                             ...systemStyle,
                             ...contentStyle,
                             ...contentStyleProp,
@@ -204,7 +261,13 @@ export function Popover({
                         {...restProps}
                         tabIndex={-1}
                     >
-                        {children}
+                        {layoutMotion ? (
+                            <div ref={layoutContentRef} className="oui-popover-layout-content">
+                                {children}
+                            </div>
+                        ) : (
+                            children
+                        )}
                     </div>
                 </Portal>
             ) : null}
@@ -229,6 +292,7 @@ type PopoverContentProps = SystemProps &
         side?: FloatingSide;
         sideOffset?: number;
         matchTriggerWidth?: boolean;
+        layoutMotion?: boolean;
         className?: string;
         onOpenAutoFocus?: (event: OpenAutoFocusEvent) => void;
         onInteractOutside?: (event: Event) => void;
@@ -256,6 +320,20 @@ function PopoverRoot({ children, ...props }: PopoverRootProps) {
         >
             {contentChildren}
         </Popover>
+    );
+}
+
+function cssPixels(value: string): number {
+    const parsed = Number.parseFloat(value);
+    return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function isPositioned(style: CSSProperties): boolean {
+    return (
+        typeof style.left === 'number' &&
+        typeof style.top === 'number' &&
+        style.left > -9000 &&
+        style.top > -9000
     );
 }
 
