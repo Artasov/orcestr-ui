@@ -1,0 +1,153 @@
+.oui-carousel
+    position: relative
+    width: 100%
+    min-width: 0
+    outline: none
+    touch-action: pan-y
+
+    &:focus-visible
+        border-radius: var(--oui-radius-xl)
+        box-shadow: var(--oui-ring)
+
+.oui-carousel-viewport
+    min-width: 0
+    overflow: hidden
+    border-radius: inherit
+
+.oui-carousel-track
+    display: flex
+    align-items: stretch
+    width: 100%
+    transition: transform var(--oui-carousel-duration, 360ms) cubic-bezier(.22, 1, .36, 1)
+    will-change: transform
+
+.oui-carousel-slide
+    flex: 0 0 100%
+    min-width: 0
+
+.oui-carousel-arrow
+    position: absolute
+    z-index: 3
+    top: 50%
+    color: var(--oui-text)
+    border-color: var(--oui-border-strong)
+    box-shadow: var(--oui-shadow-md)
+    backdrop-filter: blur(12px)
+    -webkit-backdrop-filter: blur(12px)
+    transition: opacity 180ms ease, transform 220ms cubic-bezier(.22, 1, .36, 1), background-color 180ms ease
+
+    &:hover:not(:disabled)
+        border-color: color-mix(in srgb, var(--oui-text) 32%, var(--oui-border))
+
+.oui-carousel .oui-carousel-arrow[data-variant='surface']
+    color: var(--oui-text)
+    background: color-mix(in srgb, var(--oui-panel) 90%, transparent)
+
+.oui-carousel-arrow[data-size='1'] svg
+    width: 14px
+    height: 14px
+
+.oui-carousel-arrow[data-size='2'] svg
+    width: 18px
+    height: 18px
+
+.oui-carousel-arrow[data-size='3'] svg
+    width: 22px
+    height: 22px
+
+.oui-carousel-arrow[data-size='4'] svg
+    width: 26px
+    height: 26px
+
+.oui-carousel-arrow-previous
+    left: 12px
+    transform: translateY(-50%)
+
+    svg
+        transform: translateX(-1px)
+
+.oui-carousel-arrow-next
+    right: 12px
+    transform: translateY(-50%)
+
+.oui-carousel[data-arrows='hover']
+    .oui-carousel-arrow
+        opacity: 0
+        pointer-events: none
+
+    .oui-carousel-arrow-previous
+        transform: translate(-6px, -50%) scale(.92)
+
+    .oui-carousel-arrow-next
+        transform: translate(6px, -50%) scale(.92)
+
+    &:hover .oui-carousel-arrow,
+    &:focus-within .oui-carousel-arrow
+        opacity: 1
+        pointer-events: auto
+        transform: translate(0, -50%) scale(1)
+
+.oui-carousel-controls
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 6px
+    min-height: 30px
+    margin-top: 10px
+
+.oui-carousel-dots
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 6px
+    min-height: 24px
+    padding: 5px 7px
+    border: 1px solid var(--oui-border-strong)
+    border-radius: 999px
+    background: color-mix(in srgb, var(--oui-panel) 92%, transparent)
+
+.oui-carousel-dot
+    width: 7px
+    height: 7px
+    min-width: 7px
+    padding: 0
+    border: 0
+    border-radius: 999px
+    background: color-mix(in srgb, var(--oui-text) 46%, transparent)
+    opacity: 1
+    cursor: pointer
+    transition: width 220ms cubic-bezier(.22, 1, .36, 1), opacity 180ms ease, background-color 180ms ease
+
+    &[data-active='true']
+        width: 19px
+        background: var(--oui-primary-base)
+        opacity: 1
+
+    &:focus-visible
+        outline: 2px solid var(--oui-primary-base)
+        outline-offset: 2px
+
+.oui-carousel-autoplay
+    flex: 0 0 auto
+
+@media (hover: none)
+    .oui-carousel[data-arrows='hover'] .oui-carousel-arrow
+        opacity: 1
+        pointer-events: auto
+
+    .oui-carousel[data-arrows='hover'] .oui-carousel-arrow-previous,
+    .oui-carousel[data-arrows='hover'] .oui-carousel-arrow-next
+        transform: translate(0, -50%) scale(1)
+
+@media (max-width: 640px)
+    .oui-carousel-arrow-previous
+        left: 8px
+
+    .oui-carousel-arrow-next
+        right: 8px
+
+@media (prefers-reduced-motion: reduce)
+    .oui-carousel-track,
+    .oui-carousel-arrow,
+    .oui-carousel-dot
+        transition-duration: 0ms !important

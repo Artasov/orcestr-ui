@@ -42,6 +42,15 @@
     min-width: 180px
     padding: 6px
 
+.oui-popover-layout-content
+    min-width: 0
+
+.oui-popover-content.oui-popover-layout-motion
+    overflow: clip
+
+.oui-popover-content.oui-popover-layout-motion[data-layout-ready="true"]
+    transition: left 260ms cubic-bezier(.22, 1, .36, 1), top 260ms cubic-bezier(.22, 1, .36, 1), height 260ms cubic-bezier(.22, 1, .36, 1)
+
 .oui-popover-content[data-state="opening"],
 .oui-tooltip-content[data-state="opening"]
     animation: ouiOverlayIn 180ms ease forwards

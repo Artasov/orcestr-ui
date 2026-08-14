@@ -104,7 +104,7 @@ export function FieldsSection({
             <UiExampleSection
                 id="text-fields-example"
                 title="Text fields"
-                description="Standard and floating-label text inputs in supported sizes."
+                description="Standard and floating-label text inputs and textareas in supported sizes."
             >
                 <ExampleTile title="Text fields" code={codeSamples.textFields} onOpen={onOpenCode}>
                     <Field label="Search" helperText="Clearable field with left slot.">
@@ -153,6 +153,88 @@ export function FieldsSection({
                                 defaultValue="Operations hub"
                             />
                         </Section>
+                    </Stack>
+                    <Stack g={3}>
+                        <Stack g={1}>
+                            <Text fs="12px" fw={760} tone="muted">
+                                Floating textareas
+                            </Text>
+                            <Text fs="12px" tone="muted">
+                                TextArea shares the 1–4 size scale, animated outline and arbitrary
+                                floating label colors with TextField.
+                            </Text>
+                        </Stack>
+                        <Grid
+                            columns="repeat(auto-fit, minmax(min(100%, 180px), 1fr))"
+                            g={3}
+                            a="s"
+                        >
+                            {([1, 2, 3, 4] as const).map((textAreaSize) => (
+                                <TextArea
+                                    key={textAreaSize}
+                                    size={textAreaSize}
+                                    floatingLabel={`Size ${textAreaSize}`}
+                                    rows={2}
+                                    placeholder="Write a note"
+                                />
+                            ))}
+                        </Grid>
+                        <Section
+                            sectionColor="color-mix(in srgb, #d86fe4 14%, var(--oui-bg))"
+                            sectionOpacity={100}
+                            p={4}
+                            g={2}
+                        >
+                            <Text fs="12px" fw={760} style={{ color: '#f09be8' }}>
+                                Custom color on a different surface
+                            </Text>
+                            <TextArea
+                                size={3}
+                                floatingLabel="Design direction"
+                                floatingColor="#f09be8"
+                                defaultValue="A restrained interface with one confident accent."
+                                rows={3}
+                            />
+                        </Section>
+                    </Stack>
+                    <Stack g={3}>
+                        <Text fs="12px" fw={760} tone="muted">
+                            Auto-growing textareas
+                        </Text>
+                        <Grid columns="repeat(auto-fit, minmax(min(100%, 280px), 1fr))" g={3} a="s">
+                            <Stack g={1}>
+                                <Text fs="12px" tone="muted">
+                                    One-line start
+                                </Text>
+                                <TextArea
+                                    size={2}
+                                    floatingLabel="Quick project note"
+                                    placeholder="Start typing — the field grows with every new line"
+                                    autoResize
+                                    minRows={1}
+                                    maxRows={6}
+                                    maxHeight={150}
+                                />
+                            </Stack>
+                            <Stack g={1}>
+                                <Text fs="12px" tone="muted">
+                                    Multi-line start
+                                </Text>
+                                <TextArea
+                                    size={3}
+                                    floatingLabel="Delivery notes"
+                                    defaultValue={'Discovery notes\nArchitecture constraints\nDelivery milestones'}
+                                    autoResize
+                                    minRows={3}
+                                    maxRows={8}
+                                    maxHeight={220}
+                                />
+                            </Stack>
+                        </Grid>
+                        <Text fs="12px" tone="muted">
+                            Both limits may be supplied together. The smaller ceiling wins; after
+                            it is reached, the textarea scrolls internally.
+                        </Text>
                     </Stack>
                 </ExampleTile>
             </UiExampleSection>

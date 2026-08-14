@@ -552,10 +552,10 @@ function Content({ value, children, className, mountOnActive = false, ...props }
     const [mounted, setMounted] = useState(open);
 
     useEffect(() => {
-        if (!open || mounted) return;
+        if (!mountOnActive || !open || mounted) return;
         const frameId = window.requestAnimationFrame(() => setMounted(true));
         return () => window.cancelAnimationFrame(frameId);
-    }, [mounted, open]);
+    }, [mountOnActive, mounted, open]);
 
     const shouldRenderChildren = !mountOnActive || mounted || open;
 

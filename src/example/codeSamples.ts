@@ -614,6 +614,62 @@ import {LuSearch} from 'react-icons/lu';
             defaultValue='Operations hub'
         />
     </Section>
+</Stack>
+<Stack g={3}>
+    <Text fs='12px' fw={760} tone='muted'>Floating textareas</Text>
+    <Grid columns='repeat(auto-fit, minmax(min(100%, 180px), 1fr))' g={3} a='s'>
+        {([1, 2, 3, 4] as const).map((size) => (
+            <TextArea
+                key={size}
+                size={size}
+                floatingLabel={'Size ' + size}
+                rows={2}
+                placeholder='Write a note'
+            />
+        ))}
+    </Grid>
+    <Section
+        sectionColor='color-mix(in srgb, #d86fe4 14%, var(--oui-bg))'
+        sectionOpacity={100}
+        p={4}
+        g={2}
+    >
+        <Text fs='12px' fw={760} style={{color: '#f09be8'}}>
+            Custom color on a different surface
+        </Text>
+        <TextArea
+            floatingLabel='Design direction'
+            floatingColor='#f09be8'
+            defaultValue='A restrained interface with one confident accent.'
+            rows={3}
+        />
+    </Section>
+</Stack>
+<Stack g={3}>
+    <Text fs='12px' fw={760} tone='muted'>Auto-growing textareas</Text>
+    <Grid columns='repeat(auto-fit, minmax(min(100%, 280px), 1fr))' g={3} a='s'>
+        <TextArea
+            size={2}
+            floatingLabel='Quick project note'
+            placeholder='Start typing — the field grows with every new line'
+            autoResize
+            minRows={1}
+            maxRows={6}
+            maxHeight={150}
+        />
+        <TextArea
+            size={3}
+            floatingLabel='Delivery notes'
+            defaultValue={'Discovery notes\\nArchitecture constraints\\nDelivery milestones'}
+            autoResize
+            minRows={3}
+            maxRows={8}
+            maxHeight={220}
+        />
+    </Grid>
+    <Text fs='12px' tone='muted'>
+        When maxRows and maxHeight are both set, the smaller ceiling wins.
+    </Text>
 </Stack>`,
     inlineEdit: `import {useState} from 'react';
 import {Badge, Field, IconButton, InlineEditField, InlineEditMultiField, Listbox, Popover, Stack} from '@orcestr/ui';
@@ -801,9 +857,25 @@ import {LuCalendarDays, LuCalendarRange, LuHistory} from 'react-icons/lu';
         onValueChange={setDateRange}
     />
 </Flex>`,
-    selection: `import {Combobox, EntityPicker, MultiSelect, PaginatedCombobox, Select, SegmentedControl, Stack, Text} from '@orcestr/ui';
+    selection: `import {Combobox, EntityPicker, Grid, MultiSelect, PaginatedCombobox, Select, SegmentedControl, Stack, Text} from '@orcestr/ui';
 import {LuPlus} from 'react-icons/lu';
 
+<Stack g={2}>
+    <Text fs='12px' fw={760} tone='muted'>Selection sizes</Text>
+    <Grid columns='repeat(auto-fit, minmax(min(100%, 150px), 1fr))' g={2}>
+        {([1, 2, 3, 4] as const).map((size) => (
+            <Select
+                key={size}
+                items={items}
+                value={status}
+                onValueChange={setStatus}
+                floatingLabel={'Size ' + size}
+                size={size}
+                clearable
+            />
+        ))}
+    </Grid>
+</Stack>
 <Stack g={2}>
     <Text fs='12px' fw={760} tone='muted'>Select</Text>
     <Select items={items} value={status} onValueChange={setStatus} clearable />
@@ -1465,6 +1537,45 @@ const [activeKey, setActiveKey] = useState('requests');
         </Flex>
     </SpecialModal.Footer>
 </SpecialModal>`,
+    carousel: `import {Button, Carousel, Stack, Text} from '@orcestr/ui';
+
+<Carousel arrows='hover' showDots aria-label='Product capabilities'>
+    <Stack g={2} p={5}>
+        <Text as='h3' fs='36px'>Build any slide content</Text>
+        <Text tone='muted'>Use text, media, controls, forms, or complete layouts.</Text>
+        <Button>Explore capability</Button>
+    </Stack>
+    <Stack g={2} p={5}>
+        <Text as='h3' fs='36px'>Navigation on demand</Text>
+        <Text tone='muted'>Arrows appear when the carousel is hovered or focused.</Text>
+    </Stack>
+</Carousel>`,
+    carouselAutoplay: `<Carousel
+    arrows='always'
+    arrowSize={1}
+    autoplay
+    autoplayInterval={3200}
+    pauseOnHover
+    showAutoplayControl
+    aria-label='Automatic status highlights'
+>
+    {slides.map((slide) => <StatusSlide key={slide.id} {...slide} />)}
+</Carousel>`,
+    carouselControlled: `const [activeSlide, setActiveSlide] = useState(0);
+
+<Carousel
+    value={activeSlide}
+    onValueChange={setActiveSlide}
+    arrows='never'
+    showDots={false}
+    loop={false}
+>
+    {slides.map((slide) => <Stage key={slide.id} {...slide} />)}
+</Carousel>
+
+<Button onClick={() => setActiveSlide((value) => value + 1)}>
+    Next
+</Button>`,
     data: `import {Button, DataTable, TextField, type DataTableSort} from '@orcestr/ui';
 
 const [sort, setSort] = useState<DataTableSort | null>({key: 'name', direction: 'asc'});

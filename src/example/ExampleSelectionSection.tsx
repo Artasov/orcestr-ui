@@ -7,6 +7,7 @@ import {
     Checkbox,
     Combobox,
     EntityPicker,
+    Grid,
     MultiSelect,
     PaginatedCombobox,
     RadioGroup,
@@ -96,6 +97,29 @@ export function SelectionSection({
                     code={codeSamples.selection}
                     onOpen={onOpenCode}
                 >
+                    <Stack g={2}>
+                        <ExampleControlLabel>Selection sizes</ExampleControlLabel>
+                        <Grid
+                            columns="repeat(auto-fit, minmax(min(100%, 150px), 1fr))"
+                            g={2}
+                        >
+                            {selectionSizes.map((size) => (
+                                <Select
+                                    key={size}
+                                    items={optionItems}
+                                    value={selectValue}
+                                    onValueChange={onSelectValueChange}
+                                    floatingLabel={`Size ${size}`}
+                                    size={size}
+                                    clearable
+                                />
+                            ))}
+                        </Grid>
+                        <Text fs="12px" tone="muted">
+                            The same 1–4 size scale is available for Select, Combobox,
+                            MultiSelect, EntityPicker and PaginatedCombobox.
+                        </Text>
+                    </Stack>
                     <Stack g={2}>
                         <ExampleControlLabel>Select</ExampleControlLabel>
                         <Select
@@ -286,6 +310,8 @@ export function SelectionSection({
         </>
     );
 }
+
+const selectionSizes = [1, 2, 3, 4] as const;
 
 function ExampleControlLabel({ children }: { children: string }) {
     return (

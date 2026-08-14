@@ -572,6 +572,7 @@ export function PaginatedCombobox<T>({
             align="start"
             sideOffset={4}
             matchTriggerWidth
+            layoutMotion
             disabled={disabled}
         >
             <div className="oui-combobox-search-wrap oui-paginated-combobox-search-wrap">

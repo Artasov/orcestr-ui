@@ -40,6 +40,7 @@ import { ApplicationSection } from './ExampleApplicationSection.js';
 import { FieldsSection } from './ExampleFieldsSection.js';
 import { SelectionSection } from './ExampleSelectionSection.js';
 import { DataSection } from './ExampleDataSection.js';
+import { CarouselSection } from './ExampleCarouselSection.js';
 import { OverlaysSection } from './ExampleOverlaysSection.js';
 import { FoundationsSection } from './ExampleFoundationsSection.js';
 import { BadgeSection, IconTextSection, StateCardSection } from './ExampleStateSection.js';
@@ -72,6 +73,7 @@ const MemoSelectionSection = memo(SelectionSection);
 const MemoStateCardSection = memo(StateCardSection);
 const MemoBadgeSection = memo(BadgeSection);
 const MemoDataSection = memo(DataSection);
+const MemoCarouselSection = memo(CarouselSection);
 const MemoOverlaysSection = memo(OverlaysSection);
 const MemoApplicationSection = memo(ApplicationSection);
 
@@ -331,6 +333,7 @@ function UiExampleContent({
                         <MemoStateCardSection onOpenCode={setCodeExample} />
                         <MemoBadgeSection onOpenCode={setCodeExample} />
                         <MemoDataSection onOpenCode={setCodeExample} />
+                        <MemoCarouselSection onOpenCode={setCodeExample} />
                         <MemoOverlaysSection
                             setModalOpen={setModalOpen}
                             setBlurModalOpen={setBlurModalOpen}

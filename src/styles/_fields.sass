@@ -173,6 +173,7 @@
     opacity: .62
 
 .oui-floating-field .oui-text-field-input::placeholder,
+.oui-floating-field .oui-text-area-input::placeholder,
 .oui-floating-field .oui-combobox-placeholder
     color: transparent
 
@@ -346,6 +347,121 @@
     min-height: 88px
     padding: 8px 10px
     color: var(--oui-text)
+
+.oui-text-area-full
+    width: 100%
+
+.oui-text-area[data-size="1"]
+    --oui-text-area-control-height: 28px
+    min-height: 64px
+    padding: 5px 7px
+    font-size: 12px
+
+.oui-text-area[data-size="2"]
+    --oui-text-area-control-height: 34px
+    min-height: 76px
+    padding: 7px 8px
+    font-size: 13px
+
+.oui-text-area[data-size="3"]
+    --oui-text-area-control-height: 40px
+    min-height: 88px
+    padding: 9px 10px
+    font-size: 14px
+
+.oui-text-area[data-size="4"]
+    --oui-text-area-control-height: 48px
+    min-height: 104px
+    padding: 12px
+    font-size: 15px
+
+.oui-text-area[data-auto-resize="true"]
+    min-height: var(--oui-text-area-control-height, 40px)
+    resize: none
+    overflow-y: hidden
+    transition: height 260ms cubic-bezier(.22, 1, .36, 1), border-color 280ms ease, background-color 180ms ease
+
+.oui-text-area:not([data-auto-resize="true"])::-webkit-resizer
+    width: 12px
+    height: 12px
+    background-color: transparent
+    background-image: linear-gradient(135deg, transparent 0 48%, color-mix(in srgb, var(--oui-text-area-resizer-color, var(--oui-field-border-color, var(--oui-border))) 68%, transparent) 49% 55%, transparent 56% 64%, var(--oui-text-area-resizer-color, var(--oui-field-border-color, var(--oui-border))) 65% 72%, transparent 73%)
+
+.oui-text-area:not([data-auto-resize="true"])
+    --oui-text-area-resizer-color: var(--oui-text-area-resizer-rest-color, var(--oui-field-border-color, var(--oui-border)))
+
+.oui-text-area:not([data-auto-resize="true"]):hover
+    --oui-text-area-resizer-color: var(--oui-text-area-resizer-hover-color, var(--oui-field-border-hover-color, var(--oui-border-strong)))
+
+.oui-text-area:not([data-auto-resize="true"]):focus
+    --oui-text-area-resizer-color: var(--oui-text-area-resizer-focus-color, var(--oui-primary-base))
+
+.oui-text-area:not([data-auto-resize="true"])[data-invalid="true"]
+    --oui-text-area-resizer-color: var(--oui-danger-base)
+
+.oui-text-area-field
+    position: relative
+    display: block
+    min-width: 0
+    color: var(--oui-text)
+    background-color: var(--oui-control-bg, transparent)
+    border-radius: 6px
+    transition: background-color 180ms ease
+
+.oui-text-area-field[data-size="1"]
+    --oui-text-area-label-rest-y: 14px
+    --oui-floating-field-height: 28px
+    font-size: 12px
+
+.oui-text-area-field[data-size="2"]
+    --oui-text-area-label-rest-y: 17px
+    --oui-floating-field-height: 34px
+    font-size: 13px
+
+.oui-text-area-field[data-size="3"]
+    --oui-text-area-label-rest-y: 20px
+    --oui-floating-field-height: 40px
+    font-size: 14px
+
+.oui-text-area-field[data-size="4"]
+    --oui-text-area-label-rest-y: 24px
+    --oui-floating-field-height: 48px
+    font-size: 15px
+
+.oui-text-area-field .oui-text-area
+    position: relative
+    z-index: 0
+    display: block
+    width: 100%
+    margin: 0
+    color: inherit
+    background: transparent
+    border: 0
+    border-radius: inherit
+    box-shadow: none
+    clip-path: inset(7px 0 0)
+    scroll-padding-top: 7px
+
+.oui-text-area-field[data-size="1"] .oui-text-area
+    padding-top: 8px
+
+.oui-text-area-field .oui-text-area:hover,
+.oui-text-area-field .oui-text-area:focus
+    border-color: transparent
+    box-shadow: none
+
+.oui-text-area-field .oui-floating-field-label
+    top: var(--oui-text-area-label-rest-y)
+
+.oui-text-area-field[data-floating="true"] .oui-floating-field-label
+    transform: translate3d(var(--oui-floating-field-label-float-x), calc(-50% - var(--oui-text-area-label-rest-y)), 0) scale(.75)
+
+.oui-text-area-field[data-invalid="true"] .oui-text-area
+    border-color: transparent
+
+.oui-text-area-field[data-disabled="true"]
+    cursor: not-allowed
+    opacity: .62
 
 .oui-text-field[data-invalid="true"],
 .oui-text-area[data-invalid="true"]

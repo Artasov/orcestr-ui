@@ -34,6 +34,24 @@ test('all selection inputs expose the shared floating label mode', () => {
     );
 });
 
+test('all selection inputs expose the shared 1–4 size scale', () => {
+    for (const path of [
+        'components/Select/Select.tsx',
+        'components/Combobox/Combobox.tsx',
+        'components/MultiSelect/MultiSelect.tsx',
+        'components/PaginatedCombobox/PaginatedCombobox.tsx',
+        'components/EntityPicker/EntityPicker.tsx',
+    ]) {
+        assert.match(read(path), /size\?: (?:UiSize|import\([^\n]+\)\.UiSize)/);
+        assert.match(read(path), /size = 3/);
+    }
+
+    const example = read('example/ExampleSelectionSection.tsx');
+    assert.match(example, /const selectionSizes = \[1, 2, 3, 4\] as const/);
+    assert.match(example, /floatingLabel=\{`Size \$\{size\}`\}/);
+    assert.match(example, /size=\{size\}/);
+});
+
 test('floating selection fields render only the shared outlined border', () => {
     const styles = read('styles/_selection.sass');
     const ordinaryStateIndex = styles.indexOf(
@@ -194,6 +212,19 @@ test('selection controls share the compact search row', () => {
     assert.match(styles, /\.oui-combobox-search-wrap[\s\S]*?padding: 0 4px 3px/);
 });
 
+test('selection trigger text keeps the same safe line box as text fields', () => {
+    const styles = read('styles/_selection.sass');
+
+    assert.match(
+        styles,
+        /\.oui-combobox-trigger \.oui-button-label[\s\S]*?min-height: 1\.35em[\s\S]*?line-height: 1\.35/,
+    );
+    assert.match(
+        styles,
+        /\.oui-combobox-trigger \.oui-combobox-trigger-label,[\s\S]*?\.oui-combobox-trigger \.oui-combobox-placeholder[\s\S]*?min-height: 1\.35em[\s\S]*?line-height: 1\.35/,
+    );
+});
+
 test('PaginatedCombobox exposes opt-in search autofocus', () => {
     const source = read('components/PaginatedCombobox/PaginatedCombobox.tsx');
     const entityPickerSource = read('components/EntityPicker/EntityPicker.tsx');
@@ -224,4 +255,16 @@ test('PaginatedCombobox keeps loader identity and touch scrolling stable', () =>
     assert.match(source, /loadPageRef\.current\(page, search/);
     assert.match(source, /\{ root: scrollRef\.current, threshold: 0\.1 \}/);
     assert.match(styles, /\.oui-combobox-scroll[\s\S]*?touch-action: pan-y/);
+});
+
+test('PaginatedCombobox animates async popover layout changes', () => {
+    const source = read('components/PaginatedCombobox/PaginatedCombobox.tsx');
+    const overlayStyles = read('styles/_overlays.sass');
+
+    assert.match(source, /matchTriggerWidth\s+layoutMotion/);
+    assert.match(source, /<Spinner \/>/);
+    assert.match(
+        overlayStyles,
+        /\.oui-popover-content\.oui-popover-layout-motion\[data-layout-ready="true"\][\s\S]*?transition: left 260ms[\s\S]*?top 260ms[\s\S]*?height 260ms/,
+    );
 });
