@@ -535,7 +535,7 @@ function Trigger({
                     {icon}
                 </span>
             ) : null}
-            {children}
+            <span className="oui-tabs-trigger-label">{children}</span>
         </button>
     );
 }
