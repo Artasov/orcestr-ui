@@ -48,13 +48,13 @@ export function useFloatingPosition({
         const content = contentRef.current;
         if (!trigger || !content) return;
         const triggerRect = trigger.getBoundingClientRect();
-        const contentRect = content.getBoundingClientRect();
+        const contentSize = floatingLayerSize(content);
         const ownerWindow = trigger.ownerDocument.defaultView ?? window;
         const clippingRect = getClippingRect(trigger, ownerWindow);
         const contentWidth = matchTriggerWidth
-            ? Math.max(contentRect.width, triggerRect.width)
-            : contentRect.width;
-        const contentHeight = contentRect.height;
+            ? Math.max(contentSize.width, triggerRect.width)
+            : contentSize.width;
+        const contentHeight = contentSize.height;
         const isRtl = window.getComputedStyle(trigger).direction === 'rtl';
         const contentOwnsFocus = content.contains(trigger.ownerDocument.activeElement);
 
@@ -174,6 +174,22 @@ export function useFloatingPosition({
     }, [contentRef, open, triggerRef]);
 
     return { style, update: scheduleUpdate };
+}
+
+/**
+ * Measures the layout box rather than the animated visual box. Floating
+ * surfaces commonly open with a scale transform; getBoundingClientRect()
+ * includes that transform and would move an end- or center-aligned surface
+ * while its opening animation is running.
+ */
+export function floatingLayerSize(
+    element: Pick<HTMLElement, 'offsetHeight' | 'offsetWidth' | 'getBoundingClientRect'>,
+) {
+    const rect = element.getBoundingClientRect();
+    return {
+        width: element.offsetWidth > 0 ? element.offsetWidth : rect.width,
+        height: element.offsetHeight > 0 ? element.offsetHeight : rect.height,
+    };
 }
 
 function transformOriginFor(side: FloatingSide, align: FloatingAlign, isRtl: boolean): string {

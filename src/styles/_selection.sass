@@ -719,14 +719,23 @@
 .oui-tabs-trigger-icon
     display: inline-flex
     align-items: center
+    justify-content: center
+    flex: 0 0 auto
     color: var(--oui-muted)
     transition: color 240ms ease
+
+.oui-tabs-trigger-icon > svg
+    display: block
 
 .oui-tabs-trigger[data-active="true"] .oui-tabs-trigger-icon
     color: var(--oui-primary-text)
 
 .oui-tabs-trigger-label
+    display: inline-flex
+    align-items: center
+    min-height: 1rem
     line-height: 1rem
+    transform: translateY(var(--oui-tabs-label-optical-offset, -1px))
 
 .oui-tabs-trigger-badge
     display: inline-flex
