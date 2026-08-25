@@ -24,7 +24,7 @@ function Harness({ open }: { open: boolean }) {
 }
 
 test('an initially open presence still runs its entrance state in StrictMode', async () => {
-    render(
+    const { unmount } = render(
         <StrictMode>
             <Harness open />
         </StrictMode>,
@@ -34,4 +34,5 @@ test('an initially open presence still runs its entrance state in StrictMode', a
     assert.equal(presence.dataset.present, 'true');
     assert.equal(presence.dataset.state, 'opening');
     await waitFor(() => assert.equal(presence.dataset.state, 'open'));
+    unmount();
 });
