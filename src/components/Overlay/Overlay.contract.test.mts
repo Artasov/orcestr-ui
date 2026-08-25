@@ -63,10 +63,12 @@ test('Floating layer keeps dropdowns mounted for exit animation and positions fr
     assert.match(source, /usePresence\(open, presenceDuration\)/);
     assert.match(source, /useFloatingPosition/);
     assert.match(source, /matchTriggerWidth/);
+    assert.match(positionSource, /const contentSize = floatingLayerSize\(content\)/);
     assert.match(
         positionSource,
-        /contentWidth = matchTriggerWidth[\s\S]*?Math\.max\(contentRect\.width, triggerRect\.width\)/,
+        /contentWidth = matchTriggerWidth[\s\S]*?Math\.max\(contentSize\.width, triggerRect\.width\)/,
     );
+    assert.match(positionSource, /const contentHeight = contentSize\.height/);
     assert.match(positionSource, /minWidth: matchTriggerWidth \? contentWidth : undefined/);
     assert.doesNotMatch(positionSource, /maxHeight:/);
 });

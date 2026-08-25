@@ -10,6 +10,7 @@ const selectionStyles = readFileSync(
 
 test('Tabs keep stable trigger height with badges', () => {
     assert.match(tabsSource, /badge\?: ReactNode/);
+    assert.match(tabsSource, /badge=\{item\.badge\}/);
     assert.match(tabsSource, /className=["']oui-tabs-trigger-badge["']/);
     assert.match(selectionStyles, /\.oui-tabs-trigger\s+position: relative[\s\S]*?height: 34px/);
     assert.match(selectionStyles, /\.oui-tabs-trigger\s+position: relative[\s\S]*?padding: 0 14px/);
@@ -79,6 +80,19 @@ test('Tabs active icons use text accent active icon token', () => {
         selectionStyles,
         /\.oui-tabs-trigger\[data-active="true"\] \.oui-tabs-trigger-icon\s+color: var\(--oui-primary-text\)/,
     );
+});
+
+test('Tabs optically align labels with centered block icons without clipping descenders', () => {
+    assert.match(
+        selectionStyles,
+        /\.oui-tabs-trigger-icon\s+display: inline-flex[\s\S]*?justify-content: center[\s\S]*?flex: 0 0 auto/,
+    );
+    assert.match(selectionStyles, /\.oui-tabs-trigger-icon > svg\s+display: block/);
+    assert.match(
+        selectionStyles,
+        /\.oui-tabs-trigger-label\s+display: inline-flex[\s\S]*?min-height: 1rem[\s\S]*?line-height: 1rem[\s\S]*?transform: translateY\(var\(--oui-tabs-label-optical-offset, -1px\)\)/,
+    );
+    assert.doesNotMatch(selectionStyles, /\.oui-tabs-trigger-label[\s\S]{0,240}?overflow: hidden/);
 });
 
 test('Tabs keep inactive panels mounted so Collapse can animate their height', () => {

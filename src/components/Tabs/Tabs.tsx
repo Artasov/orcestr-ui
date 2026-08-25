@@ -89,12 +89,10 @@ function ItemTabs({
                         key={item.value}
                         value={item.value}
                         icon={item.icon}
+                        badge={item.badge}
                         data-testid={testId ? `${testId}-${item.value}` : undefined}
                     >
-                        <span className="oui-tabs-trigger-label">{item.label}</span>
-                        {item.badge ? (
-                            <span className="oui-tabs-trigger-badge">{item.badge}</span>
-                        ) : null}
+                        {item.label}
                     </Trigger>
                 ))}
             </List>
@@ -467,6 +465,7 @@ type TriggerProps = Omit<ComponentPropsWithoutRef<'button'>, 'value'> & {
     value: string;
     children: ReactNode;
     icon?: ReactNode;
+    badge?: ReactNode;
     size?: '2' | '3';
 };
 
@@ -474,6 +473,7 @@ function Trigger({
     value,
     children,
     icon,
+    badge,
     size = '2',
     className,
     onMouseEnter,
@@ -536,6 +536,7 @@ function Trigger({
                 </span>
             ) : null}
             <span className="oui-tabs-trigger-label">{children}</span>
+            {badge ? <span className="oui-tabs-trigger-badge">{badge}</span> : null}
         </button>
     );
 }

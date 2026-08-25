@@ -50,6 +50,22 @@ test('compound tabs use roving focus and linked tabpanel ids', async () => {
     );
 });
 
+test('item tabs render one label box and keep badges as sibling flex items', () => {
+    render(
+        <Tabs
+            value="one"
+            onValueChange={() => undefined}
+            items={[{ value: 'one', label: 'One', badge: '3', content: 'First panel' }]}
+        />,
+    );
+
+    const tab = screen.getByRole('tab', { name: 'One3' });
+    assert.equal(tab.querySelectorAll('.oui-tabs-trigger-label').length, 1);
+    assert.equal(tab.querySelector('.oui-tabs-trigger-label')?.textContent, 'One');
+    assert.equal(tab.querySelector('.oui-tabs-trigger-badge')?.textContent, '3');
+    assert.equal(tab.querySelector('.oui-tabs-trigger-badge')?.parentElement, tab);
+});
+
 test('item facade uses the same compound keyboard model', async () => {
     function Harness() {
         const [value, setValue] = useState('one');
