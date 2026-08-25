@@ -27,6 +27,8 @@ test('compound tabs use roving focus and linked tabpanel ids', async () => {
     const user = userEvent.setup();
     const first = screen.getByRole('tab', { name: 'One' });
     const second = screen.getByRole('tab', { name: 'Two' });
+    assert.equal(first.querySelector('.oui-tabs-trigger-label')?.textContent, 'One');
+    assert.equal(second.querySelector('.oui-tabs-trigger-label')?.textContent, 'Two');
     const secondPanel = screen.getByText('Second panel').closest('[role="tabpanel"]');
     assert.ok(secondPanel);
     assert.equal(secondPanel.hasAttribute('hidden'), false);
