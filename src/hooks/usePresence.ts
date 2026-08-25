@@ -10,6 +10,7 @@ export function usePresence(open: boolean, durationMs = 220) {
     const presentRef = useRef(open);
 
     useEffect(() => {
+        const ownerWindow = window;
         let frame = 0;
         let timer = 0;
         let disposed = false;
@@ -18,14 +19,14 @@ export function usePresence(open: boolean, durationMs = 220) {
             presentRef.current = true;
             setState('opening');
             setPresent(true);
-            frame = window.requestAnimationFrame(() => {
+            frame = ownerWindow.requestAnimationFrame(() => {
                 if (disposed) return;
-                timer = window.setTimeout(() => setState('open'), durationMs);
+                timer = ownerWindow.setTimeout(() => setState('open'), durationMs);
             });
             return () => {
                 disposed = true;
-                window.cancelAnimationFrame(frame);
-                window.clearTimeout(timer);
+                ownerWindow.cancelAnimationFrame(frame);
+                ownerWindow.clearTimeout(timer);
             };
         }
 
@@ -35,9 +36,9 @@ export function usePresence(open: boolean, durationMs = 220) {
         }
 
         setState('closing');
-        frame = window.requestAnimationFrame(() => {
+        frame = ownerWindow.requestAnimationFrame(() => {
             if (disposed) return;
-            timer = window.setTimeout(() => {
+            timer = ownerWindow.setTimeout(() => {
                 if (disposed) return;
                 presentRef.current = false;
                 setPresent(false);
@@ -46,8 +47,8 @@ export function usePresence(open: boolean, durationMs = 220) {
         });
         return () => {
             disposed = true;
-            window.cancelAnimationFrame(frame);
-            window.clearTimeout(timer);
+            ownerWindow.cancelAnimationFrame(frame);
+            ownerWindow.clearTimeout(timer);
         };
     }, [durationMs, open]);
 
