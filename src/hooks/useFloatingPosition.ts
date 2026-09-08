@@ -24,6 +24,8 @@ export function useFloatingPosition({
     collisionPadding = 8,
     matchTriggerWidth = false,
     avoidCollisions = true,
+    collisionBoundary = 'clipping-ancestors',
+    maxContentWidth,
 }: {
     triggerRef: RefObject<HTMLElement | null>;
     contentRef: RefObject<HTMLElement | null>;
@@ -34,6 +36,8 @@ export function useFloatingPosition({
     collisionPadding?: number;
     matchTriggerWidth?: boolean;
     avoidCollisions?: boolean;
+    collisionBoundary?: 'clipping-ancestors' | 'viewport';
+    maxContentWidth?: number;
 }) {
     const [style, setStyle] = useState<CSSProperties>({
         position: 'fixed',
@@ -48,9 +52,20 @@ export function useFloatingPosition({
         const content = contentRef.current;
         if (!trigger || !content) return;
         const triggerRect = trigger.getBoundingClientRect();
-        const contentSize = floatingLayerSize(content);
         const ownerWindow = trigger.ownerDocument.defaultView ?? window;
-        const clippingRect = getClippingRect(trigger, ownerWindow);
+        const triggerClippingRect = getClippingRect(trigger, ownerWindow);
+        const clippingRect = collisionBoundary === 'viewport'
+            ? { left: 0, top: 0, right: ownerWindow.innerWidth, bottom: ownerWindow.innerHeight }
+            : triggerClippingRect;
+        const availableWidth = avoidCollisions
+            ? Math.max(0, clippingRect.right - clippingRect.left - collisionPadding * 2)
+            : undefined;
+        const maxWidth = maxContentWidth === undefined ? availableWidth
+            : Math.min(maxContentWidth, availableWidth ?? maxContentWidth);
+        // Apply wrapping constraints before measuring, so the first visible placement
+        // uses the final dimensions rather than moving after ResizeObserver fires.
+        content.style.maxWidth = maxWidth === undefined ? '' : `${maxWidth}px`;
+        const contentSize = floatingLayerSize(content);
         const contentWidth = matchTriggerWidth
             ? Math.max(contentSize.width, triggerRect.width)
             : contentSize.width;
@@ -134,20 +149,20 @@ export function useFloatingPosition({
             left,
             top,
             minWidth: matchTriggerWidth ? contentWidth : undefined,
-            maxWidth: avoidCollisions
-                ? Math.max(0, clippingRect.right - clippingRect.left - collisionPadding * 2)
-                : undefined,
+            maxWidth,
             // A mobile virtual keyboard can shrink the visual viewport enough to move the
             // trigger outside the clipping rect while the user is typing in the floating
             // layer. Hiding a focused layer blurs its input and immediately dismisses the
             // keyboard, so keep it visible for as long as focus remains inside the content.
-            visibility: floatingLayerVisibility(triggerRect, clippingRect, contentOwnsFocus),
+            visibility: floatingLayerVisibility(triggerRect, triggerClippingRect, contentOwnsFocus),
             transformOrigin: transformOriginFor(actualSide, align, isRtl),
         });
     }, [
         align,
         avoidCollisions,
         collisionPadding,
+        collisionBoundary,
+        maxContentWidth,
         contentRef,
         matchTriggerWidth,
         side,
@@ -168,10 +183,11 @@ export function useFloatingPosition({
         const trigger = triggerRef.current;
         const content = contentRef.current;
         if (!trigger || !content) return;
+        update();
         return subscribeFloatingUpdates(trigger.ownerDocument, [trigger, content], () =>
             updateRef.current(),
         );
-    }, [contentRef, open, triggerRef]);
+    }, [contentRef, open, triggerRef, update]);
 
     return { style, update: scheduleUpdate };
 }

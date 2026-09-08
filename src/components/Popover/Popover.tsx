@@ -9,6 +9,7 @@ import {
     useContext,
     useEffect,
     useLayoutEffect,
+    useMemo,
     useRef,
     useState,
     type KeyboardEvent as ReactKeyboardEvent,
@@ -95,7 +96,7 @@ export function Popover({
     const disclosure = useDisclosure({ open, defaultOpen, onOpenChange });
     const { open: isOpen, close: closeDisclosure, toggle } = disclosure;
     const previousFocusRef = useRef<HTMLElement | null>(null);
-    const { triggerRef, contentRef, present, state, style } = useFloatingLayer<
+    const { triggerRef, contentRef, mountContentRef, present, state, style } = useFloatingLayer<
         HTMLElement,
         HTMLDivElement
     >({
@@ -107,6 +108,10 @@ export function Popover({
         matchTriggerWidth,
     });
     const layerIndex = useOverlayLayerIndex(present);
+    const combinedContentRef = useMemo(
+        () => composeRefs(mountContentRef, externalContentRef),
+        [mountContentRef, externalContentRef],
+    );
     const layoutContentRef = useRef<HTMLDivElement | null>(null);
     const [layoutHeight, setLayoutHeight] = useState<number>();
     const [layoutMotionReady, setLayoutMotionReady] = useState(false);
@@ -237,7 +242,7 @@ export function Popover({
             {present ? (
                 <Portal>
                     <div
-                        ref={composeRefs(contentRef, externalContentRef)}
+                        ref={combinedContentRef}
                         className={cn(
                             'oui-popover-content',
                             layoutMotion && 'oui-popover-layout-motion',
