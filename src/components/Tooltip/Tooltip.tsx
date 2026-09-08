@@ -83,7 +83,7 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
         defaultValue: defaultOpen,
         onChange: onOpenChange,
     });
-    const { triggerRef, contentRef, present, state, style } = useFloatingLayer<
+    const { triggerRef, mountContentRef, present, state, style } = useFloatingLayer<
         HTMLSpanElement,
         HTMLDivElement
     >({
@@ -94,6 +94,8 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
         sideOffset,
         avoidCollisions,
         collisionPadding,
+        collisionBoundary: 'viewport',
+        maxContentWidth: 320,
     });
     const layerIndex = useOverlayLayerIndex(present);
     const clearOpenTimer = useCallback(() => {
@@ -176,7 +178,7 @@ export const Tooltip = forwardRef<HTMLElement, TooltipProps>(function Tooltip(
             {present ? (
                 <Portal>
                     <div
-                        ref={contentRef}
+                        ref={mountContentRef}
                         role="tooltip"
                         id={tooltipId}
                         className={cn('oui-tooltip-content', className)}

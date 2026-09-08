@@ -16,3 +16,10 @@ test('Tooltip ignores programmatic focus and opens only on keyboard focus', () =
     assert.match(source, /matches\(':focus-visible'\)/);
     assert.doesNotMatch(source, /onFocus: \(\) => setOpen\(true\)/);
 });
+
+test('tooltip text wraps independently of narrow trigger containers', () => {
+    const styles = read('styles/_overlays.sass');
+    const source = read('components/Tooltip/Tooltip.tsx');
+    assert.match(source, /collisionBoundary: 'viewport'/);
+    assert.match(styles, /\.oui-tooltip-content\s+width: max-content\s+max-width: min\(320px, calc\(100vw - 16px\)\)\s+white-space: normal\s+overflow-wrap: anywhere/);
+});

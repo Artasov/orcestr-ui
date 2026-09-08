@@ -60,7 +60,10 @@
     animation: ouiOverlayOut 180ms ease forwards
 
 .oui-tooltip-content
-    max-width: 260px
+    width: max-content
+    max-width: min(320px, calc(100vw - 16px))
+    white-space: normal
+    overflow-wrap: anywhere
     padding: 7px 9px
     font-size: 12px
     line-height: 1.35
