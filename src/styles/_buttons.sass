@@ -283,18 +283,6 @@
 
 @include tones.button-tone-classes
 
-.oui-button[data-tone="success"][data-variant="solid"],
-.oui-icon-button[data-tone="success"][data-variant="solid"]
-    color: var(--oui-success-base)
-    background: var(--oui-success-surface)
-    border-color: transparent
-
-.oui-button[data-tone="success"][data-variant="solid"]:not(:disabled):hover,
-.oui-icon-button[data-tone="success"][data-variant="solid"]:not(:disabled):hover
-    color: var(--oui-success-base)
-    background: color-mix(in srgb, var(--oui-success-surface) 68%, var(--oui-success-base) 32%)
-    border-color: transparent
-
 .oui-button[data-tone="success"][data-variant="soft"]:not(:disabled):hover,
 .oui-button[data-tone="success"][data-variant="outline"]:not(:disabled):hover,
 .oui-button[data-tone="success"][data-variant="ghost"]:not(:disabled):hover,
@@ -331,8 +319,8 @@
     color: var(--oui-info-base)
     background: color-mix(in srgb, var(--oui-info-surface) 74%, var(--oui-info-base) 26%)
 
-.oui-root[data-oui-theme="dark"] .oui-button[data-tone="success"]:not(:disabled):hover,
-.oui-root[data-oui-theme="dark"] .oui-icon-button[data-tone="success"]:not(:disabled):hover
+.oui-root[data-oui-theme="dark"] .oui-button[data-tone="success"]:not([data-variant="solid"]):not(:disabled):hover,
+.oui-root[data-oui-theme="dark"] .oui-icon-button[data-tone="success"]:not([data-variant="solid"]):not(:disabled):hover
     color: color-mix(in srgb, var(--oui-success-base) 72%, white 28%)
 
 .oui-root[data-oui-theme="dark"] .oui-button[data-tone="danger"]:not(:disabled):hover,
