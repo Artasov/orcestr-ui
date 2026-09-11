@@ -15,6 +15,7 @@ type UseFloatingLayerOptions = {
     matchTriggerWidth?: boolean;
     avoidCollisions?: boolean;
     collisionBoundary?: 'clipping-ancestors' | 'viewport';
+    avoidTriggerOverlap?: boolean;
     maxContentWidth?: number;
 };
 
@@ -28,6 +29,7 @@ export function useFloatingLayer<TTrigger extends HTMLElement, TContent extends 
     matchTriggerWidth = false,
     avoidCollisions = true,
     collisionBoundary = 'clipping-ancestors',
+    avoidTriggerOverlap = false,
     maxContentWidth,
 }: UseFloatingLayerOptions) {
     const triggerRef = useRef<TTrigger | null>(null);
@@ -49,6 +51,7 @@ export function useFloatingLayer<TTrigger extends HTMLElement, TContent extends 
         matchTriggerWidth,
         avoidCollisions,
         collisionBoundary,
+        avoidTriggerOverlap,
         maxContentWidth,
     });
 

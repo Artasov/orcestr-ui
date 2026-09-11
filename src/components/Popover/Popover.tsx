@@ -58,6 +58,10 @@ export type PopoverProps = SystemProps &
         align?: FloatingAlign;
         sideOffset?: number;
         collisionPadding?: number;
+        /** Use the viewport for popovers that may extend outside a scrollable container. */
+        collisionBoundary?: 'clipping-ancestors' | 'viewport';
+        /** Fit on either side of the trigger without shifting over it. Opt-in. */
+        avoidTriggerOverlap?: boolean;
         matchTriggerWidth?: boolean;
         layoutMotion?: boolean;
         disabled?: boolean;
@@ -79,6 +83,8 @@ export function Popover({
     align = 'start',
     sideOffset = 8,
     collisionPadding = 8,
+    collisionBoundary = 'clipping-ancestors',
+    avoidTriggerOverlap = false,
     matchTriggerWidth = false,
     layoutMotion = false,
     disabled = false,
@@ -105,6 +111,8 @@ export function Popover({
         align,
         sideOffset,
         collisionPadding,
+        collisionBoundary,
+        avoidTriggerOverlap,
         matchTriggerWidth,
     });
     const layerIndex = useOverlayLayerIndex(present);
