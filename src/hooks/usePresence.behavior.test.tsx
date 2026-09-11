@@ -5,7 +5,7 @@ import { StrictMode } from 'react';
 import { setupDom } from '../test-utils/dom.mts';
 
 const restoreDom = setupDom();
-const { cleanup, render, screen, waitFor } = await import('@testing-library/react');
+const { act, cleanup, render, screen, waitFor } = await import('@testing-library/react');
 
 afterEach(cleanup);
 after(restoreDom);
@@ -34,5 +34,5 @@ test('an initially open presence still runs its entrance state in StrictMode', a
     assert.equal(presence.dataset.present, 'true');
     assert.equal(presence.dataset.state, 'opening');
     await waitFor(() => assert.equal(presence.dataset.state, 'open'));
-    unmount();
+    await act(async () => unmount());
 });

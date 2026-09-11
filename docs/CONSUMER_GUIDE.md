@@ -130,6 +130,18 @@ import { usePaginatedComboboxQueryLoader } from '@orcestr/ui/react-query';
 The application owns query keys, API calls, cache invalidation and error policy.
 The adapter only maps query state to UI component state.
 
+## Popovers inside scrolling tables
+
+For inline suggestions that must extend outside a table, opt into
+`collisionBoundary="viewport"` and `avoidTriggerOverlap` on `Popover` (or
+`Popover.Content`). The preferred side is kept when it fits; otherwise the
+popover flips to the opposite side. If neither fits, its maximum height or
+width is limited to the roomier side without shifting over the trigger.
+Use `ScrollArea` in a flex column for long lists so constrained content can scroll.
+
+Both options are opt-in: existing popovers keep their clipping-ancestor boundary
+and placement behavior. Trigger visibility still follows its scrolling container.
+
 ## Testing a local package build
 
 Build and pack the library, then install the generated tarball in any consumer:

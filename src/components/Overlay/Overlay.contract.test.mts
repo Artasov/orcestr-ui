@@ -63,14 +63,15 @@ test('Floating layer keeps dropdowns mounted for exit animation and positions fr
     assert.match(source, /usePresence\(open, presenceDuration\)/);
     assert.match(source, /useFloatingPosition/);
     assert.match(source, /matchTriggerWidth/);
-    assert.match(positionSource, /const contentSize = floatingLayerSize\(content\)/);
+    assert.match(positionSource, /(?:const|let) contentSize = floatingLayerSize\(content\)/);
     assert.match(
         positionSource,
         /contentWidth = matchTriggerWidth[\s\S]*?Math\.max\(contentSize\.width, triggerRect\.width\)/,
     );
     assert.match(positionSource, /const contentHeight = contentSize\.height/);
     assert.match(positionSource, /minWidth: matchTriggerWidth \? contentWidth : undefined/);
-    assert.doesNotMatch(positionSource, /maxHeight:/);
+    assert.match(positionSource, /avoidTriggerOverlap = false/);
+    assert.match(positionSource, /fitBesideTrigger \? \{ maxHeight \} : \{\}/);
 });
 
 test('Dialog content supplies the shared dialog layout surface', () => {
