@@ -64,6 +64,10 @@ test('preview closes after leaving, on outside click and Escape; focus returns t
     assert.equal(shell.hasAttribute('data-sidebar-preview'), false);
     await open();
     await user.click(screen.getByRole('button', {name: 'Sidebar action 0'}));
+    await user.hover(screen.getByRole('button', {name: 'Page action'}));
+    await waitFor(() => assert.equal(shell.hasAttribute('data-sidebar-preview'), false));
+    await open();
+    await user.click(screen.getByRole('button', {name: 'Sidebar action 1'}));
     await user.keyboard('{Escape}');
     assert.equal(shell.hasAttribute('data-sidebar-preview'), false);
     assert.equal(document.activeElement, trigger);
@@ -76,8 +80,12 @@ test('portaled sidebar controls remain interactive while the sidebar is previewe
     await user.hover(screen.getByRole('button', {name: 'Menu'}));
     await waitFor(() => assert.equal(shell.getAttribute('data-sidebar-preview'), 'true'));
     await user.click(screen.getByTestId('portal-action'));
+    await user.hover(screen.getByRole('button', {name: 'Page action'}));
+    await act(async () => {await new Promise((resolve) => setTimeout(resolve, 260));});
     assert.equal(shell.getAttribute('data-sidebar-preview'), 'true');
     assert.ok(screen.getByRole('button', {name: 'Sidebar action 1'}));
+    await user.click(screen.getByRole('button', {name: 'Page action'}));
+    assert.equal(shell.hasAttribute('data-sidebar-preview'), false);
 });
 
 test('hover stays opt-in and touch never opens a desktop preview', async () => {
