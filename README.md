@@ -152,6 +152,24 @@ The workflow runs typecheck, tests, build and `npm pack --dry-run` before publis
 
 Full release guide: [docs/RELEASE.md](./docs/RELEASE.md).
 
+## Sidebar hover preview
+
+Use `AppShellSidebarToggle` inside the shell header and enable `sidebarHoverPreview`.
+Hovering with a mouse previews a collapsed desktop sidebar over the page; clicking
+pins it and resizes the content. Moving away, clicking outside, or Escape closes the
+preview. Both sidebar sides are supported; mobile keeps its click-to-open drawer.
+
+```tsx
+<AppShell sidebarHoverPreview desktopSidebarOpen={open} onSidebarOpenChange={setOpen}
+  header={<AppShellSidebarToggle aria-label="Menu" />} sidebar={<Navigation />}>
+  <AppShellContent p="3">{children}</AppShellContent>
+</AppShell>
+```
+
+`Box` and `AppShellContent` already accept `p`, `px`, `py` and `style` to override
+their default spacing. `AppSidebar.content` inserts custom content after navigation
+inside its scrolling area, while the footer remains fixed.
+
 ## Maintainer
 
 Public updates are maintained by [@Artasov](https://github.com/Artasov).

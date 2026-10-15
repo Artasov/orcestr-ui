@@ -153,6 +153,24 @@ Workflow перед публикацией запускает typecheck, tests, 
 
 Полная инструкция: [docs/RELEASE.md](./docs/RELEASE.md).
 
+## Предпросмотр сайдбара при наведении
+
+Поместите `AppShellSidebarToggle` в шапку и включите `sidebarHoverPreview`.
+Наведение мыши показывает закрытый десктопный сайдбар поверх страницы, клик
+закрепляет его и сдвигает контент. Уход мыши, клик снаружи или Escape закрывает
+предпросмотр. Поддерживаются обе стороны; мобильный drawer открывается по клику.
+
+```tsx
+<AppShell sidebarHoverPreview desktopSidebarOpen={open} onSidebarOpenChange={setOpen}
+  header={<AppShellSidebarToggle aria-label="Меню" />} sidebar={<Navigation />}>
+  <AppShellContent p="3">{children}</AppShellContent>
+</AppShell>
+```
+
+У `Box` и `AppShellContent` уже есть `p`, `px`, `py` и `style` для переопределения
+стандартных отступов. Слот `AppSidebar.content` размещает дополнительное содержимое
+после навигации в прокручиваемой области, а футер остаётся прижатым к низу.
+
 ## Maintainer
 
 Публичные обновления ведет [@Artasov](https://github.com/Artasov).

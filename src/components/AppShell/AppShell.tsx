@@ -3,6 +3,7 @@
 import {
     forwardRef,
     useEffect,
+    useId,
     useState,
     type ComponentPropsWithoutRef,
     type CSSProperties,
@@ -19,6 +20,7 @@ import { IconButton } from '../IconButton/IconButton.js';
 import { ScrollArea } from '../ScrollArea/ScrollArea.js';
 import { Separator } from '../Separator/Separator.js';
 import { Text } from '../Text/Text.js';
+import {AppShellSidebarContext, useSidebarPreview} from './sidebar-preview.js';
 
 export type AppShellNavItem = {
     key: string;
@@ -42,6 +44,8 @@ export type AppShellProps = ComponentPropsWithoutRef<'div'> &
         sidebarSide?: AppShellSide;
         sidebarOpen?: boolean;
         desktopSidebarOpen?: boolean;
+        /** Mouse hover on AppShellSidebarToggle previews the collapsed desktop sidebar. */
+        sidebarHoverPreview?: boolean;
         onSidebarOpenChange?: (open: boolean) => void;
         sidebarWidth?: number | string;
         headerHeight?: number | string;
@@ -61,6 +65,7 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
         sidebarSide = 'left',
         sidebarOpen = false,
         desktopSidebarOpen = true,
+        sidebarHoverPreview = false,
         onSidebarOpenChange,
         sidebarWidth = 260,
         headerHeight = 56,
@@ -77,6 +82,9 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
     const [drawerPortalContainer, setDrawerPortalContainer] = useState<HTMLDivElement | null>(null);
     const { systemStyle, restProps } = splitSystemProps(props);
     const drawerMode = sidebarMode === 'auto' ? autoDrawerMode : sidebarMode === 'mobile';
+    const sidebarId = useId();
+    const preview = useSidebarPreview(sidebarHoverPreview && !drawerMode && !desktopSidebarOpen);
+    const pinnedOpen = drawerMode ? sidebarOpen : desktopSidebarOpen;
     const shellStyle = {
         '--oui-app-shell-sidebar-width': shellSizeValue(sidebarWidth),
         '--oui-app-shell-header-h': shellSizeValue(headerHeight),
@@ -96,11 +104,14 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
     }, [mobileBreakpoint, sidebarMode]);
 
     return (
+        <AppShellSidebarContext.Provider value={{id: drawerMode ? undefined : sidebarId, open: pinnedOpen || preview.open, pinned: pinnedOpen, triggerRef: preview.triggerRef,
+            enter: preview.enter, leave: preview.leave, toggle: () => {preview.close(); onSidebarOpenChange?.(!pinnedOpen);}}}>
         <div
             ref={ref}
             className={cn('oui-app-shell', className)}
             data-sidebar-open={sidebarOpen ? 'true' : 'false'}
             data-desktop-sidebar-open={desktopSidebarOpen ? 'true' : 'false'}
+            data-sidebar-preview={preview.open ? 'true' : undefined}
             data-sidebar-side={sidebarSide}
             data-sidebar-mode={drawerMode ? 'mobile' : 'desktop'}
             data-has-header={header ? 'true' : undefined}
@@ -110,7 +121,11 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
         >
             <div className="oui-app-shell-frame">
                 {!drawerMode ? (
-                    <div className="oui-app-shell-sidebar-desktop">{sidebar}</div>
+                    <div id={sidebarId} ref={preview.sidebarRef} className="oui-app-shell-sidebar-desktop"
+                        inert={!desktopSidebarOpen && !preview.open} aria-hidden={!desktopSidebarOpen && !preview.open}
+                        onPointerEnter={preview.keep} onPointerLeave={preview.leave}
+                        onFocusCapture={preview.focus} onBlurCapture={preview.leave}
+                        onPointerDownCapture={preview.protect}>{sidebar}</div>
                 ) : null}
                 {drawerMode && drawerPortalContainer ? (
                     <Drawer
@@ -141,6 +156,7 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(function AppSh
                 <div ref={setDrawerPortalContainer} className="oui-app-shell-drawer-root" />
             ) : null}
         </div>
+        </AppShellSidebarContext.Provider>
     );
 });
 

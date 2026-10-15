@@ -11,6 +11,7 @@
 .oui-app-shell-frame
     display: grid
     width: 100%
+    position: relative
     grid-template-columns: minmax(220px, var(--oui-app-shell-sidebar-width, 260px)) minmax(0, 1fr)
     gap: 0
     height: calc(100dvh - (var(--oui-app-shell-inset, 28px) * 2))
@@ -72,6 +73,38 @@
 
 .oui-app-shell[data-sidebar-side="right"] .oui-app-shell-main
     grid-column: 1
+
+// A collapsed sidebar has its own width, so previewing never changes the grid.
+.oui-app-shell[data-sidebar-mode="desktop"][data-desktop-sidebar-open="false"] .oui-app-shell-sidebar-desktop
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    width: var(--oui-app-shell-sidebar-width, 260px)
+    max-width: 100%
+    z-index: 60
+    background: var(--oui-bg)
+    border-right: 1px solid var(--oui-border)
+    box-shadow: 8px 0 24px rgb(0 0 0 / 18%)
+
+.oui-app-shell[data-sidebar-mode="desktop"][data-desktop-sidebar-open="false"][data-has-header="true"] .oui-app-shell-sidebar-desktop
+    top: var(--oui-app-shell-header-h, 56px)
+
+.oui-app-shell[data-sidebar-mode="desktop"][data-sidebar-side="right"][data-desktop-sidebar-open="false"] .oui-app-shell-sidebar-desktop
+    left: auto
+    right: 0
+    border-right: 0
+    border-left: 1px solid var(--oui-border)
+    box-shadow: -8px 0 24px rgb(0 0 0 / 18%)
+
+.oui-app-shell[data-sidebar-mode="desktop"][data-desktop-sidebar-open="false"][data-sidebar-preview="true"] .oui-app-shell-sidebar-desktop
+    opacity: 1
+    pointer-events: auto
+    transform: translateX(0)
+
+@media (prefers-reduced-motion: reduce)
+    .oui-app-shell-frame, .oui-app-shell-sidebar-desktop
+        transition: none
 
 .oui-app-shell-header
     position: relative
