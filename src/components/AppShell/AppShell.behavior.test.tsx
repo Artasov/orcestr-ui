@@ -64,6 +64,10 @@ test('preview closes after leaving, on outside click and Escape; focus returns t
     assert.equal(shell.hasAttribute('data-sidebar-preview'), false);
     await open();
     await user.click(screen.getByRole('button', {name: 'Sidebar action 0'}));
+    await user.hover(screen.getByRole('button', {name: 'Page action'}));
+    await waitFor(() => assert.equal(shell.hasAttribute('data-sidebar-preview'), false));
+    await open();
+    await user.click(screen.getByRole('button', {name: 'Sidebar action 1'}));
     await user.keyboard('{Escape}');
     assert.equal(shell.hasAttribute('data-sidebar-preview'), false);
     assert.equal(document.activeElement, trigger);

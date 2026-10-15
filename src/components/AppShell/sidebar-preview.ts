@@ -21,6 +21,7 @@ export function useSidebarPreview(enabled: boolean) {
     const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
     const insideEvents = useRef(new WeakSet<Event>());
     const focused = useRef<EventTarget | null>(null);
+    const keyboardFocus = useRef(false);
     const cancel = () => {if (timer.current !== null) {clearTimeout(timer.current); timer.current = null;}};
     const close = () => {cancel(); setOpen(false);};
     const enter = (event: PointerEvent) => {
@@ -34,7 +35,8 @@ export function useSidebarPreview(enabled: boolean) {
         cancel();
         timer.current = setTimeout(() => {
             timer.current = null;
-            if (!sidebarRef.current?.contains(document.activeElement) && focused.current !== document.activeElement) setOpen(false);
+            const focusInside = sidebarRef.current?.contains(document.activeElement) || focused.current === document.activeElement;
+            if (!keyboardFocus.current || !focusInside) setOpen(false);
         }, 220);
     };
 
@@ -49,11 +51,13 @@ export function useSidebarPreview(enabled: boolean) {
     useEffect(() => {
         if (!enabled || !open) return;
         const dismiss = (event: globalThis.PointerEvent) => {
+            keyboardFocus.current = false;
             if (insideEvents.current.has(event)) return;
             const target = event.target as Node | null;
             if (target && !sidebarRef.current?.contains(target) && !triggerRef.current?.contains(target)) setOpen(false);
         };
         const escape = (event: KeyboardEvent) => {
+            keyboardFocus.current = true;
             if (event.key !== 'Escape' || event.defaultPrevented) return;
             if (sidebarRef.current?.contains(document.activeElement)) triggerRef.current?.focus();
             setOpen(false);
