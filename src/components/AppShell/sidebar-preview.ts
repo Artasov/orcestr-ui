@@ -35,8 +35,9 @@ export function useSidebarPreview(enabled: boolean) {
         cancel();
         timer.current = setTimeout(() => {
             timer.current = null;
-            const focusInside = sidebarRef.current?.contains(document.activeElement) || focused.current === document.activeElement;
-            if (!keyboardFocus.current || !focusInside) setOpen(false);
+            const focusInPanel = sidebarRef.current?.contains(document.activeElement);
+            const focusInPortal = focused.current === document.activeElement && !focusInPanel;
+            if (!focusInPortal && (!keyboardFocus.current || !focusInPanel)) setOpen(false);
         }, 220);
     };
 
