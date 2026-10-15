@@ -2,6 +2,7 @@ export * from './components/Action/ActionTypes.js';
 export * from './components/ActionMenu/ActionMenu.js';
 export * from './components/Alert/Alert.js';
 export * from './components/AppShell/AppShell.js';
+export * from './components/AppShellSidebarToggle/AppShellSidebarToggle.js';
 export * from './components/AppSidebar/AppSidebar.js';
 export * from './components/Avatar/Avatar.js';
 export * from './components/Badge/Badge.js';

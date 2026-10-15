@@ -34,10 +34,11 @@ export type AppSidebarGroup = {
     items: readonly AppSidebarItem[];
 };
 
-export type AppSidebarProps = Omit<ComponentPropsWithoutRef<'aside'>, 'title'> &
+export type AppSidebarProps = Omit<ComponentPropsWithoutRef<'aside'>, 'title' | 'content'> &
     SystemProps & {
         header?: ReactNode;
         groups: readonly AppSidebarGroup[];
+        content?: ReactNode;
         footer?: ReactNode;
         side?: AppSidebarSide;
         itemH?: number;
@@ -51,6 +52,7 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
         style,
         header,
         groups,
+        content,
         footer,
         side = 'left',
         itemH = 40,
@@ -177,6 +179,7 @@ export const AppSidebar = forwardRef<HTMLElement, AppSidebarProps>(function AppS
                             </div>
                         ))}
                     </div>
+                    {content}
                 </div>
             </ScrollArea>
 
