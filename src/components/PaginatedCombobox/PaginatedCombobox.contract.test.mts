@@ -155,7 +155,6 @@ test('PaginatedCombobox exposes retry contract for failed page loads', () => {
     assert.match(source, /trigger\?: ReactNode/);
     assert.match(source, /trigger \?\? \(/);
     assert.match(source, /retryLabel\?: ReactNode/);
-    assert.match(source, /onClick=\{\(\) => void fetchPage\(1, debouncedSearch\)\}/);
     assert.match(source, /actualRetryLabel/);
 });
 

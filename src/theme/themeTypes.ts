@@ -149,6 +149,7 @@ export type OrcestrTheme = {
         tableHeaderHeight: string;
         fieldGap: string;
         modalMaxWidth: string;
+        modalBackground: string;
     };
 };
 

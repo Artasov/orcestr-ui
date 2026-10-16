@@ -3,12 +3,42 @@ import { after, afterEach, test } from 'node:test';
 import { setupDom } from '../../test-utils/dom.mts';
 
 const restoreDom = setupDom();
-const { act, cleanup, render, waitFor } = await import('@testing-library/react');
+const { act, cleanup, fireEvent, render, screen, waitFor } = await import('@testing-library/react');
 const { OrcestrUiProvider } = await import('../../provider/OrcestrUiProvider.js');
 const { Popover } = await import('./Popover.js');
+const { Select } = await import('../Select/Select.js');
 
 afterEach(cleanup);
 after(restoreDom);
+
+test('a nested Select portal is inside its parent interaction boundary and Escape closes one level at a time', async (context) => {
+    context.mock.method(HTMLElement.prototype, 'getBoundingClientRect', function () {return new window.DOMRect(20, 20, 240, 160);});
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {configurable: true, value() {}});
+    context.after(() => Reflect.deleteProperty(HTMLElement.prototype, 'scrollIntoView'));
+    const changes: string[] = [];
+    render(<OrcestrUiProvider><Popover trigger={<button>Filters</button>} testId='filters'>
+        <Select ariaLabel='Sort' value='manual' onValueChange={value => {if (value) changes.push(value);}}
+            items={[{value: 'manual', label: 'Manual'}, {value: 'deadline', label: 'Deadline'}]} />
+    </Popover><button>Outside</button></OrcestrUiProvider>);
+    const trigger = screen.getByRole('button', {name: 'Filters'});
+    fireEvent.click(trigger);
+    const sort = await screen.findByRole('combobox', {name: 'Sort'});
+    fireEvent.click(sort);
+    const option = await screen.findByRole('option', {name: 'Deadline'});
+    fireEvent.pointerDown(option); fireEvent.click(option);
+    assert.deepEqual(changes, ['deadline']);
+    assert.equal(trigger.getAttribute('aria-expanded'), 'true');
+    fireEvent.click(sort); await screen.findByRole('listbox');
+    fireEvent.keyDown(document, {key: 'Escape'});
+    assert.equal(sort.getAttribute('aria-expanded'), 'false');
+    assert.equal(trigger.getAttribute('aria-expanded'), 'true');
+    fireEvent.keyDown(document, {key: 'Escape'});
+    assert.equal(trigger.getAttribute('aria-expanded'), 'false');
+    fireEvent.click(trigger); await waitFor(() => assert.equal(trigger.getAttribute('aria-expanded'), 'true'));
+    fireEvent.click(sort); await screen.findByRole('listbox');
+    fireEvent.pointerDown(screen.getByRole('button', {name: 'Outside'}));
+    assert.equal(trigger.getAttribute('aria-expanded'), 'false', 'A true outside click still dismisses the entire stack.');
+});
 
 test('viewport popover clears a clipped table, flips and shrinks without changing default placement', async (t) => {
     let triggerTop = 215;

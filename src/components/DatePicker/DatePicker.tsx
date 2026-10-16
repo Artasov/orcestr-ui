@@ -48,6 +48,11 @@ export type DatePickerProps = {
     todayLabel?: ReactNode;
     locale?: string;
     testId?: string;
+    trigger?: ReactNode;
+    footer?: ReactNode;
+    closeOnSelect?: boolean;
+    open?: boolean;
+    onOpenChange?: (open: boolean) => void;
 };
 
 export function DatePicker({
@@ -66,10 +71,20 @@ export function DatePicker({
     todayLabel,
     locale,
     testId,
+    trigger,
+    footer,
+    closeOnSelect = true,
+    open: controlledOpen,
+    onOpenChange,
 }: DatePickerProps) {
     const { copy, locale: contextLocale } = useOrcestrUiLocale();
     const actualLocale = locale ?? contextLocale;
-    const [open, setOpen] = useState(false);
+    const [internalOpen, setInternalOpen] = useState(false);
+    const open = controlledOpen ?? internalOpen;
+    const setOpen = useCallback((next: boolean) => {
+        if (controlledOpen === undefined) setInternalOpen(next);
+        onOpenChange?.(next);
+    }, [controlledOpen, onOpenChange]);
     const [cursorMonth, setCursorMonth] = useState(() => monthCursorForDate(value));
     const [focusedDate, setFocusedDate] = useState(() =>
         initialFocusDate(value, min, max, disabledDate),
@@ -88,6 +103,7 @@ export function DatePicker({
     );
     const weekdays = useMemo(() => weekdayLabels(actualLocale), [actualLocale]);
     const displayValue = value ? formatDateLabel(value, actualLocale) : '';
+    const preventCalendarAutoFocus = useCallback((event: {preventDefault: () => void}) => event.preventDefault(), []);
 
     useEffect(() => {
         if (!open) return;
@@ -99,8 +115,9 @@ export function DatePicker({
     }, [cursorMonth, focusedDate, open]);
 
     const selectDate = (nextValue: string) => {
+        if (disabled || readOnly) return;
         onValueChange(clampDate(nextValue, min, max));
-        setOpen(false);
+        if (closeOnSelect) setOpen(false);
     };
     const openCalendar = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -187,7 +204,7 @@ export function DatePicker({
             sideOffset={6}
             testId={testId ? `${testId}-popover` : undefined}
             trigger={
-                <TextField
+                trigger ?? <TextField
                     value={displayValue}
                     placeholder={placeholder}
                     readOnly
@@ -210,7 +227,7 @@ export function DatePicker({
                 />
             }
             className="oui-date-picker-popover"
-            onOpenAutoFocus={(event) => event.preventDefault()}
+            onOpenAutoFocus={preventCalendarAutoFocus}
         >
             <div className="oui-date-picker-panel">
                 <div className="oui-date-picker-head">
@@ -256,14 +273,14 @@ export function DatePicker({
                                 data-outside={day.outsideMonth ? 'true' : undefined}
                                 data-selected={day.selected ? 'true' : undefined}
                                 data-today={day.today ? 'true' : undefined}
-                                disabled={day.disabled}
+                                disabled={disabled || readOnly || day.disabled}
                                 aria-selected={day.selected}
                                 aria-current={day.today ? 'date' : undefined}
                                 aria-label={formatDateLabel(day.date, actualLocale)}
                                 tabIndex={day.date === focusedDate ? 0 : -1}
                                 onClick={() => selectDate(day.date)}
                                 onKeyDown={(event) =>
-                                    handleDayKeyDown(event, day.date, day.disabled)
+                                    handleDayKeyDown(event, day.date, disabled || readOnly || day.disabled)
                                 }
                             >
                                 {day.day}
@@ -272,6 +289,7 @@ export function DatePicker({
                     )}
                 </div>
                 <div className="oui-date-picker-foot">
+                    {footer !== undefined ? footer : <>
                     <Button
                         size={1}
                         v="ghost"
@@ -294,6 +312,7 @@ export function DatePicker({
                             {copy.common.clear}
                         </Button>
                     ) : null}
+                    </>}
                 </div>
             </div>
         </Popover>

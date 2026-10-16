@@ -383,7 +383,7 @@ export function PaginatedCombobox<T>({
     }, [debouncedSearch, fetchPage, open, resetKey]);
 
     useEffect(() => {
-        if (!open || !hasNextPage || loadingNext || loadingInitial) return;
+        if (!open || !hasNextPage || loadingNext || loadingInitial || error) return;
         const sentinel = sentinelRef.current;
         if (!sentinel) return;
         const observer = new IntersectionObserver(
@@ -398,6 +398,7 @@ export function PaginatedCombobox<T>({
         return () => observer.disconnect();
     }, [
         debouncedSearch,
+        error,
         fetchPage,
         hasNextPage,
         lastPage?.page,
@@ -630,19 +631,8 @@ export function PaginatedCombobox<T>({
                         <Spinner />
                         <span className="oui-visually-hidden">{actualLoadingText}</span>
                     </div>
-                ) : error ? (
-                    <div className="oui-combobox-state">
-                        <span>{actualErrorText}</span>
-                        <Button
-                            size={1}
-                            v="surface"
-                            onClick={() => void fetchPage(1, debouncedSearch)}
-                        >
-                            {actualRetryLabel}
-                        </Button>
-                    </div>
                 ) : items.length === 0 ? (
-                    <div className="oui-combobox-empty">{actualEmptyText}</div>
+                    error ? null : <div className="oui-combobox-empty">{actualEmptyText}</div>
                 ) : (
                     <div className="oui-combobox-options">
                         {virtualModel.before > 0 ? (
@@ -707,7 +697,7 @@ export function PaginatedCombobox<T>({
                         {virtualModel.after > 0 ? (
                             <div aria-hidden="true" style={{ height: virtualModel.after }} />
                         ) : null}
-                        {hasNextPage ? (
+                        {hasNextPage && !error ? (
                             <div ref={sentinelRef} className="oui-combobox-sentinel" />
                         ) : null}
                         {loadingNext ? (
@@ -717,6 +707,18 @@ export function PaginatedCombobox<T>({
                         ) : null}
                     </div>
                 )}
+                {error ? (
+                    <div className="oui-combobox-state" role="alert">
+                        <span>{actualErrorText}</span>
+                        <Button
+                            size={1}
+                            v="surface"
+                            onClick={() => void fetchPage((lastPage?.page ?? 0) + 1, debouncedSearch)}
+                        >
+                            {actualRetryLabel}
+                        </Button>
+                    </div>
+                ) : null}
             </div>
         </Popover>
     );

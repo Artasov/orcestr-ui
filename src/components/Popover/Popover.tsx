@@ -3,6 +3,7 @@
 import {
     cloneElement,
     Children,
+    createContext,
     forwardRef,
     isValidElement,
     useCallback,
@@ -46,6 +47,9 @@ type TriggerElementProps = {
     'data-disabled'?: string;
     'data-testid'?: string;
 };
+
+type RegisterPopoverBranch = (element: HTMLElement) => () => void;
+const PopoverBranchContext = createContext<RegisterPopoverBranch | null>(null);
 
 export type PopoverProps = SystemProps &
     Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
@@ -98,6 +102,16 @@ export function Popover({
     ...props
 }: PopoverProps) {
     const overlay = useOverlayContext();
+    const registerParentBranch = useContext(PopoverBranchContext);
+    const branches = useRef(new Set<HTMLElement>());
+    const registerBranch = useCallback<RegisterPopoverBranch>((element) => {
+        branches.current.add(element);
+        const unregisterParent = registerParentBranch?.(element);
+        return () => {
+            branches.current.delete(element);
+            unregisterParent?.();
+        };
+    }, [registerParentBranch]);
     const themeContext = useContext(OrcestrThemeContext);
     const disclosure = useDisclosure({ open, defaultOpen, onOpenChange });
     const { open: isOpen, close: closeDisclosure, toggle } = disclosure;
@@ -124,6 +138,12 @@ export function Popover({
     const [layoutHeight, setLayoutHeight] = useState<number>();
     const [layoutMotionReady, setLayoutMotionReady] = useState(false);
     const { systemStyle, restProps } = splitSystemProps(props);
+
+    // Portaled descendants still belong to this popover's interaction boundary.
+    useEffect(() => {
+        const element = contentRef.current;
+        if (isOpen && present && element) return registerParentBranch?.(element);
+    }, [contentRef, isOpen, present, registerParentBranch]);
 
     useLayoutEffect(() => {
         if (!present || !layoutMotion) {
@@ -170,6 +190,8 @@ export function Popover({
     }, [contentRef, layoutHeight, layoutMotion, layoutMotionReady, present, style]);
     const handleOutsidePointerDown = useCallback(
         (event: PointerEvent) => {
+            const target = event.target;
+            if (target instanceof Node && [...branches.current].some(branch => branch.contains(target))) return;
             onInteractOutside?.(event);
             if (event.defaultPrevented) return;
             closeDisclosure();
@@ -196,6 +218,7 @@ export function Popover({
         }
         const onKeyDown = (event: KeyboardEvent) => {
             if (event.key !== 'Escape' || event.defaultPrevented) return;
+            if (branches.current.size > 0) return;
             event.preventDefault();
             closeDisclosure();
         };
@@ -245,7 +268,7 @@ export function Popover({
     );
 
     return (
-        <>
+        <PopoverBranchContext.Provider value={registerBranch}>
             {triggerNode}
             {present ? (
                 <Portal>
@@ -284,7 +307,7 @@ export function Popover({
                     </div>
                 </Portal>
             ) : null}
-        </>
+        </PopoverBranchContext.Provider>
     );
 }
 

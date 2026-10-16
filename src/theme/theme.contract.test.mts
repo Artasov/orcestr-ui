@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 import { splitSystemProps } from './systemProps.ts';
+import {themeByMode} from './defaultTheme.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 
@@ -90,6 +91,20 @@ test('default theme is independent from consuming applications', () => {
     assert.doesNotMatch(source, /orcestrThemeSurfaceRegistry|surfaceOverrides/);
     assert.match(source, /themeByMode/);
     assert.match(source, /themeOverrides/);
+});
+
+test('modal background has its own component token and does not recolor panel surfaces', () => {
+    for (const mode of ['dark', 'light'] as const) {
+        const initial = themeByMode(mode);
+        const custom = themeByMode(mode, {components: {modalBackground: '#000000'}});
+        assert.equal(initial.components.modalBackground, 'var(--oui-panel)');
+        assert.equal(custom.components.modalBackground, '#000000');
+        assert.equal(custom.colors.panel, initial.colors.panel);
+    }
+    assert.match(read('theme/ThemeProvider.tsx'), /'--oui-modal-bg': theme\.components\.modalBackground/);
+    for (const path of ['styles/_overlays.sass', 'styles/_special-modal.sass']) {
+        assert.match(read(path), /background: var\(--oui-modal-bg, var\(--oui-panel\)\)/);
+    }
 });
 
 test('theme contract keeps only active component tokens', () => {

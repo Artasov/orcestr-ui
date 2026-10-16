@@ -83,6 +83,7 @@ const sharedStructure = {
         tableHeaderHeight: '38px',
         fieldGap: '6px',
         modalMaxWidth: '680px',
+        modalBackground: 'var(--oui-panel)',
     },
 } as const satisfies Pick<
     ThemeSeed,
