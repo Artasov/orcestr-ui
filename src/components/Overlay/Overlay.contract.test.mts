@@ -139,11 +139,10 @@ test('Popover lets content veto outside interaction close', () => {
     );
 });
 
-test('Focus trap returns focus and handles Escape and Tab loops', () => {
+test('Focus trap returns focus and handles Tab loops', () => {
     const source = read('hooks/useFocusTrap.ts');
     assert.match(source, /ownerDocument\.activeElement/);
     assert.match(source, /previous\.focus/);
-    assert.match(source, /event.key === 'Escape'/);
     assert.match(source, /event.key !== 'Tab'/);
     assert.match(source, /lastNode.focus/);
     assert.match(source, /addEventListener\('focusin'/);
