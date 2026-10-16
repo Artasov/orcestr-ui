@@ -5,6 +5,7 @@ import { LuCheck } from 'react-icons/lu';
 
 import { Badge } from '../Badge/Badge.js';
 import { Popover } from '../Popover/Popover.js';
+import { Spinner } from '../Spinner/Spinner.js';
 import {
     splitSystemProps,
     type SystemProps,
@@ -27,6 +28,8 @@ export type BadgeSelectMenuProps<V extends string = string> = SystemProps & {
     width?: number | string;
     maxHeight?: number;
     disabled?: boolean;
+    loading?: boolean;
+    icon?: ReactNode;
     size?: UiSize;
     badgeStyle?: CSSProperties;
     className?: string;
@@ -41,6 +44,8 @@ export function BadgeSelectMenu<V extends string = string>({
     width = 220,
     maxHeight = 280,
     disabled = false,
+    loading = false,
+    icon,
     size,
     badgeStyle,
     className,
@@ -50,6 +55,7 @@ export function BadgeSelectMenu<V extends string = string>({
     const [open, setOpen] = useState(false);
     const [highlightedValue, setHighlightedValue] = useState<V | null>(null);
     const { systemStyle, restProps } = splitSystemProps(props);
+    const locked = disabled || loading;
 
     const currentValue = value ?? items[0]?.value ?? null;
     const currentItem = useMemo(
@@ -66,11 +72,22 @@ export function BadgeSelectMenu<V extends string = string>({
             size={size}
             data-state={open ? 'open' : 'closed'}
             className="oui-badge-select-trigger"
+            icon={icon !== undefined || loading ? <span aria-hidden="true" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '1em', height: '1em', flexShrink: 0 }}>{loading ? <Spinner size={1} style={{ width: '1em', height: '1em' }} /> : icon}</span> : undefined}
             testId={testId}
+            role={locked ? undefined : 'button'}
+            tabIndex={locked ? undefined : 0}
+            aria-disabled={locked || undefined}
+            aria-busy={loading || undefined}
+            aria-haspopup={locked ? undefined : 'listbox'}
+            onKeyDown={(event) => {
+                if (locked || (event.key !== 'Enter' && event.key !== ' ')) return;
+                event.preventDefault();
+                setOpen((current) => !current);
+            }}
             style={{
-                cursor: disabled ? 'default' : 'pointer',
+                cursor: locked ? 'default' : 'pointer',
                 flexShrink: 0,
-                opacity: disabled ? 0.6 : 1,
+                opacity: loading ? 1 : disabled ? 0.6 : 1,
                 ...systemStyle,
                 ...badgeStyle,
             }}
@@ -79,7 +96,7 @@ export function BadgeSelectMenu<V extends string = string>({
         </Badge>
     );
 
-    if (disabled) {
+    if (locked) {
         return triggerBadge;
     }
 
@@ -103,6 +120,16 @@ export function BadgeSelectMenu<V extends string = string>({
             <div
                 className="oui-combobox-scroll oui-combobox-options oui-badge-select-options"
                 style={{ maxHeight }}
+                role="listbox"
+                onKeyDown={(event) => {
+                    if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+                    const options = [...event.currentTarget.querySelectorAll<HTMLButtonElement>('button:not([disabled])')];
+                    if (!options.length) return;
+                    event.preventDefault();
+                    const current = options.findIndex((option) => option === document.activeElement);
+                    const next = event.key === 'Home' ? 0 : event.key === 'End' ? options.length - 1 : (current + (event.key === 'ArrowUp' ? -1 : 1) + options.length) % options.length;
+                    options[next].focus();
+                }}
             >
                 {items.map((item) => {
                     const isSelected = item.value === currentValue;
@@ -115,6 +142,8 @@ export function BadgeSelectMenu<V extends string = string>({
                             data-selected={isSelected ? 'true' : 'false'}
                             data-highlighted={isHighlighted ? 'true' : 'false'}
                             disabled={item.disabled}
+                            role="option"
+                            aria-selected={isSelected}
                             onMouseEnter={() => {
                                 if (!item.disabled) setHighlightedValue(item.value);
                             }}

@@ -65,11 +65,6 @@ export function useFocusTrap(
 
         const handleKeyDown = (event: KeyboardEvent) => {
             if (!isTopOverlayFocusLayer(manager, id) || event.defaultPrevented) return;
-            if (event.key === 'Escape') {
-                event.preventDefault();
-                onEscapeRef.current?.();
-                return;
-            }
             if (event.key !== 'Tab') return;
             const nodes = focusableNodes(root);
             if (nodes.length === 0) {
@@ -95,6 +90,14 @@ export function useFocusTrap(
             }
         };
 
+        // Editors and document-level keyboard sensors must be able to consume
+        // Escape before the containing overlay dismisses itself.
+        const handleEscape = (event: KeyboardEvent) => {
+            if (event.key !== 'Escape' || event.defaultPrevented || !isTopOverlayFocusLayer(manager, id)) return;
+            event.preventDefault();
+            onEscapeRef.current?.();
+        };
+
         const handleFocusIn = (event: FocusEvent) => {
             if (!isTopOverlayFocusLayer(manager, id)) return;
             if (isAllowedFocusTarget(root, event.target)) return;
@@ -102,9 +105,11 @@ export function useFocusTrap(
         };
 
         ownerDocument.addEventListener('keydown', handleKeyDown, true);
+        ownerDocument.defaultView?.addEventListener('keydown', handleEscape);
         ownerDocument.addEventListener('focusin', handleFocusIn, true);
         return () => {
             ownerDocument.removeEventListener('keydown', handleKeyDown, true);
+            ownerDocument.defaultView?.removeEventListener('keydown', handleEscape);
             ownerDocument.removeEventListener('focusin', handleFocusIn, true);
             restoreBackground();
             unregisterLayer();

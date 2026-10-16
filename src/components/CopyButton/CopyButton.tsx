@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from 'react';
 import { LuCheck, LuCopy } from 'react-icons/lu';
 
 import { cn } from '../../utils/cn.js';
@@ -24,6 +24,7 @@ export type CopyIconButtonProps = Omit<
     'children' | 'icon' | 'loading' | 'onClick'
 > & {
     text: string;
+    icon?: ReactNode;
     label?: string;
     successMessage?: string;
     errorMessage?: string;
@@ -70,6 +71,7 @@ export function CopyButton({
 
 export function CopyIconButton({
     text,
+    icon,
     label = 'Copy',
     successMessage = 'Copied',
     errorMessage = 'Copy failed',
@@ -95,7 +97,7 @@ export function CopyIconButton({
             className={cn('oui-copy-icon-button', className)}
             disabled={disabled || pending}
             loading={pending}
-            icon={copied ? <LuCheck size={15} /> : <LuCopy size={15} />}
+            icon={copied ? <LuCheck size={15} /> : icon ?? <LuCopy size={15} />}
             aria-label={label}
             onClick={copy}
         />

@@ -190,6 +190,7 @@ export function OrcestrThemeProvider({
                 '--oui-table-header-height': theme.components.tableHeaderHeight,
                 '--oui-field-gap': theme.components.fieldGap,
                 '--oui-modal-max-width': theme.components.modalMaxWidth,
+                '--oui-modal-bg': theme.components.modalBackground,
             }) as CSSProperties,
         [theme],
     );
