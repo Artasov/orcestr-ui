@@ -836,6 +836,12 @@
 .oui-tabs-compound-hover-indicator[data-visible="true"]
     opacity: 1
 
+// Selection hands the hovered tab to the sliding active indicator without a second fading background.
+.oui-tabs-hover-indicator[data-selected="true"],
+.oui-tabs-compound-hover-indicator[data-selected="true"]
+    opacity: 0
+    transition: none
+
 .oui-tabs-trigger[data-size="3"]
     height: 40px
     padding-inline: 15px

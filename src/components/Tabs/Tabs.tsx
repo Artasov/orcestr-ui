@@ -448,6 +448,7 @@ function List({
                                 : 'oui-tabs-compound-hover-indicator'
                         }
                         data-visible={hoverVisible ? 'true' : undefined}
+                        data-selected={hoveredValue === activeValue ? 'true' : undefined}
                         style={
                             variant === 'items'
                                 ? indicatorStyle(hoverRect)
@@ -519,14 +520,14 @@ function Trigger({
                 else if (event.key === 'End') target = 'last';
                 if (target === null) return;
                 event.preventDefault();
+                setHoveredValue(null);
                 const nextValue = navigation.moveFocus(value, target);
-                if (nextValue !== null) setActiveValue(nextValue);
+                if (nextValue !== null && nextValue !== activeValue) setActiveValue(nextValue);
             }}
             onClick={(event) => {
                 onClick?.(event);
                 if (event.defaultPrevented) return;
-                setHoveredValue(value);
-                setActiveValue(value);
+                if (!isActive) setActiveValue(value);
             }}
             {...props}
         >
