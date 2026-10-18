@@ -30,6 +30,12 @@ test('Tabs hide hover indicator when hovering the active tab', () => {
     assert.match(selectionStyles, /\.oui-tabs-hover-indicator\[data-visible="true"\]\s+opacity: 1/);
 });
 
+test('Tabs yield the hover layer immediately on selection while keeping native indicator motion', () => {
+    assert.match(tabsSource, /data-selected=\{hoveredValue === activeValue \? 'true' : undefined\}/);
+    assert.match(selectionStyles, /\.oui-tabs-hover-indicator\[data-selected="true"\],\s*\.oui-tabs-compound-hover-indicator\[data-selected="true"\]\s+opacity: 0\s+transition: none/);
+    assert.match(selectionStyles, /\.oui-tabs-active-indicator,[\s\S]*?transition: left 460ms/);
+});
+
 test('Tabs avoid state updates when measured rects did not change', () => {
     assert.match(tabsSource, /function stableTabRect/);
     assert.match(

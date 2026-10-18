@@ -87,3 +87,52 @@ test('item facade uses the same compound keyboard model', async () => {
     await user.keyboard('{End}');
     assert.equal(screen.getByRole('tab', { name: 'Two' }).getAttribute('aria-selected'), 'true');
 });
+
+for (const variant of ['items', 'compound'] as const) {
+    test(`${variant} tabs hand hover to selection once and clear pointer feedback for keyboard navigation`, async () => {
+        const changes: string[] = [];
+        render(
+            <Tabs.Root defaultValue="one" onValueChange={value => changes.push(value)}>
+                <Tabs.List variant={variant}>
+                    <Tabs.Trigger value="one">One</Tabs.Trigger>
+                    <Tabs.Trigger value="two">Two</Tabs.Trigger>
+                </Tabs.List>
+                <Tabs.Content value="one">First panel</Tabs.Content>
+                <Tabs.Content value="two">Second panel</Tabs.Content>
+            </Tabs.Root>,
+        );
+        const user = userEvent.setup();
+        const first = screen.getByRole('tab', {name: 'One'}), second = screen.getByRole('tab', {name: 'Two'});
+        for (const [index, tab] of [first, second].entries()) {
+            Object.defineProperties(tab, {
+                offsetLeft: {configurable: true, value: index * 120},
+                offsetTop: {configurable: true, value: 2},
+                offsetWidth: {configurable: true, value: 110},
+                offsetHeight: {configurable: true, value: 34},
+            });
+        }
+        const prefix = variant === 'items' ? 'oui-tabs' : 'oui-tabs-compound';
+        const active = document.querySelector<HTMLElement>(`.${prefix}-active-indicator`)!;
+        await user.hover(second);
+        const hover = document.querySelector<HTMLElement>(`.${prefix}-hover-indicator`)!;
+        assert.equal(hover.dataset.visible, 'true');
+        assert.equal(hover.dataset.selected, undefined);
+        assert.equal(active.style.left, '0px');
+        await user.click(second);
+        assert.deepEqual(changes, ['two']);
+        assert.equal(hover.dataset.selected, 'true', 'The fading hover background must yield immediately to selection');
+        assert.equal(hover.dataset.visible, undefined);
+        assert.equal(active.style.left, '120px');
+        assert.equal(active.style.top, hover.style.top);
+        assert.equal(document.querySelector(`.${prefix}-active-indicator`), active);
+        await user.click(second);
+        assert.deepEqual(changes, ['two'], 'Clicking the selected tab must not emit another selection');
+        await user.keyboard('{Home}');
+        assert.deepEqual(changes, ['two', 'one']);
+        assert.equal(active.style.left, '0px');
+        assert.equal(hover.dataset.visible, undefined, 'Keyboard navigation must not leave a second pointer highlight');
+        await user.unhover(second);
+        assert.equal(active.style.left, '0px');
+        assert.equal(hover.dataset.visible, undefined);
+    });
+}
