@@ -1,6 +1,7 @@
 'use client';
 
 import {
+    Fragment,
     useCallback,
     useEffect,
     useLayoutEffect,
@@ -218,19 +219,23 @@ function MenuList({
             data-testid={testId}
             onKeyDown={handleKeyDown}
         >
-            {items.map((item) => (
-                <MenuRow
-                    key={item.key}
-                    item={item}
-                    reserveIconSpace={reserveIconSpace}
-                    inlineState={inlineState}
-                    close={close}
-                    requestConfirmation={requestConfirmation}
-                    highlighted={highlightedKey === item.key}
-                    setHighlighted={() => navigation.setHighlightedValue(item.key)}
-                    clearHighlighted={navigation.reset}
-                    testId={testId ? `${testId}-${item.key}` : undefined}
-                />
+            {items.map((item, index) => (
+                <Fragment key={item.key}>
+                    {item.separatorBefore && index > 0 ? (
+                        <div className="oui-menu-separator" role="separator" />
+                    ) : null}
+                    <MenuRow
+                        item={item}
+                        reserveIconSpace={reserveIconSpace}
+                        inlineState={inlineState}
+                        close={close}
+                        requestConfirmation={requestConfirmation}
+                        highlighted={highlightedKey === item.key}
+                        setHighlighted={() => navigation.setHighlightedValue(item.key)}
+                        clearHighlighted={navigation.reset}
+                        testId={testId ? `${testId}-${item.key}` : undefined}
+                    />
+                </Fragment>
             ))}
         </div>
     );
@@ -320,7 +325,6 @@ function MenuRow({
                 clearHighlighted();
             }}
         >
-            {item.separatorBefore ? <div className="oui-menu-separator" /> : null}
             <button
                 type="button"
                 className="oui-menu-item"
