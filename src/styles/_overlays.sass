@@ -628,8 +628,10 @@
 
 .oui-menu-row
     position: relative
+    min-width: 0
 
 .oui-menu-item
+    box-sizing: border-box
     display: flex
     align-items: center
     justify-content: space-between
@@ -680,6 +682,7 @@
 
 .oui-menu-separator
     height: 1px
+    flex: 0 0 auto
     margin: 3px 2px
     background: var(--oui-border)
 
@@ -798,8 +801,8 @@
 .oui-menu-row
     position: relative
 
-.oui-menu-row:hover::after,
-.oui-menu-row:focus-within::after
+.oui-menu-row[data-submenu-side]:hover::after,
+.oui-menu-row[data-submenu-side]:focus-within::after
     position: absolute
     top: -4px
     right: -8px
