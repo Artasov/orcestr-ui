@@ -79,7 +79,7 @@ jobs:
               run: npm run build
 
             - name: Publish @orcestr/ui
-              run: npm publish --access public
+              run: npm publish --access public --tag latest
 
             - name: Create GitHub release
               shell: bash
