@@ -100,6 +100,8 @@ import '@orcestr/ui/example/styles.css';
 For provider configuration, application-owned themes, overlays, controlled state and
 client/server boundaries, see the [consumer guide](./docs/CONSUMER_GUIDE.md).
 
+For nullable decimal inputs, keyboard step modifiers and localized step hints, see [StepperInput](./docs/STEPPER_INPUT.md).
+
 ## Entrypoints
 
 | Entrypoint                          | Purpose                                           |

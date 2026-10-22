@@ -34,6 +34,8 @@ export type OrcestrUiCopy = {
         details: string;
         decrease: string;
         increase: string;
+        stepBy?: (step: string) => string;
+        stepModifiers?: (shiftStep: string, ctrlShiftStep: string) => string;
         compare: string;
         from: string;
         to: string;
@@ -84,6 +86,11 @@ export type OrcestrUiLocaleContextValue = {
     copy: OrcestrUiCopy;
 };
 
+type ResolvedOrcestrUiCopy = OrcestrUiCopy & {
+    common: OrcestrUiCopy['common'] & Required<Pick<OrcestrUiCopy['common'], 'stepBy' | 'stepModifiers'>>;
+};
+type ResolvedLocaleContextValue = Omit<OrcestrUiLocaleContextValue, 'copy'> & { copy: ResolvedOrcestrUiCopy };
+
 export type OrcestrUiLocaleProviderProps = {
     children: ReactNode;
     locale?: OrcestrUiLocale;
@@ -94,7 +101,7 @@ type PartialOrcestrUiCopy = Partial<{
     [K in keyof OrcestrUiCopy]: Partial<OrcestrUiCopy[K]>;
 }>;
 
-const ruCopy: OrcestrUiCopy = {
+const ruCopy: ResolvedOrcestrUiCopy = {
     common: {
         clear: 'Очистить',
         close: 'Закрыть',
@@ -124,6 +131,8 @@ const ruCopy: OrcestrUiCopy = {
         details: 'Подробности',
         decrease: 'Уменьшить',
         increase: 'Увеличить',
+        stepBy: (step) => `на ${step}`,
+        stepModifiers: (shiftStep, ctrlShiftStep) => `Shift: ${shiftStep}; Ctrl/Cmd + Shift: ${ctrlShiftStep}. Также работают стрелки ↑/↓.`,
         compare: 'Сравнить',
         from: 'От',
         to: 'До',
@@ -169,7 +178,7 @@ const ruCopy: OrcestrUiCopy = {
     },
 };
 
-const enCopy: OrcestrUiCopy = {
+const enCopy: ResolvedOrcestrUiCopy = {
     common: {
         clear: 'Clear',
         close: 'Close',
@@ -199,6 +208,8 @@ const enCopy: OrcestrUiCopy = {
         details: 'Details',
         decrease: 'Decrease',
         increase: 'Increase',
+        stepBy: (step) => `by ${step}`,
+        stepModifiers: (shiftStep, ctrlShiftStep) => `Shift: ${shiftStep}; Ctrl/Cmd + Shift: ${ctrlShiftStep}. Arrow ↑/↓ keys also work.`,
         compare: 'Compare',
         from: 'From',
         to: 'To',
@@ -244,12 +255,12 @@ const enCopy: OrcestrUiCopy = {
     },
 };
 
-const defaultCopyByLocale: Record<OrcestrUiLocale, OrcestrUiCopy> = {
+const defaultCopyByLocale: Record<OrcestrUiLocale, ResolvedOrcestrUiCopy> = {
     en: enCopy,
     ru: ruCopy,
 };
 
-const OrcestrUiLocaleContext = createContext<OrcestrUiLocaleContextValue>({
+const OrcestrUiLocaleContext = createContext<ResolvedLocaleContextValue>({
     locale: 'ru',
     copy: ruCopy,
 });
@@ -259,7 +270,7 @@ export function OrcestrUiLocaleProvider({
     locale = 'ru',
     copy,
 }: OrcestrUiLocaleProviderProps) {
-    const value = useMemo<OrcestrUiLocaleContextValue>(
+    const value = useMemo<ResolvedLocaleContextValue>(
         () => ({
             locale,
             copy: mergeCopy(defaultCopyByLocale[locale], copy),
@@ -276,7 +287,7 @@ export function useOrcestrUiLocale() {
     return useContext(OrcestrUiLocaleContext);
 }
 
-function mergeCopy(base: OrcestrUiCopy, overrides?: PartialOrcestrUiCopy) {
+function mergeCopy(base: ResolvedOrcestrUiCopy, overrides?: PartialOrcestrUiCopy) {
     if (!overrides) return base;
     return {
         common: { ...base.common, ...overrides.common },
