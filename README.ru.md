@@ -101,6 +101,8 @@ import '@orcestr/ui/example/styles.css';
 Настройка provider, тем приложения, overlays, controlled state и границ между
 client/server описана в [руководстве для потребителей](./docs/CONSUMER_GUIDE.ru.md).
 
+Необязательные дробные значения, шаг с клавишами-модификаторами и подсказки описаны в [StepperInput](./docs/STEPPER_INPUT.md).
+
 ## Entrypoints
 
 | Entrypoint                          | Назначение                                      |

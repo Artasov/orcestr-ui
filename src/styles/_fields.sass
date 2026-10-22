@@ -636,7 +636,7 @@
     border-bottom-left-radius: 0
 
 .oui-stepper .oui-stepper-field
-    width: 86px !important
+    width: 86px
     border-radius: 0
     border-left: 0
     border-right: 0
@@ -702,6 +702,27 @@
 .oui-stepper:focus-within .oui-stepper-button,
 .oui-stepper:focus-within .oui-stepper-field
     border-color: var(--oui-primary-base)
+
+.oui-stepper[data-full-width='true']
+    width: 100%
+    min-width: 0
+
+.oui-stepper[data-full-width='true'] .oui-stepper-field
+    flex: 1 1 0
+    width: 0
+    min-width: 0
+
+.oui-stepper[data-size='2'] .oui-stepper-button
+    width: 36px
+    min-width: 36px
+
+.oui-stepper[data-size='3'] .oui-stepper-button
+    width: 40px
+    min-width: 40px
+
+.oui-stepper[data-size='4'] .oui-stepper-button
+    width: 48px
+    min-width: 48px
 
 .oui-field-addon
     display: inline-flex

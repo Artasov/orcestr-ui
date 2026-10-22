@@ -1,159 +1,126 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { LuMinus, LuPlus } from 'react-icons/lu';
 
-import { useOrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { useOrcestrUiLocale, type OrcestrUiLocale } from '../../locale/LocaleProvider.js';
+import { cn } from '../../utils/cn.js';
 import { IconButton } from '../IconButton/IconButton.js';
-import { TextField } from '../TextField/TextField.js';
+import { TextField, type TextFieldProps } from '../TextField/TextField.js';
+import { Tooltip } from '../Tooltip/Tooltip.js';
+import { addStep, draftNumber, effectiveStep, scaleStep } from './StepperInputState.js';
 
-export function StepperInput({
-    value,
-    onChange,
-    min,
-    max,
-    step = 1,
-    disabled,
-    unit,
-    decreaseLabel,
-    increaseLabel,
-    testId,
-}: {
-    value: number;
-    onChange: (value: number) => void;
-    min?: number;
-    max?: number;
-    step?: number;
-    disabled?: boolean;
-    unit?: string;
-    decreaseLabel?: string;
-    increaseLabel?: string;
-    testId?: string;
-}) {
+export type StepperInputTooltipContext = {
+    direction: 'decrease' | 'increase'; step: number; shiftStep: number; ctrlShiftStep: number; locale: OrcestrUiLocale;
+};
+
+type StepperInputCommonProps = Omit<TextFieldProps,
+    'value' | 'defaultValue' | 'onChange' | 'onClear' | 'type' | 'min' | 'max' | 'step' | 'rightSlot' | 'leftSlot'> & {
+    min?: number; max?: number; step?: number;
+    /** Absolute step while Shift is held. Defaults to 10 × step. */
+    shiftStep?: number;
+    /** Absolute step while Ctrl+Shift (or Cmd+Shift) is held. Defaults to 100 × step. */
+    ctrlShiftStep?: number;
+    unit?: string; ariaLabel?: string; decreaseLabel?: string; increaseLabel?: string;
+    showStepTooltips?: boolean;
+    stepTooltip?: ReactNode | ((context: StepperInputTooltipContext) => ReactNode);
+};
+
+export type StepperInputProps = StepperInputCommonProps & (
+    | { allowEmpty?: false; value: number; onChange: (value: number) => void }
+    | { allowEmpty: true; value: number | null; onChange: (value: number | null) => void }
+);
+
+export function StepperInput(props: StepperInputProps) {
+    const {
+        value, min, max, step = 1, shiftStep = scaleStep(step, 1), ctrlShiftStep = scaleStep(step, 2),
+        disabled, readOnly, unit, decreaseLabel, increaseLabel, testId, ariaLabel,
+        showStepTooltips = true, stepTooltip, allowEmpty = false, clearable = allowEmpty,
+        fullWidth = false, size = 1, className, style, onFocus, onBlur, onKeyDown,
+        onChange: _onChange, ...inputProps
+    } = props;
     const { copy, locale } = useOrcestrUiLocale();
-    const canDecrease = min === undefined || value > min;
-    const canIncrease = max === undefined || value < max;
-    const formatter = useMemo(
-        () =>
-            new Intl.NumberFormat(locale, {
-                useGrouping: false,
-                maximumFractionDigits: 20,
-            }),
-        [locale],
-    );
-    const decimalSeparator = useMemo(
-        () => formatter.formatToParts(1.1).find((part) => part.type === 'decimal')?.value ?? '.',
-        [formatter],
-    );
-    const [draft, setDraft] = useState(() => formatter.format(value));
+    const formatter = useMemo(() => new Intl.NumberFormat(locale, { useGrouping: false, maximumFractionDigits: 20 }), [locale]);
+    const format = (next: number | null) => next === null ? '' : formatter.format(next);
+    const [draft, setDraft] = useState(() => format(value));
     const editingRef = useRef(false);
 
     useEffect(() => {
-        if (!editingRef.current) setDraft(formatter.format(value));
+        if (!editingRef.current) setDraft(value === null ? '' : formatter.format(value));
     }, [formatter, value]);
 
-    const commit = (next: number) => {
-        const clamped = roundForStep(Math.max(min ?? next, Math.min(max ?? next, next)), step);
-        setDraft(formatter.format(clamped));
-        if (clamped !== value) onChange(clamped);
-    };
-    const commitDraft = () => {
-        const parsed = parseDraft(draft, decimalSeparator);
-        if (parsed === null) {
-            setDraft(formatter.format(value));
+    const commit = (next: number | null) => {
+        if (disabled || readOnly) return;
+        if (next === null) {
+            if (props.allowEmpty) {
+                setDraft('');
+                if (value !== null) props.onChange(null);
+            } else setDraft(format(value));
             return;
         }
-        commit(parsed);
+        if (!Number.isFinite(next)) {setDraft(format(value)); return;}
+        const clamped = Math.max(min ?? -Infinity, Math.min(max ?? Infinity, next));
+        setDraft(format(clamped));
+        if (clamped !== value) props.onChange(clamped);
+    };
+    const commitDraft = () => {
+        if (draft.trim() === '') {commit(null); return;}
+        const parsed = draftNumber(draft);
+        if (parsed === null) setDraft(format(value));
+        else commit(parsed);
+    };
+    const current = editingRef.current && allowEmpty && draft.trim() === '' ? null
+        : (editingRef.current ? draftNumber(draft) : null) ?? value;
+    const move = (direction: -1 | 1, modifiers: { shiftKey: boolean; ctrlKey: boolean; metaKey: boolean }) => {
+        const increment = effectiveStep(modifiers, step, shiftStep, ctrlShiftStep);
+        if (!Number.isFinite(increment) || increment <= 0) return;
+        const start = current ?? 0;
+        commit(addStep(start, direction * increment));
+    };
+    const blocked = disabled || readOnly;
+    const button = (direction: 'decrease' | 'increase') => {
+        const decrease = direction === 'decrease';
+        const label = (decrease ? decreaseLabel : increaseLabel) ?? (decrease ? copy.common.decrease : copy.common.increase);
+        const control = <IconButton size={size} type="button" v="surface"
+            icon={decrease ? <LuMinus size={14} /> : <LuPlus size={14} />} round={false} pressAnimation="none"
+            className={`oui-stepper-button oui-stepper-${direction}`} aria-label={label}
+            testId={testId ? `${testId}-${direction}` : undefined}
+            disabled={blocked || (current !== null && (decrease ? min !== undefined && current <= min : max !== undefined && current >= max))}
+            onMouseDown={event => event.preventDefault()}
+            onClick={event => move(decrease ? -1 : 1, event)} />;
+        if (!showStepTooltips) return control;
+        const context = { direction, step, shiftStep, ctrlShiftStep, locale };
+        const content = typeof stepTooltip === 'function' ? stepTooltip(context) : stepTooltip ??
+            `${label} ${copy.common.stepBy(formatter.format(step))}. ${copy.common.stepModifiers(formatter.format(shiftStep), formatter.format(ctrlShiftStep))}`;
+        return <Tooltip content={content} testId={testId ? `${testId}-${direction}` : undefined}>{control}</Tooltip>;
     };
 
-    return (
-        <span className="oui-stepper" data-testid={testId}>
-            <IconButton
-                size={1}
-                v="surface"
-                icon={<LuMinus size={14} />}
-                round={false}
-                pressAnimation="none"
-                className="oui-stepper-button oui-stepper-decrease"
-                aria-label={decreaseLabel ?? copy.common.decrease}
-                testId={testId ? `${testId}-decrease` : undefined}
-                disabled={disabled || !canDecrease}
-                onClick={() => commit(value - step)}
-            />
-            <TextField
-                value={draft}
-                disabled={disabled}
-                className="oui-stepper-field"
-                size={1}
-                testId={testId ? `${testId}-input` : undefined}
-                onChange={(event) => {
-                    const next = event.target.value;
-                    if (isValidDraft(next)) setDraft(next);
-                }}
-                onFocus={() => {
-                    editingRef.current = true;
-                }}
-                onBlur={() => {
-                    editingRef.current = false;
-                    commitDraft();
-                }}
-                onKeyDown={(event) => {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        commitDraft();
-                    } else if (event.key === 'Escape') {
-                        event.preventDefault();
-                        setDraft(formatter.format(value));
-                    } else if (event.key === 'ArrowUp') {
-                        event.preventDefault();
-                        commit(value + step);
-                    } else if (event.key === 'ArrowDown') {
-                        event.preventDefault();
-                        commit(value - step);
-                    }
-                }}
-                inputMode="decimal"
-                role="spinbutton"
-                aria-valuenow={value}
-                aria-valuemin={min}
-                aria-valuemax={max}
-                rightSlot={unit ? <span>{unit}</span> : null}
-                w="86px"
-            />
-            <IconButton
-                size={1}
-                v="surface"
-                icon={<LuPlus size={14} />}
-                round={false}
-                pressAnimation="none"
-                className="oui-stepper-button oui-stepper-increase"
-                aria-label={increaseLabel ?? copy.common.increase}
-                testId={testId ? `${testId}-increase` : undefined}
-                disabled={disabled || !canIncrease}
-                onClick={() => commit(value + step)}
-            />
-        </span>
-    );
-}
-
-function isValidDraft(value: string) {
-    return /^[+-]?(?:\d+)?(?:[.,]\d*)?$/.test(value.trim());
-}
-
-function parseDraft(value: string, decimalSeparator: string) {
-    const normalized = value.trim().replace(decimalSeparator, '.').replace(',', '.');
-    if (!normalized || normalized === '+' || normalized === '-' || normalized === '.') return null;
-    const parsed = Number(normalized);
-    return Number.isFinite(parsed) ? parsed : null;
-}
-
-function roundForStep(value: number, step: number) {
-    const precision = Math.min(12, Math.max(decimalPlaces(value), decimalPlaces(step)));
-    return Number(value.toFixed(precision));
-}
-
-function decimalPlaces(value: number) {
-    const normalized = value.toString().toLowerCase();
-    if (normalized.includes('e-')) return Number(normalized.split('e-')[1] ?? 0);
-    return normalized.split('.')[1]?.length ?? 0;
+    return <span className={cn('oui-stepper', className)} data-testid={testId} data-size={size}
+        data-full-width={fullWidth || undefined} style={style}>
+        {button('decrease')}
+        <TextField {...inputProps} value={draft} disabled={disabled} readOnly={readOnly}
+            className="oui-stepper-field" size={size} fullWidth={false}
+            aria-label={ariaLabel ?? inputProps['aria-label']} inputMode="decimal" role="spinbutton"
+            aria-valuenow={value ?? undefined} aria-valuemin={min} aria-valuemax={max}
+            testId={testId ? `${testId}-input` : undefined}
+            clearable={allowEmpty && clearable && !readOnly} onClear={() => commit(null)}
+            rightSlot={unit ? <span>{unit}</span> : null}
+            onChange={event => {
+                if (blocked) return;
+                const next = event.target.value;
+                if (/^[+-]?(?:\d+)?(?:[.,]\d*)?$/.test(next.trim())) setDraft(next);
+            }}
+            onFocus={event => {editingRef.current = true; onFocus?.(event);}}
+            onBlur={event => {editingRef.current = false; commitDraft(); onBlur?.(event);}}
+            onKeyDown={event => {
+                onKeyDown?.(event);
+                if (event.defaultPrevented || blocked) return;
+                if (event.key === 'Enter') {event.preventDefault(); commitDraft();}
+                else if (event.key === 'Escape') {event.preventDefault(); setDraft(format(value));}
+                else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+                    event.preventDefault(); move(event.key === 'ArrowUp' ? 1 : -1, event);
+                }
+            }} />
+        {button('increase')}
+    </span>;
 }

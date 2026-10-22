@@ -813,7 +813,13 @@ const toggleOwner = (key) => {
     numberAndDateFields: `import {DatePicker, Field, NumberField, StepperInput} from '@orcestr/ui';
 
 <Field label='Quantity'>
-    <StepperInput value={quantity} onChange={setQuantity} min={0} max={200} />
+    <StepperInput value={quantity} onChange={setQuantity} min={0} max={200}
+        step={0.1} shiftStep={1} ctrlShiftStep={10} />
+</Field>
+<Field label='Optional quantity'>
+    <StepperInput allowEmpty value={optionalQuantity} onChange={setOptionalQuantity}
+        min={0} step={0.1} shiftStep={1} ctrlShiftStep={10} fullWidth
+        placeholder='Not set' ariaLabel='Optional quantity' />
 </Field>
 <Field label='Price'>
     <NumberField defaultValue={1250} min={0} />

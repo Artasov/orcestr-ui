@@ -80,6 +80,7 @@ export function FieldsSection({
     onOpenCode,
 }: FieldsSectionProps) {
     const [supplierOpen, setSupplierOpen] = useState(false);
+    const [optionalQuantity, setOptionalQuantity] = useState<number | null>(null);
     const [paymentOpen, setPaymentOpen] = useState(false);
     const [ownerOpen, setOwnerOpen] = useState(false);
     const [supplierKey, setSupplierKey] = useState<string | null>('northwind');
@@ -444,7 +445,14 @@ export function FieldsSection({
                             onChange={onStepperValueChange}
                             min={0}
                             max={200}
+                            step={0.1}
+                            shiftStep={1}
+                            ctrlShiftStep={10}
                         />
+                    </Field>
+                    <Field label="Optional quantity" helperText="Empty means unset. Type 1.234; Shift steps by 1, Ctrl+Shift by 10.">
+                        <StepperInput allowEmpty value={optionalQuantity} onChange={setOptionalQuantity} min={0}
+                            step={0.1} shiftStep={1} ctrlShiftStep={10} fullWidth placeholder="Not set" ariaLabel="Optional quantity" />
                     </Field>
                     <Field label="Price">
                         <NumberField defaultValue={1250} min={0} />
