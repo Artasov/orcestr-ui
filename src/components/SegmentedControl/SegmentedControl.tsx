@@ -7,7 +7,7 @@ import { cn } from '../../utils/cn.js';
 
 export type SegmentedControlItem = {
     value: string;
-    label: string;
+    label: ReactNode;
     disabled?: boolean;
 };
 
@@ -34,6 +34,7 @@ export function SegmentedControl({
                     type="button"
                     className="oui-segmented-item"
                     data-active={value === item.value ? 'true' : undefined}
+                    aria-pressed={value === item.value}
                     data-testid={testId ? `${testId}-${item.value}` : undefined}
                     disabled={item.disabled}
                     onClick={() => onValueChange(item.value)}
@@ -74,7 +75,7 @@ function SegmentedRoot({
         const props = child.props as SegmentedItemProps;
         items.push({
             value: props.value,
-            label: String(props.children ?? ''),
+            label: props.children,
             disabled: props.disabled,
         });
     });

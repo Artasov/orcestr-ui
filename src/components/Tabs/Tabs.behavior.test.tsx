@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { setupDom } from '../../test-utils/dom.mts';
 
 const restoreDom = setupDom();
-const { cleanup, render, screen } = await import('@testing-library/react');
+const { cleanup, fireEvent, render, screen } = await import('@testing-library/react');
 const { userEvent } = await import('@testing-library/user-event');
 
 afterEach(cleanup);
@@ -89,6 +89,74 @@ test('item facade uses the same compound keyboard model', async () => {
 });
 
 for (const variant of ['items', 'compound'] as const) {
+    test(`${variant} tabs expose only the scrollable edges and retain keyboard navigation`, async () => {
+        render(
+            <Tabs.Root defaultValue="one">
+                <Tabs.List variant={variant}>
+                    <Tabs.Trigger value="one">One</Tabs.Trigger>
+                    <Tabs.Trigger value="two">Two</Tabs.Trigger>
+                    <Tabs.Trigger value="three">Three</Tabs.Trigger>
+                </Tabs.List>
+                <Tabs.Content value="one">First panel</Tabs.Content>
+                <Tabs.Content value="two">Second panel</Tabs.Content>
+                <Tabs.Content value="three">Third panel</Tabs.Content>
+            </Tabs.Root>,
+        );
+        const list = screen.getByRole('tablist');
+        let viewport = 180;
+        Object.defineProperties(list, {
+            clientWidth: {configurable: true, get: () => viewport},
+            scrollWidth: {configurable: true, get: () => Math.max(366, viewport)},
+            scrollBy: {configurable: true, value: ({left}: ScrollToOptions) => {
+                list.scrollLeft = Math.max(0, Math.min(list.scrollWidth - viewport, list.scrollLeft + (left ?? 0)));
+                fireEvent.scroll(list);
+            }},
+        });
+        const edge = (side: 'left' | 'right') => list.parentElement?.querySelector(`.oui-tabs-scroll-button-${side}`);
+        fireEvent.scroll(list);
+        assert.equal(list.dataset.scrollLeft, undefined, 'There must be no left gutter at the start');
+        assert.equal(list.dataset.scrollRight, 'true');
+        assert.equal(edge('left'), null);
+        assert.ok(edge('right'));
+
+        const user = userEvent.setup();
+        await user.click(edge('right')!);
+        assert.equal(list.scrollLeft, 160);
+        assert.equal(list.dataset.scrollLeft, 'true');
+        assert.equal(list.dataset.scrollRight, 'true');
+        assert.ok(edge('left'));
+        assert.ok(edge('right'));
+
+        await user.click(edge('right')!);
+        assert.equal(list.scrollLeft, 186);
+        assert.equal(list.dataset.scrollLeft, 'true');
+        assert.equal(list.dataset.scrollRight, undefined, 'The final tab must not retain a right control gutter');
+        assert.equal(edge('right'), null);
+
+        const first = screen.getByRole('tab', {name: 'One'});
+        const last = screen.getByRole('tab', {name: 'Three'});
+        last.focus();
+        await user.keyboard('{Home}');
+        assert.equal(document.activeElement, first);
+        assert.equal(first.getAttribute('aria-selected'), 'true');
+        assert.equal(first.tabIndex, 0);
+        await user.keyboard('{End}');
+        assert.equal(document.activeElement, last);
+        assert.equal(last.getAttribute('aria-selected'), 'true');
+        assert.equal(first.tabIndex, -1);
+        await user.keyboard('{ArrowLeft}');
+        assert.equal(document.activeElement, screen.getByRole('tab', {name: 'Two'}));
+
+        viewport = 400;
+        list.scrollLeft = 0;
+        fireEvent.scroll(list);
+        assert.equal(list.dataset.overflow, undefined);
+        assert.equal(list.dataset.scrollLeft, undefined);
+        assert.equal(list.dataset.scrollRight, undefined);
+        assert.equal(edge('left'), null);
+        assert.equal(edge('right'), null);
+    });
+
     test(`${variant} tabs hand hover to selection once and clear pointer feedback for keyboard navigation`, async () => {
         const changes: string[] = [];
         render(

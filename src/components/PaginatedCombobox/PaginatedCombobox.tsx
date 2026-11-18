@@ -9,6 +9,7 @@ import {
     useRef,
     useState,
     type KeyboardEvent,
+    type CSSProperties,
     type ReactNode,
 } from 'react';
 import { LuCheck, LuChevronsUpDown, LuPlus, LuX } from 'react-icons/lu';
@@ -19,7 +20,7 @@ import type { UiSize } from '../../theme/systemProps.js';
 import { Button } from '../Button/Button.js';
 import { FloatingFieldDecoration } from '../Field/FloatingFieldDecoration.js';
 import { IconButton } from '../IconButton/IconButton.js';
-import { Popover } from '../Popover/Popover.js';
+import { Popover, type PopoverProps } from '../Popover/Popover.js';
 import { Spinner } from '../Spinner/Spinner.js';
 import { TextField } from '../TextField/TextField.js';
 import { Tooltip } from '../Tooltip/Tooltip.js';
@@ -71,6 +72,9 @@ export type PaginatedComboboxProps<T> = {
     trigger?: ReactNode;
     size?: UiSize;
     maxHeight?: number;
+    /** Preferred dropdown width, still bounded by the available collision area. */
+    contentWidth?: CSSProperties['width'];
+    collisionBoundary?: PopoverProps['collisionBoundary'];
     closeOnSelect?: boolean;
     isItemSelected?: (item: T) => boolean;
     searchAction?: PaginatedComboboxSearchAction;
@@ -110,6 +114,8 @@ export function PaginatedCombobox<T>({
     trigger,
     size = 3,
     maxHeight = 280,
+    contentWidth,
+    collisionBoundary,
     closeOnSelect = true,
     isItemSelected,
     searchAction,
@@ -574,6 +580,8 @@ export function PaginatedCombobox<T>({
             sideOffset={4}
             matchTriggerWidth
             layoutMotion
+            contentStyle={contentWidth === undefined ? undefined : { width: contentWidth }}
+            collisionBoundary={collisionBoundary}
             disabled={disabled}
         >
             <div className="oui-combobox-search-wrap oui-paginated-combobox-search-wrap">

@@ -18,6 +18,26 @@ after(restoreDom);
 const { OrcestrUiProvider } = await import('../../provider/OrcestrUiProvider.js');
 const { PaginatedCombobox } = await import('./PaginatedCombobox.js');
 
+test('a wide dropdown uses viewport sizing outside a clipped table', async () => {
+    const viewportWidth = window.innerWidth;
+    render(<OrcestrUiProvider locale='en'>
+        <div data-table-clip='true' style={{overflow: 'auto', width: 220}}>
+            <PaginatedCombobox<{id: number}>
+                value={null} onChange={() => {}} getItemId={item => item.id}
+                renderOption={() => 'RTX-4060-TI-16 · NVIDIA RTX 4060 Ti 16GB'} renderSelectedLabel={() => 'RTX-4060-TI-16'}
+                contentWidth={520} collisionBoundary='viewport'
+                loadPage={async () => ({items: [{id: 1}], page: 1, has_next: false})}
+            />
+        </div>
+    </OrcestrUiProvider>);
+    await userEvent.click(screen.getByRole('combobox', {name: 'Not selected'}));
+    await screen.findByRole('option', {hidden: true});
+    const popup = document.querySelector<HTMLElement>('.oui-combobox-content');
+    assert.ok(popup);
+    await waitFor(() => assert.equal(popup.style.maxWidth, `${viewportWidth - 16}px`));
+    assert.equal(popup.style.width, '520px');
+});
+
 for (const retry of [false, true]) test(`failed next page preserves selectable rows; retry=${retry}`, async () => {
     const previous = Object.getOwnPropertyDescriptor(globalThis, 'IntersectionObserver');
     const observers: Array<{ target: Element | null; callback: IntersectionObserverCallback }> = [];

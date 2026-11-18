@@ -280,8 +280,6 @@ function List({
     const [canScrollRight, setCanScrollRight] = useState(false);
     const activeValueRef = useRef(activeValue);
     const hoveredValueRef = useRef(hoveredValue);
-    activeValueRef.current = activeValue;
-    hoveredValueRef.current = hoveredValue;
 
     const measure = useCallback(() => {
         const list = listRef.current;
@@ -312,6 +310,9 @@ function List({
     }, []);
 
     useLayoutEffect(() => {
+        activeValueRef.current = activeValue;
+        hoveredValueRef.current = hoveredValue;
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- Measure geometry before paint to avoid flashing selection and edge controls.
         measure();
     }, [activeValue, children, hoveredValue, measure]);
 
@@ -421,6 +422,8 @@ function List({
                     className,
                 )}
                 data-overflow={hasOverflowControls ? 'true' : undefined}
+                data-scroll-left={canScrollLeft ? 'true' : undefined}
+                data-scroll-right={canScrollRight ? 'true' : undefined}
                 style={style}
                 {...props}
             >
@@ -485,13 +488,14 @@ function Trigger({
     const { activeValue, setActiveValue } = useTabsActive();
     const setHoveredValue = useSetTabsHoveredValue();
     const navigation = useTabsNavigation();
+    const { registerTrigger } = navigation;
     const ref = useRef<HTMLButtonElement | null>(null);
     const isActive = activeValue === value;
 
     useEffect(() => {
-        navigation.registerTrigger(value, ref.current);
-        return () => navigation.registerTrigger(value, null);
-    }, [navigation.registerTrigger, value]);
+        registerTrigger(value, ref.current);
+        return () => registerTrigger(value, null);
+    }, [registerTrigger, value]);
 
     return (
         <button
