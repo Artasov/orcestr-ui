@@ -836,11 +836,18 @@
 .oui-tabs-compound-hover-indicator[data-visible="true"]
     opacity: 1
 
-// Selection hands the hovered tab to the sliding active indicator without a second fading background.
+// Keep the hover layer during the first part of the 460ms slide.
+// Its 220ms fade then finishes as the active indicator arrives.
 .oui-tabs-hover-indicator[data-selected="true"],
 .oui-tabs-compound-hover-indicator[data-selected="true"]
-    opacity: 0
-    transition: none
+    transition-delay: 0ms, 0ms, 0ms, 0ms, 240ms
+
+@media (prefers-reduced-motion: reduce)
+    .oui-tabs-active-indicator,
+    .oui-tabs-hover-indicator,
+    .oui-tabs-compound-active-indicator,
+    .oui-tabs-compound-hover-indicator
+        transition: none
 
 .oui-tabs-trigger[data-size="3"]
     height: 40px
