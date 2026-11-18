@@ -20,7 +20,7 @@ test('Tabs keep stable trigger height with badges', () => {
     );
 });
 
-test('Tabs hide hover indicator when hovering the active tab', () => {
+test('Tabs fade the hover indicator when hovering the active tab', () => {
     assert.match(tabsSource, /hoveredValueRef\.current !== activeValueRef\.current/);
     assert.match(
         selectionStyles,
@@ -30,10 +30,10 @@ test('Tabs hide hover indicator when hovering the active tab', () => {
     assert.match(selectionStyles, /\.oui-tabs-hover-indicator\[data-visible="true"\]\s+opacity: 1/);
 });
 
-test('Tabs yield the hover layer immediately on selection while keeping native indicator motion', () => {
+test('Tabs keep the hover layer through the selection slide and respect reduced motion', () => {
     assert.match(tabsSource, /data-selected=\{hoveredValue === activeValue \? 'true' : undefined\}/);
-    assert.match(selectionStyles, /\.oui-tabs-hover-indicator\[data-selected="true"\],\s*\.oui-tabs-compound-hover-indicator\[data-selected="true"\]\s+opacity: 0\s+transition: none/);
-    assert.match(selectionStyles, /\.oui-tabs-active-indicator,[\s\S]*?transition: left 460ms/);
+    assert.match(selectionStyles, /\.oui-tabs-hover-indicator\[data-selected="true"\],\s*\.oui-tabs-compound-hover-indicator\[data-selected="true"\]\s+transition-delay: 0ms, 0ms, 0ms, 0ms, 240ms/);
+    assert.match(selectionStyles, /@media \(prefers-reduced-motion: reduce\)\s+\.oui-tabs-active-indicator,[\s\S]*?\.oui-tabs-compound-hover-indicator\s+transition: none/);
 });
 
 test('Tabs avoid state updates when measured rects did not change', () => {
