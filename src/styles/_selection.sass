@@ -637,7 +637,8 @@
 
 .oui-collapse[data-state="open"] .oui-collapse-content
     opacity: 1
-    transform: translateY(0)
+    // Release the transformed layer so fractional-pixel borders stay visible.
+    transform: none
 
 .oui-tabs
     gap: 12px
@@ -778,9 +779,15 @@
     padding: 2px var(--oui-tabs-extra-padding-right, 2px) 2px 2px
     scrollbar-width: none
 
-.oui-tabs-list-scroll[data-overflow="true"]
-    padding-left: 36px
-    padding-right: max(36px, var(--oui-tabs-extra-padding-right, 2px))
+// Keep the content geometry stable as the edge buttons appear and disappear.
+// Scroll padding keeps focused tabs clear of the visible controls without an empty gutter.
+.oui-tabs-list[data-scroll-left="true"],
+.oui-tabs-list-scroll[data-scroll-left="true"]
+    scroll-padding-left: 36px
+
+.oui-tabs-list[data-scroll-right="true"],
+.oui-tabs-list-scroll[data-scroll-right="true"]
+    scroll-padding-right: max(36px, var(--oui-tabs-extra-padding-right, 2px))
 
 .oui-tabs-list-scroll::-webkit-scrollbar
     display: none
@@ -808,8 +815,9 @@
     width: 24px
     height: 24px
     padding: 0
+    border: 0
     transform: translateY(-50%)
-    box-shadow: var(--oui-shadow-md)
+    box-shadow: none
 
 .oui-tabs-scroll-button-left
     left: 4px

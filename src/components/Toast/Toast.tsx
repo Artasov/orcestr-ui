@@ -378,23 +378,6 @@ function ToastCard({
                         {item.message ? (
                             <div className="oui-toast-message">{item.message}</div>
                         ) : null}
-                        {item.action ? (
-                            <Button
-                                className="oui-toast-action"
-                                size={1}
-                                v="surface"
-                                tone={item.tone}
-                                onClick={(event) => {
-                                    event.stopPropagation();
-                                    item.action?.onClick();
-                                    if (item.action?.closeOnClick !== false) {
-                                        onDismiss(item.id);
-                                    }
-                                }}
-                            >
-                                {item.action.label}
-                            </Button>
-                        ) : null}
                     </div>
                 </div>
                 {item.closeButton ? (
@@ -409,6 +392,23 @@ function ToastCard({
                             onDismiss(item.id);
                         }}
                     />
+                ) : null}
+                {item.action ? (
+                    <Button
+                        className="oui-toast-action"
+                        size={1}
+                        v="surface"
+                        tone={item.tone}
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            item.action?.onClick();
+                            if (item.action?.closeOnClick !== false) {
+                                onDismiss(item.id);
+                            }
+                        }}
+                    >
+                        {item.action.label}
+                    </Button>
                 ) : null}
                 {hasProgress ? (
                     <span
